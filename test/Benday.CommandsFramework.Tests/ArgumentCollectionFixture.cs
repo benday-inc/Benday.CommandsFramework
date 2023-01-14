@@ -114,4 +114,68 @@ public class ArgumentCollectionFixture
         var actual = SystemUnderTest.ContainsKey(key);
         Assert.AreEqual<bool>(expected, actual, "Contains return value was wrong.");
     }
+
+    [TestMethod]
+    public void Ctor_UsingExistingDictionary_CopiesItems()
+    {
+        // arrange
+        var key1 = "key123";
+        var key2 = "key234";
+        var key3 = "key345";
+
+        var value1 = "val1";
+        var value2 = "val2";
+        var value3 = "val3";
+
+        var fromDictionary = new Dictionary<string, string>();
+
+        fromDictionary.Add(key1, value1);
+        fromDictionary.Add(key2, value2);
+        fromDictionary.Add(key3, value3);
+
+        var expectedCount = fromDictionary.Count;
+
+        // act
+        _SystemUnderTest = new ArgumentCollection(fromDictionary);
+
+        // assert
+        Assert.AreEqual<int>(expectedCount, SystemUnderTest.Count, "Wrong count");
+
+        // wipe out the source dictionary
+        fromDictionary.Clear();
+
+        Assert.AreEqual<int>(expectedCount, SystemUnderTest.Count, "Wrong count...values aren't being copies and there's a byref problem");
+
+        Assert.IsTrue(SystemUnderTest.ContainsKey(key1), "Key1 should exist");
+        Assert.IsTrue(SystemUnderTest.ContainsKey(key2), "Key2 should exist");
+        Assert.IsTrue(SystemUnderTest.ContainsKey(key3), "Key3 should exist");
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void Ctor_UsingExistingDictionary_ThrowsExceptionOnNullValueInDictionary()
+    {
+        // arrange
+        var key1 = "key123";
+        var key2 = "key234";
+        var key3 = "key345";
+
+        var value1 = "val1";
+        string? value2 = null;
+        var value3 = "val3";
+
+        var fromDictionary = new Dictionary<string, string>();
+
+        fromDictionary.Add(key1, value1);
+        fromDictionary.Add(key2, value2!);
+        fromDictionary.Add(key3, value3);
+
+        var expectedCount = fromDictionary.Count;
+
+        // act
+        _SystemUnderTest = new ArgumentCollection(fromDictionary);
+
+        // assert
+       
+    }
 }

@@ -2,11 +2,30 @@
 
 public class ArgumentCollection
 {
-    private Dictionary<string, object> _Arguments;
+    private readonly Dictionary<string, string> _Arguments;
 
     public ArgumentCollection()
     {
-        _Arguments = new Dictionary<string, object>();
+        _Arguments = new();
+    }
+
+    public ArgumentCollection(Dictionary<string, string> fromDictionary)
+    {
+        _Arguments = new();
+
+        foreach (var key in fromDictionary.Keys)
+        {
+            var value = fromDictionary[key];
+
+            if (value is null)
+            {
+                throw new InvalidOperationException($"Value for key '{key}' is null.");
+            }
+            else
+            {
+                _Arguments.Add(key, value);
+            }
+        }            
     }
 
     public void Add(string key, string value)
