@@ -14,6 +14,7 @@ public class ArgumentAsStringFixture
     private const string EXPECTED_ARG_VALUE = "argvalue123";
     private const string EXPECTED_ARG_DESC = "argvalue123 description";
     private const bool EXPECTED_ARG_ISREQUIRED = true;
+    private const bool EXPECTED_ARG_ALLOWEMPTYVALUE = true;
     private const ArgumentDataType EXPECTED_ARG_DATATYPE = ArgumentDataType.String;
 
 
@@ -38,7 +39,12 @@ public class ArgumentAsStringFixture
 
     private void InitializeWithAllTheArgs()
     {
-        _SystemUnderTest = new Argument<string>(EXPECTED_ARG_NAME, EXPECTED_ARG_VALUE, EXPECTED_ARG_DESC, EXPECTED_ARG_ISREQUIRED);
+        _SystemUnderTest = new Argument<string>(
+            EXPECTED_ARG_NAME,
+            EXPECTED_ARG_VALUE,
+            EXPECTED_ARG_DESC,
+            EXPECTED_ARG_ISREQUIRED,
+            EXPECTED_ARG_ALLOWEMPTYVALUE);
     }
 
     [TestMethod]
@@ -56,5 +62,54 @@ public class ArgumentAsStringFixture
         Assert.AreEqual<bool>(EXPECTED_ARG_ISREQUIRED, SystemUnderTest.IsRequired, "IsRequired was wrong");
         Assert.AreEqual<string>(EXPECTED_ARG_DESC, SystemUnderTest.Description, "Description was wrong");
         Assert.AreEqual<ArgumentDataType>(EXPECTED_ARG_DATATYPE, SystemUnderTest.DataType, "DataType was wrong");
+        Assert.AreEqual<bool>(EXPECTED_ARG_ALLOWEMPTYVALUE, SystemUnderTest.AllowEmptyValue, "AllowEmptyValue was wrong");
+    }
+
+    [TestMethod]
+    public void IsValid_Required_ValidValue_True()
+    {
+        // arrange
+        InitializeWithAllTheArgs();
+        SystemUnderTest.AllowEmptyValue = false;
+        var expected = true;
+        SystemUnderTest.Value = "valid value";
+
+        // act
+        var actual = SystemUnderTest.Validate();
+
+        // assert
+        Assert.AreEqual<bool>(expected, actual, "Validation value is wrong");        
+    }
+
+    [TestMethod]
+    public void IsValid_Required_AllowEmptyValueFalse_EmptyString_False()
+    {
+        // arrange
+        InitializeWithAllTheArgs();
+        SystemUnderTest.AllowEmptyValue = false;
+        var expected = false;
+        SystemUnderTest.Value = string.Empty;
+
+        // act
+        var actual = SystemUnderTest.Validate();
+
+        // assert
+        Assert.AreEqual<bool>(expected, actual, "Validation value is wrong");
+    }
+
+    [TestMethod]
+    public void IsValid_Required_AllowEmptyValueTrue_EmptyString_True()
+    {
+        // arrange
+        InitializeWithAllTheArgs();
+        SystemUnderTest.AllowEmptyValue = true;
+        var expected = true;
+        SystemUnderTest.Value = string.Empty;
+
+        // act
+        var actual = SystemUnderTest.Validate();
+
+        // assert
+        Assert.AreEqual<bool>(expected, actual, "Validation value is wrong");
     }
 }
