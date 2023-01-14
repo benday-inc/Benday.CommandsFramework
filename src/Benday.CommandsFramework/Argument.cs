@@ -22,11 +22,34 @@ public class Argument<T>
         AllowEmptyValue = allowEmptyValue;
     }
 
+    public Argument(string name, string description, bool isRequired, bool allowEmptyValue)
+    {
+        if (string.IsNullOrEmpty(name))
+        {
+            throw new ArgumentException($"'{nameof(name)}' cannot be null or empty.", nameof(name));
+        }
+
+        if (string.IsNullOrEmpty(description))
+        {
+            throw new ArgumentException($"'{nameof(description)}' cannot be null or empty.", nameof(description));
+        }
+
+        Name = name;
+        Description = description;
+        IsRequired = isRequired;
+        DataType = GetDataTypeFromGenericArgument(typeof(T), DataType);
+        AllowEmptyValue = allowEmptyValue;
+    }
+
     private ArgumentDataType GetDataTypeFromGenericArgument(Type forType, ArgumentDataType dataType)
     {
         if (forType == typeof(string))
         {
             return ArgumentDataType.String;
+        }
+        else if (forType == typeof(int))
+        {
+            return ArgumentDataType.Int32;
         }
         else
         {
@@ -35,7 +58,22 @@ public class Argument<T>
     }
 
     public string Description { get; set; }
-    public T Value { get; set; }
+
+    private T? _Value;
+    public T Value 
+    { 
+        get
+        {
+            return _Value;
+        }
+        set
+        {
+            _Value = value;
+            HasValue = true;
+        }
+            
+    }
+    public bool HasValue { get; private set; }
     public string Name { get; set; }
     public bool IsRequired { get; set; }
     public ArgumentDataType DataType { get; set; }
@@ -65,6 +103,10 @@ public class Argument<T>
                 {
                     return true;
                 }
+            }
+            else if (DataType == ArgumentDataType.Int32)
+            {
+                return HasValue;
             }
             else
             { 

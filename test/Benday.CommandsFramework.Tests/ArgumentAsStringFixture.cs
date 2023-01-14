@@ -47,6 +47,15 @@ public class ArgumentAsStringFixture
             EXPECTED_ARG_ALLOWEMPTYVALUE);
     }
 
+    private void InitializeWithAllTheArgsExceptValue()
+    {
+        _SystemUnderTest = new Argument<string>(
+            EXPECTED_ARG_NAME,
+            EXPECTED_ARG_DESC,
+            EXPECTED_ARG_ISREQUIRED,
+            EXPECTED_ARG_ALLOWEMPTYVALUE);
+    }
+
     [TestMethod]
     public void Ctor_WithAllValues()
     {
@@ -110,6 +119,41 @@ public class ArgumentAsStringFixture
         var actual = SystemUnderTest.Validate();
 
         // assert
+        Assert.AreEqual<bool>(expected, actual, "Validation value is wrong");
+    }
+
+
+    [TestMethod]
+    public void IsValid_NoValueSet_Required_AllowEmptyValueFalse_False()
+    {
+        // arrange
+        InitializeWithAllTheArgsExceptValue();
+        SystemUnderTest.AllowEmptyValue = false;
+        var expected = false;
+        var expectedHasValue = false;
+
+        // act
+        var actual = SystemUnderTest.Validate();
+
+        // assert
+        Assert.AreEqual<bool>(expectedHasValue, SystemUnderTest.HasValue, "HasValue value is wrong");
+        Assert.AreEqual<bool>(expected, actual, "Validation value is wrong");
+    }
+
+    [TestMethod]
+    public void IsValid_NoValueSet_Required_AllowEmptyValueTrue_True()
+    {
+        // arrange
+        InitializeWithAllTheArgsExceptValue();
+        SystemUnderTest.AllowEmptyValue = true;
+        var expected = true;
+        var expectedHasValue = false;
+
+        // act
+        var actual = SystemUnderTest.Validate();
+
+        // assert
+        Assert.AreEqual<bool>(expectedHasValue, SystemUnderTest.HasValue, "HasValue value is wrong");
         Assert.AreEqual<bool>(expected, actual, "Validation value is wrong");
     }
 }
