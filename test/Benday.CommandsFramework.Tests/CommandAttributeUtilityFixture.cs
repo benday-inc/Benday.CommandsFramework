@@ -41,5 +41,7 @@ public class CommandAttributeUtilityFixture
         Assert.IsNotNull(actual, "Result was null");
         Assert.AreNotEqual<int>(0, actual.Count, "Result count was zero");
         Assert.AreEqual<int>(expectedCount, actual.Count, "result count wrong");
+
+        actual.ForEach(x => { Console.WriteLine($"{x}"); });
     }
 }
