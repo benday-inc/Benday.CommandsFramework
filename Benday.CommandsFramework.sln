@@ -5,19 +5,18 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{65EB0C4D-457B-4821-9620-56AAE48642C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benday.CommandsFramework", "src\Benday.CommandsFramework\Benday.CommandsFramework.csproj", "{789D6637-231A-497A-BC25-606EF5103A49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benday.CommandsFramework", "src\Benday.CommandsFramework\Benday.CommandsFramework.csproj", "{789D6637-231A-497A-BC25-606EF5103A49}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{BEFB4C7C-0D0C-4A54-B752-3D36007A9833}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benday.CommandsFramework.Tests", "test\Benday.CommandsFramework.Tests\Benday.CommandsFramework.Tests.csproj", "{0529010A-57CF-4714-B2F3-2658E12131C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benday.CommandsFramework.Tests", "test\Benday.CommandsFramework.Tests\Benday.CommandsFramework.Tests.csproj", "{0529010A-57CF-4714-B2F3-2658E12131C5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benday.CommandsFramework.Samples", "test\Benday.CommandsFramework.Samples\Benday.CommandsFramework.Samples.csproj", "{3BAB4231-BD9D-4B8B-A0DD-9D252D143A43}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{789D6637-231A-497A-BC25-606EF5103A49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -28,9 +27,20 @@ Global
 		{0529010A-57CF-4714-B2F3-2658E12131C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0529010A-57CF-4714-B2F3-2658E12131C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0529010A-57CF-4714-B2F3-2658E12131C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BAB4231-BD9D-4B8B-A0DD-9D252D143A43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BAB4231-BD9D-4B8B-A0DD-9D252D143A43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BAB4231-BD9D-4B8B-A0DD-9D252D143A43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BAB4231-BD9D-4B8B-A0DD-9D252D143A43}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{789D6637-231A-497A-BC25-606EF5103A49} = {65EB0C4D-457B-4821-9620-56AAE48642C7}
 		{0529010A-57CF-4714-B2F3-2658E12131C5} = {BEFB4C7C-0D0C-4A54-B752-3D36007A9833}
+		{3BAB4231-BD9D-4B8B-A0DD-9D252D143A43} = {BEFB4C7C-0D0C-4A54-B752-3D36007A9833}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DD133A72-E551-4455-8F0C-3435B6A21DBF}
 	EndGlobalSection
 EndGlobal
