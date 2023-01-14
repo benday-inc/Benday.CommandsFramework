@@ -55,6 +55,10 @@ public class Argument<T>
         {
             return ArgumentDataType.Boolean;
         }
+        else if (forType == typeof(DateTime))
+        {
+            return ArgumentDataType.DateTime;
+        }
         else
         {
             throw new InvalidOperationException($"Unsupported data type {forType.Name}.");
@@ -113,6 +117,10 @@ public class Argument<T>
                 return HasValue;
             }
             else if (DataType == ArgumentDataType.Boolean)
+            {
+                return HasValue;
+            }
+            else if (DataType == ArgumentDataType.DateTime)
             {
                 return HasValue;
             }
