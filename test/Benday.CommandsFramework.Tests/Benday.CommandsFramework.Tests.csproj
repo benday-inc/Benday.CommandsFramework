@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Benday.CommandsFramework\Benday.CommandsFramework.csproj" />
+    <ProjectReference Include="..\Benday.CommandsFramework.Samples\Benday.CommandsFramework.Samples.csproj" />
   </ItemGroup>
 
 </Project>
