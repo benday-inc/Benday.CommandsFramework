@@ -1,6 +1,6 @@
 ﻿namespace Benday.CommandsFramework.Samples;
 
-[Command(Name = "command3")]
+[Command(Name = ApplicationConstants.CommandName_Command3)]
 public class SampleCommand3
 {
 }
