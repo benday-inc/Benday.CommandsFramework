@@ -51,6 +51,10 @@ public class Argument<T>
         {
             return ArgumentDataType.Int32;
         }
+        else if (forType == typeof(bool))
+        {
+            return ArgumentDataType.Boolean;
+        }
         else
         {
             throw new InvalidOperationException($"Unsupported data type {forType.Name}.");
@@ -105,6 +109,10 @@ public class Argument<T>
                 }
             }
             else if (DataType == ArgumentDataType.Int32)
+            {
+                return HasValue;
+            }
+            else if (DataType == ArgumentDataType.Boolean)
             {
                 return HasValue;
             }
