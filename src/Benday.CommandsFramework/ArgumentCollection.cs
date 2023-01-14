@@ -2,23 +2,30 @@
 
 public class ArgumentCollection
 {
+    private Dictionary<string, object> _Arguments;
+
+    public ArgumentCollection()
+    {
+        _Arguments = new Dictionary<string, object>();
+    }
+
     public void Add(string key, string value)
     {
-        throw new NotImplementedException();
+        _Arguments.Add(key, value);
     }
 
     public void Remove(string key)
     {
-        throw new NotImplementedException();
+        _Arguments.Remove(key);
     }
 
     public bool ContainsKey(string key)
     {
-        throw new NotImplementedException();
+        return _Arguments.ContainsKey(key);
     }
 
     public int Count
     {
-        get { throw new NotImplementedException(); }
+        get { return _Arguments.Count; }
     }
 }
