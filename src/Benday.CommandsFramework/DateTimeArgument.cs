@@ -1,6 +1,6 @@
 ﻿namespace Benday.CommandsFramework;
 
-public class DateTimeArgument : Argument<DateTime>
+public class DateTimeArgument : Argument<DateTime>, IDateTimeArgument
 {
     public DateTimeArgument(string name, bool isRequired = true, bool allowEmptyValue = true) :
     base(name, name, isRequired, allowEmptyValue)
@@ -21,6 +21,9 @@ public class DateTimeArgument : Argument<DateTime>
     }
 
     public override ArgumentDataType DataType { get => ArgumentDataType.DateTime; }
+
+    public DateTime ValueAsDateTime => Value;
+
     protected override DateTime GetDefaultValue()
     {
         return DateTime.MinValue;

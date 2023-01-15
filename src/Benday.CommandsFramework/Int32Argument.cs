@@ -1,6 +1,6 @@
 ﻿namespace Benday.CommandsFramework;
 
-public class Int32Argument : Argument<int>
+public class Int32Argument : Argument<int>, IInt32Argument
 {
     public Int32Argument(string name, bool isRequired = true, bool allowEmptyValue = true) :
         base(name, name, isRequired, allowEmptyValue)
@@ -21,6 +21,9 @@ public class Int32Argument : Argument<int>
     }
 
     public override ArgumentDataType DataType { get => ArgumentDataType.Int32; }
+
+    public int ValueAsInt32 => Value;
+
     protected override int GetDefaultValue()
     {
         return default(int);

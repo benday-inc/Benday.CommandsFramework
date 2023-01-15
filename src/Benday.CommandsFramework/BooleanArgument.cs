@@ -1,6 +1,6 @@
 ﻿namespace Benday.CommandsFramework;
 
-public class BooleanArgument : Argument<bool>
+public class BooleanArgument : Argument<bool>, IBooleanArgument
 {
     public BooleanArgument(string name, bool isRequired = true, bool allowEmptyValue = true) :
         base(name, name, isRequired, allowEmptyValue)
@@ -21,6 +21,9 @@ public class BooleanArgument : Argument<bool>
     }
 
     public override ArgumentDataType DataType { get => ArgumentDataType.Boolean; }
+
+    public bool ValueAsBoolean => Value;
+
     protected override bool GetDefaultValue()
     {
         return true;

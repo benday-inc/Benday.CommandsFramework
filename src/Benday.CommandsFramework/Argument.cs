@@ -4,7 +4,8 @@ using System.Xml.Linq;
 namespace Benday.CommandsFramework;
 
 
-public abstract class Argument<T>
+
+public abstract class Argument<T> : IArgument
 {
     public Argument(string name, bool isRequired = true, bool allowEmptyValue = true) :
         this(name, name, isRequired, allowEmptyValue)
@@ -35,7 +36,7 @@ public abstract class Argument<T>
         Value = value;
         IsRequired = isRequired;
         AllowEmptyValue = allowEmptyValue;
-        
+
         OnInitialize();
     }
 
@@ -55,9 +56,9 @@ public abstract class Argument<T>
         Description = description;
         IsRequired = isRequired;
         AllowEmptyValue = allowEmptyValue;
-        
+
         _Value = GetDefaultValue();
-        
+
         OnInitialize();
     }
 
@@ -82,8 +83,10 @@ public abstract class Argument<T>
             _Value = value;
             HasValue = true;
         }
-
     }
+
+    string IArgument.Value { get => Value.ToString(); }
+
     public bool HasValue { get; private set; }
     public string Name { get; set; }
     public bool IsRequired { get; set; }
