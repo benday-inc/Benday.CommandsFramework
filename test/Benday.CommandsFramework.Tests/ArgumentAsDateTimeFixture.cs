@@ -1,4 +1,5 @@
-﻿namespace Benday.CommandsFramework.Tests;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+namespace Benday.CommandsFramework.Tests;
 
 [TestClass]
 public class ArgumentAsDateTimeFixture
