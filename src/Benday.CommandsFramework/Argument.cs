@@ -87,6 +87,8 @@ public abstract class Argument<T> : IArgument
 
     string IArgument.Value { get => Value.ToString(); }
 
+    public abstract bool TrySetValue(string input);
+
     public bool HasValue { get; private set; }
     public string Name { get; set; }
     public bool IsRequired { get; set; }

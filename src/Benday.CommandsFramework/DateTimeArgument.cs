@@ -28,4 +28,24 @@ public class DateTimeArgument : Argument<DateTime>, IDateTimeArgument
     {
         return DateTime.MinValue;
     }
+
+    public override bool TrySetValue(string input)
+    {
+        if (input == null)
+        {
+            return false;
+        }
+        else
+        {
+            if (DateTime.TryParse(input, out var temp) == false)
+            {
+                return false;
+            }
+            else
+            {
+                Value = temp;
+                return true;
+            }
+        }
+    }
 }

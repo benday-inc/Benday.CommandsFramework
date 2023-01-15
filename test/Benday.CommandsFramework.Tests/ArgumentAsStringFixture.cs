@@ -197,4 +197,49 @@ public class ArgumentAsStringFixture
         Assert.AreEqual<bool>(expectedHasValue, SystemUnderTest.HasValue, "HasValue value is wrong");
         Assert.AreEqual<bool>(expected, actual, "Validation value is wrong");
     }
+
+    [TestMethod]
+    public void TrySetValue_False()
+    {
+        // arrange
+        InitializeWithAllTheArgsExceptValue();
+        var expected = false;
+        string input = null;
+
+        // act
+        var actual = SystemUnderTest.TrySetValue(input!);
+
+        // assert
+        Assert.AreEqual<bool>(expected, actual, "Wrong try set value return value");
+    }
+
+    [TestMethod]
+    public void TrySetValue_True_EmptyString()
+    {
+        // arrange
+        InitializeWithAllTheArgsExceptValue();
+        var expected = true;
+        string input = string.Empty;
+
+        // act
+        var actual = SystemUnderTest.TrySetValue(input);
+
+        // assert
+        Assert.AreEqual<bool>(expected, actual, "Wrong try set value return value");
+    }
+
+    [TestMethod]
+    public void TrySetValue_True_NonEmptyString()
+    {
+        // arrange
+        InitializeWithAllTheArgsExceptValue();
+        var expected = true;
+        string input = "yada yada yada";
+
+        // act
+        var actual = SystemUnderTest.TrySetValue(input);
+
+        // assert
+        Assert.AreEqual<bool>(expected, actual, "Wrong try set value return value");
+    }
 }

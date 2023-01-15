@@ -27,5 +27,25 @@ public class BooleanArgument : Argument<bool>, IBooleanArgument
     protected override bool GetDefaultValue()
     {
         return true;
-    }    
+    }
+
+    public override bool TrySetValue(string input)
+    {
+        if (input == null)
+        {
+            return false;
+        }
+        else
+        {
+            if (bool.TryParse(input, out var temp) == false)
+            {
+                return false;
+            }
+            else
+            {
+                Value = temp;
+                return true;
+            }
+        }        
+    }
 }

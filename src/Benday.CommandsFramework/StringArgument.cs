@@ -55,4 +55,15 @@ public class StringArgument : Argument<string>
             }
         }
     }
+
+    public override bool TrySetValue(string input)
+    {
+        if (input != null)
+        {
+            Value = input;
+            return true;
+        }
+        else
+        { return false; }
+    }
 }

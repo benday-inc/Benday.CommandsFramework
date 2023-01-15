@@ -28,4 +28,24 @@ public class Int32Argument : Argument<int>, IInt32Argument
     {
         return default(int);
     }
+
+    public override bool TrySetValue(string input)
+    {
+        if (input == null)
+        {
+            return false;
+        }
+        else
+        {
+            if (int.TryParse(input, out var temp) == false)
+            {
+                return false;
+            }
+            else
+            {
+                Value = temp;
+                return true;
+            }
+        }
+    }
 }
