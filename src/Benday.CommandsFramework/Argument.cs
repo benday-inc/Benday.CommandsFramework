@@ -2,11 +2,23 @@
 
 public class Argument<T>
 {
+    public Argument(string name, bool isRequired = true, bool allowEmptyValue = true) :
+        this(name, name, isRequired, allowEmptyValue)
+    {
+
+    }
+
+    public Argument(string name, T value, bool isRequired = true, bool allowEmptyValue = true) :
+        this(name, value, name, isRequired, allowEmptyValue)
+    {
+
+    }
+
     public Argument(string name, T value, string description, bool isRequired, bool allowEmptyValue)
     {
-        if (string.IsNullOrEmpty(name))
+        if (name is null)
         {
-            throw new ArgumentException($"'{nameof(name)}' cannot be null or empty.", nameof(name));
+            throw new ArgumentException($"'{nameof(name)}' cannot be null.", nameof(name));
         }
 
         if (string.IsNullOrEmpty(description))
@@ -39,6 +51,17 @@ public class Argument<T>
         IsRequired = isRequired;
         DataType = GetDataTypeFromGenericArgument(typeof(T), DataType);
         AllowEmptyValue = allowEmptyValue;
+
+        if (DataType == ArgumentDataType.String)
+        {
+            // set _value to be empty string
+            // jump through major hoops to make the compiler happy
+            _Value = (T)(object)Convert.ChangeType(string.Empty, typeof(T));
+        }
+        else
+        {
+            _Value = default(T);
+        }
     }
 
     private ArgumentDataType GetDataTypeFromGenericArgument(Type forType, ArgumentDataType dataType)
@@ -67,9 +90,9 @@ public class Argument<T>
 
     public string Description { get; set; }
 
-    private T? _Value;
-    public T Value 
-    { 
+    private T _Value;
+    public T Value
+    {
         get
         {
             return _Value;
@@ -79,7 +102,7 @@ public class Argument<T>
             _Value = value;
             HasValue = true;
         }
-            
+
     }
     public bool HasValue { get; private set; }
     public string Name { get; set; }
@@ -125,8 +148,8 @@ public class Argument<T>
                 return HasValue;
             }
             else
-            { 
-                throw new NotImplementedException(); 
+            {
+                throw new NotImplementedException();
             }
         }
     }
