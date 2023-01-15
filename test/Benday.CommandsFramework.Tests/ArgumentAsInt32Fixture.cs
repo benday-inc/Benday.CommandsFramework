@@ -9,7 +9,7 @@ public class ArgumentAsInt32Fixture
         _SystemUnderTest = null;
     }
 
-    private Argument<int>? _SystemUnderTest;
+    private Int32Argument? _SystemUnderTest;
     private const string EXPECTED_ARG_NAME = "arg123";
     private const int EXPECTED_ARG_VALUE = 123;
     private const string EXPECTED_ARG_DESC = "argvalue123 description";
@@ -18,13 +18,18 @@ public class ArgumentAsInt32Fixture
     private const ArgumentDataType EXPECTED_ARG_DATATYPE = ArgumentDataType.Int32;
 
 
-    private Argument<int> SystemUnderTest
+    private Int32Argument SystemUnderTest
     {
         get
         {
             if (_SystemUnderTest == null)
             {
                 InitializeWithNoArgs();
+            }
+
+            if (_SystemUnderTest == null)
+            {
+                throw new InvalidOperationException($"System under test is null");
             }
 
             return _SystemUnderTest;
@@ -39,7 +44,7 @@ public class ArgumentAsInt32Fixture
 
     private void InitializeWithAllTheArgs()
     {
-        _SystemUnderTest = new Argument<int>(
+        _SystemUnderTest = new Int32Argument(
             EXPECTED_ARG_NAME,
             EXPECTED_ARG_VALUE,
             EXPECTED_ARG_DESC,

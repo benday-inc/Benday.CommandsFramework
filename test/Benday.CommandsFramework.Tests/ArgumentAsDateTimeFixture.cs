@@ -9,7 +9,7 @@ public class ArgumentAsDateTimeFixture
         _SystemUnderTest = null;
     }
 
-    private Argument<DateTime>? _SystemUnderTest;
+    private DateTimeArgument? _SystemUnderTest;
     private const string EXPECTED_ARG_NAME = "arg123";
 #pragma warning disable IDE1006 // Naming Styles
     private readonly DateTime EXPECTED_ARG_VALUE = DateTime.MaxValue;
@@ -20,13 +20,18 @@ public class ArgumentAsDateTimeFixture
     private const ArgumentDataType EXPECTED_ARG_DATATYPE = ArgumentDataType.DateTime;
 
 
-    private Argument<DateTime> SystemUnderTest
+    private DateTimeArgument SystemUnderTest
     {
         get
         {
             if (_SystemUnderTest == null)
             {
                 InitializeWithNoArgs();
+            }
+
+            if (_SystemUnderTest == null)
+            {
+                throw new InvalidOperationException($"System under test is null");
             }
 
             return _SystemUnderTest;
@@ -41,7 +46,7 @@ public class ArgumentAsDateTimeFixture
 
     private void InitializeWithAllTheArgs()
     {
-        _SystemUnderTest = new Argument<DateTime>(
+        _SystemUnderTest = new DateTimeArgument(
             EXPECTED_ARG_NAME,
             EXPECTED_ARG_VALUE,
             EXPECTED_ARG_DESC,

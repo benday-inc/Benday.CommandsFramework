@@ -1,6 +1,10 @@
-﻿namespace Benday.CommandsFramework;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
 
-public class Argument<T>
+namespace Benday.CommandsFramework;
+
+
+public abstract class Argument<T>
 {
     public Argument(string name, bool isRequired = true, bool allowEmptyValue = true) :
         this(name, name, isRequired, allowEmptyValue)
@@ -30,8 +34,9 @@ public class Argument<T>
         Description = description;
         Value = value;
         IsRequired = isRequired;
-        DataType = GetDataTypeFromGenericArgument(typeof(T), DataType);
         AllowEmptyValue = allowEmptyValue;
+        
+        OnInitialize();
     }
 
     public Argument(string name, string description, bool isRequired, bool allowEmptyValue)
@@ -49,44 +54,19 @@ public class Argument<T>
         Name = name;
         Description = description;
         IsRequired = isRequired;
-        DataType = GetDataTypeFromGenericArgument(typeof(T), DataType);
         AllowEmptyValue = allowEmptyValue;
-
-        if (DataType == ArgumentDataType.String)
-        {
-            // set _value to be empty string
-            // jump through major hoops to make the compiler happy
-            _Value = (T)(object)Convert.ChangeType(string.Empty, typeof(T));
-        }
-        else
-        {
-            _Value = default(T);
-        }
+        
+        _Value = GetDefaultValue();
+        
+        OnInitialize();
     }
 
-    private ArgumentDataType GetDataTypeFromGenericArgument(Type forType, ArgumentDataType dataType)
+    protected virtual void OnInitialize()
     {
-        if (forType == typeof(string))
-        {
-            return ArgumentDataType.String;
-        }
-        else if (forType == typeof(int))
-        {
-            return ArgumentDataType.Int32;
-        }
-        else if (forType == typeof(bool))
-        {
-            return ArgumentDataType.Boolean;
-        }
-        else if (forType == typeof(DateTime))
-        {
-            return ArgumentDataType.DateTime;
-        }
-        else
-        {
-            throw new InvalidOperationException($"Unsupported data type {forType.Name}.");
-        }
+
     }
+
+    protected abstract T GetDefaultValue();
 
     public string Description { get; set; }
 
@@ -107,7 +87,7 @@ public class Argument<T>
     public bool HasValue { get; private set; }
     public string Name { get; set; }
     public bool IsRequired { get; set; }
-    public ArgumentDataType DataType { get; set; }
+    public abstract ArgumentDataType DataType { get; }
     public bool AllowEmptyValue { get; set; }
 
     public bool Validate()

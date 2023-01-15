@@ -9,7 +9,7 @@ public class ArgumentAsBoolFixture
         _SystemUnderTest = null;
     }
 
-    private Argument<bool>? _SystemUnderTest;
+    private BooleanArgument? _SystemUnderTest;
     private const string EXPECTED_ARG_NAME = "arg123";
     private const bool EXPECTED_ARG_VALUE = true;
     private const string EXPECTED_ARG_DESC = "argvalue123 description";
@@ -18,13 +18,18 @@ public class ArgumentAsBoolFixture
     private const ArgumentDataType EXPECTED_ARG_DATATYPE = ArgumentDataType.Boolean;
 
 
-    private Argument<bool> SystemUnderTest
+    private BooleanArgument SystemUnderTest
     {
         get
         {
             if (_SystemUnderTest == null)
             {
                 InitializeWithNoArgs();
+            }
+
+            if (_SystemUnderTest == null)
+            {
+                throw new InvalidOperationException($"System under test is null");
             }
 
             return _SystemUnderTest;
@@ -39,7 +44,7 @@ public class ArgumentAsBoolFixture
 
     private void InitializeWithAllTheArgs()
     {
-        _SystemUnderTest = new Argument<bool>(
+        _SystemUnderTest = new BooleanArgument(
             EXPECTED_ARG_NAME,
             EXPECTED_ARG_VALUE,
             EXPECTED_ARG_DESC,

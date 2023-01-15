@@ -9,7 +9,7 @@ public class ArgumentAsStringFixture
         _SystemUnderTest = null;
     }
 
-    private Argument<string>? _SystemUnderTest;
+    private StringArgument? _SystemUnderTest;
     private const string EXPECTED_ARG_NAME = "arg123";
     private const string EXPECTED_ARG_VALUE = "argvalue123";
     private const string EXPECTED_ARG_DESC = "argvalue123 description";
@@ -18,13 +18,18 @@ public class ArgumentAsStringFixture
     private const ArgumentDataType EXPECTED_ARG_DATATYPE = ArgumentDataType.String;
 
 
-    private Argument<string> SystemUnderTest
+    private StringArgument SystemUnderTest
     {
         get
         {
             if (_SystemUnderTest == null)
             {
                 InitializeWithNoArgs();
+            }
+
+            if (_SystemUnderTest == null)
+            {
+                throw new InvalidOperationException($"System under test is null");
             }
 
             return _SystemUnderTest;
@@ -39,7 +44,7 @@ public class ArgumentAsStringFixture
 
     private void InitializeWithAllTheArgs()
     {
-        _SystemUnderTest = new Argument<string>(
+        _SystemUnderTest = new StringArgument(
             EXPECTED_ARG_NAME,
             EXPECTED_ARG_VALUE,
             EXPECTED_ARG_DESC,
@@ -49,8 +54,9 @@ public class ArgumentAsStringFixture
 
     private void InitializeWithAllTheArgsExceptValue()
     {
-        _SystemUnderTest = new Argument<string>(
+        _SystemUnderTest = new StringArgument(
             EXPECTED_ARG_NAME,
+            noValue: true,
             EXPECTED_ARG_DESC,
             EXPECTED_ARG_ISREQUIRED,
             EXPECTED_ARG_ALLOWEMPTYVALUE);
@@ -79,7 +85,7 @@ public class ArgumentAsStringFixture
         // arrange
 
         // act
-        _SystemUnderTest = new Argument<string>(EXPECTED_ARG_NAME);
+        _SystemUnderTest = new StringArgument(EXPECTED_ARG_NAME);
 
         // assert
         Assert.AreEqual<string>(EXPECTED_ARG_NAME, SystemUnderTest.Description, "Description was wrong");
@@ -96,7 +102,7 @@ public class ArgumentAsStringFixture
         // arrange
 
         // act
-        _SystemUnderTest = new Argument<string>(EXPECTED_ARG_NAME, EXPECTED_ARG_VALUE);
+        _SystemUnderTest = new StringArgument(EXPECTED_ARG_NAME, EXPECTED_ARG_VALUE);
 
         // assert
         Assert.AreEqual<string>(EXPECTED_ARG_NAME, SystemUnderTest.Description, "Description was wrong");
