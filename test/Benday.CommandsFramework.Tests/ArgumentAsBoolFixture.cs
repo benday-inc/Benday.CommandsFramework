@@ -85,4 +85,53 @@ public class ArgumentAsBoolFixture
         // assert
         Assert.AreEqual<bool>(expected, actual, "Validation value is wrong");
     }
+
+    [TestMethod]
+    public void TrySetValue_False_NullString()
+    {
+        // arrange
+        InitializeWithAllTheArgs();
+        
+        var expected = false;
+        string input = null;
+
+        // act
+        var actual = SystemUnderTest.TrySetValue(input!);
+
+        // assert
+        Assert.AreEqual<bool>(expected, actual, "Wrong try set value return value");
+    }
+
+    [TestMethod]
+    public void TrySetValue_False_NotABool()
+    {
+        // arrange
+        InitializeWithAllTheArgs();
+
+        var expected = false;
+        string input = "asdf";
+
+        // act
+        var actual = SystemUnderTest.TrySetValue(input!);
+
+        // assert
+        Assert.AreEqual<bool>(expected, actual, "Wrong try set value return value");
+    }
+
+    [TestMethod]
+    public void TrySetValue_True_ValidBool()
+    {
+        // arrange
+        InitializeWithAllTheArgs();
+        var expected = true;
+        string input = true.ToString();
+        var expectedValue = true;
+
+        // act
+        var actual = SystemUnderTest.TrySetValue(input);
+
+        // assert
+        Assert.AreEqual<bool>(expected, actual, "Wrong try set value return value");
+        Assert.AreEqual<bool>(expectedValue, SystemUnderTest.Value, "Value was wrong");
+    }    
 }

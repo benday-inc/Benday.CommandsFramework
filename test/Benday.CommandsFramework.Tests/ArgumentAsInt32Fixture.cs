@@ -85,4 +85,53 @@ public class ArgumentAsInt32Fixture
         // assert
         Assert.AreEqual<bool>(expected, actual, "Validation value is wrong");
     }
+
+    [TestMethod]
+    public void TrySetValue_False_NullString()
+    {
+        // arrange
+        InitializeWithAllTheArgs();
+
+        var expected = false;
+        string input = null;
+
+        // act
+        var actual = SystemUnderTest.TrySetValue(input!);
+
+        // assert
+        Assert.AreEqual<bool>(expected, actual, "Wrong try set value return value");
+    }
+
+    [TestMethod]
+    public void TrySetValue_False_NotANumber()
+    {
+        // arrange
+        InitializeWithAllTheArgs();
+
+        var expected = false;
+        string input = "asdf";
+
+        // act
+        var actual = SystemUnderTest.TrySetValue(input!);
+
+        // assert
+        Assert.AreEqual<bool>(expected, actual, "Wrong try set value return value");
+    }
+
+    [TestMethod]
+    public void TrySetValue_True_ValidInteger()
+    {
+        // arrange
+        InitializeWithAllTheArgs();
+        var expected = true;
+        string input = "4321";
+        var expectedValue = 4321;
+
+        // act
+        var actual = SystemUnderTest.TrySetValue(input);
+
+        // assert
+        Assert.AreEqual<bool>(expected, actual, "Wrong try set value return value");
+        Assert.AreEqual<int>(expectedValue, SystemUnderTest.Value, "Value was wrong");
+    }
 }

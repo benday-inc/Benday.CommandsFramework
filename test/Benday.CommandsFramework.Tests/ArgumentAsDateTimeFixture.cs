@@ -88,4 +88,53 @@ public class ArgumentAsDateTimeFixture
         // assert
         Assert.AreEqual<bool>(expected, actual, "Validation value is wrong");
     }
+
+    [TestMethod]
+    public void TrySetValue_False_NullString()
+    {
+        // arrange
+        InitializeWithAllTheArgs();
+
+        var expected = false;
+        string input = null;
+
+        // act
+        var actual = SystemUnderTest.TrySetValue(input!);
+
+        // assert
+        Assert.AreEqual<bool>(expected, actual, "Wrong try set value return value");
+    }
+
+    [TestMethod]
+    public void TrySetValue_False_NotADateTime()
+    {
+        // arrange
+        InitializeWithAllTheArgs();
+
+        var expected = false;
+        string input = "asdf";
+
+        // act
+        var actual = SystemUnderTest.TrySetValue(input!);
+
+        // assert
+        Assert.AreEqual<bool>(expected, actual, "Wrong try set value return value");
+    }
+
+    [TestMethod]
+    public void TrySetValue_True_ValidDateTime()
+    {
+        // arrange
+        InitializeWithAllTheArgs();
+        var expected = true;
+        string input = "12/1/2022";
+        var expectedValue = new DateTime(2022, 12, 1);
+
+        // act
+        var actual = SystemUnderTest.TrySetValue(input);
+
+        // assert
+        Assert.AreEqual<bool>(expected, actual, "Wrong try set value return value");
+        Assert.AreEqual<DateTime>(expectedValue, SystemUnderTest.Value, "Value was wrong");
+    }
 }
