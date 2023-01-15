@@ -90,7 +90,7 @@ public abstract class Argument<T>
     public abstract ArgumentDataType DataType { get; }
     public bool AllowEmptyValue { get; set; }
 
-    public bool Validate()
+    public virtual bool Validate()
     {
         if (IsRequired == false)
         {
@@ -98,39 +98,7 @@ public abstract class Argument<T>
         }
         else
         {
-            if (DataType == ArgumentDataType.String)
-            {
-                var isNullOrWhitespace = string.IsNullOrWhiteSpace(Value as string);
-
-                if (isNullOrWhitespace == true && AllowEmptyValue == true)
-                {
-                    return true;
-                }
-                else if (isNullOrWhitespace == true && AllowEmptyValue == false)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-            else if (DataType == ArgumentDataType.Int32)
-            {
-                return HasValue;
-            }
-            else if (DataType == ArgumentDataType.Boolean)
-            {
-                return HasValue;
-            }
-            else if (DataType == ArgumentDataType.DateTime)
-            {
-                return HasValue;
-            }
-            else
-            {
-                throw new NotImplementedException();
-            }
+            return HasValue;
         }
     }
 }

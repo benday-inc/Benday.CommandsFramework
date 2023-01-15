@@ -20,7 +20,7 @@ public class StringArgument : Argument<string>
 
     }
 
-    public StringArgument(string name, bool noValue, string description, bool isRequired, bool allowEmptyValue) : 
+    public StringArgument(string name, bool noValue, string description, bool isRequired, bool allowEmptyValue) :
         base(name, description, isRequired, allowEmptyValue)
     {
     }
@@ -29,5 +29,30 @@ public class StringArgument : Argument<string>
     protected override string GetDefaultValue()
     {
         return string.Empty;
+    }
+
+    public override bool Validate()
+    {
+        if (IsRequired == false)
+        {
+            return true;
+        }
+        else
+        {
+            var isNullOrWhitespace = string.IsNullOrWhiteSpace(Value as string);
+
+            if (isNullOrWhitespace == true && AllowEmptyValue == true)
+            {
+                return true;
+            }
+            else if (isNullOrWhitespace == true && AllowEmptyValue == false)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
     }
 }

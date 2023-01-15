@@ -24,5 +24,5 @@ public class BooleanArgument : Argument<bool>
     protected override bool GetDefaultValue()
     {
         return true;
-    }
+    }    
 }
