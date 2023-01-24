@@ -8,12 +8,20 @@ namespace Benday.CommandsFramework;
 public abstract class CommandBase
 {
     private readonly CommandExecutionInfo _Info;
+    protected readonly ITextOutputProvider _OutputProvider;
     private ArgumentCollection _Arguments;
     private bool _HaveValuesBeenSet = false;
 
-    public CommandBase(CommandExecutionInfo info)
+    public CommandBase(CommandExecutionInfo info, ITextOutputProvider outputProvider)
     {
-        _Info = info;
+        if (outputProvider is null)
+        {
+            throw new ArgumentNullException(nameof(outputProvider));
+        }
+
+        _Info = info ?? throw new ArgumentNullException(nameof(info));
+        _OutputProvider = outputProvider;
+        _Arguments = GetAvailableArguments();
     }
 
     public CommandExecutionInfo ExecutionInfo
@@ -28,11 +36,6 @@ public abstract class CommandBase
     { 
         get
         {
-            if (_Arguments == null)
-            {
-                _Arguments = GetAvailableArguments();
-            }
-
             return _Arguments; 
         }        
     }
@@ -42,10 +45,36 @@ public abstract class CommandBase
         return new();
     }
 
+    public string Description
+    {
+        get
+        {
+            var attribute = 
+                Attribute.GetCustomAttribute(GetType(), typeof(CommandAttribute)) as CommandAttribute;
+
+            if (attribute != null)
+            {
+                return attribute.Description;
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+    }
+
     protected virtual void DisplayUsage()
     {
         var builder = new StringBuilder();
 
+        builder.AppendLine($"Command name: {ExecutionInfo.CommandName}");
+
+        if (string.IsNullOrWhiteSpace(Description) == false)
+        {
+            builder.AppendLine(Description);
+        }
+
+        builder.AppendLine("** USAGE **");
         builder.AppendLine(ExecutionInfo.CommandName);
 
         foreach (var key in Arguments.Keys)
@@ -79,14 +108,23 @@ public abstract class CommandBase
             }
         }
 
-        Console.WriteLine(builder.ToString());
+        _OutputProvider.WriteLine(builder.ToString());
     }
 
     protected virtual void DisplayValidationSummary(List<IArgument> invalidArguments)
     {
+        if (invalidArguments.Count == 1)
+        {
+            _OutputProvider.WriteLine("** INVALID ARGUMENT **");
+        }
+        else if (invalidArguments.Count > 1)
+        {
+            _OutputProvider.WriteLine("** INVALID ARGUMENTS **");
+        }
+
         foreach (var item in invalidArguments)
         {
-            Console.WriteLine($"{item.Name} is not valid or missing");
+            _OutputProvider.WriteLine($"{item.Name} is not valid or missing");
         }
     }
 

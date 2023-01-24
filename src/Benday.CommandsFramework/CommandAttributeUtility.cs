@@ -49,6 +49,23 @@ public class CommandAttributeUtility
         return match;
     }
 
+    public CommandAttribute? GetCommandAttributeForCommandName(Assembly containingAssembly, string commandName)
+    {
+        if (containingAssembly is null)
+        {
+            throw new ArgumentNullException(nameof(containingAssembly));
+        }
+
+        var match =
+            (from type in containingAssembly.GetTypes()
+             where
+                 type.IsSubclassOf(typeof(CommandBase)) == true &&
+                 type.GetCustomAttributes<CommandAttribute>().Any(t => t.Name == commandName)
+             select type.GetCustomAttribute<CommandAttribute>()).FirstOrDefault();
+
+        return match;
+    }
+
     public CommandBase? GetCommand(string[] args, Assembly containingAssembly)
     {
         if (args is null)

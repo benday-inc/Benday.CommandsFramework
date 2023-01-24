@@ -3,7 +3,7 @@
 [Command(Name = ApplicationConstants.CommandName_Command3)]
 public class SampleCommand3 : CommandBase
 {
-    public SampleCommand3(CommandExecutionInfo info) : base(info)
+    public SampleCommand3(CommandExecutionInfo info, ITextOutputProvider outputProvider) : base(info, outputProvider)
     {
 
     }    
