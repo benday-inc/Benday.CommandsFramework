@@ -106,14 +106,14 @@ public class CommandAttributeUtility
                     throw new MissingArgumentException($"Could not locate a command data type named '{execInfo.CommandName}'.");
                 }
 
-                var ctor = commandType.GetConstructor(new Type[] { typeof(CommandExecutionInfo) });
+                var ctor = commandType.GetConstructor(new Type[] { typeof(CommandExecutionInfo), typeof(ITextOutputProvider) });
 
                 if (ctor is null)
                 {
                     throw new MissingArgumentException($"Could not locate a constructor on command type named '{execInfo.CommandName}'.");
                 }
 
-                var instance = ctor.Invoke(new object[] { execInfo });
+                var instance = ctor.Invoke(new object[] { execInfo, new ConsoleTextOutputProvider() });
 
                 return instance as CommandBase;
             }

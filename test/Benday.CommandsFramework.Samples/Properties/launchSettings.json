@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Benday.CommandsFramework.Samples": {
+      "commandName": "Project",
+      "commandLineArgs": "command1"
+    }
+  }
+}
