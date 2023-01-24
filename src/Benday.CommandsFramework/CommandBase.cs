@@ -42,6 +42,54 @@ public abstract class CommandBase
         return new();
     }
 
+    protected virtual void DisplayUsage()
+    {
+        var builder = new StringBuilder();
+
+        builder.AppendLine(ExecutionInfo.CommandName);
+
+        foreach (var key in Arguments.Keys)
+        {
+            var temp = Arguments[key];
+            if (temp.Name == temp.Description || string.IsNullOrEmpty(temp.Description) == true)
+            {
+                // description has an empty value or the value is the same as the arg name
+
+                if (temp.IsRequired == true)
+                {
+                    builder.AppendLine($"/{key}:{temp.DataType}");
+                }
+                else
+                {
+                    builder.AppendLine($"[/{key}:{temp.DataType}]");
+                }
+            }
+            else
+            {
+                // description has an actual value
+
+                if (temp.IsRequired == true)
+                {
+                    builder.AppendLine($"/{key}:{temp.DataType} -- {temp.Description}");
+                }
+                else
+                {
+                    builder.AppendLine($"[/{key}:{temp.DataType}] -- {temp.Description}");
+                }
+            }
+        }
+
+        Console.WriteLine(builder.ToString());
+    }
+
+    protected virtual void DisplayValidationSummary(List<IArgument> invalidArguments)
+    {
+        foreach (var item in invalidArguments)
+        {
+            Console.WriteLine($"{item.Name} is not valid or missing");
+        }
+    }
+
     protected virtual List<IArgument> Validate()
     {
         var returnValue = new List<IArgument>();

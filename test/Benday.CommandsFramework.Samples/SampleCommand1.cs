@@ -16,10 +16,17 @@ public class SampleCommand1 : CommandBase, ISynchronousCommand
 
     public void Execute()
     {
+        if (Arguments.ContainsKey("--help") == true)
+        {
+            DisplayUsage();
+        }
+
         var validationResult = Validate();
 
         if (validationResult.Count > 0)
         {
+            DisplayUsage();
+            DisplayValidationSummary(validationResult);
             throw new InvalidOperationException($"Invalid. Nope.");
         }
         else
