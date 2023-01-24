@@ -1,9 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Title>Command line argument framework for .NET Core</Title>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>benday</Authors>
   </PropertyGroup>
 
 </Project>
