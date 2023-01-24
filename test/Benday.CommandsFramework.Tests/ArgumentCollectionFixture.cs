@@ -194,7 +194,7 @@ public class ArgumentCollectionFixture
 
         _SystemUnderTest = new(expectedArgs);
         
-        var commandLineArgs = GetStringArray(
+        var commandLineArgs = Utilities.GetStringArray(
             "commandname1",
             "/arg1:Hello",
             "/isawesome:true",
@@ -276,8 +276,5 @@ public class ArgumentCollectionFixture
         Assert.AreEqual<DateTime>(expectedValue, actualAsTyped.Value, $"Value for key named '{expectedKey}' was wrong");
     }
 
-    public string[] GetStringArray(params string[] values)
-    {
-        return values;
-    }
+    
 }

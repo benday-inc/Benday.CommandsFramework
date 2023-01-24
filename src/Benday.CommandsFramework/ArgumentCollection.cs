@@ -74,6 +74,11 @@ public class ArgumentCollection
         _Arguments.Remove(key);
     }
 
+    public Dictionary<string, IArgument>.KeyCollection Keys
+    {
+        get => _Arguments.Keys;
+    }
+
     public bool ContainsKey(string key)
     {
         return _Arguments.ContainsKey(key);
