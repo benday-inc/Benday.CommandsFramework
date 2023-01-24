@@ -139,6 +139,4 @@ public class SampleCommand1Fixture
         Assert.IsTrue(output.Contains("** USAGE **"), "Did not contain expected string");
         Assert.IsTrue(output.Contains("This is the description for command one."), "Did not contain expected string");
     }
-
-
 }
