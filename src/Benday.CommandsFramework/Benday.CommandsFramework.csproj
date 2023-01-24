@@ -7,6 +7,9 @@
     <Title>Command line argument framework for .NET Core</Title>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Authors>benday</Authors>
+    <PackageProjectUrl>https://github.com/benday-inc/Benday.CommandsFramework.git</PackageProjectUrl>
+    <Copyright>2023</Copyright>
+    <RepositoryUrl>https://github.com/benday-inc/Benday.CommandsFramework.git</RepositoryUrl>
   </PropertyGroup>
 
 </Project>
