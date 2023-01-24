@@ -11,4 +11,5 @@ public interface IArgument
     string Value { get; }
 
     bool Validate();
+    bool TrySetValue(string input);
 }

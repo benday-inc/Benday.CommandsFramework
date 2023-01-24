@@ -179,4 +179,105 @@ public class ArgumentCollectionFixture
         // assert
        
     }
+
+    [TestMethod]
+    public void SetValues()
+    {
+        // arrange
+        var expectedArgs = new Dictionary<string, IArgument>();
+
+        expectedArgs.Add("arg1", new StringArgument("arg1", true, "argument 1", true, false));
+        expectedArgs.Add("isawesome", new BooleanArgument("isawesome", true, true));
+        expectedArgs.Add("count", new Int32Argument("count", true, true));
+        expectedArgs.Add("dateofthingy", new DateTimeArgument("dateofthingy", true, true));
+        expectedArgs.Add("verbose", new BooleanArgument("verbose", false, true));
+
+        _SystemUnderTest = new(expectedArgs);
+        
+        var commandLineArgs = GetStringArray(
+            "commandname1",
+            "/arg1:Hello",
+            "/isawesome:true",
+            "/count:4321",
+            "/dateofthingy:12/25/2022",
+            "/verbose"
+            );
+
+        var valueArgs = new ArgumentCollectionFactory().Parse(commandLineArgs);
+
+        // act
+        SystemUnderTest.SetValues(valueArgs.Arguments);
+
+        // assert
+        AssertArgumentValue("arg1", "Hello");
+        AssertArgumentValue("isawesome", true);
+        AssertArgumentValue("count", 4321);
+        AssertArgumentValue("dateofthingy", new DateTime(2022, 12, 25));
+        AssertArgumentValue("verbose", true);
+    }
+
+    private void AssertArgumentValue(string expectedKey, string expectedValue)
+    {
+        Assert.IsTrue(SystemUnderTest.ContainsKey(expectedKey), $"Key named '{expectedKey}' not found");
+
+        var actual = SystemUnderTest[expectedKey];
+
+        var actualAsTyped = actual as StringArgument;
+
+        Assert.IsNotNull(actualAsTyped, $"Could not convert '{expectedKey}' argument to StringArgument");
+
+        Assert.IsTrue(actualAsTyped.Validate(), "Should be valid");
+
+        Assert.AreEqual<string>(expectedValue, actualAsTyped.Value, $"Value for key named '{expectedKey}' was wrong");
+    }
+
+    private void AssertArgumentValue(string expectedKey, int expectedValue)
+    {
+        Assert.IsTrue(SystemUnderTest.ContainsKey(expectedKey), $"Key named '{expectedKey}' not found");
+
+        var actual = SystemUnderTest[expectedKey];
+
+        var actualAsTyped = actual as Int32Argument;
+
+        Assert.IsNotNull(actualAsTyped, $"Could not convert '{expectedKey}' argument to StringArgument");
+
+        Assert.IsTrue(actualAsTyped.Validate(), "Should be valid");
+
+        Assert.AreEqual<int>(expectedValue, actualAsTyped.Value, $"Value for key named '{expectedKey}' was wrong");
+    }
+
+    private void AssertArgumentValue(string expectedKey, bool expectedValue)
+    {
+        Assert.IsTrue(SystemUnderTest.ContainsKey(expectedKey), $"Key named '{expectedKey}' not found");
+
+        var actual = SystemUnderTest[expectedKey];
+
+        var actualAsTyped = actual as BooleanArgument;
+
+        Assert.IsNotNull(actualAsTyped, $"Could not convert '{expectedKey}' argument to StringArgument");
+
+        Assert.IsTrue(actualAsTyped.Validate(), "Should be valid");
+
+        Assert.AreEqual<bool>(expectedValue, actualAsTyped.Value, $"Value for key named '{expectedKey}' was wrong");
+    }
+
+    private void AssertArgumentValue(string expectedKey, DateTime expectedValue)
+    {
+        Assert.IsTrue(SystemUnderTest.ContainsKey(expectedKey), $"Key named '{expectedKey}' not found");
+
+        var actual = SystemUnderTest[expectedKey];
+
+        var actualAsTyped = actual as DateTimeArgument;
+
+        Assert.IsNotNull(actualAsTyped, $"Could not convert '{expectedKey}' argument to StringArgument");
+
+        Assert.IsTrue(actualAsTyped.Validate(), "Should be valid");
+
+        Assert.AreEqual<DateTime>(expectedValue, actualAsTyped.Value, $"Value for key named '{expectedKey}' was wrong");
+    }
+
+    public string[] GetStringArray(params string[] values)
+    {
+        return values;
+    }
 }

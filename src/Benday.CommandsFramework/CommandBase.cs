@@ -21,4 +21,9 @@ public abstract class CommandBase
             return _Info;
         }
     }
+
+    protected virtual List<IArgument> GetAvailableArguments()
+    {
+        return new List<IArgument>();
+    }
 }
