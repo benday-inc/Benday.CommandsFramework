@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Benday.CommandsFramework;
+
 public abstract class CommandBase
 {
     private readonly CommandExecutionInfo _Info;

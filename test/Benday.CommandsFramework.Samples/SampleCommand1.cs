@@ -9,42 +9,27 @@ namespace Benday.CommandsFramework.Samples;
 [Command(Name = ApplicationConstants.CommandName_Command1,
     IsAsync = false,
     Description = "This is the description for command one.")]
-public class SampleCommand1 : CommandBase, ISynchronousCommand
+public class SampleCommand1 : SynchronousCommand
 {
 	public SampleCommand1(CommandExecutionInfo info, ITextOutputProvider outputProvider) : base(info, outputProvider)
 	{
 
 	}
 
-    public void Execute()
+    protected override void OnExecute()
     {
-        if (Arguments.ContainsKey("--help") == true)
+        var builder = new StringBuilder();
+
+        builder.AppendLine("** SUCCESS **");
+
+        foreach (var key in Arguments.Keys)
         {
-            DisplayUsage();
+            var value = Arguments[key];
+
+            builder.AppendLine($"{key}: {value.Value}");
         }
 
-        var validationResult = Validate();
-
-        if (validationResult.Count > 0)
-        {
-            DisplayUsage();
-            DisplayValidationSummary(validationResult);            
-        }
-        else
-        {
-            var builder = new StringBuilder();
-
-            builder.AppendLine("** SUCCESS **");
-
-            foreach (var key in Arguments.Keys)
-            {
-                var value = Arguments[key];
-
-                builder.AppendLine($"{key}: {value.Value}");
-            }
-
-            _OutputProvider.WriteLine(builder.ToString());
-        }
+        _OutputProvider.WriteLine(builder.ToString());
     }
 
     protected override ArgumentCollection GetAvailableArguments()

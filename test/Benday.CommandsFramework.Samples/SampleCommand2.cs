@@ -1,36 +1,22 @@
 ﻿namespace Benday.CommandsFramework.Samples;
 
 [Command(Name = ApplicationConstants.CommandName_Command2)]
-public class SampleCommand2 : CommandBase, IAsyncCommand
+public class SampleCommand2 : AsynchronousCommand
 {
-    public SampleCommand2(CommandExecutionInfo info, ITextOutputProvider outputProvider) : base(info, outputProvider)
+    public SampleCommand2(CommandExecutionInfo info, ITextOutputProvider outputProvider) : 
+        base(info, outputProvider)
     {
 
     }
 
-    public async Task ExecuteAsync()
+    protected override async Task OnExecute()
     {
-        if (Arguments.ContainsKey("--help") == true)
-        {
-            DisplayUsage();
-        }
+        var temp = GetStringAsync().GetAwaiter();
 
-        var validationResult = Validate();
+        var value = temp.GetResult();
 
-        if (validationResult.Count > 0)
-        {
-            DisplayUsage();
-            DisplayValidationSummary(validationResult);
-        }
-        else
-        {
-            var temp = GetStringAsync().GetAwaiter();
-
-            var value = temp.GetResult();
-
-            _OutputProvider.WriteLine("** SUCCESS **");
-            _OutputProvider.WriteLine($"isawesome:{value}:");            
-        }
+        _OutputProvider.WriteLine("** SUCCESS **");
+        _OutputProvider.WriteLine($"isawesome:{value}:");
 
         await Task.CompletedTask;
     }
