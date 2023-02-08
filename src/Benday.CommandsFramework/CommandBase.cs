@@ -64,6 +64,11 @@ public abstract class CommandBase
         }
     }
 
+    protected virtual void WriteLine(string text)
+    {
+        _OutputProvider.WriteLine(text);
+    }
+
     protected virtual void DisplayUsage()
     {
         var builder = new StringBuilder();

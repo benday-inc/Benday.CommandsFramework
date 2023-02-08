@@ -60,6 +60,28 @@ public class ArgumentCollectionFactoryFixture
     }
 
     [TestMethod]
+    public void Parse_ContainsHelpString()
+    {
+        // arrange
+        var expectedCommandName = "commandname";
+        
+        var input = Utilities.GetStringArray(
+           expectedCommandName,
+           ArgumentFrameworkConstants.ArgumentHelpString
+           );
+
+        // act
+        var actual = SystemUnderTest.Parse(input);
+
+        // assert
+        Assert.AreEqual<string>(expectedCommandName, actual.CommandName, "Command name was wrong");
+        Assert.AreEqual<int>(1, actual.Arguments.Count, "Argument count was wrong");
+
+        Assert.IsTrue(actual.Arguments.ContainsKey(ArgumentFrameworkConstants.ArgumentHelpString), 
+            $"key {ArgumentFrameworkConstants.ArgumentHelpString} missing");
+    }
+
+    [TestMethod]
     public void Parse_OnlyCommandName()
     {
         // arrange

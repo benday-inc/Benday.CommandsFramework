@@ -25,7 +25,11 @@ public class ArgumentCollectionFactory
 
         foreach (var arg in args)
         {
-            if (string.IsNullOrWhiteSpace(arg) == false &&
+            if (arg == ArgumentFrameworkConstants.ArgumentHelpString)
+            {
+                AddToDictionaryAsIs(arg, returnValue);
+            }
+            else if (string.IsNullOrWhiteSpace(arg) == false &&
                 arg.StartsWith("/") == true &&
                 arg.Contains(':') == true)
             {
@@ -58,6 +62,14 @@ public class ArgumentCollectionFactory
         if (args.ContainsKey(argName) == false)
         {
             args.Add(argName, argValue);
+        }
+    }
+
+    private static void AddToDictionaryAsIs(string arg, Dictionary<string, string> args)
+    {
+        if (args.ContainsKey(arg) == false)
+        {
+            args.Add(arg, string.Empty);
         }
     }
 

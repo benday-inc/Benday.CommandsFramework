@@ -123,7 +123,7 @@ public class SampleCommand1Fixture
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
             "commandname1",
-            "--help"
+            ArgumentFrameworkConstants.ArgumentHelpString
             );
 
         var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);

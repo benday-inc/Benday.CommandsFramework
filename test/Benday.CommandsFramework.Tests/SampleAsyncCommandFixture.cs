@@ -3,7 +3,7 @@
 namespace Benday.CommandsFramework.Tests;
 
 [TestClass]
-public class SampleCommand2Fixture
+public class SampleAsyncCommandFixture
 {
     [TestInitialize]
     public void OnTestInitialize()
@@ -12,9 +12,9 @@ public class SampleCommand2Fixture
         _OutputProvider = null;
     }
 
-    private SampleCommand2? _SystemUnderTest;
+    private SampleAsyncCommand? _SystemUnderTest;
 
-    private SampleCommand2 SystemUnderTest
+    private SampleAsyncCommand SystemUnderTest
     {
         get
         {
@@ -51,7 +51,7 @@ public class SampleCommand2Fixture
 
         var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
 
-        _SystemUnderTest = new SampleCommand2(executionInfo, OutputProvider);
+        _SystemUnderTest = new SampleAsyncCommand(executionInfo, OutputProvider);
 
         // act
         await _SystemUnderTest.ExecuteAsync();
@@ -74,7 +74,7 @@ public class SampleCommand2Fixture
 
         var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
 
-        _SystemUnderTest = new SampleCommand2(executionInfo, OutputProvider);
+        _SystemUnderTest = new SampleAsyncCommand(executionInfo, OutputProvider);
 
         // act
         await _SystemUnderTest.ExecuteAsync();
@@ -84,5 +84,30 @@ public class SampleCommand2Fixture
         Console.WriteLine(output);
         Assert.IsTrue(output.Contains("** SUCCESS **"), "Did not contain expected string");
         Assert.IsTrue(output.Contains("isawesome:True:"), "Did not contain expected result string");
+    }
+
+    [TestMethod]
+    public async Task GetHelp()
+    {
+        // arrange
+        var commandLineArgs = Utilities.GetStringArray(
+            "commandname2",
+            ArgumentFrameworkConstants.ArgumentHelpString
+            );
+
+        var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
+
+        _SystemUnderTest = new SampleAsyncCommand(executionInfo, OutputProvider);
+
+        // act
+        await _SystemUnderTest.ExecuteAsync();
+
+        // assert        
+        var output = OutputProvider.GetOutput();
+        Console.WriteLine(output);
+        Assert.IsFalse(output.Contains("** SUCCESS **"), "Should not contain expected string");
+        Assert.IsFalse(output.Contains("** INVALID ARGUMENTS **"), "Should not contain expected string");
+        Assert.IsTrue(output.Contains("** USAGE **"), "Did not contain expected string");
+
     }
 }

@@ -11,20 +11,23 @@ public abstract class AsynchronousCommand : CommandBase, IAsyncCommand
 
     public virtual async Task ExecuteAsync()
     {
-        if (Arguments.ContainsKey("--help") == true)
+        if (ExecutionInfo.Arguments.ContainsKey(
+                ArgumentFrameworkConstants.ArgumentHelpString) == true)
         {
             DisplayUsage();
         }
-
-        var validationResult = Validate();
-
-        if (validationResult.Count > 0)
-        {
-            OnValidationFailure(validationResult);
-        }
         else
         {
-            await OnExecute();
+            var validationResult = Validate();
+
+            if (validationResult.Count > 0)
+            {
+                OnValidationFailure(validationResult);
+            }
+            else
+            {
+                await OnExecute();
+            }
         }
     }
 

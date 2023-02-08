@@ -1,9 +1,9 @@
 ﻿namespace Benday.CommandsFramework.Samples;
 
 [Command(Name = ApplicationConstants.CommandName_Command2)]
-public class SampleCommand2 : AsynchronousCommand
+public class SampleAsyncCommand : AsynchronousCommand
 {
-    public SampleCommand2(CommandExecutionInfo info, ITextOutputProvider outputProvider) : 
+    public SampleAsyncCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider) : 
         base(info, outputProvider)
     {
 

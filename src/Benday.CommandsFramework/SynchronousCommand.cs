@@ -11,20 +11,23 @@ public abstract class SynchronousCommand : CommandBase, ISynchronousCommand
 
     public virtual void Execute()
     {
-        if (Arguments.ContainsKey("--help") == true)
+        if (ExecutionInfo.Arguments.ContainsKey(
+            ArgumentFrameworkConstants.ArgumentHelpString) == true)
         {
             DisplayUsage();
         }
-
-        var validationResult = Validate();
-
-        if (validationResult.Count > 0)
-        {
-            OnValidationFailure(validationResult);
-        }
         else
         {
-            OnExecute();
+            var validationResult = Validate();
+
+            if (validationResult.Count > 0)
+            {
+                OnValidationFailure(validationResult);
+            }
+            else
+            {
+                OnExecute();
+            }
         }
     }
 
