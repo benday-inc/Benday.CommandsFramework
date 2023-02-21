@@ -216,6 +216,115 @@ public class ArgumentCollectionFixture
         AssertArgumentValue("verbose", true);
     }
 
+    [TestMethod]
+    public void ExtensionMethods_GetBooleanValue_ArgDoesNotAllowEmptyValue_True()
+    {
+        // arrange
+        var expectedArgs = new Dictionary<string, IArgument>();
+
+        expectedArgs.Add("isawesome", new BooleanArgument("isawesome", true, true));
+        
+        _SystemUnderTest = new(expectedArgs);
+
+        var expected = true;
+
+        var commandLineArgs = Utilities.GetStringArray(
+            "commandname1",
+            $"/isawesome:{expected}"
+            );
+
+        var valueArgs = new ArgumentCollectionFactory().Parse(commandLineArgs);
+        SystemUnderTest.SetValues(valueArgs.Arguments);
+
+        // act
+        var actual = SystemUnderTest.GetBooleanValue("isawesome");
+
+        // assert
+        Assert.AreEqual<bool>(expected, actual, "Wrong value");
+    }
+
+    [TestMethod]
+    public void ExtensionMethods_GetBooleanValue_ArgDoesNotAllowEmptyValue_False()
+    {
+        // arrange
+        var expectedArgs = new Dictionary<string, IArgument>();
+
+        expectedArgs.Add("isawesome", new BooleanArgument("isawesome", true, true));
+
+        _SystemUnderTest = new(expectedArgs);
+
+        var expected = false;
+
+        var commandLineArgs = Utilities.GetStringArray(
+            "commandname1",
+            $"/isawesome:{expected}"
+            );
+
+        var valueArgs = new ArgumentCollectionFactory().Parse(commandLineArgs);
+        SystemUnderTest.SetValues(valueArgs.Arguments);
+
+        // act
+        var actual = SystemUnderTest.GetBooleanValue("isawesome");
+
+        // assert
+        Assert.AreEqual<bool>(expected, actual, "Wrong value");
+    }
+
+    [TestMethod]
+    public void ExtensionMethods_GetBooleanValue_ArgAllowsEmptyValue_True()
+    {
+        // arrange
+        var expectedArgs = new Dictionary<string, IArgument>();
+
+        expectedArgs.Add("verbose", new BooleanArgument("verbose", false, true));
+
+        _SystemUnderTest = new(expectedArgs);
+
+        var expected = true;
+
+        var commandLineArgs = Utilities.GetStringArray(
+            "commandname1",
+            "/verbose"
+            );
+
+        var valueArgs = new ArgumentCollectionFactory().Parse(commandLineArgs);
+
+        SystemUnderTest.SetValues(valueArgs.Arguments);
+
+        // act
+        var actual = SystemUnderTest.GetBooleanValue("verbose");
+
+        // assert
+        Assert.AreEqual<bool>(expected, actual, "Wrong value");
+    }
+
+    [TestMethod]
+    public void ExtensionMethods_GetBooleanValue_ArgAllowsEmptyValue_False()
+    {
+        // arrange
+        var expectedArgs = new Dictionary<string, IArgument>();
+
+        expectedArgs.Add("verbose", new BooleanArgument("verbose", false, true));
+
+        _SystemUnderTest = new(expectedArgs);
+
+        var expected = false;
+
+        // Note: /verbose is not in this list of args
+        var commandLineArgs = Utilities.GetStringArray(
+            "commandname1");
+
+        var valueArgs = new ArgumentCollectionFactory().Parse(commandLineArgs);
+
+        SystemUnderTest.SetValues(valueArgs.Arguments);
+
+        // act
+        var actual = SystemUnderTest.GetBooleanValue("verbose");
+
+        // assert
+        Assert.AreEqual<bool>(expected, actual, "Wrong value");
+    }
+
     private void AssertArgumentValue(string expectedKey, string expectedValue)
     {
         Assert.IsTrue(SystemUnderTest.ContainsKey(expectedKey), $"Key named '{expectedKey}' not found");
