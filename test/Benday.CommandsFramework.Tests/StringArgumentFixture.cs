@@ -1,7 +1,7 @@
 ﻿namespace Benday.CommandsFramework.Tests;
 
 [TestClass]
-public class ArgumentAsStringFixture
+public class StringArgumentFixture
 {
     [TestInitialize]
     public void OnTestInitialize()

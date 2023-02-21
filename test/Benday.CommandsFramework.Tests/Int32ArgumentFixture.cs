@@ -1,8 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-namespace Benday.CommandsFramework.Tests;
+﻿namespace Benday.CommandsFramework.Tests;
 
 [TestClass]
-public class ArgumentAsDateTimeFixture
+public class Int32ArgumentFixture
 {
     [TestInitialize]
     public void OnTestInitialize()
@@ -10,18 +9,16 @@ public class ArgumentAsDateTimeFixture
         _SystemUnderTest = null;
     }
 
-    private DateTimeArgument? _SystemUnderTest;
+    private Int32Argument? _SystemUnderTest;
     private const string EXPECTED_ARG_NAME = "arg123";
-#pragma warning disable IDE1006 // Naming Styles
-    private readonly DateTime EXPECTED_ARG_VALUE = DateTime.MaxValue;
-#pragma warning restore IDE1006 // Naming Styles
+    private const int EXPECTED_ARG_VALUE = 123;
     private const string EXPECTED_ARG_DESC = "argvalue123 description";
     private const bool EXPECTED_ARG_ISREQUIRED = true;
     private const bool EXPECTED_ARG_ALLOWEMPTYVALUE = true;
-    private const ArgumentDataType EXPECTED_ARG_DATATYPE = ArgumentDataType.DateTime;
+    private const ArgumentDataType EXPECTED_ARG_DATATYPE = ArgumentDataType.Int32;
 
 
-    private DateTimeArgument SystemUnderTest
+    private Int32Argument SystemUnderTest
     {
         get
         {
@@ -47,7 +44,7 @@ public class ArgumentAsDateTimeFixture
 
     private void InitializeWithAllTheArgs()
     {
-        _SystemUnderTest = new DateTimeArgument(
+        _SystemUnderTest = new Int32Argument(
             EXPECTED_ARG_NAME,
             EXPECTED_ARG_VALUE,
             EXPECTED_ARG_DESC,
@@ -65,7 +62,7 @@ public class ArgumentAsDateTimeFixture
 
         // assert
         Assert.AreEqual<string>(EXPECTED_ARG_DESC, SystemUnderTest.Description, "Description was wrong");
-        Assert.AreEqual<DateTime>(EXPECTED_ARG_VALUE, SystemUnderTest.Value, "Value was wrong");
+        Assert.AreEqual<int>(EXPECTED_ARG_VALUE, SystemUnderTest.Value, "Value was wrong");
         Assert.AreEqual<string>(EXPECTED_ARG_NAME, SystemUnderTest.Name, "Name was wrong");
         Assert.AreEqual<bool>(EXPECTED_ARG_ISREQUIRED, SystemUnderTest.IsRequired, "IsRequired was wrong");
         Assert.AreEqual<string>(EXPECTED_ARG_DESC, SystemUnderTest.Description, "Description was wrong");
@@ -80,7 +77,7 @@ public class ArgumentAsDateTimeFixture
         InitializeWithAllTheArgs();
         SystemUnderTest.AllowEmptyValue = false;
         var expected = true;
-        SystemUnderTest.Value = DateTime.Now;
+        SystemUnderTest.Value = 2345;
 
         // act
         var actual = SystemUnderTest.Validate();
@@ -106,7 +103,7 @@ public class ArgumentAsDateTimeFixture
     }
 
     [TestMethod]
-    public void TrySetValue_False_NotADateTime()
+    public void TrySetValue_False_NotANumber()
     {
         // arrange
         InitializeWithAllTheArgs();
@@ -122,19 +119,19 @@ public class ArgumentAsDateTimeFixture
     }
 
     [TestMethod]
-    public void TrySetValue_True_ValidDateTime()
+    public void TrySetValue_True_ValidInteger()
     {
         // arrange
         InitializeWithAllTheArgs();
         var expected = true;
-        string input = "12/1/2022";
-        var expectedValue = new DateTime(2022, 12, 1);
+        string input = "4321";
+        var expectedValue = 4321;
 
         // act
         var actual = SystemUnderTest.TrySetValue(input);
 
         // assert
         Assert.AreEqual<bool>(expected, actual, "Wrong try set value return value");
-        Assert.AreEqual<DateTime>(expectedValue, SystemUnderTest.Value, "Value was wrong");
+        Assert.AreEqual<int>(expectedValue, SystemUnderTest.Value, "Value was wrong");
     }
 }
