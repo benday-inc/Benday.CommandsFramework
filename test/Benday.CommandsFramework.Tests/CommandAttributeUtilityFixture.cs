@@ -166,17 +166,27 @@ public class CommandAttributeUtilityFixture
     }
 
     [TestMethod]
-    public void GetAllUsages()
+    public void GetAllCommandUsages()
     {
         // arrange
         var sampleAssembly = typeof(Benday.CommandsFramework.Samples.SampleCommand1).Assembly;
-        var builder = new StringBuilder();
-
+        
         // act
-        SystemUnderTest.GetAllUsages(sampleAssembly, builder);
+        var actual = SystemUnderTest.GetAllCommandUsages(sampleAssembly);
 
         // assert
-        Assert.AreNotEqual<int>(0, builder.Length, "Usages wasn't populated");
-        Console.WriteLine($"{builder}");
+        Assert.AreNotEqual<int>(0, actual.Count, "Usages collection wasn't populated");
+
+        foreach (var item in actual)
+        {
+            Assert.IsFalse(string.IsNullOrEmpty(item.Name), "Name wasn't populated");
+            Assert.IsNotNull(item.Description, $"Description wasn't populated for '{item.Name}'");
+
+            foreach (var arg in item.Arguments)
+            {
+                Assert.IsFalse(string.IsNullOrEmpty(arg.Name), "arg.Name wasn't populated");
+                Assert.IsNotNull(arg.Description, "arg.Description wasn't populated");
+            }
+        }
     }
 }

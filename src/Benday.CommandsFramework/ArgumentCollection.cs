@@ -1,8 +1,9 @@
-﻿using System.Diagnostics;
+﻿using System.Collections;
+using System.Diagnostics;
 
 namespace Benday.CommandsFramework;
 
-public class ArgumentCollection
+public class ArgumentCollection : IEnumerable<IArgument>
 {
     private readonly Dictionary<string, IArgument> _Arguments;
 
@@ -107,6 +108,16 @@ public class ArgumentCollection
                 }
             }
         }
+    }
+
+    public IEnumerator<IArgument> GetEnumerator()
+    {
+        return _Arguments.Values.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 
     public IArgument this[string key]

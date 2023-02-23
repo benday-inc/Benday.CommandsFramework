@@ -148,7 +148,7 @@ public class CommandAttributeUtility
         }
     }
 
-    public void GetAllUsages(Assembly asm, StringBuilder builder)
+    public List<CommandInfo> GetAllCommandUsages(Assembly asm)
     {
         var attributes = GetAvailableCommandAttributes(asm);
 
@@ -162,14 +162,20 @@ public class CommandAttributeUtility
             info.Description = item.Description;
             info.IsAsync = item.IsAsync;
 
+            var command = GetCommand(
+                new []{ item.Name, ArgumentFrameworkConstants.ArgumentHelpString }, 
+                asm);
 
+            if (command != null)
+            {
+                var args = command.GetArguments();
+
+                info.Arguments = args;
+            }
+
+            returnValues.Add(info);
         }
-    }
-}
 
-public class CommandInfo
-{
-    public string Name { get; internal set; }
-    public string Description { get; internal set; }
-    public bool IsAsync { get; internal set; }
+        return returnValues;
+    }
 }
