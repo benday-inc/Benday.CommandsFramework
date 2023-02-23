@@ -1,6 +1,7 @@
 using Benday.CommandsFramework.Samples;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Reflection;
+using System.Text;
 
 namespace Benday.CommandsFramework.Tests;
 
@@ -162,5 +163,20 @@ public class CommandAttributeUtilityFixture
 
         // assert
         Assert.IsNotNull(actual, "Result was null");
+    }
+
+    [TestMethod]
+    public void GetAllUsages()
+    {
+        // arrange
+        var sampleAssembly = typeof(Benday.CommandsFramework.Samples.SampleCommand1).Assembly;
+        var builder = new StringBuilder();
+
+        // act
+        SystemUnderTest.GetAllUsages(sampleAssembly, builder);
+
+        // assert
+        Assert.AreNotEqual<int>(0, builder.Length, "Usages wasn't populated");
+        Console.WriteLine($"{builder}");
     }
 }

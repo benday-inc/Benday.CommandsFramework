@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Linq;
+using System.Text;
 
 namespace Benday.CommandsFramework;
 
@@ -146,4 +147,29 @@ public class CommandAttributeUtility
             }
         }
     }
+
+    public void GetAllUsages(Assembly asm, StringBuilder builder)
+    {
+        var attributes = GetAvailableCommandAttributes(asm);
+
+        var returnValues = new List<CommandInfo>();
+
+        foreach (var item in attributes)
+        {
+            var info = new CommandInfo();
+
+            info.Name = item.Name;
+            info.Description = item.Description;
+            info.IsAsync = item.IsAsync;
+
+
+        }
+    }
+}
+
+public class CommandInfo
+{
+    public string Name { get; internal set; }
+    public string Description { get; internal set; }
+    public bool IsAsync { get; internal set; }
 }

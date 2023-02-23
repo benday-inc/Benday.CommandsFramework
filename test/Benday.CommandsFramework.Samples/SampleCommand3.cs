@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualBasic;
-
-namespace Benday.CommandsFramework.Samples;
+﻿namespace Benday.CommandsFramework.Samples;
 
 [Command(Name = ApplicationConstants.CommandName_Command3)]
 public class SampleCommand3 : SynchronousCommand
@@ -10,7 +8,7 @@ public class SampleCommand3 : SynchronousCommand
 
     }
 
-    protected override ArgumentCollection GetAvailableArguments()
+    public override ArgumentCollection GetArguments()
     {
         var args = new ArgumentCollection();
 

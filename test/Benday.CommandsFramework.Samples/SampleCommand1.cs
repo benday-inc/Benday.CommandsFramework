@@ -32,7 +32,7 @@ public class SampleCommand1 : SynchronousCommand
         _OutputProvider.WriteLine(builder.ToString());
     }
 
-    protected override ArgumentCollection GetAvailableArguments()
+    public override ArgumentCollection GetArguments()
     {
         var expectedArgs = new Dictionary<string, IArgument>();
 

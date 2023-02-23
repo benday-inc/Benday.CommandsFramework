@@ -22,7 +22,7 @@ public abstract class CommandBase
 
         _Info = info ?? throw new ArgumentNullException(nameof(info));
         _OutputProvider = outputProvider;
-        _Arguments = GetAvailableArguments();
+        _Arguments = GetArguments();
     }
 
     public CommandExecutionInfo ExecutionInfo
@@ -41,7 +41,7 @@ public abstract class CommandBase
         }        
     }
 
-    protected virtual ArgumentCollection GetAvailableArguments()
+    public virtual ArgumentCollection GetArguments()
     {
         return new();
     }
@@ -73,6 +73,13 @@ public abstract class CommandBase
     {
         var builder = new StringBuilder();
 
+        DisplayUsage(builder);
+
+        _OutputProvider.WriteLine(builder.ToString());
+    }
+
+    protected void DisplayUsage(StringBuilder builder)
+    {
         builder.AppendLine($"Command name: {ExecutionInfo.CommandName}");
 
         if (string.IsNullOrWhiteSpace(Description) == false)
@@ -113,8 +120,6 @@ public abstract class CommandBase
                 }
             }
         }
-
-        _OutputProvider.WriteLine(builder.ToString());
     }
 
     protected virtual void DisplayValidationSummary(List<IArgument> invalidArguments)

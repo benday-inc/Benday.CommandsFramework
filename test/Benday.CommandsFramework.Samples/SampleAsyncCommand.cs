@@ -28,7 +28,7 @@ public class SampleAsyncCommand : AsynchronousCommand
         return Arguments["isawesome"].Value.ToString();
     }
 
-    protected override ArgumentCollection GetAvailableArguments()
+    public override ArgumentCollection GetArguments()
     {
         var expectedArgs = new Dictionary<string, IArgument>();
 
