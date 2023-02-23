@@ -32,6 +32,33 @@ public class CommandAttributeUtility
         return returnValue;
     }
 
+    public List<CommandAttribute> GetAvailableCommandAttributes(Assembly containingAssembly)
+    {
+        if (containingAssembly is null)
+        {
+            throw new ArgumentNullException(nameof(containingAssembly));
+        }
+
+        var returnValue = new List<CommandAttribute>();
+
+        var matchingTypes =
+            from type in containingAssembly.GetTypes()
+            where type.GetCustomAttributes<CommandAttribute>().Any()
+            select type;
+
+        foreach (var type in matchingTypes)
+        {
+            var attr = type.GetCustomAttribute<CommandAttribute>();
+
+            if (attr != null)
+            {
+                returnValue.Add(attr);
+            }
+        }
+
+        return returnValue;
+    }
+
     public Type? GetAvailableCommandType(Assembly containingAssembly, string commandName)
     {
         if (containingAssembly is null)
