@@ -8,6 +8,7 @@ Key features:
 * Define named command 
 * Define the valid arguments for each command
 * Argument validation
+* String, boolean, int, and date time arguments
 
 ## About
 
