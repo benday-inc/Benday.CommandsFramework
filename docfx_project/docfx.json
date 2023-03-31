@@ -4,7 +4,7 @@
       "src": [
         {
           "files": [
-            "**/Benday.Common.csproj"
+            "**/Benday.CommandsFramework.csproj"
           ],
           "src": "../"
         }
