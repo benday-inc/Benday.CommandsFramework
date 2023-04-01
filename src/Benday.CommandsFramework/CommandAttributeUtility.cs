@@ -4,8 +4,18 @@ using System.Text;
 
 namespace Benday.CommandsFramework;
 
+/// <summary>
+/// Utility methods for accessing command attribute information on the
+/// types in an assembly. 
+/// </summary>
 public class CommandAttributeUtility
 {
+    /// <summary>
+    /// Get the list of command names in an assembly
+    /// </summary>
+    /// <param name="containingAssembly">Assembly to examine</param>
+    /// <returns>List of command names for all classes with a CommandAttribute in the assembly</returns>
+    /// <exception cref="ArgumentNullException"></exception>
     public List<string> GetAvailableCommandNames(Assembly containingAssembly)
     {
         if (containingAssembly is null)
@@ -33,6 +43,12 @@ public class CommandAttributeUtility
         return returnValue;
     }
 
+    /// <summary>
+    /// Get all the command attributes for all the command types in an assembly.
+    /// </summary>
+    /// <param name="containingAssembly">Assembly to check</param>
+    /// <returns>List of command attributes from this assembly.</returns>
+    /// <exception cref="ArgumentNullException"></exception>
     public List<CommandAttribute> GetAvailableCommandAttributes(Assembly containingAssembly)
     {
         if (containingAssembly is null)
@@ -60,6 +76,13 @@ public class CommandAttributeUtility
         return returnValue;
     }
 
+    /// <summary>
+    /// Gets command type from an assembly by command name.
+    /// </summary>
+    /// <param name="containingAssembly">Assembly containing the commands</param>
+    /// <param name="commandName">Command name to find. This is typically args[0] from the command line.</param>
+    /// <returns>Instance of System.Type for the matching command or null if not found.</returns>
+    /// <exception cref="ArgumentNullException"></exception>
     public Type? GetAvailableCommandType(Assembly containingAssembly, string commandName)
     {
         if (containingAssembly is null)
@@ -77,6 +100,13 @@ public class CommandAttributeUtility
         return match;
     }
 
+    /// <summary>
+    /// Get a command argument for a command by command name.
+    /// </summary>
+    /// <param name="containingAssembly">Assembly containing the commands</param>
+    /// <param name="commandName">Command name to find. This is typically args[0] from the command line.</param>
+    /// <returns>Command argument for the command or null if not found.</returns>
+    /// <exception cref="ArgumentNullException"></exception>
     public CommandAttribute? GetCommandAttributeForCommandName(Assembly containingAssembly, string commandName)
     {
         if (containingAssembly is null)
@@ -94,6 +124,17 @@ public class CommandAttributeUtility
         return match;
     }
 
+    /// <summary>
+    /// Gets a populated instance of a command using arguments from the command line.
+    /// This uses args[0] as the command name. The rest of the arguments are used 
+    /// as argument values to the command.
+    /// </summary>
+    /// <param name="args">Command line arguments</param>
+    /// <param name="containingAssembly">Assembly that contains the commands</param>
+    /// <returns>Populated command</returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentException"></exception>
+    /// <exception cref="MissingArgumentException"></exception>
     public CommandBase? GetCommand(string[] args, Assembly containingAssembly)
     {
         if (args is null)
@@ -148,6 +189,11 @@ public class CommandAttributeUtility
         }
     }
 
+    /// <summary>
+    /// Creates a list of command usages for all the commands in an assembly
+    /// </summary>
+    /// <param name="asm">Assembly to check</param>
+    /// <returns>List of command usages</returns>
     public List<CommandInfo> GetAllCommandUsages(Assembly asm)
     {
         var attributes = GetAvailableCommandAttributes(asm);
