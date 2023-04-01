@@ -1,7 +1,19 @@
 ﻿namespace Benday.CommandsFramework;
 
+/// <summary>
+/// Factory for creating CommandExecutionInfo instances from command line arguments.
+/// This class *should* be named CommandExecutionInfoFactory and will be renamed in a future release.
+/// </summary>
 public class ArgumentCollectionFactory
 {
+    /// <summary>
+    /// Parse raw command line args and return a populated CommandExecutionInfo object.
+    /// </summary>
+    /// <param name="input">Array of strings. This is typically the raw args from the 
+    /// command line.</param>
+    /// <returns>CommandExecutionInfo for this requested command invocation</returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
     public CommandExecutionInfo Parse(string[] input)
     {
         if (input == null) throw new ArgumentNullException("input");
