@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Benday.CommandsFramework;
 
+/// <summary>
+/// Base class for all command implementations
+/// </summary>
 public abstract class CommandBase
 {
     private readonly CommandExecutionInfo _Info;
@@ -13,6 +16,12 @@ public abstract class CommandBase
     private ArgumentCollection _Arguments;
     private bool _HaveValuesBeenSet = false;
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="info">Execution information for the requested command</param>
+    /// <param name="outputProvider">Output provider</param>
+    /// <exception cref="ArgumentNullException"></exception>
     public CommandBase(CommandExecutionInfo info, ITextOutputProvider outputProvider)
     {
         if (outputProvider is null)
@@ -25,6 +34,9 @@ public abstract class CommandBase
         _Arguments = GetArguments();
     }
 
+    /// <summary>
+    /// Property for accessing the raw execution info for the command
+    /// </summary>
     public CommandExecutionInfo ExecutionInfo
     {
         get
@@ -33,6 +45,9 @@ public abstract class CommandBase
         }
     }
 
+    /// <summary>
+    /// Arguments and values for the command
+    /// </summary>
     protected ArgumentCollection Arguments 
     { 
         get
@@ -41,11 +56,18 @@ public abstract class CommandBase
         }        
     }
 
+    /// <summary>
+    /// Get the arguments for the command execution
+    /// </summary>
+    /// <returns></returns>
     public virtual ArgumentCollection GetArguments()
     {
         return new();
     }
 
+    /// <summary>
+    /// Human readable description of this command
+    /// </summary>
     public string Description
     {
         get
@@ -64,11 +86,18 @@ public abstract class CommandBase
         }
     }
 
+    /// <summary>
+    /// Write a message to the output provider
+    /// </summary>
+    /// <param name="text">Message to write</param>
     protected virtual void WriteLine(string text)
     {
         _OutputProvider.WriteLine(text);
     }
 
+    /// <summary>
+    /// Displays the command usage description
+    /// </summary>
     protected virtual void DisplayUsage()
     {
         var builder = new StringBuilder();
@@ -78,6 +107,10 @@ public abstract class CommandBase
         _OutputProvider.WriteLine(builder.ToString());
     }
 
+    /// <summary>
+    /// Adds the command usage description to the provided string builder
+    /// </summary>
+    /// <param name="builder">StringBuilder instance</param>
     protected void DisplayUsage(StringBuilder builder)
     {
         builder.AppendLine($"Command name: {ExecutionInfo.CommandName}");
@@ -122,6 +155,10 @@ public abstract class CommandBase
         }
     }
 
+    /// <summary>
+    /// Creates and displays the validation summary when there are failed argument validations
+    /// </summary>
+    /// <param name="invalidArguments">Collection of invalid arguments</param>
     protected virtual void DisplayValidationSummary(List<IArgument> invalidArguments)
     {
         if (invalidArguments.Count == 1)
@@ -139,6 +176,11 @@ public abstract class CommandBase
         }
     }
 
+    /// <summary>
+    /// Validate the arguments provided using the required argument definition for the
+    /// command.
+    /// </summary>
+    /// <returns>List of invalid arguments</returns>
     protected virtual List<IArgument> Validate()
     {
         var returnValue = new List<IArgument>();
@@ -161,6 +203,10 @@ public abstract class CommandBase
         return returnValue;
     }
 
+    /// <summary>
+    /// Reads the arguments from the execution info and 
+    /// sets the values on to the argument definitions for the command.
+    /// </summary>
     protected virtual void SetValuesFromExecutionInfo()
     {
         if (_HaveValuesBeenSet == false)
