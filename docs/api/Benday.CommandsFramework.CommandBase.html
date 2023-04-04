@@ -1,0 +1,540 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class CommandBase
+ </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class CommandBase
+ ">
+    
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <div class="navbar-brand">
+                <a href="../">
+                  <img id="logo" src="../logo.png" alt="" alt="asdf" width="50" height="50">
+                </a>
+
+              </div>            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Benday.CommandsFramework.CommandBase">
+
+
+  <h1 id="Benday_CommandsFramework_CommandBase" data-uid="Benday.CommandsFramework.CommandBase" class="text-break">Class CommandBase
+</h1>
+  <div class="markdown level0 summary"><p>Base class for all command implementations</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">object</span></div>
+    <div class="level1"><span class="xref">CommandBase</span></div>
+      <div class="level2"><a class="xref" href="Benday.CommandsFramework.AsynchronousCommand.html">AsynchronousCommand</a></div>
+      <div class="level2"><a class="xref" href="Benday.CommandsFramework.SynchronousCommand.html">SynchronousCommand</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">object.Equals(object)</span>
+    </div>
+    <div>
+      <span class="xref">object.Equals(object, object)</span>
+    </div>
+    <div>
+      <span class="xref">object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">object.ReferenceEquals(object, object)</span>
+    </div>
+    <div>
+      <span class="xref">object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <span class="xref">Benday</span>.<a class="xref" href="Benday.CommandsFramework.html">CommandsFramework</a></h6>
+  <h6><strong>Assembly</strong>: Benday.CommandsFramework.dll</h6>
+  <h5 id="Benday_CommandsFramework_CommandBase_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class CommandBase</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/docfx/apiSpec/new?filename=Benday_CommandsFramework_CommandBase__ctor_Benday_CommandsFramework_CommandExecutionInfo_Benday_CommandsFramework_ITextOutputProvider_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.%23ctor(Benday.CommandsFramework.CommandExecutionInfo%2CBenday.CommandsFramework.ITextOutputProvider)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/docfx/src/Benday.CommandsFramework/CommandBase.cs/#L25">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_CommandBase__ctor_" data-uid="Benday.CommandsFramework.CommandBase.#ctor*"></a>
+  <h4 id="Benday_CommandsFramework_CommandBase__ctor_Benday_CommandsFramework_CommandExecutionInfo_Benday_CommandsFramework_ITextOutputProvider_" data-uid="Benday.CommandsFramework.CommandBase.#ctor(Benday.CommandsFramework.CommandExecutionInfo,Benday.CommandsFramework.ITextOutputProvider)">CommandBase(CommandExecutionInfo, ITextOutputProvider)</h4>
+  <div class="markdown level1 summary"><p>Constructor</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CommandBase(CommandExecutionInfo info, ITextOutputProvider outputProvider)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Benday.CommandsFramework.CommandExecutionInfo.html">CommandExecutionInfo</a></td>
+        <td><span class="parametername">info</span></td>
+        <td><p>Execution information for the requested command</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Benday.CommandsFramework.ITextOutputProvider.html">ITextOutputProvider</a></td>
+        <td><span class="parametername">outputProvider</span></td>
+        <td><p>Output provider</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="fields">Fields
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/docfx/apiSpec/new?filename=Benday_CommandsFramework_CommandBase__OutputProvider.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase._OutputProvider%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/docfx/src/Benday.CommandsFramework/CommandBase.cs/#L15">View Source</a>
+  </span>
+  <h4 id="Benday_CommandsFramework_CommandBase__OutputProvider" data-uid="Benday.CommandsFramework.CommandBase._OutputProvider">_OutputProvider</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected readonly ITextOutputProvider _OutputProvider</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Benday.CommandsFramework.ITextOutputProvider.html">ITextOutputProvider</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/docfx/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_Arguments.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.Arguments%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/docfx/src/Benday.CommandsFramework/CommandBase.cs/#L51">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_CommandBase_Arguments_" data-uid="Benday.CommandsFramework.CommandBase.Arguments*"></a>
+  <h4 id="Benday_CommandsFramework_CommandBase_Arguments" data-uid="Benday.CommandsFramework.CommandBase.Arguments">Arguments</h4>
+  <div class="markdown level1 summary"><p>Arguments and values for the command</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected ArgumentCollection Arguments { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Benday.CommandsFramework.ArgumentCollection.html">ArgumentCollection</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/docfx/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_Description.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.Description%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/docfx/src/Benday.CommandsFramework/CommandBase.cs/#L71">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_CommandBase_Description_" data-uid="Benday.CommandsFramework.CommandBase.Description*"></a>
+  <h4 id="Benday_CommandsFramework_CommandBase_Description" data-uid="Benday.CommandsFramework.CommandBase.Description">Description</h4>
+  <div class="markdown level1 summary"><p>Human readable description of this command</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Description { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">string</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/docfx/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_ExecutionInfo.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.ExecutionInfo%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/docfx/src/Benday.CommandsFramework/CommandBase.cs/#L40">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_CommandBase_ExecutionInfo_" data-uid="Benday.CommandsFramework.CommandBase.ExecutionInfo*"></a>
+  <h4 id="Benday_CommandsFramework_CommandBase_ExecutionInfo" data-uid="Benday.CommandsFramework.CommandBase.ExecutionInfo">ExecutionInfo</h4>
+  <div class="markdown level1 summary"><p>Property for accessing the raw execution info for the command</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CommandExecutionInfo ExecutionInfo { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Benday.CommandsFramework.CommandExecutionInfo.html">CommandExecutionInfo</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/docfx/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_DisplayUsage.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.DisplayUsage%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/docfx/src/Benday.CommandsFramework/CommandBase.cs/#L101">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_CommandBase_DisplayUsage_" data-uid="Benday.CommandsFramework.CommandBase.DisplayUsage*"></a>
+  <h4 id="Benday_CommandsFramework_CommandBase_DisplayUsage" data-uid="Benday.CommandsFramework.CommandBase.DisplayUsage">DisplayUsage()</h4>
+  <div class="markdown level1 summary"><p>Displays the command usage description</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void DisplayUsage()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/docfx/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_DisplayUsage_System_Text_StringBuilder_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.DisplayUsage(System.Text.StringBuilder)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/docfx/src/Benday.CommandsFramework/CommandBase.cs/#L114">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_CommandBase_DisplayUsage_" data-uid="Benday.CommandsFramework.CommandBase.DisplayUsage*"></a>
+  <h4 id="Benday_CommandsFramework_CommandBase_DisplayUsage_System_Text_StringBuilder_" data-uid="Benday.CommandsFramework.CommandBase.DisplayUsage(System.Text.StringBuilder)">DisplayUsage(StringBuilder)</h4>
+  <div class="markdown level1 summary"><p>Adds the command usage description to the provided string builder</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void DisplayUsage(StringBuilder builder)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">StringBuilder</span></td>
+        <td><span class="parametername">builder</span></td>
+        <td><p>StringBuilder instance</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/docfx/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_DisplayValidationSummary_System_Collections_Generic_List_Benday_CommandsFramework_IArgument__.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.DisplayValidationSummary(System.Collections.Generic.List%7BBenday.CommandsFramework.IArgument%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/docfx/src/Benday.CommandsFramework/CommandBase.cs/#L162">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_CommandBase_DisplayValidationSummary_" data-uid="Benday.CommandsFramework.CommandBase.DisplayValidationSummary*"></a>
+  <h4 id="Benday_CommandsFramework_CommandBase_DisplayValidationSummary_System_Collections_Generic_List_Benday_CommandsFramework_IArgument__" data-uid="Benday.CommandsFramework.CommandBase.DisplayValidationSummary(System.Collections.Generic.List{Benday.CommandsFramework.IArgument})">DisplayValidationSummary(List&lt;IArgument&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates and displays the validation summary when there are failed argument validations</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void DisplayValidationSummary(List&lt;IArgument&gt; invalidArguments)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Benday.CommandsFramework.IArgument.html">IArgument</a>&gt;</td>
+        <td><span class="parametername">invalidArguments</span></td>
+        <td><p>Collection of invalid arguments</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/docfx/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_GetArguments.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.GetArguments%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/docfx/src/Benday.CommandsFramework/CommandBase.cs/#L63">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_CommandBase_GetArguments_" data-uid="Benday.CommandsFramework.CommandBase.GetArguments*"></a>
+  <h4 id="Benday_CommandsFramework_CommandBase_GetArguments" data-uid="Benday.CommandsFramework.CommandBase.GetArguments">GetArguments()</h4>
+  <div class="markdown level1 summary"><p>Get the arguments for the command execution</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual ArgumentCollection GetArguments()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Benday.CommandsFramework.ArgumentCollection.html">ArgumentCollection</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/docfx/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_SetValuesFromExecutionInfo.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.SetValuesFromExecutionInfo%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/docfx/src/Benday.CommandsFramework/CommandBase.cs/#L210">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_CommandBase_SetValuesFromExecutionInfo_" data-uid="Benday.CommandsFramework.CommandBase.SetValuesFromExecutionInfo*"></a>
+  <h4 id="Benday_CommandsFramework_CommandBase_SetValuesFromExecutionInfo" data-uid="Benday.CommandsFramework.CommandBase.SetValuesFromExecutionInfo">SetValuesFromExecutionInfo()</h4>
+  <div class="markdown level1 summary"><p>Reads the arguments from the execution info and
+sets the values on to the argument definitions for the command.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void SetValuesFromExecutionInfo()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/docfx/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_Validate.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.Validate%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/docfx/src/Benday.CommandsFramework/CommandBase.cs/#L184">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_CommandBase_Validate_" data-uid="Benday.CommandsFramework.CommandBase.Validate*"></a>
+  <h4 id="Benday_CommandsFramework_CommandBase_Validate" data-uid="Benday.CommandsFramework.CommandBase.Validate">Validate()</h4>
+  <div class="markdown level1 summary"><p>Validate the arguments provided using the required argument definition for the
+command.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual List&lt;IArgument&gt; Validate()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Benday.CommandsFramework.IArgument.html">IArgument</a>&gt;</td>
+        <td><p>List of invalid arguments</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/docfx/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_WriteLine_System_String_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.WriteLine(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/docfx/src/Benday.CommandsFramework/CommandBase.cs/#L93">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_CommandBase_WriteLine_" data-uid="Benday.CommandsFramework.CommandBase.WriteLine*"></a>
+  <h4 id="Benday_CommandsFramework_CommandBase_WriteLine_System_String_" data-uid="Benday.CommandsFramework.CommandBase.WriteLine(System.String)">WriteLine(string)</h4>
+  <div class="markdown level1 summary"><p>Write a message to the output provider</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void WriteLine(string text)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">string</span></td>
+        <td><span class="parametername">text</span></td>
+        <td><p>Message to write</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/docfx/apiSpec/new?filename=Benday_CommandsFramework_CommandBase.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/docfx/src/Benday.CommandsFramework/CommandBase.cs/#L12" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      
+      Copyright © <a href="https://www.benday.com/">www.benday.com</a> | <a href="mailto:info@benday.com">info@benday.com</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
