@@ -1,0 +1,1 @@
+<meta http-equiv="refresh" content="0; url=https://benday-inc.github.io/Benday.CommandsFramework/api/Benday.CommandsFramework.html">

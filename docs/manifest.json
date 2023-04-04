@@ -1,0 +1,420 @@
+{
+  "homepages": [],
+  "source_base_path": "/Users/benday/code/benday-inc/Benday.CommandsFramework/docfx_project",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.Argument-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.Argument-1.html",
+          "hash": "GKNma3cb35lyHFJ9+QRmlNUZlfSUmsdLfrpDQJ4dbAs="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.ArgumentCollection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.ArgumentCollection.html",
+          "hash": "uqWeZoXyHtmnnQex34CWYtNEq3wxTq8t+FaCvDhqui8="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.ArgumentCollectionFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.ArgumentCollectionFactory.html",
+          "hash": "/YGSagD6yPElGy54lv4Ie5UqDR1j/IZqiRxoHal/Ej0="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.ArgumentDataType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.ArgumentDataType.html",
+          "hash": "fGuDeqKWSrOj5PjapclJQ8j06v1u3fSKzdNVBG5zh7M="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.ArgumentFrameworkConstants.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.ArgumentFrameworkConstants.html",
+          "hash": "aLFujhKnDCBoTwquwE/+vC6ESA8NbiwIiOmkI27Y1xA="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.AsynchronousCommand.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.AsynchronousCommand.html",
+          "hash": "Ta2AStNyBwKMRapIhU+LozTHDwiJL50+DS1nFawdzPo="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.BooleanArgument.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.BooleanArgument.html",
+          "hash": "yCFL/7Xr+1CsJUD5eLgXb7UP+O1o9HpU8VEd7le/Tms="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.CommandAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.CommandAttribute.html",
+          "hash": "oAD0CVuO7jlzgwB1EQzH5ovP2VwJmFzUGmLpIEJuY64="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.CommandAttributeUtility.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.CommandAttributeUtility.html",
+          "hash": "PBWGT40XwiqBLTMKLSdH4e56txUwP4FBvWh2fphpsfY="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.CommandBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.CommandBase.html",
+          "hash": "9dQU4T5IpLq5HBYRgqRjCLyoRC9F11r5catdS1I5reA="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.CommandExecutionInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.CommandExecutionInfo.html",
+          "hash": "of8f4cDNm7snl+XigCyLVQilaijWVxv30bpY7qezb94="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.CommandInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.CommandInfo.html",
+          "hash": "f6gDiXR6tPxaCyBdobhcAIxfEGQyE9X/5qsYjX7cspk="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.ConsoleTextOutputProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.ConsoleTextOutputProvider.html",
+          "hash": "J20QMDyWhajj+1OcTkWRyK43Unbu1PC+/svMJGqu9gM="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.DateTimeArgument.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.DateTimeArgument.html",
+          "hash": "NmLCkcjSkzcyFEMzqZSNM4racdbHu+ERmL6wET8ieco="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.ExtensionMethods.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.ExtensionMethods.html",
+          "hash": "4ib6gRhUaReG+1hpgvtDMNLoE0Iulx54JzlPdmVxIhc="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.IArgument.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.IArgument.html",
+          "hash": "Gh4eoysbZ62ohnGRCxIz6jL0l+8SlzAPmYgdGKUsetY="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.IAsyncCommand.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.IAsyncCommand.html",
+          "hash": "p7UomgXUrBzRTVjAsEo0ZFvPTk1C6hBvuBwcfMx0+pk="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.IBooleanArgument.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.IBooleanArgument.html",
+          "hash": "Y6OsXc5tui35IqvRBByHbjdrz33z1JkntH0z58DJ0Mo="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.IDateTimeArgument.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.IDateTimeArgument.html",
+          "hash": "QU2a2JqBJc2hOnepJ3zGjZeXMyLdUDML+gBJkPVWYf8="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.IInt32Argument.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.IInt32Argument.html",
+          "hash": "wH+9mHR/DUUhaGvsjegke3YcPrAcPQznDkO6r3lTPW4="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.ISynchronousCommand.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.ISynchronousCommand.html",
+          "hash": "ByFRv5RzQhstzhU1FE3FAc4Id7jJVOsT0XdcnlP5kME="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.ITextOutputProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.ITextOutputProvider.html",
+          "hash": "IQwy4PZWH24j5YWFBBsfOzQlLnAUycYQFO5OKOi14gA="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.Int32Argument.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.Int32Argument.html",
+          "hash": "ToXuhUsEwivDhSlCrVntVjIhovaujj08zv+3kSRtPcw="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.MissingArgumentException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.MissingArgumentException.html",
+          "hash": "733BzwWp7sGsmpVp79gEC92FSsgDfj1peXF007rch+o="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.StringArgument.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.StringArgument.html",
+          "hash": "FGxx7z3bH3BQP5tbvDXWTikub8LZBuAACcNqQuqPxNY="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.StringBuilderTextOutputProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.StringBuilderTextOutputProvider.html",
+          "hash": "tZ2hsgtdDNnQIt06scFgfvWHEHlUp75YRtq7o3Rr3cI="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.SynchronousCommand.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.SynchronousCommand.html",
+          "hash": "f5/2HgYXiZJgIYYdbsiJofSwy3f2Z4kmzlwues1caHM="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.html",
+          "hash": "NPgYW7fvyrevHOXu7m7u8wz4DO9b17u/X5gQRQfXpsE="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/index.html",
+          "hash": "gpIMKsHVKlh6TxMknd+7UPO4uaqiKhzW1zofQRuon5Y="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html",
+          "hash": "kJsT+fks9sRNu/+mPxxXV2u4OINjruI9HnrApkkapQ8="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/intro.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/intro.html",
+          "hash": "NEUmhkmT8Z46Qs32YmmVJjbyxPC3r3XWzRsQji8TlDs="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/toc.html",
+          "hash": "+FPCLcvmNhVb9VLasYr6Tnep0PZtIA6V/UOJ0u+1RmE="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "favicon.ico",
+      "output": {
+        "resource": {
+          "relative_path": "favicon.ico"
+        }
+      },
+      "version": ""
+    },
+    {
+      "log_codes": [
+        "InvalidFileLink"
+      ],
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "Qr6ua5Cr+25g2ePsXp2/3iCfO2GjvgvPorHlsRTxZMQ="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "logo.png",
+      "output": {
+        "resource": {
+          "relative_path": "logo.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "logo.svg",
+      "output": {
+        "resource": {
+          "relative_path": "logo.svg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "aVe9U1RxWP3P5E5X/x2rL8jCuFlqix3bHKxtkjZ3zxg="
+        }
+      },
+      "version": ""
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

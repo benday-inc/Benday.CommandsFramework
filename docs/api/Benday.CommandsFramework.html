@@ -1,0 +1,212 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Namespace Benday.CommandsFramework
+ </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Namespace Benday.CommandsFramework
+ ">
+    
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <div class="navbar-brand">
+                <a href="../">
+                  <img id="logo" src="../logo.png" alt="" alt="asdf" width="50" height="50">
+                </a>
+
+              </div>            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Benday.CommandsFramework">
+
+  <h1 id="Benday_CommandsFramework" data-uid="Benday.CommandsFramework" class="text-break">Namespace Benday.CommandsFramework
+</h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">Classes
+</h3>
+      <h4><a class="xref" href="Benday.CommandsFramework.Argument-1.html">Argument&lt;T&gt;</a></h4>
+      <section><p>Base class for arguments</p>
+</section>
+      <h4><a class="xref" href="Benday.CommandsFramework.ArgumentCollection.html">ArgumentCollection</a></h4>
+      <section><p>Collection of arguments. Two common use cases: 1) create a
+collection of arguments in order to describe what arguments are available
+for a command and 2) to represent the arguments on a command with the values
+populated from the command line.</p>
+</section>
+      <h4><a class="xref" href="Benday.CommandsFramework.ArgumentCollectionFactory.html">ArgumentCollectionFactory</a></h4>
+      <section><p>Factory for creating CommandExecutionInfo instances from command line arguments.
+This class <em>should</em> be named CommandExecutionInfoFactory and will be renamed in a future release.</p>
+</section>
+      <h4><a class="xref" href="Benday.CommandsFramework.ArgumentFrameworkConstants.html">ArgumentFrameworkConstants</a></h4>
+      <section><p>Constant strings used by the argument framework.</p>
+</section>
+      <h4><a class="xref" href="Benday.CommandsFramework.AsynchronousCommand.html">AsynchronousCommand</a></h4>
+      <section><p>Base class for commands that require access to async functionality for execution.</p>
+</section>
+      <h4><a class="xref" href="Benday.CommandsFramework.BooleanArgument.html">BooleanArgument</a></h4>
+      <section><p>Argument implementation for working with boolean values</p>
+</section>
+      <h4><a class="xref" href="Benday.CommandsFramework.CommandAttribute.html">CommandAttribute</a></h4>
+      <section><p>Add this attribute to a class to indicate that the class contains a command that
+is runnable through the commands framework. This attribute provides information
+about the command name, whether it uses async execution, and optionally the human
+readable description.</p>
+</section>
+      <h4><a class="xref" href="Benday.CommandsFramework.CommandAttributeUtility.html">CommandAttributeUtility</a></h4>
+      <section><p>Utility methods for accessing command attribute information on the
+types in an assembly.</p>
+</section>
+      <h4><a class="xref" href="Benday.CommandsFramework.CommandBase.html">CommandBase</a></h4>
+      <section><p>Base class for all command implementations</p>
+</section>
+      <h4><a class="xref" href="Benday.CommandsFramework.CommandExecutionInfo.html">CommandExecutionInfo</a></h4>
+      <section><p>Information about the requested command execution.</p>
+</section>
+      <h4><a class="xref" href="Benday.CommandsFramework.CommandInfo.html">CommandInfo</a></h4>
+      <section><p>Information about a command including name, description, and
+required/optional arguments.</p>
+</section>
+      <h4><a class="xref" href="Benday.CommandsFramework.ConsoleTextOutputProvider.html">ConsoleTextOutputProvider</a></h4>
+      <section><p>Implementation of ITextOutputProvider that outputs messages to the system console.</p>
+</section>
+      <h4><a class="xref" href="Benday.CommandsFramework.DateTimeArgument.html">DateTimeArgument</a></h4>
+      <section><p>Argument implementation for working with DateTime values</p>
+</section>
+      <h4><a class="xref" href="Benday.CommandsFramework.ExtensionMethods.html">ExtensionMethods</a></h4>
+      <section><p>Extension methods. Mostly methods for configuring command argument
+definitions using fluent config methods.</p>
+</section>
+      <h4><a class="xref" href="Benday.CommandsFramework.Int32Argument.html">Int32Argument</a></h4>
+      <section><p>Argument that has an int value.</p>
+</section>
+      <h4><a class="xref" href="Benday.CommandsFramework.MissingArgumentException.html">MissingArgumentException</a></h4>
+      <section><p>Exception class for describing missing arguments</p>
+</section>
+      <h4><a class="xref" href="Benday.CommandsFramework.StringArgument.html">StringArgument</a></h4>
+      <section><p>Argument implementation for working with string values</p>
+</section>
+      <h4><a class="xref" href="Benday.CommandsFramework.StringBuilderTextOutputProvider.html">StringBuilderTextOutputProvider</a></h4>
+      <section><p>Implementation of ITextOutputProvider that wraps a StringBuilder.
+This is helpful for checking output during unit testing or
+for implementing a user interface that could call this command</p>
+</section>
+      <h4><a class="xref" href="Benday.CommandsFramework.SynchronousCommand.html">SynchronousCommand</a></h4>
+      <section><p>Base class for commands that are run synchronously.</p>
+</section>
+    <h3 id="interfaces">Interfaces
+</h3>
+      <h4><a class="xref" href="Benday.CommandsFramework.IArgument.html">IArgument</a></h4>
+      <section><p>Interface describing the methods and properties for an argument</p>
+</section>
+      <h4><a class="xref" href="Benday.CommandsFramework.IAsyncCommand.html">IAsyncCommand</a></h4>
+      <section><p>Interface for defining a command as using async
+execution.</p>
+</section>
+      <h4><a class="xref" href="Benday.CommandsFramework.IBooleanArgument.html">IBooleanArgument</a></h4>
+      <section><p>Interface for accessing a boolean argument value</p>
+</section>
+      <h4><a class="xref" href="Benday.CommandsFramework.IDateTimeArgument.html">IDateTimeArgument</a></h4>
+      <section><p>Interface for accessing a DateTime argument value</p>
+</section>
+      <h4><a class="xref" href="Benday.CommandsFramework.IInt32Argument.html">IInt32Argument</a></h4>
+      <section><p>Interface for accessing a int argument value</p>
+</section>
+      <h4><a class="xref" href="Benday.CommandsFramework.ISynchronousCommand.html">ISynchronousCommand</a></h4>
+      <section><p>Interface for definiting a command as using synchronous execution</p>
+</section>
+      <h4><a class="xref" href="Benday.CommandsFramework.ITextOutputProvider.html">ITextOutputProvider</a></h4>
+      <section><p>Interface for handling text output from commands</p>
+</section>
+    <h3 id="enums">Enums
+</h3>
+      <h4><a class="xref" href="Benday.CommandsFramework.ArgumentDataType.html">ArgumentDataType</a></h4>
+      <section><p>Enumeration of the supported argument data types</p>
+</section>
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      
+      Copyright © <a href="https://www.benday.com/">www.benday.com</a> | <a href="mailto:info@benday.com">info@benday.com</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

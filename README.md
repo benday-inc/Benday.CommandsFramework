@@ -1,9 +1,28 @@
-# Commands Framework
+# Benday.CommandsFramework
 
-I feel like I'm always writing command line tools. I've had a framework for writing utility commands for years and I figured that 
-I'd share it with everyone.  
+Do you want to write your own command line interface (CLI) utilities? 
+This framework gives you a way to write synchronous and asynchronous command line tools.
 
-I'll put more info into this README later but if you have questions, feel free to email me at info@benday.com.
+Key features:
+* Command line argument parsing
+* Define named command 
+* Define the valid arguments for each command
+* Argument validation
+* String, boolean, int, and date time arguments
 
-Thanks,
--Ben
+## About
+
+Written by Benjamin Day  
+Pluralsight Author | Microsoft MVP | Scrum.org Professional Scrum Trainer  
+https://www.benday.com  
+info@benday.com 
+
+*Got ideas for git repo sync features you'd like to see? Found a bug? 
+Let us know by submitting an [issue](https://github.com/benday-inc/Benday.CommandsFramework/issues)*. *Want to contribute? Submit a pull request.*
+
+[Source code](https://github.com/benday-inc/Benday.CommandsFramework)
+
+[API Documentation](https://benday-inc.github.io/Benday.CommandsFramework/api/Benday.CommandsFramework.html)
+
+[NuGet Package](https://www.nuget.org/packages/Benday.CommandsFramework/)
+
