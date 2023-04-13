@@ -1760,6 +1760,76 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.ITextOutputProvider.WriteLine
   nameWithType: ITextOutputProvider.WriteLine
+- uid: Benday.CommandsFramework.LineWrapUtilities
+  name: LineWrapUtilities
+  href: api/Benday.CommandsFramework.LineWrapUtilities.html
+  commentId: T:Benday.CommandsFramework.LineWrapUtilities
+  fullName: Benday.CommandsFramework.LineWrapUtilities
+  nameWithType: LineWrapUtilities
+- uid: Benday.CommandsFramework.LineWrapUtilities.AppendWithPadding(System.Text.StringBuilder,System.String,System.Int32)
+  name: AppendWithPadding(StringBuilder, string, int)
+  href: api/Benday.CommandsFramework.LineWrapUtilities.html#Benday_CommandsFramework_LineWrapUtilities_AppendWithPadding_System_Text_StringBuilder_System_String_System_Int32_
+  commentId: M:Benday.CommandsFramework.LineWrapUtilities.AppendWithPadding(System.Text.StringBuilder,System.String,System.Int32)
+  name.vb: AppendWithPadding(StringBuilder, String, Integer)
+  fullName: Benday.CommandsFramework.LineWrapUtilities.AppendWithPadding(System.Text.StringBuilder, string, int)
+  fullName.vb: Benday.CommandsFramework.LineWrapUtilities.AppendWithPadding(System.Text.StringBuilder, String, Integer)
+  nameWithType: LineWrapUtilities.AppendWithPadding(StringBuilder, string, int)
+  nameWithType.vb: LineWrapUtilities.AppendWithPadding(StringBuilder, String, Integer)
+- uid: Benday.CommandsFramework.LineWrapUtilities.AppendWithPadding*
+  name: AppendWithPadding
+  href: api/Benday.CommandsFramework.LineWrapUtilities.html#Benday_CommandsFramework_LineWrapUtilities_AppendWithPadding_
+  commentId: Overload:Benday.CommandsFramework.LineWrapUtilities.AppendWithPadding
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.LineWrapUtilities.AppendWithPadding
+  nameWithType: LineWrapUtilities.AppendWithPadding
+- uid: Benday.CommandsFramework.LineWrapUtilities.AppendWrappedValue(System.Text.StringBuilder,System.String,System.Int32,System.Int32)
+  name: AppendWrappedValue(StringBuilder, string, int, int)
+  href: api/Benday.CommandsFramework.LineWrapUtilities.html#Benday_CommandsFramework_LineWrapUtilities_AppendWrappedValue_System_Text_StringBuilder_System_String_System_Int32_System_Int32_
+  commentId: M:Benday.CommandsFramework.LineWrapUtilities.AppendWrappedValue(System.Text.StringBuilder,System.String,System.Int32,System.Int32)
+  name.vb: AppendWrappedValue(StringBuilder, String, Integer, Integer)
+  fullName: Benday.CommandsFramework.LineWrapUtilities.AppendWrappedValue(System.Text.StringBuilder, string, int, int)
+  fullName.vb: Benday.CommandsFramework.LineWrapUtilities.AppendWrappedValue(System.Text.StringBuilder, String, Integer, Integer)
+  nameWithType: LineWrapUtilities.AppendWrappedValue(StringBuilder, string, int, int)
+  nameWithType.vb: LineWrapUtilities.AppendWrappedValue(StringBuilder, String, Integer, Integer)
+- uid: Benday.CommandsFramework.LineWrapUtilities.AppendWrappedValue*
+  name: AppendWrappedValue
+  href: api/Benday.CommandsFramework.LineWrapUtilities.html#Benday_CommandsFramework_LineWrapUtilities_AppendWrappedValue_
+  commentId: Overload:Benday.CommandsFramework.LineWrapUtilities.AppendWrappedValue
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.LineWrapUtilities.AppendWrappedValue
+  nameWithType: LineWrapUtilities.AppendWrappedValue
+- uid: Benday.CommandsFramework.LineWrapUtilities.GetValueWithPadding(System.String,System.Int32)
+  name: GetValueWithPadding(string, int)
+  href: api/Benday.CommandsFramework.LineWrapUtilities.html#Benday_CommandsFramework_LineWrapUtilities_GetValueWithPadding_System_String_System_Int32_
+  commentId: M:Benday.CommandsFramework.LineWrapUtilities.GetValueWithPadding(System.String,System.Int32)
+  name.vb: GetValueWithPadding(String, Integer)
+  fullName: Benday.CommandsFramework.LineWrapUtilities.GetValueWithPadding(string, int)
+  fullName.vb: Benday.CommandsFramework.LineWrapUtilities.GetValueWithPadding(String, Integer)
+  nameWithType: LineWrapUtilities.GetValueWithPadding(string, int)
+  nameWithType.vb: LineWrapUtilities.GetValueWithPadding(String, Integer)
+- uid: Benday.CommandsFramework.LineWrapUtilities.GetValueWithPadding*
+  name: GetValueWithPadding
+  href: api/Benday.CommandsFramework.LineWrapUtilities.html#Benday_CommandsFramework_LineWrapUtilities_GetValueWithPadding_
+  commentId: Overload:Benday.CommandsFramework.LineWrapUtilities.GetValueWithPadding
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.LineWrapUtilities.GetValueWithPadding
+  nameWithType: LineWrapUtilities.GetValueWithPadding
+- uid: Benday.CommandsFramework.LineWrapUtilities.WrapValue(System.Int32,System.Int32,System.String)
+  name: WrapValue(int, int, string)
+  href: api/Benday.CommandsFramework.LineWrapUtilities.html#Benday_CommandsFramework_LineWrapUtilities_WrapValue_System_Int32_System_Int32_System_String_
+  commentId: M:Benday.CommandsFramework.LineWrapUtilities.WrapValue(System.Int32,System.Int32,System.String)
+  name.vb: WrapValue(Integer, Integer, String)
+  fullName: Benday.CommandsFramework.LineWrapUtilities.WrapValue(int, int, string)
+  fullName.vb: Benday.CommandsFramework.LineWrapUtilities.WrapValue(Integer, Integer, String)
+  nameWithType: LineWrapUtilities.WrapValue(int, int, string)
+  nameWithType.vb: LineWrapUtilities.WrapValue(Integer, Integer, String)
+- uid: Benday.CommandsFramework.LineWrapUtilities.WrapValue*
+  name: WrapValue
+  href: api/Benday.CommandsFramework.LineWrapUtilities.html#Benday_CommandsFramework_LineWrapUtilities_WrapValue_
+  commentId: Overload:Benday.CommandsFramework.LineWrapUtilities.WrapValue
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.LineWrapUtilities.WrapValue
+  nameWithType: LineWrapUtilities.WrapValue
 - uid: Benday.CommandsFramework.MissingArgumentException
   name: MissingArgumentException
   href: api/Benday.CommandsFramework.MissingArgumentException.html
