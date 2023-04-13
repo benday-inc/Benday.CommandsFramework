@@ -141,7 +141,17 @@ public abstract class CommandBase
         });
 
 
-        var consoleWidth = Console.WindowWidth;
+        int consoleWidth; 
+        
+        if (Console.IsOutputRedirected == true)
+        {
+            consoleWidth = 60;
+        }
+        else
+        {
+            consoleWidth = Console.WindowWidth;
+        }        
+        
         var separator = " - ";
         int argNameColumnWidth = (longestName + separator.Length);
         int descriptionColumnWidth = consoleWidth - argNameColumnWidth;
