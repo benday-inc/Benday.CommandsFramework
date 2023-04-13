@@ -87,4 +87,68 @@ public static class LineWrapUtilities
 
         return builder.ToString();
     }
+
+    public static string WrapValue(
+        int linePadding, int maxLineLength, string input)
+    {
+        int maxColumnLength = (maxLineLength - linePadding);
+
+        if (input.Length <= maxColumnLength)
+        {
+            return input;
+        }
+        else
+        {
+            var lines = new List<string>();
+
+            var words = input.Split(' ');
+
+            var lineBuilder = new StringBuilder();
+
+            foreach (var word in words)
+            {
+                if (lineBuilder.Length + (word.Length + 1) <= maxColumnLength)
+                {
+                    // it fits on the line...add it
+                    lineBuilder.Append(' ');
+                    lineBuilder.Append(word);
+                }
+                else
+                {
+                    lines.Add(lineBuilder.ToString());
+
+                    lineBuilder = new StringBuilder();
+
+                    lineBuilder.Append(' ');
+                    lineBuilder.Append(word);
+                }
+            }
+
+            if (lineBuilder.Length > 0)
+            {
+                lines.Add(lineBuilder.ToString());
+            }
+
+            var returnValueBuilder = new StringBuilder();
+
+            bool isFirst = true;
+
+            foreach (var line in lines)
+            {
+                if (isFirst == true)
+                {
+                    returnValueBuilder.Append(line.Trim());
+                    isFirst = false;
+                }
+                else
+                {
+                    returnValueBuilder.AppendLine();
+                    returnValueBuilder.Append(' ', linePadding);
+                    returnValueBuilder.Append(line.Trim());
+                }
+            }
+
+            return returnValueBuilder.ToString();
+        }
+    }
 }
