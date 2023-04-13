@@ -135,7 +135,7 @@ public abstract class CommandBase
         builder.AppendLine("** USAGE **");
         builder.AppendLine(ExecutionInfo.CommandName);
 
-        var longestName = Arguments.Keys.Max(x =>
+        var longestNameLength = Arguments.Keys.Max(x =>
         {
             return GetKeyString(Arguments[x]).Length;
         });
@@ -153,43 +153,29 @@ public abstract class CommandBase
         }        
         
         var separator = " - ";
-        int argNameColumnWidth = (longestName + separator.Length);
-        int descriptionColumnWidth = consoleWidth - argNameColumnWidth;
-
-
+        int argNameColumnWidth = (longestNameLength + separator.Length);
+        
         foreach (var key in Arguments.Keys)
         {
             var arg = Arguments[key];
             if (arg.Name == arg.Description || string.IsNullOrEmpty(arg.Description) == true)
             {
                 // description has an empty value or the value is the same as the arg name
-                builder.AppendWithPadding(GetKeyString(arg), longestName);
+                builder.AppendWithPadding(GetKeyString(arg), longestNameLength);
             }
             else
             {
                 // description has an actual value
 
                 var paddedKeyString = LineWrapUtilities.GetValueWithPadding(
-                    GetKeyString(arg), longestName);
+                    GetKeyString(arg), longestNameLength);
 
-                var remainingCharCount =
-                    arg.Description.Length -
-                    argNameColumnWidth;
+                builder.Append(paddedKeyString);
+                builder.Append(separator);
+                builder.AppendWrappedValue(arg.Description,
+                    consoleWidth, argNameColumnWidth);
 
-                if (remainingCharCount <= descriptionColumnWidth)
-                {
-                    builder.AppendLine(
-                        $"{paddedKeyString}{separator}{arg.Description}");
-                }
-                else
-                {
-                    builder.Append(paddedKeyString);
-                    builder.Append(separator);
-                    builder.AppendWrappedValue(arg.Description,
-                        descriptionColumnWidth, argNameColumnWidth);
-
-                    builder.AppendLine();
-                }
+                builder.AppendLine();
             }
         }
     }
