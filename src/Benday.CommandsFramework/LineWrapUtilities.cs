@@ -46,6 +46,13 @@ public static class LineWrapUtilities
         return builder.ToString();
     }
 
+    /// <summary>
+    /// Wraps the input value into multiple lines if needed.
+    /// </summary>
+    /// <param name="linePadding">Number of spaces at the start of each wrapped line</param>
+    /// <param name="maxLineLength">Max length for each line including the value and padding</param>
+    /// <param name="input">Value to wrap</param>
+    /// <returns>Wrapped value</returns>
     public static string WrapValue(
         int linePadding, int maxLineLength, string input)
     {
