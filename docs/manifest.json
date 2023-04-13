@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.Argument-1.html",
-          "hash": "GKNma3cb35lyHFJ9+QRmlNUZlfSUmsdLfrpDQJ4dbAs="
+          "hash": "rDdZ8EMW+1l5WxrnQKt6rZMc+20nPnDPLtOwYJxITyE="
         }
       },
       "version": ""
@@ -20,7 +20,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.ArgumentCollection.html",
-          "hash": "uqWeZoXyHtmnnQex34CWYtNEq3wxTq8t+FaCvDhqui8="
+          "hash": "uBrRRFKwXY78Vj1mvbyXyEOmuk6gA3B2/JjuoOfL7TA="
         }
       },
       "version": ""
@@ -31,7 +31,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.ArgumentCollectionFactory.html",
-          "hash": "/YGSagD6yPElGy54lv4Ie5UqDR1j/IZqiRxoHal/Ej0="
+          "hash": "cDlOI/QhfuCj/ESzDQ/yDTZv8cRl4W67Y7QcIwDw2Ro="
         }
       },
       "version": ""
@@ -42,7 +42,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.ArgumentDataType.html",
-          "hash": "fGuDeqKWSrOj5PjapclJQ8j06v1u3fSKzdNVBG5zh7M="
+          "hash": "FC/n4DyDWek1Re1ZlFgxL583eKrUDb/PcV8JArBwNkk="
         }
       },
       "version": ""
@@ -53,7 +53,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.ArgumentFrameworkConstants.html",
-          "hash": "aLFujhKnDCBoTwquwE/+vC6ESA8NbiwIiOmkI27Y1xA="
+          "hash": "KPEWSmk1pU39VWfiYMqdf6XKZN42e1zUsBMvqQ+m8Vg="
         }
       },
       "version": ""
@@ -64,7 +64,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.AsynchronousCommand.html",
-          "hash": "Ta2AStNyBwKMRapIhU+LozTHDwiJL50+DS1nFawdzPo="
+          "hash": "p3x9F0BDluF58lSOtNO25ZE5jSS1tFYrRFQ57BVsz6o="
         }
       },
       "version": ""
@@ -75,7 +75,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.BooleanArgument.html",
-          "hash": "yCFL/7Xr+1CsJUD5eLgXb7UP+O1o9HpU8VEd7le/Tms="
+          "hash": "DjeMJnKTi6s47hm3+5ZyHZq0t/Umk00otnEwmiQX2qA="
         }
       },
       "version": ""
@@ -86,7 +86,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.CommandAttribute.html",
-          "hash": "oAD0CVuO7jlzgwB1EQzH5ovP2VwJmFzUGmLpIEJuY64="
+          "hash": "npzK8Jz9cXD6w9IAh5YcMQ3tVxRKw1gt4dLkOknn+aM="
         }
       },
       "version": ""
@@ -97,7 +97,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.CommandAttributeUtility.html",
-          "hash": "PBWGT40XwiqBLTMKLSdH4e56txUwP4FBvWh2fphpsfY="
+          "hash": "K2UIQ2AjAi1LYn4n5D6deg+cVoROtO2ZIkjSjZrZrvY="
         }
       },
       "version": ""
@@ -108,7 +108,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.CommandBase.html",
-          "hash": "9dQU4T5IpLq5HBYRgqRjCLyoRC9F11r5catdS1I5reA="
+          "hash": "HZOVdwZz0TSNiMN0BBMVzLOjpIVwKnGCq5Vtu+mHavk="
         }
       },
       "version": ""
@@ -119,7 +119,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.CommandExecutionInfo.html",
-          "hash": "of8f4cDNm7snl+XigCyLVQilaijWVxv30bpY7qezb94="
+          "hash": "k9jy+y+vjTvn8hBhxuZ74ezIyD7aGiFXRKYqCAmG6Wg="
         }
       },
       "version": ""
@@ -130,7 +130,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.CommandInfo.html",
-          "hash": "f6gDiXR6tPxaCyBdobhcAIxfEGQyE9X/5qsYjX7cspk="
+          "hash": "HLvDSe87LRGwxUymsp5FYZEIKIJmXzZpNnIn6yW8r3E="
         }
       },
       "version": ""
@@ -141,7 +141,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.ConsoleTextOutputProvider.html",
-          "hash": "J20QMDyWhajj+1OcTkWRyK43Unbu1PC+/svMJGqu9gM="
+          "hash": "OXlnVKyIbXIZ3l9Q8sUuldnEImofBxcDloBkGTXqa1c="
         }
       },
       "version": ""
@@ -152,7 +152,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.DateTimeArgument.html",
-          "hash": "NmLCkcjSkzcyFEMzqZSNM4racdbHu+ERmL6wET8ieco="
+          "hash": "LeqVdE4YAD7iPY5CKlsWJ+P8t9nZfaLJWbXVXXwzy38="
         }
       },
       "version": ""
@@ -163,7 +163,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.ExtensionMethods.html",
-          "hash": "4ib6gRhUaReG+1hpgvtDMNLoE0Iulx54JzlPdmVxIhc="
+          "hash": "nqOTQVbJSJ01PvFwK18CcP+dvq1yxjb/I8TOhdJ33bg="
         }
       },
       "version": ""
@@ -174,7 +174,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.IArgument.html",
-          "hash": "Gh4eoysbZ62ohnGRCxIz6jL0l+8SlzAPmYgdGKUsetY="
+          "hash": "v5caM2gTR23lfO3RTigISqFcqOZ60G8HZSfQYcn/39A="
         }
       },
       "version": ""
@@ -185,7 +185,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.IAsyncCommand.html",
-          "hash": "p7UomgXUrBzRTVjAsEo0ZFvPTk1C6hBvuBwcfMx0+pk="
+          "hash": "K0f1opIfSORvDPHZv4uZ8S3vfMQ3X5J8ugHJ3Di2t9k="
         }
       },
       "version": ""
@@ -196,7 +196,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.IBooleanArgument.html",
-          "hash": "Y6OsXc5tui35IqvRBByHbjdrz33z1JkntH0z58DJ0Mo="
+          "hash": "CCQB+Tk3DWnki4r+3VDEtSOwBRnRAgMc1vXq+uW3W4s="
         }
       },
       "version": ""
@@ -207,7 +207,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.IDateTimeArgument.html",
-          "hash": "QU2a2JqBJc2hOnepJ3zGjZeXMyLdUDML+gBJkPVWYf8="
+          "hash": "Zt8fjooS60T/p8O+NJWHhjxJAto/2LX2SeeBtHuAvf0="
         }
       },
       "version": ""
@@ -218,7 +218,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.IInt32Argument.html",
-          "hash": "wH+9mHR/DUUhaGvsjegke3YcPrAcPQznDkO6r3lTPW4="
+          "hash": "x6JMjWQub3onBxhUcufyApRv6hiexUPl/cL7RI51zgA="
         }
       },
       "version": ""
@@ -229,7 +229,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.ISynchronousCommand.html",
-          "hash": "ByFRv5RzQhstzhU1FE3FAc4Id7jJVOsT0XdcnlP5kME="
+          "hash": "LGjhuci65cUxbQJNVV2r7AXTZJ5c4O+541bkPpeOBxM="
         }
       },
       "version": ""
@@ -240,7 +240,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.ITextOutputProvider.html",
-          "hash": "IQwy4PZWH24j5YWFBBsfOzQlLnAUycYQFO5OKOi14gA="
+          "hash": "sFBhoPeR4IMz82HaKnnq8xkG30s3HMD26VGs4bOOuuI="
         }
       },
       "version": ""
@@ -251,7 +251,18 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.Int32Argument.html",
-          "hash": "ToXuhUsEwivDhSlCrVntVjIhovaujj08zv+3kSRtPcw="
+          "hash": "J/Z1yBtK29hnxmJ42YSmw3BFJjqjnY+PFYKKWo2XcIk="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.LineWrapUtilities.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.LineWrapUtilities.html",
+          "hash": "SDugIE9wGsQHNHSpLV0BzuJRYMnx35lKv9VbrUna4WU="
         }
       },
       "version": ""
@@ -262,7 +273,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.MissingArgumentException.html",
-          "hash": "733BzwWp7sGsmpVp79gEC92FSsgDfj1peXF007rch+o="
+          "hash": "jtkarXhy0RhJQGabI5f7wjtTjIoOhQ9uMGIqQE/7noU="
         }
       },
       "version": ""
@@ -273,7 +284,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.StringArgument.html",
-          "hash": "FGxx7z3bH3BQP5tbvDXWTikub8LZBuAACcNqQuqPxNY="
+          "hash": "NIMSElEV8UmQr+VmfLcE1CdlZ4nyfsuD59jHKCq9Uyk="
         }
       },
       "version": ""
@@ -284,7 +295,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.StringBuilderTextOutputProvider.html",
-          "hash": "tZ2hsgtdDNnQIt06scFgfvWHEHlUp75YRtq7o3Rr3cI="
+          "hash": "bplgW4CLBZNv4laYSNfbKzoHlIo9zFicAjPW8C/rnTM="
         }
       },
       "version": ""
@@ -295,7 +306,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.SynchronousCommand.html",
-          "hash": "f5/2HgYXiZJgIYYdbsiJofSwy3f2Z4kmzlwues1caHM="
+          "hash": "Zemao5kkuU0N4H7V2NOZFMyDfzin/bGDrRIATQQXj4Y="
         }
       },
       "version": ""
@@ -306,7 +317,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.html",
-          "hash": "NPgYW7fvyrevHOXu7m7u8wz4DO9b17u/X5gQRQfXpsE="
+          "hash": "BFmQn4pEHqw+le47iEFDEev0z6ooYwMoTr/v5kJyFIs="
         }
       },
       "version": ""
@@ -317,7 +328,7 @@
       "output": {
         ".html": {
           "relative_path": "api/index.html",
-          "hash": "gpIMKsHVKlh6TxMknd+7UPO4uaqiKhzW1zofQRuon5Y="
+          "hash": "efMPa8Tt2sWR6F/Uq4t+8euQkew9s52EaaYO0WUIYwg="
         }
       },
       "version": ""
@@ -328,7 +339,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "kJsT+fks9sRNu/+mPxxXV2u4OINjruI9HnrApkkapQ8="
+          "hash": "HkBio+MkwYCGBreGie4p6G+1eDBGCLpW3DPx67GY29Y="
         }
       },
       "version": ""
@@ -339,7 +350,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/intro.html",
-          "hash": "NEUmhkmT8Z46Qs32YmmVJjbyxPC3r3XWzRsQji8TlDs="
+          "hash": "5h6XDZIwJfbHHGOcFVzvKMTaalEpW6to3BYvjcJ2YH4="
         }
       },
       "version": ""
@@ -374,7 +385,7 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "Qr6ua5Cr+25g2ePsXp2/3iCfO2GjvgvPorHlsRTxZMQ="
+          "hash": "eTvN4WRxqIbG/Sux0nonq4VrUjdgYizTdQi6DEqaf7M="
         }
       },
       "version": ""

@@ -107,6 +107,18 @@ public abstract class CommandBase
         _OutputProvider.WriteLine(builder.ToString());
     }
 
+    private string GetKeyString(IArgument arg)
+    {
+        if (arg.IsRequired == true)
+        {
+             return $"/{arg.Name}:{arg.DataType}";
+        }
+        else
+        {
+            return $"[/{arg.Name}:{arg.DataType}]";
+        }
+    }
+
     /// <summary>
     /// Adds the command usage description to the provided string builder
     /// </summary>
@@ -123,34 +135,47 @@ public abstract class CommandBase
         builder.AppendLine("** USAGE **");
         builder.AppendLine(ExecutionInfo.CommandName);
 
+        var longestNameLength = Arguments.Keys.Max(x =>
+        {
+            return GetKeyString(Arguments[x]).Length;
+        });
+
+
+        int consoleWidth; 
+        
+        if (Console.IsOutputRedirected == true)
+        {
+            consoleWidth = 60;
+        }
+        else
+        {
+            consoleWidth = Console.WindowWidth;
+        }        
+        
+        var separator = " - ";
+        int argNameColumnWidth = (longestNameLength + separator.Length);
+        
         foreach (var key in Arguments.Keys)
         {
-            var temp = Arguments[key];
-            if (temp.Name == temp.Description || string.IsNullOrEmpty(temp.Description) == true)
+            var arg = Arguments[key];
+            if (arg.Name == arg.Description || string.IsNullOrEmpty(arg.Description) == true)
             {
                 // description has an empty value or the value is the same as the arg name
-
-                if (temp.IsRequired == true)
-                {
-                    builder.AppendLine($"/{key}:{temp.DataType}");
-                }
-                else
-                {
-                    builder.AppendLine($"[/{key}:{temp.DataType}]");
-                }
+                builder.AppendWithPadding(GetKeyString(arg), longestNameLength);
             }
             else
             {
                 // description has an actual value
 
-                if (temp.IsRequired == true)
-                {
-                    builder.AppendLine($"/{key}:{temp.DataType} -- {temp.Description}");
-                }
-                else
-                {
-                    builder.AppendLine($"[/{key}:{temp.DataType}] -- {temp.Description}");
-                }
+                var paddedKeyString = LineWrapUtilities.GetValueWithPadding(
+                    GetKeyString(arg), longestNameLength);
+
+                builder.Append(paddedKeyString);
+                builder.Append(separator);
+                builder.AppendWrappedValue(arg.Description,
+                    consoleWidth, argNameColumnWidth);
+
+                builder.AppendLine();
             }
         }
     }
