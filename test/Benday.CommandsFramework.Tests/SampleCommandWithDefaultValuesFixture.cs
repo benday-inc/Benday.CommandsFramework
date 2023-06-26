@@ -115,7 +115,7 @@ public class SampleCommandWithDefaultValuesFixture
         Console.WriteLine(output);
         Assert.IsTrue(output.Contains("** SUCCESS **"), "Did not contain expected string");
 
-        Assert.IsTrue(output.Contains("thing-date: 1/1/2001"), "Did not contain expected string for thing-date");
+        Assert.IsTrue(output.Contains($"thing-date: {new DateTime(2001, 01, 01)}"), "Did not contain expected string for thing-date");
         Assert.IsTrue(output.Contains("thing-number: 456"), "Did not contain expected string for thing-number");
         Assert.IsTrue(output.Contains("isThingy: False"), "Did not contain expected string for isThingy");
         Assert.IsTrue(output.Contains("bingbong: blah"), "Did not contain expected string bingbong");
