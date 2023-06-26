@@ -1397,6 +1397,22 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.ExtensionMethods.RemoveArgumentValue
   nameWithType: ExtensionMethods.RemoveArgumentValue
+- uid: Benday.CommandsFramework.ExtensionMethods.WithDefaultValue*
+  name: WithDefaultValue
+  href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_WithDefaultValue_
+  commentId: Overload:Benday.CommandsFramework.ExtensionMethods.WithDefaultValue
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.ExtensionMethods.WithDefaultValue
+  nameWithType: ExtensionMethods.WithDefaultValue
+- uid: Benday.CommandsFramework.ExtensionMethods.WithDefaultValue``1(Benday.CommandsFramework.Argument{``0},``0)
+  name: WithDefaultValue<T>(Argument<T>, T)
+  href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_WithDefaultValue__1_Benday_CommandsFramework_Argument___0____0_
+  commentId: M:Benday.CommandsFramework.ExtensionMethods.WithDefaultValue``1(Benday.CommandsFramework.Argument{``0},``0)
+  name.vb: WithDefaultValue(Of T)(Argument(Of T), T)
+  fullName: Benday.CommandsFramework.ExtensionMethods.WithDefaultValue<T>(Benday.CommandsFramework.Argument<T>, T)
+  fullName.vb: Benday.CommandsFramework.ExtensionMethods.WithDefaultValue(Of T)(Benday.CommandsFramework.Argument(Of T), T)
+  nameWithType: ExtensionMethods.WithDefaultValue<T>(Argument<T>, T)
+  nameWithType.vb: ExtensionMethods.WithDefaultValue(Of T)(Argument(Of T), T)
 - uid: Benday.CommandsFramework.ExtensionMethods.WithDescription*
   name: WithDescription
   href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_WithDescription_
