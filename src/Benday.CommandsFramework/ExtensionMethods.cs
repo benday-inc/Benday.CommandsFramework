@@ -86,6 +86,33 @@ public static class ExtensionMethods
     }
 
     /// <summary>
+    /// Adds a default value for the argument definition
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="arg">Argument definition to configure</param>
+    /// <param name="defaultValue">Default value</param>
+    /// <returns>The argument</returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    public static Argument<T> WithDefaultValue<T>(
+        this Argument<T> arg, T defaultValue)
+    {
+        if (arg == null)
+        {
+            throw new ArgumentNullException(nameof(arg));
+        }
+        else if (defaultValue == null)
+        {
+            throw new ArgumentNullException(nameof(arg));
+        }
+        else
+        {
+            arg.TrySetValue(defaultValue.ToString());
+
+            return arg;
+        }
+    }
+
+    /// <summary>
     /// Configures an argument definition to allow empty values
     /// </summary>
     /// <typeparam name="T"></typeparam>
