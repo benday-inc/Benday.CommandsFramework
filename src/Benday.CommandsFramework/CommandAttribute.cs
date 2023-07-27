@@ -24,4 +24,9 @@ public class CommandAttribute : Attribute
     /// Human readable description of the command.
     /// </summary>
     public string Description { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Category for the command. This is used to group commands together in the help output.
+    /// </summary>
+    public string Category { get; set; } = string.Empty;
 }
