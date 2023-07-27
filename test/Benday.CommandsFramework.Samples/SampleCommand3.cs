@@ -1,6 +1,6 @@
 ﻿namespace Benday.CommandsFramework.Samples;
 
-[Command(Name = ApplicationConstants.CommandName_Command3)]
+[Command(Name = ApplicationConstants.CommandName_Command3, Category = "thingy")]
 public class SampleCommand3 : SynchronousCommand
 {
     public SampleCommand3(CommandExecutionInfo info, ITextOutputProvider outputProvider) : base(info, outputProvider)
