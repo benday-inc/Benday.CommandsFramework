@@ -207,6 +207,7 @@ public class CommandAttributeUtility
             info.Name = item.Name;
             info.Description = item.Description;
             info.IsAsync = item.IsAsync;
+            info.Category = item.Category;
 
             var command = GetCommand(
                 new []{ item.Name, ArgumentFrameworkConstants.ArgumentHelpString }, 

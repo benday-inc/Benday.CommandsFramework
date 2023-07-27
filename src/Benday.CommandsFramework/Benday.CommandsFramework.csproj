@@ -13,8 +13,8 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>bdc_mark_128_128.png</PackageIcon>
-    <AssemblyVersion>2.3.0.0</AssemblyVersion>
-    <Version>$(VersionPrefix)2.3.0</Version>
+    <AssemblyVersion>2.3.1.0</AssemblyVersion>
+    <Version>$(VersionPrefix)2.3.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
