@@ -659,6 +659,19 @@ references:
   commentId: T:Benday.CommandsFramework.CommandAttribute
   fullName: Benday.CommandsFramework.CommandAttribute
   nameWithType: CommandAttribute
+- uid: Benday.CommandsFramework.CommandAttribute.Category
+  name: Category
+  href: api/Benday.CommandsFramework.CommandAttribute.html#Benday_CommandsFramework_CommandAttribute_Category
+  commentId: P:Benday.CommandsFramework.CommandAttribute.Category
+  fullName: Benday.CommandsFramework.CommandAttribute.Category
+  nameWithType: CommandAttribute.Category
+- uid: Benday.CommandsFramework.CommandAttribute.Category*
+  name: Category
+  href: api/Benday.CommandsFramework.CommandAttribute.html#Benday_CommandsFramework_CommandAttribute_Category_
+  commentId: Overload:Benday.CommandsFramework.CommandAttribute.Category
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandAttribute.Category
+  nameWithType: CommandAttribute.Category
 - uid: Benday.CommandsFramework.CommandAttribute.Description
   name: Description
   href: api/Benday.CommandsFramework.CommandAttribute.html#Benday_CommandsFramework_CommandAttribute_Description
