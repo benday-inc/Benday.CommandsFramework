@@ -96,6 +96,14 @@ public abstract class CommandBase
     }
 
     /// <summary>
+    /// Write a new line to the output provider
+    /// </summary>    
+    protected virtual void WriteLine()
+    {
+        _OutputProvider.WriteLine();
+    }
+
+    /// <summary>
     /// Displays the command usage description
     /// </summary>
     protected virtual void DisplayUsage()
