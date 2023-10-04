@@ -64,7 +64,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.AsynchronousCommand.html",
-          "hash": "YQuOIMPoaStV0PElGTZLeil1s2/jHGlxDyQCL5nnLeE="
+          "hash": "kuvo1FobZbu+oNflUHAG5FpEiZxIHRPboYbxdObWDtw="
         }
       },
       "version": ""
@@ -108,7 +108,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.CommandBase.html",
-          "hash": "dRkfDTFoxMu1lzorP1zrtJx0eCEafKxSGETydni9w8s="
+          "hash": "tf/LbOI1JC2vnv6NKNulxGyIKG2aILbt72RArLKqiHs="
         }
       },
       "version": ""
@@ -130,7 +130,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.CommandInfo.html",
-          "hash": "cjBTyHbSwHR/bVN3Y7NxaVHFv+ZzWR6Uim2IzhCIByw="
+          "hash": "uM3GK9RoLuYPF5kRuFBHXLgw4b4DeJNpyspCSaIxUxA="
         }
       },
       "version": ""
@@ -153,6 +153,39 @@
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.DateTimeArgument.html",
           "hash": "dFzdOYSixL/IcDw9lBn831HoMNORFJR8a/iomVgHq2A="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.DefaultProgram.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.DefaultProgram.html",
+          "hash": "NibNGDvgaV2FEDxdwRy7v4Cut0qyfzWiD4/M+CdTKhA="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.DefaultProgramOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.DefaultProgramOptions.html",
+          "hash": "j3AqMWB9LPzBRlmITbpw4nl6iyf+FrWn/6Nq/1Tt4hE="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.DisplayUsageOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.DisplayUsageOptions.html",
+          "hash": "+3UoH6odAavZc9LPnefZKtlJDmN39sej9ST7PPTl9Kw="
         }
       },
       "version": ""
@@ -258,6 +291,17 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.KnownException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.KnownException.html",
+          "hash": "3z+lFkwgqm08UH38wBP+5sp1ZYlS4DdfFTQvh0rdop8="
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Benday.CommandsFramework.LineWrapUtilities.yml",
       "output": {
         ".html": {
@@ -306,7 +350,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.SynchronousCommand.html",
-          "hash": "oBe1aqeX7cLRKZN9ZIoK4vJoub5lVw7sFmLVbb8w4K4="
+          "hash": "EoKCewNIN1APAL1V7zk0sBzyutw4rU6JO2M4rSJXPW0="
         }
       },
       "version": ""
@@ -317,7 +361,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.html",
-          "hash": "BFmQn4pEHqw+le47iEFDEev0z6ooYwMoTr/v5kJyFIs="
+          "hash": "CkA2XIMjeitVoP6RhYAMbGSI3GxqBA0A4UyYXPVSfKw="
         }
       },
       "version": ""
@@ -339,7 +383,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "HkBio+MkwYCGBreGie4p6G+1eDBGCLpW3DPx67GY29Y="
+          "hash": "BMNzPGHfDyyvdqZ0giyWDShxHAqgyu+AzdbMrCOGm7k="
         }
       },
       "version": ""
