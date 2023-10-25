@@ -86,6 +86,25 @@ public static class ExtensionMethods
     }
 
     /// <summary>
+    /// Adds a alias to an argument definition
+    /// </summary>
+    /// <param name="collection">Argument collection</param>
+    /// <param name="alias">Alternate name for the argument</param>
+    public static Argument<T> WithAlias<T>(
+        this Argument<T> arg, string alias)
+    {
+        if (arg == null)
+        {
+            throw new ArgumentNullException(nameof(arg));
+        }
+        else
+        {
+            arg.Alias = alias;
+            return arg;
+        }
+    }
+
+    /// <summary>
     /// Adds a default value for the argument definition
     /// </summary>
     /// <typeparam name="T"></typeparam>

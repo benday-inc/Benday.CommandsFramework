@@ -229,6 +229,24 @@ public class StringArgumentFixture
     }
 
     [TestMethod]
+    public void SetAliasViaFluentMethod_StringAlias()
+    {
+        // arrange
+        InitializeWithAllTheArgsExceptAlias();
+        var expectedAlias = "ALIAS123";
+
+        var expectedHasAlias = true;
+
+        // act
+        SystemUnderTest.WithAlias(expectedAlias);
+
+        // assert
+        var actualHasAlias = SystemUnderTest.HasAlias;
+        Assert.AreEqual<bool>(expectedHasAlias, actualHasAlias, "HasAlias value is wrong");
+        Assert.AreEqual<string>(expectedAlias, SystemUnderTest.Alias, $"Alias value was wrong");
+    }
+
+    [TestMethod]
     public void IsValid_NoValueSet_Required_AllowEmptyValueFalse_False()
     {
         // arrange
