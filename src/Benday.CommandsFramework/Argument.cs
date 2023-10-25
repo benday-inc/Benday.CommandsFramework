@@ -152,16 +152,13 @@ public abstract class Argument<T> : IArgument
     public string Name { get; set; }
 
     /// <summary>
-    /// Should this value come from an unnamed argument on the command line? 
-    /// If yes, the Alias value will be the POSITION_x.  
-    /// </summary>
-    public bool IsPositionalSource { get; set; }
-
-    /// <summary>
     /// The alternate name of the argument when used on the command line
     /// </summary>
     public string Alias { get; set; }
 
+    /// <summary>
+    /// Returns true if a command name alias is set
+    /// </summary>
     public bool HasAlias
     {
         get
@@ -184,6 +181,11 @@ public abstract class Argument<T> : IArgument
         }
     }
 
+    /// <summary>
+    /// Should this value come from an unnamed argument on the command line? 
+    /// If yes, the Alias value will be the POSITION_x.  
+    /// </summary>
+    public bool IsPositionalSource { get; set; }
 
     /// <summary>
     /// Is this argument required to have a value in order to be valid?

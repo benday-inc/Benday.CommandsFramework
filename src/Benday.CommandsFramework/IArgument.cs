@@ -36,6 +36,22 @@ public interface IArgument
     string Name { get; set; }
 
     /// <summary>
+    /// The alternate name of the argument when used on the command line
+    /// </summary>
+    string Alias { get; set; }
+
+    /// <summary>
+    /// Returns true if a command name alias is set
+    /// </summary>
+    bool HasAlias { get; }
+    
+    /// <summary>
+    /// Should this value come from an unnamed argument on the command line? 
+    /// If yes, the Alias value will be the POSITION_x.  
+    /// </summary>
+    public bool IsPositionalSource { get; set; }
+
+    /// <summary>
     /// Value for the argument
     /// </summary>
     string Value { get; }

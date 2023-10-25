@@ -117,14 +117,29 @@ public abstract class CommandBase
 
     private string GetKeyString(IArgument arg)
     {
-        if (arg.IsRequired == true)
+        if (arg.IsPositionalSource == true)
         {
-             return $"/{arg.Name}:{arg.DataType}";
+            if (arg.IsRequired == true)
+            {
+                return $"{{{arg.Name}:{arg.DataType}}}";
+            }
+            else
+            {
+                return $"[{{{arg.Name}:{arg.DataType}}}]";
+            }
         }
         else
         {
-            return $"[/{arg.Name}:{arg.DataType}]";
+            if (arg.IsRequired == true)
+            {
+                return $"/{arg.Name}:{arg.DataType}";
+            }
+            else
+            {
+                return $"[/{arg.Name}:{arg.DataType}]";
+            }
         }
+        
     }
 
     /// <summary>
@@ -162,11 +177,19 @@ public abstract class CommandBase
         
         var separator = " - ";
         int argNameColumnWidth = (longestNameLength + separator.Length);
+
+        var positionalArgs = new List<IArgument>();
         
         foreach (var key in Arguments.Keys)
         {
             var arg = Arguments[key];
-            if (arg.Name == arg.Description || string.IsNullOrEmpty(arg.Description) == true)
+            
+            if (arg.IsPositionalSource == true)
+            {
+                positionalArgs.Add(arg);
+                continue;
+            }
+            else if (arg.Name == arg.Description || string.IsNullOrEmpty(arg.Description) == true)
             {
                 // description has an empty value or the value is the same as the arg name
                 builder.AppendWithPadding(GetKeyString(arg), longestNameLength);
@@ -184,6 +207,34 @@ public abstract class CommandBase
                     consoleWidth, argNameColumnWidth);
 
                 builder.AppendLine();
+            }
+        }
+
+        if (positionalArgs.Count > 0)
+        {
+            var argsSortedByPosition = positionalArgs.OrderBy(a => a.Alias);
+
+            foreach (var arg in argsSortedByPosition)
+            {
+                if (arg.Name == arg.Description || string.IsNullOrEmpty(arg.Description) == true)
+                {
+                    // description has an empty value or the value is the same as the arg name
+                    builder.AppendWithPadding(GetKeyString(arg), longestNameLength);
+                }
+                else
+                {
+                    // description has an actual value
+
+                    var paddedKeyString = LineWrapUtilities.GetValueWithPadding(
+                        GetKeyString(arg), longestNameLength);
+
+                    builder.Append(paddedKeyString);
+                    builder.Append(separator);
+                    builder.AppendWrappedValue(arg.Description,
+                        consoleWidth, argNameColumnWidth);
+
+                    builder.AppendLine();
+                }
             }
         }
     }
