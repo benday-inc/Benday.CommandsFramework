@@ -74,7 +74,7 @@ public class ArgumentCollection : IEnumerable<IArgument>
             {
                 _Arguments.Add(key, value);
             }
-        }            
+        }
     }
 
     /// <summary>
@@ -149,11 +149,21 @@ public class ArgumentCollection : IEnumerable<IArgument>
         }
         else
         {
+            var aliasedArgs = _Arguments.Values.
+                Where(a => a.HasAlias == true).
+                ToDictionary(a => a.Alias, a => a);
+
             foreach (var key in fromArguments.Keys)
             {
                 if (_Arguments.ContainsKey(key) == true)
                 {
                     var targetArg = _Arguments[key];
+
+                    targetArg.TrySetValue(fromArguments[key]);
+                }
+                else if (aliasedArgs.ContainsKey(key) == true)
+                {
+                    var targetArg = aliasedArgs[key];
 
                     targetArg.TrySetValue(fromArguments[key]);
                 }

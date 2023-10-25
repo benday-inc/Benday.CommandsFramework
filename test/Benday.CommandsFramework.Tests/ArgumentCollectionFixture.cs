@@ -217,6 +217,34 @@ public class ArgumentCollectionFixture
     }
 
     [TestMethod]
+    public void SetValues_PositionalArgs()
+    {
+        // arrange
+        var expectedArgs = new Dictionary<string, IArgument>();
+        
+        expectedArgs.Add("arg1", new StringArgument("arg1", true, "argument 1", true, false).FromPositionalArgument(1));
+
+        _SystemUnderTest = new(expectedArgs);
+
+        var commandLineArgs = Utilities.GetStringArray(
+            "commandname1",
+            "/isawesome:true",
+            "/count:4321",
+            "/dateofthingy:12/25/2022",
+            "/verbose",
+            "this-is-arg1"
+            );
+
+        var valueArgs = new ArgumentCollectionFactory().Parse(commandLineArgs, true);
+
+        // act
+        SystemUnderTest.SetValues(valueArgs.Arguments);
+
+        // assert
+        AssertArgumentValue("arg1", "this-is-arg1");
+    }
+
+    [TestMethod]
     public void ExtensionMethods_GetBooleanValue_ArgDoesNotAllowEmptyValue_True()
     {
         // arrange
@@ -335,7 +363,7 @@ public class ArgumentCollectionFixture
 
         Assert.IsNotNull(actualAsTyped, $"Could not convert '{expectedKey}' argument to StringArgument");
 
-        Assert.IsTrue(actualAsTyped.Validate(), "Should be valid");
+        Assert.IsTrue(actualAsTyped.Validate(), $"Arg named '{expectedKey}' should be valid");
 
         Assert.AreEqual<string>(expectedValue, actualAsTyped.Value, $"Value for key named '{expectedKey}' was wrong");
     }

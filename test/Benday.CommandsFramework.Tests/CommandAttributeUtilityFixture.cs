@@ -33,7 +33,7 @@ public class CommandAttributeUtilityFixture
     public void GetAvailableCommandNames()
     {
         // arrange
-        var expectedCount = 4;
+        var expectedCount = 5;
         var sampleAssembly = typeof(Benday.CommandsFramework.Samples.SampleCommand1).Assembly;
 
         // act

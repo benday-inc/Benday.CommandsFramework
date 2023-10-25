@@ -47,7 +47,7 @@ public class SampleCommandWithPositionalSourcesFixture
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
-            ApplicationConstants.CommandName_CommandWithDefaultValues,
+            ApplicationConstants.CommandName_CommandWithPositionalSources,
             ArgumentFrameworkConstants.ArgumentHelpString
             );
 
@@ -83,14 +83,17 @@ public class SampleCommandWithPositionalSourcesFixture
     }
 
     [TestMethod]
-    public void CreateAndRun_Valid_NoArgsSuppliedUsesDefaults()
+    public void CreateAndRun_Valid_RequiredPositionalAppearsInValues_OnlyRequired()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
-            ApplicationConstants.CommandName_CommandWithDefaultValues
+            ApplicationConstants.CommandName_CommandWithPositionalSources,
+            "value 1 value"
             );
 
-        var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
+        var factory = new ArgumentCollectionFactory();
+
+        var executionInfo = factory.Parse(commandLineArgs, true);
 
         _SystemUnderTest = new SampleCommandWithPositionalSources(executionInfo, OutputProvider);
 
@@ -102,25 +105,22 @@ public class SampleCommandWithPositionalSourcesFixture
         Console.WriteLine(output);
         Assert.IsTrue(output.Contains("** SUCCESS **"), "Did not contain expected string");
 
-        Assert.IsTrue(output.Contains($"thing-date: {new DateTime(2023, 06, 23)}"), "Did not contain expected string for thing-date");
-        Assert.IsTrue(output.Contains("thing-number: 123"), "Did not contain expected string for thing-number");
-        Assert.IsTrue(output.Contains("isThingy: True"), "Did not contain expected string for isThingy");
-        Assert.IsTrue(output.Contains("bingbong: wickid awesome"), "Did not contain expected string for bingbong");
+        AssertContains(output, "Value1: value 1 value");
     }
 
     [TestMethod]
-    public void CreateAndRun_Valid_UsesSuppliedValuesRatherThanDefaults()
+    public void CreateAndRun_Valid_RequiredPositionalAppearsInValues_RequiredAndOptional()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
-            ApplicationConstants.CommandName_CommandWithDefaultValues,
-            "/thing-date:1/1/2001",
-            "/thing-number:456",
-            "/isThingy:false",
-            "/bingbong:blah"
+            ApplicationConstants.CommandName_CommandWithPositionalSources,
+            "value 1 value",
+            "value 2 value"
             );
 
-        var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
+        var factory = new ArgumentCollectionFactory();
+
+        var executionInfo = factory.Parse(commandLineArgs, true);
 
         _SystemUnderTest = new SampleCommandWithPositionalSources(executionInfo, OutputProvider);
 
@@ -132,9 +132,7 @@ public class SampleCommandWithPositionalSourcesFixture
         Console.WriteLine(output);
         Assert.IsTrue(output.Contains("** SUCCESS **"), "Did not contain expected string");
 
-        Assert.IsTrue(output.Contains($"thing-date: {new DateTime(2001, 01, 01)}"), "Did not contain expected string for thing-date");
-        Assert.IsTrue(output.Contains("thing-number: 456"), "Did not contain expected string for thing-number");
-        Assert.IsTrue(output.Contains("isThingy: False"), "Did not contain expected string for isThingy");
-        Assert.IsTrue(output.Contains("bingbong: blah"), "Did not contain expected string bingbong");
+        AssertContains(output, "Value1: value 1 value");
+        AssertContains(output, "Value2: value 2 value");
     }
 }
