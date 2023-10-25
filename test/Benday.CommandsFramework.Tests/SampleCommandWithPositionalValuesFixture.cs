@@ -93,7 +93,7 @@ public class SampleCommandWithPositionalSourcesFixture
 
         var factory = new ArgumentCollectionFactory();
 
-        var executionInfo = factory.Parse(commandLineArgs, true);
+        var executionInfo = factory.Parse(commandLineArgs);
 
         _SystemUnderTest = new SampleCommandWithPositionalSources(executionInfo, OutputProvider);
 
@@ -120,7 +120,7 @@ public class SampleCommandWithPositionalSourcesFixture
 
         var factory = new ArgumentCollectionFactory();
 
-        var executionInfo = factory.Parse(commandLineArgs, true);
+        var executionInfo = factory.Parse(commandLineArgs);
 
         _SystemUnderTest = new SampleCommandWithPositionalSources(executionInfo, OutputProvider);
 

@@ -235,7 +235,7 @@ public class ArgumentCollectionFixture
             "this-is-arg1"
             );
 
-        var valueArgs = new ArgumentCollectionFactory().Parse(commandLineArgs, true);
+        var valueArgs = new ArgumentCollectionFactory().Parse(commandLineArgs);
 
         // act
         SystemUnderTest.SetValues(valueArgs.Arguments);

@@ -14,8 +14,7 @@ public class ArgumentCollectionFactory
     /// <returns>CommandExecutionInfo for this requested command invocation</returns>
     /// <exception cref="ArgumentNullException"></exception>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public CommandExecutionInfo Parse(string[] input, 
-        bool processPositionalArguments = false)
+    public CommandExecutionInfo Parse(string[] input)
     {
         if (input == null) throw new ArgumentNullException("input");
         if (input.Length == 0) throw new ArgumentOutOfRangeException("input");
@@ -27,7 +26,7 @@ public class ArgumentCollectionFactory
         if (input.Length > 1)
         {
             returnValue.Arguments = GetArgsAsDictionary(input[1..], 
-                processPositionalArguments);
+                true);
         }
 
         return returnValue;
