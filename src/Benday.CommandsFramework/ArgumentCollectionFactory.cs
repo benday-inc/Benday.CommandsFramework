@@ -14,7 +14,8 @@ public class ArgumentCollectionFactory
     /// <returns>CommandExecutionInfo for this requested command invocation</returns>
     /// <exception cref="ArgumentNullException"></exception>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public CommandExecutionInfo Parse(string[] input)
+    public CommandExecutionInfo Parse(string[] input, 
+        bool processPositionalArguments = false)
     {
         if (input == null) throw new ArgumentNullException("input");
         if (input.Length == 0) throw new ArgumentOutOfRangeException("input");
@@ -25,13 +26,17 @@ public class ArgumentCollectionFactory
 
         if (input.Length > 1)
         {
-            returnValue.Arguments = GetArgsAsDictionary(input[1..]);
+            returnValue.Arguments = GetArgsAsDictionary(input[1..], 
+                processPositionalArguments);
         }
 
         return returnValue;
     }
 
-    private Dictionary<string, string> GetArgsAsDictionary(string[] args)
+    private int _PositionalArgCount = 0;
+
+    private Dictionary<string, string> GetArgsAsDictionary(string[] args, 
+        bool processPositionalArguments)
     {
         var returnValue = new Dictionary<string, string>();
 
@@ -47,12 +52,23 @@ public class ArgumentCollectionFactory
             {
                 CleanArgAndAddToDictionary(arg, returnValue);
             }
-            else if (string.IsNullOrWhiteSpace(arg) == false &&
+            else if (
+                string.IsNullOrWhiteSpace(arg) == false &&
                 arg.StartsWith("/") == true &&
                 arg.Contains(':') == false)
             {
+                // note: unix path values might start with '/'
+
                 CleanArgWithoutColonAndAddToDictionary(arg, returnValue);
             }
+            else
+            {
+                if (processPositionalArguments == true)
+                {
+                    AddPositionalArg(arg, returnValue);
+                }
+            }
+            
         }
 
         return returnValue;
@@ -92,6 +108,18 @@ public class ArgumentCollectionFactory
         if (args.ContainsKey(argWithoutSlash) == false)
         {
             args.Add(argWithoutSlash, string.Empty);
+        }
+    }
+
+    private void AddPositionalArg(string arg, Dictionary<string, string> args)
+    {
+        var positionalArgNumber = ++_PositionalArgCount;
+
+        var key = $"POSITION_{positionalArgNumber}";
+        
+        if (args.ContainsKey(key) == false)
+        {
+            args.Add(key, arg);
         }
     }
 
