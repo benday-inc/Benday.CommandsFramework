@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Reflection.PortableExecutable;
 using System.Xml.Linq;
 
 namespace Benday.CommandsFramework;
@@ -149,7 +150,35 @@ public abstract class Argument<T> : IArgument
     /// The name of the argument when used on the command line
     /// </summary>
     public string Name { get; set; }
-    
+
+    /// <summary>
+    /// The alternate name of the argument when used on the command line
+    /// </summary>
+    public string Alias { get; set; }
+
+    public bool HasAlias
+    {
+        get
+        {
+            if (string.IsNullOrWhiteSpace(Alias) == true)
+            {
+                return false;
+            }
+            else
+            {
+                if (Name != Alias)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+    }
+
+
     /// <summary>
     /// Is this argument required to have a value in order to be valid?
     /// </summary>

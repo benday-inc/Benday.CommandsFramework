@@ -42,7 +42,7 @@ public class StringArgumentFixture
         throw new NotImplementedException();
     }
 
-    private void InitializeWithAllTheArgs()
+    private void InitializeWithAllTheArgsExceptAlias()
     {
         _SystemUnderTest = new StringArgument(
             EXPECTED_ARG_NAME,
@@ -68,7 +68,7 @@ public class StringArgumentFixture
         // arrange
 
         // act
-        InitializeWithAllTheArgs();
+        InitializeWithAllTheArgsExceptAlias();
 
         // assert
         Assert.AreEqual<string>(EXPECTED_ARG_DESC, SystemUnderTest.Description, "Description was wrong");
@@ -119,7 +119,7 @@ public class StringArgumentFixture
     public void IsValid_Required_ValidValue_True()
     {
         // arrange
-        InitializeWithAllTheArgs();
+        InitializeWithAllTheArgsExceptAlias();
         SystemUnderTest.AllowEmptyValue = false;
         var expected = true;
         SystemUnderTest.Value = "valid value";
@@ -135,7 +135,7 @@ public class StringArgumentFixture
     public void IsValid_Required_AllowEmptyValueFalse_EmptyString_False()
     {
         // arrange
-        InitializeWithAllTheArgs();
+        InitializeWithAllTheArgsExceptAlias();
         SystemUnderTest.AllowEmptyValue = false;
         var expected = false;
         SystemUnderTest.Value = string.Empty;
@@ -151,7 +151,7 @@ public class StringArgumentFixture
     public void IsValid_Required_AllowEmptyValueTrue_EmptyString_True()
     {
         // arrange
-        InitializeWithAllTheArgs();
+        InitializeWithAllTheArgsExceptAlias();
         SystemUnderTest.AllowEmptyValue = true;
         var expected = true;
         SystemUnderTest.Value = string.Empty;
@@ -163,6 +163,70 @@ public class StringArgumentFixture
         Assert.AreEqual<bool>(expected, actual, "Validation value is wrong");
     }
 
+    [TestMethod]    
+    public void HasAlias_False_WhenAliasIsNotSet()
+    {
+        // arrange
+        InitializeWithAllTheArgsExceptAlias();
+        var expected = false;
+        
+        // act
+        var actual = SystemUnderTest.HasAlias;
+
+        // assert
+        Assert.AreEqual<bool>(expected, actual, "HasAlias value is wrong");
+    }
+
+    [TestMethod]
+    public void HasAlias_False_WhenAliasIsWhitespaceString()
+    {
+        // arrange
+        InitializeWithAllTheArgsExceptAlias();
+
+        SystemUnderTest.Alias = "      ";
+
+        var expected = false;
+
+        // act
+        var actual = SystemUnderTest.HasAlias;
+
+        // assert
+        Assert.AreEqual<bool>(expected, actual, "HasAlias value is wrong");
+    }
+
+    [TestMethod]
+    public void HasAlias_False_WhenAliasIsSetToNamePropertyValue()
+    {
+        // arrange
+        InitializeWithAllTheArgsExceptAlias();
+
+        SystemUnderTest.Alias = SystemUnderTest.Name;
+
+        var expected = false;
+
+        // act
+        var actual = SystemUnderTest.HasAlias;
+
+        // assert
+        Assert.AreEqual<bool>(expected, actual, "HasAlias value is wrong");
+    }
+
+    [TestMethod]
+    public void HasAlias_True_WhenSetToValue()
+    {
+        // arrange
+        InitializeWithAllTheArgsExceptAlias();
+
+        SystemUnderTest.Alias = "ALIAS123";
+
+        var expected = true;
+
+        // act
+        var actual = SystemUnderTest.HasAlias;
+
+        // assert
+        Assert.AreEqual<bool>(expected, actual, "HasAlias value is wrong");
+    }
 
     [TestMethod]
     public void IsValid_NoValueSet_Required_AllowEmptyValueFalse_False()
