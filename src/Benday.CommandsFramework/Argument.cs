@@ -152,6 +152,12 @@ public abstract class Argument<T> : IArgument
     public string Name { get; set; }
 
     /// <summary>
+    /// Should this value come from an unnamed argument on the command line? 
+    /// If yes, the Alias value will be the POSITION_x.  
+    /// </summary>
+    public bool IsPositionalSource { get; set; }
+
+    /// <summary>
     /// The alternate name of the argument when used on the command line
     /// </summary>
     public string Alias { get; set; }

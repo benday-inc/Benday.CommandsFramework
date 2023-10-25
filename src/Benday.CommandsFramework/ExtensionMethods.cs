@@ -105,6 +105,31 @@ public static class ExtensionMethods
     }
 
     /// <summary>
+    /// Gets the value from an unnamed variable based on position in the arg string.
+    /// </summary>
+    /// <param name="collection">Argument collection</param>
+    /// <param name="position">Position in the arg string</param>
+    public static Argument<T> FromPositionalArgument<T>(
+        this Argument<T> arg, int position)
+    {
+        if (arg == null)
+        {
+            throw new ArgumentNullException(nameof(arg));
+        }
+        else if (position < 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(position));            
+        }
+        else
+        {
+            arg.Alias = $"POSITION_{position}";
+            arg.IsPositionalSource = true;
+
+            return arg;
+        }
+    }
+
+    /// <summary>
     /// Adds a default value for the argument definition
     /// </summary>
     /// <typeparam name="T"></typeparam>

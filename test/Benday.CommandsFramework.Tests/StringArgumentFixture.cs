@@ -247,6 +247,54 @@ public class StringArgumentFixture
     }
 
     [TestMethod]
+    public void SetPositionalSourceViaFluentMethod()
+    {
+        // arrange
+        InitializeWithAllTheArgsExceptAlias();
+        var expectedAlias = "POSITION_1";
+
+        var expectedHasAlias = true;
+        var expectedIsPositionalSource = true;
+
+        // act
+        SystemUnderTest.FromPositionalArgument(1);
+
+        // assert
+        var actualHasAlias = SystemUnderTest.HasAlias;
+        
+        Assert.AreEqual<bool>(expectedHasAlias, actualHasAlias, "HasAlias value is wrong");
+        Assert.AreEqual<bool>(expectedIsPositionalSource, SystemUnderTest.IsPositionalSource,
+            "IsPositionalSource value is wrong");
+        Assert.AreEqual<string>(expectedAlias, SystemUnderTest.Alias, $"Alias value was wrong");
+    }
+
+    [ExpectedException(typeof(ArgumentOutOfRangeException))]
+    [TestMethod]
+    public void SetPositionalSourceViaFluentMethod_ThrowsExceptionForLessThan1()
+    {
+        // arrange
+        InitializeWithAllTheArgsExceptAlias();
+        
+        // act
+        SystemUnderTest.FromPositionalArgument(0);
+
+        // assert        
+    }
+
+    [ExpectedException(typeof(ArgumentOutOfRangeException))]
+    [TestMethod]
+    public void SetPositionalSourceViaFluentMethod_ThrowsExceptionForLessThan0()
+    {
+        // arrange
+        InitializeWithAllTheArgsExceptAlias();
+
+        // act
+        SystemUnderTest.FromPositionalArgument(-1);
+
+        // assert        
+    }
+
+    [TestMethod]
     public void IsValid_NoValueSet_Required_AllowEmptyValueFalse_False()
     {
         // arrange
