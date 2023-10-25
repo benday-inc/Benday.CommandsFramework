@@ -35,6 +35,21 @@ public class ArgumentCollectionFactory
 
     private int _PositionalArgCount = 0;
 
+    public static int GetSlashCount(string input)
+    {
+        int count = 0;
+
+        foreach (char c in input)
+        {
+            if (c == '/')
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
     private Dictionary<string, string> GetArgsAsDictionary(string[] args, 
         bool processPositionalArguments)
     {
@@ -42,24 +57,39 @@ public class ArgumentCollectionFactory
 
         foreach (var arg in args)
         {
+            var numberOfSlashesInArg = GetSlashCount(arg);
+            var containsColon = arg.Contains(':');
+            var isNullOrWhitespace = string.IsNullOrWhiteSpace(arg);
+            var startsWithSlash = arg.StartsWith("/");
+
             if (arg == ArgumentFrameworkConstants.ArgumentHelpString)
             {
                 AddToDictionaryAsIs(arg, returnValue);
             }
-            else if (string.IsNullOrWhiteSpace(arg) == false &&
-                arg.StartsWith("/") == true &&
-                arg.Contains(':') == true)
+            else if (isNullOrWhitespace == false &&
+                startsWithSlash == true &&
+                containsColon == true)
             {
                 CleanArgAndAddToDictionary(arg, returnValue);
             }
             else if (
-                string.IsNullOrWhiteSpace(arg) == false &&
-                arg.StartsWith("/") == true &&
-                arg.Contains(':') == false)
+                isNullOrWhitespace == false &&
+                startsWithSlash == true &&
+                containsColon == false)
             {
                 // note: unix path values might start with '/'
 
-                CleanArgWithoutColonAndAddToDictionary(arg, returnValue);
+                if (numberOfSlashesInArg > 1 && processPositionalArguments == true)
+                {
+                    // this is probably a unix path
+                    // NOTE: this code assumes that unix paths
+                    // have multiple slashes...this is probably correct
+                    AddPositionalArg(arg, returnValue);
+                }
+                else
+                {
+                    CleanArgWithoutColonAndAddToDictionary(arg, returnValue);
+                }
             }
             else
             {
@@ -67,8 +97,7 @@ public class ArgumentCollectionFactory
                 {
                     AddPositionalArg(arg, returnValue);
                 }
-            }
-            
+            }            
         }
 
         return returnValue;
