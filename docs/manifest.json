@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.Argument-1.html",
-          "hash": "RxcaE1ZLRHGkSwEGKZt2gOMJWMayzTZb85IKkXZKsr8="
+          "hash": "pc2LbLHPtuBWQPThYrZwzjhu675voJNqEXk+AYkzNqE="
         }
       },
       "version": ""
@@ -20,7 +20,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.ArgumentCollection.html",
-          "hash": "6xLOlSkUP/8jBBrwfUXcG7DUuoLuBRGkYPkTuTSe3qM="
+          "hash": "KVZY0k9y9jD+cTG1r/XSTRk8ezE6+XrMeRNXXox5Li0="
         }
       },
       "version": ""
@@ -31,7 +31,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.ArgumentCollectionFactory.html",
-          "hash": "6SniJU4eWpzTdJkUxhDus/LUe3aJsaSKyznZOrkm9lA="
+          "hash": "xo6WeJqDwAcJ+XLb5xfkBXFqIwBjuWJdF/BEdmCt4BU="
         }
       },
       "version": ""
@@ -75,7 +75,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.BooleanArgument.html",
-          "hash": "kr/m+4bCoqYNwMOJew6OKppgLsgWF7DoTYvxVOXsJmo="
+          "hash": "5owkcrDdpM2TRZ0hPzKVwdROigMBvmg/GrTgfbNfDLs="
         }
       },
       "version": ""
@@ -108,7 +108,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.CommandBase.html",
-          "hash": "tf/LbOI1JC2vnv6NKNulxGyIKG2aILbt72RArLKqiHs="
+          "hash": "gwaiTxSVSID+ShbQFHgY/DtMqSCRSEXbxE3nXrpiDMk="
         }
       },
       "version": ""
@@ -152,7 +152,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.DateTimeArgument.html",
-          "hash": "dFzdOYSixL/IcDw9lBn831HoMNORFJR8a/iomVgHq2A="
+          "hash": "PSA1d52w0ZmNn3DRXDdlOuB8tUs6ettpRhgNiBi1rvE="
         }
       },
       "version": ""
@@ -196,7 +196,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.ExtensionMethods.html",
-          "hash": "5l8legPPXsMF5hPcuu6XvVoliISf6meATrruc6p1Rpk="
+          "hash": "8J4k1ADWStJ35O+4XEia3vgu/9Oj24HhQr7RohTsz2w="
         }
       },
       "version": ""
@@ -207,7 +207,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.IArgument.html",
-          "hash": "UuwIKih3No7uqH8irx64Nv+3OfTjdOwX6bzFK7s6E3I="
+          "hash": "ooOaSJBK14yHY4VP4gj54FICVglfHVcjd5bWtpWm8Rs="
         }
       },
       "version": ""
@@ -284,7 +284,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.Int32Argument.html",
-          "hash": "rLX6EcOSajEl155PGifNaxkagAoP+vWz/W16sQui6ys="
+          "hash": "lRZxgA2JIxP84MB1wkuPXcV9xCJnyCdqJRZaSaz0qdU="
         }
       },
       "version": ""
@@ -328,7 +328,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.StringArgument.html",
-          "hash": "a465rtZacQni9RVOcKz/YXs4nnh2HY+qJ4NsCzbZmlU="
+          "hash": "RXnw2Ahrc+7gxmOeWulrzw9PyJQBkxDcwLmN9V/VPhw="
         }
       },
       "version": ""

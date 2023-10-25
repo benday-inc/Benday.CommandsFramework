@@ -62,6 +62,23 @@ references:
   fullName.vb: Benday.CommandsFramework.Argument(Of T).New
   nameWithType: Argument<T>.Argument
   nameWithType.vb: Argument(Of T).New
+- uid: Benday.CommandsFramework.Argument`1.Alias
+  name: Alias
+  href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_Alias
+  commentId: P:Benday.CommandsFramework.Argument`1.Alias
+  fullName: Benday.CommandsFramework.Argument<T>.Alias
+  fullName.vb: Benday.CommandsFramework.Argument(Of T).Alias
+  nameWithType: Argument<T>.Alias
+  nameWithType.vb: Argument(Of T).Alias
+- uid: Benday.CommandsFramework.Argument`1.Alias*
+  name: Alias
+  href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_Alias_
+  commentId: Overload:Benday.CommandsFramework.Argument`1.Alias
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.Argument<T>.Alias
+  fullName.vb: Benday.CommandsFramework.Argument(Of T).Alias
+  nameWithType: Argument<T>.Alias
+  nameWithType.vb: Argument(Of T).Alias
 - uid: Benday.CommandsFramework.Argument`1.AllowEmptyValue
   name: AllowEmptyValue
   href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_AllowEmptyValue
@@ -130,6 +147,23 @@ references:
   fullName.vb: Benday.CommandsFramework.Argument(Of T).GetDefaultValue
   nameWithType: Argument<T>.GetDefaultValue
   nameWithType.vb: Argument(Of T).GetDefaultValue
+- uid: Benday.CommandsFramework.Argument`1.HasAlias
+  name: HasAlias
+  href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_HasAlias
+  commentId: P:Benday.CommandsFramework.Argument`1.HasAlias
+  fullName: Benday.CommandsFramework.Argument<T>.HasAlias
+  fullName.vb: Benday.CommandsFramework.Argument(Of T).HasAlias
+  nameWithType: Argument<T>.HasAlias
+  nameWithType.vb: Argument(Of T).HasAlias
+- uid: Benday.CommandsFramework.Argument`1.HasAlias*
+  name: HasAlias
+  href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_HasAlias_
+  commentId: Overload:Benday.CommandsFramework.Argument`1.HasAlias
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.Argument<T>.HasAlias
+  fullName.vb: Benday.CommandsFramework.Argument(Of T).HasAlias
+  nameWithType: Argument<T>.HasAlias
+  nameWithType.vb: Argument(Of T).HasAlias
 - uid: Benday.CommandsFramework.Argument`1.HasValue
   name: HasValue
   href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_HasValue
@@ -147,6 +181,23 @@ references:
   fullName.vb: Benday.CommandsFramework.Argument(Of T).HasValue
   nameWithType: Argument<T>.HasValue
   nameWithType.vb: Argument(Of T).HasValue
+- uid: Benday.CommandsFramework.Argument`1.IsPositionalSource
+  name: IsPositionalSource
+  href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_IsPositionalSource
+  commentId: P:Benday.CommandsFramework.Argument`1.IsPositionalSource
+  fullName: Benday.CommandsFramework.Argument<T>.IsPositionalSource
+  fullName.vb: Benday.CommandsFramework.Argument(Of T).IsPositionalSource
+  nameWithType: Argument<T>.IsPositionalSource
+  nameWithType.vb: Argument(Of T).IsPositionalSource
+- uid: Benday.CommandsFramework.Argument`1.IsPositionalSource*
+  name: IsPositionalSource
+  href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_IsPositionalSource_
+  commentId: Overload:Benday.CommandsFramework.Argument`1.IsPositionalSource
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.Argument<T>.IsPositionalSource
+  fullName.vb: Benday.CommandsFramework.Argument(Of T).IsPositionalSource
+  nameWithType: Argument<T>.IsPositionalSource
+  nameWithType.vb: Argument(Of T).IsPositionalSource
 - uid: Benday.CommandsFramework.Argument`1.IsRequired
   name: IsRequired
   href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_IsRequired
@@ -430,6 +481,22 @@ references:
   commentId: T:Benday.CommandsFramework.ArgumentCollectionFactory
   fullName: Benday.CommandsFramework.ArgumentCollectionFactory
   nameWithType: ArgumentCollectionFactory
+- uid: Benday.CommandsFramework.ArgumentCollectionFactory.GetSlashCount(System.String)
+  name: GetSlashCount(string)
+  href: api/Benday.CommandsFramework.ArgumentCollectionFactory.html#Benday_CommandsFramework_ArgumentCollectionFactory_GetSlashCount_System_String_
+  commentId: M:Benday.CommandsFramework.ArgumentCollectionFactory.GetSlashCount(System.String)
+  name.vb: GetSlashCount(String)
+  fullName: Benday.CommandsFramework.ArgumentCollectionFactory.GetSlashCount(string)
+  fullName.vb: Benday.CommandsFramework.ArgumentCollectionFactory.GetSlashCount(String)
+  nameWithType: ArgumentCollectionFactory.GetSlashCount(string)
+  nameWithType.vb: ArgumentCollectionFactory.GetSlashCount(String)
+- uid: Benday.CommandsFramework.ArgumentCollectionFactory.GetSlashCount*
+  name: GetSlashCount
+  href: api/Benday.CommandsFramework.ArgumentCollectionFactory.html#Benday_CommandsFramework_ArgumentCollectionFactory_GetSlashCount_
+  commentId: Overload:Benday.CommandsFramework.ArgumentCollectionFactory.GetSlashCount
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.ArgumentCollectionFactory.GetSlashCount
+  nameWithType: ArgumentCollectionFactory.GetSlashCount
 - uid: Benday.CommandsFramework.ArgumentCollectionFactory.Parse(System.String[])
   name: Parse(string[])
   href: api/Benday.CommandsFramework.ArgumentCollectionFactory.html#Benday_CommandsFramework_ArgumentCollectionFactory_Parse_System_String___
@@ -1574,6 +1641,22 @@ references:
   fullName.vb: Benday.CommandsFramework.ExtensionMethods.AsRequired(Of T)(Benday.CommandsFramework.Argument(Of T))
   nameWithType: ExtensionMethods.AsRequired<T>(Argument<T>)
   nameWithType.vb: ExtensionMethods.AsRequired(Of T)(Argument(Of T))
+- uid: Benday.CommandsFramework.ExtensionMethods.FromPositionalArgument*
+  name: FromPositionalArgument
+  href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_FromPositionalArgument_
+  commentId: Overload:Benday.CommandsFramework.ExtensionMethods.FromPositionalArgument
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.ExtensionMethods.FromPositionalArgument
+  nameWithType: ExtensionMethods.FromPositionalArgument
+- uid: Benday.CommandsFramework.ExtensionMethods.FromPositionalArgument``1(Benday.CommandsFramework.Argument{``0},System.Int32)
+  name: FromPositionalArgument<T>(Argument<T>, int)
+  href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_FromPositionalArgument__1_Benday_CommandsFramework_Argument___0__System_Int32_
+  commentId: M:Benday.CommandsFramework.ExtensionMethods.FromPositionalArgument``1(Benday.CommandsFramework.Argument{``0},System.Int32)
+  name.vb: FromPositionalArgument(Of T)(Argument(Of T), Integer)
+  fullName: Benday.CommandsFramework.ExtensionMethods.FromPositionalArgument<T>(Benday.CommandsFramework.Argument<T>, int)
+  fullName.vb: Benday.CommandsFramework.ExtensionMethods.FromPositionalArgument(Of T)(Benday.CommandsFramework.Argument(Of T), Integer)
+  nameWithType: ExtensionMethods.FromPositionalArgument<T>(Argument<T>, int)
+  nameWithType.vb: ExtensionMethods.FromPositionalArgument(Of T)(Argument(Of T), Integer)
 - uid: Benday.CommandsFramework.ExtensionMethods.GetBooleanValue(Benday.CommandsFramework.ArgumentCollection,System.String)
   name: GetBooleanValue(ArgumentCollection, string)
   href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_GetBooleanValue_Benday_CommandsFramework_ArgumentCollection_System_String_
@@ -1670,6 +1753,22 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.ExtensionMethods.RemoveArgumentValue
   nameWithType: ExtensionMethods.RemoveArgumentValue
+- uid: Benday.CommandsFramework.ExtensionMethods.WithAlias*
+  name: WithAlias
+  href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_WithAlias_
+  commentId: Overload:Benday.CommandsFramework.ExtensionMethods.WithAlias
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.ExtensionMethods.WithAlias
+  nameWithType: ExtensionMethods.WithAlias
+- uid: Benday.CommandsFramework.ExtensionMethods.WithAlias``1(Benday.CommandsFramework.Argument{``0},System.String)
+  name: WithAlias<T>(Argument<T>, string)
+  href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_WithAlias__1_Benday_CommandsFramework_Argument___0__System_String_
+  commentId: M:Benday.CommandsFramework.ExtensionMethods.WithAlias``1(Benday.CommandsFramework.Argument{``0},System.String)
+  name.vb: WithAlias(Of T)(Argument(Of T), String)
+  fullName: Benday.CommandsFramework.ExtensionMethods.WithAlias<T>(Benday.CommandsFramework.Argument<T>, string)
+  fullName.vb: Benday.CommandsFramework.ExtensionMethods.WithAlias(Of T)(Benday.CommandsFramework.Argument(Of T), String)
+  nameWithType: ExtensionMethods.WithAlias<T>(Argument<T>, string)
+  nameWithType.vb: ExtensionMethods.WithAlias(Of T)(Argument(Of T), String)
 - uid: Benday.CommandsFramework.ExtensionMethods.WithDefaultValue*
   name: WithDefaultValue
   href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_WithDefaultValue_
@@ -1708,6 +1807,19 @@ references:
   commentId: T:Benday.CommandsFramework.IArgument
   fullName: Benday.CommandsFramework.IArgument
   nameWithType: IArgument
+- uid: Benday.CommandsFramework.IArgument.Alias
+  name: Alias
+  href: api/Benday.CommandsFramework.IArgument.html#Benday_CommandsFramework_IArgument_Alias
+  commentId: P:Benday.CommandsFramework.IArgument.Alias
+  fullName: Benday.CommandsFramework.IArgument.Alias
+  nameWithType: IArgument.Alias
+- uid: Benday.CommandsFramework.IArgument.Alias*
+  name: Alias
+  href: api/Benday.CommandsFramework.IArgument.html#Benday_CommandsFramework_IArgument_Alias_
+  commentId: Overload:Benday.CommandsFramework.IArgument.Alias
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.IArgument.Alias
+  nameWithType: IArgument.Alias
 - uid: Benday.CommandsFramework.IArgument.AllowEmptyValue
   name: AllowEmptyValue
   href: api/Benday.CommandsFramework.IArgument.html#Benday_CommandsFramework_IArgument_AllowEmptyValue
@@ -1747,6 +1859,19 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.IArgument.Description
   nameWithType: IArgument.Description
+- uid: Benday.CommandsFramework.IArgument.HasAlias
+  name: HasAlias
+  href: api/Benday.CommandsFramework.IArgument.html#Benday_CommandsFramework_IArgument_HasAlias
+  commentId: P:Benday.CommandsFramework.IArgument.HasAlias
+  fullName: Benday.CommandsFramework.IArgument.HasAlias
+  nameWithType: IArgument.HasAlias
+- uid: Benday.CommandsFramework.IArgument.HasAlias*
+  name: HasAlias
+  href: api/Benday.CommandsFramework.IArgument.html#Benday_CommandsFramework_IArgument_HasAlias_
+  commentId: Overload:Benday.CommandsFramework.IArgument.HasAlias
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.IArgument.HasAlias
+  nameWithType: IArgument.HasAlias
 - uid: Benday.CommandsFramework.IArgument.HasValue
   name: HasValue
   href: api/Benday.CommandsFramework.IArgument.html#Benday_CommandsFramework_IArgument_HasValue
@@ -1760,6 +1885,19 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.IArgument.HasValue
   nameWithType: IArgument.HasValue
+- uid: Benday.CommandsFramework.IArgument.IsPositionalSource
+  name: IsPositionalSource
+  href: api/Benday.CommandsFramework.IArgument.html#Benday_CommandsFramework_IArgument_IsPositionalSource
+  commentId: P:Benday.CommandsFramework.IArgument.IsPositionalSource
+  fullName: Benday.CommandsFramework.IArgument.IsPositionalSource
+  nameWithType: IArgument.IsPositionalSource
+- uid: Benday.CommandsFramework.IArgument.IsPositionalSource*
+  name: IsPositionalSource
+  href: api/Benday.CommandsFramework.IArgument.html#Benday_CommandsFramework_IArgument_IsPositionalSource_
+  commentId: Overload:Benday.CommandsFramework.IArgument.IsPositionalSource
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.IArgument.IsPositionalSource
+  nameWithType: IArgument.IsPositionalSource
 - uid: Benday.CommandsFramework.IArgument.IsRequired
   name: IsRequired
   href: api/Benday.CommandsFramework.IArgument.html#Benday_CommandsFramework_IArgument_IsRequired
