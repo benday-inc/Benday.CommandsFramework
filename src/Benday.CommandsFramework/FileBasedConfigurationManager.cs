@@ -148,4 +148,16 @@ public class FileBasedConfigurationManager
             return ConfigurationData.Values[expectedKey];
         }        
     }
+
+    public bool HasValue(string expectedKey)
+    {
+        if (ConfigurationData.Values.ContainsKey(expectedKey) == false)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
 }
