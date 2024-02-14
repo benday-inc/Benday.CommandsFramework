@@ -211,6 +211,22 @@ public class CommandAttributeUtility
 
         var returnValues = new List<CommandInfo>();
 
+        PopulateUsages(asm, attributes, returnValues);
+
+        if (_ProgramOptions.UsesConfiguration == true)
+        {
+            var thisAssembly = this.GetType().Assembly;
+
+            var defaultAttributes = GetAvailableCommandAttributes(thisAssembly);
+
+            PopulateUsages(thisAssembly, defaultAttributes, returnValues);
+        }
+
+        return returnValues;
+    }
+
+    private void PopulateUsages(Assembly asm, List<CommandAttribute> attributes, List<CommandInfo> returnValues)
+    {
         foreach (var item in attributes)
         {
             var info = new CommandInfo();
@@ -221,7 +237,7 @@ public class CommandAttributeUtility
             info.Category = item.Category;
 
             var command = GetCommand(
-                new []{ item.Name, ArgumentFrameworkConstants.ArgumentHelpString }, 
+                new[] { item.Name, ArgumentFrameworkConstants.ArgumentHelpString },
                 asm);
 
             if (command != null)
@@ -233,7 +249,5 @@ public class CommandAttributeUtility
 
             returnValues.Add(info);
         }
-
-        return returnValues;
     }
 }

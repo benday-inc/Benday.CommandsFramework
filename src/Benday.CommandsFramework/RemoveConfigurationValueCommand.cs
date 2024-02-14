@@ -1,6 +1,9 @@
 ﻿namespace Benday.CommandsFramework;
 
-[Command(Name = CommandFrameworkConstants.CommandName_RemoveConfig, IsAsync = false, Description = "Remove a configuration value")]
+[Command(Name = CommandFrameworkConstants.CommandName_RemoveConfig, 
+    IsAsync = false, 
+    Description = "Remove a configuration value",
+    Category = CommandFrameworkConstants.CategoryName_Configuration)]
 public class RemoveConfigurationValueCommand : SynchronousCommand
 {
     public RemoveConfigurationValueCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider) : base(info, outputProvider)

@@ -39,9 +39,10 @@ public class CommandAttributeUtilityFixture
                 var options = new DefaultProgramOptions();
 
                 options.ApplicationName = "Test Sample Application";
-                options.Version = "1.0.0";  
+                options.Version = "1.0.0";
                 options.Website = "https://www.benday.com";
-                options.ConfigurationFolderName = "TestSampleApplication";
+                options.ConfigurationFolderName = "TestSampleApplication-Deleteable";
+                options.UsesConfiguration = false;
 
                 _CommandProgramOptionsInstance = options;
             }
@@ -190,16 +191,20 @@ public class CommandAttributeUtilityFixture
     }
 
     [TestMethod]
-    public void GetAllCommandUsages()
+    public void GetAllCommandUsages_UsesConfiguration_False()
     {
         // arrange
+        CommandProgramOptionsInstance.UsesConfiguration = false;
+
         var sampleAssembly = typeof(Benday.CommandsFramework.Samples.SampleCommand1).Assembly;
-        
+
         // act
         var actual = SystemUnderTest.GetAllCommandUsages(sampleAssembly);
 
         // assert
         Assert.AreNotEqual<int>(0, actual.Count, "Usages collection wasn't populated");
+
+        AssertConfigCommands(actual, false);
 
         foreach (var item in actual)
         {
@@ -210,6 +215,58 @@ public class CommandAttributeUtilityFixture
             {
                 Assert.IsFalse(string.IsNullOrEmpty(arg.Name), "arg.Name wasn't populated");
                 Assert.IsNotNull(arg.Description, "arg.Description wasn't populated");
+            }
+        }
+    }
+
+    [TestMethod]
+    public void GetAllCommandUsages_UsesConfiguration_True()
+    {
+        // arrange
+        CommandProgramOptionsInstance.UsesConfiguration = true;
+
+        var sampleAssembly = typeof(Benday.CommandsFramework.Samples.SampleCommand1).Assembly;
+
+        // act
+        var actual = SystemUnderTest.GetAllCommandUsages(sampleAssembly);
+
+        // assert
+        Assert.AreNotEqual<int>(0, actual.Count, "Usages collection wasn't populated");
+
+        AssertConfigCommands(actual, true);
+
+        foreach (var item in actual)
+        {
+            Assert.IsFalse(string.IsNullOrEmpty(item.Name), "Name wasn't populated");
+            Assert.IsNotNull(item.Description, $"Description wasn't populated for '{item.Name}'");
+
+            foreach (var arg in item.Arguments)
+            {
+                Assert.IsFalse(string.IsNullOrEmpty(arg.Name), "arg.Name wasn't populated");
+                Assert.IsNotNull(arg.Description, "arg.Description wasn't populated");
+            }
+        }
+    }
+    private void AssertConfigCommands(List<CommandInfo> actual, bool shouldExist)
+    {
+        var commandNames = new string[]
+        {
+            CommandFrameworkConstants.CommandName_GetConfig,
+            CommandFrameworkConstants.CommandName_SetConfig,
+            CommandFrameworkConstants.CommandName_RemoveConfig
+        };
+
+        foreach (var item in commandNames)
+        {
+            var match = actual.Where(x => x.Name == item).Any();
+
+            if (shouldExist == false)
+            {
+                Assert.IsFalse(match, $"Command '{item}' should not exist.");
+            }
+            else
+            {
+                Assert.IsTrue(match, $"Command '{item}' should exist.");
             }
         }
     }

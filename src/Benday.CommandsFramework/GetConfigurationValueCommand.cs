@@ -1,6 +1,8 @@
 ﻿namespace Benday.CommandsFramework;
 
-[Command(Name = CommandFrameworkConstants.CommandName_GetConfig, IsAsync = false, Description = "Display all configuration values or a specific configuration value")]
+[Command(Name = CommandFrameworkConstants.CommandName_GetConfig, IsAsync = false, 
+    Description = "Display all configuration values or a specific configuration value",
+    Category = CommandFrameworkConstants.CategoryName_Configuration)]
 public class GetConfigurationValueCommand : SynchronousCommand
 {
     public GetConfigurationValueCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider) : base(info, outputProvider)
