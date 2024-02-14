@@ -1,6 +1,6 @@
 ﻿namespace Benday.CommandsFramework;
 
-public class DefaultProgramOptions
+public class DefaultProgramOptions : ICommandProgramOptions
 {
 
     public string ApplicationName { get; set; } = string.Empty;

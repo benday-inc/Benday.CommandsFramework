@@ -7,9 +7,9 @@ namespace Benday.CommandsFramework;
 /// supplying the application name, version, and website. Customize these options in order to control how
 /// the list of available commands and usage information is displayed.
 /// </summary>
-public class DefaultProgram
+public class DefaultProgram : ICommandProgram
 {
-    public DefaultProgramOptions Options { get; private set; }
+    public ICommandProgramOptions Options { get; private set; }
     public Assembly ImplementationAssembly { get; }
 
     /// <summary>
