@@ -160,4 +160,13 @@ public class FileBasedConfigurationManager
             return true;
         }
     }
+
+    public void RemoveValue(string expectedKey)
+    {
+        if (HasValue(expectedKey) == true)
+        {
+            ConfigurationData.Values.Remove(expectedKey);
+            SaveConfigurationData();
+        }
+    }
 }

@@ -142,6 +142,49 @@ public class FileBasedConfigurationManagerFixture
     }
 
     [TestMethod]
+    public void RemoveValue_ExistingValue_DeletesIt()
+    {
+        // arrange
+        DeleteDirectory();
+
+        _SystemUnderTest = new FileBasedConfigurationManager(APPLICATION_NAME);
+        var expectedKey = "testkey";
+        var expectedValue = "testvalue";
+
+        SystemUnderTest.SetValue(expectedKey, expectedValue);
+
+        // act
+        SystemUnderTest.RemoveValue(expectedKey);
+
+        // assert
+        var reloaded = new FileBasedConfigurationManager(APPLICATION_NAME);
+
+        var actual = reloaded.HasValue(expectedKey);
+
+        Assert.IsFalse(actual, "value should not exist after remove");
+    }
+
+    [TestMethod]
+    public void RemoveValue_NonExistingValue_DoesNothing()
+    {
+        // arrange
+        DeleteDirectory();
+
+        _SystemUnderTest = new FileBasedConfigurationManager(APPLICATION_NAME);
+        var expectedKey = "testkey";
+        
+        // act
+        SystemUnderTest.RemoveValue(expectedKey);
+
+        // assert
+        var reloaded = new FileBasedConfigurationManager(APPLICATION_NAME);
+
+        var actual = reloaded.HasValue(expectedKey);
+
+        Assert.IsFalse(actual, "value should not exist after remove");
+    }
+
+    [TestMethod]
     public void GetValue_ThatDoesNotExist_ReturnsStringEmpty()
     {
         // arrange
