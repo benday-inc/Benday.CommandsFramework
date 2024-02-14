@@ -412,4 +412,44 @@ public static class ExtensionMethods
             }
         }
     }
+
+    public static CommandExecutionInfo GetCloneOfArguments(
+        this CommandExecutionInfo execInfo, string commandName, bool quietMode)
+    {
+        if (execInfo is null || execInfo.Arguments is null)
+        {
+            throw new ArgumentNullException(nameof(execInfo));
+        }
+
+        var argsClone = execInfo.Arguments.ToDictionary(entry => entry.Key, entry => entry.Value);
+
+        if (quietMode == true)
+        {
+            argsClone.TryAdd(CommandFrameworkConstants.CommandArgName_QuietMode, "true");
+        }
+
+        var returnValue = new CommandExecutionInfo();
+        returnValue.Arguments = argsClone;
+        returnValue.CommandName = commandName;
+
+        return returnValue;
+    }
+
+    public static string GetPathToFile(
+        this ArgumentCollection arguments,
+        string argumentName, bool mustExist = false)
+    {
+        var path = arguments.GetStringValue(argumentName);
+
+        return CommandFrameworkUtilities.GetPathToSourceFile(path, mustExist);
+    }
+
+    public static string GetPathToDirectory(
+        this ArgumentCollection arguments,
+        string argumentName, bool mustExist = false)
+    {
+        var path = arguments.GetStringValue(argumentName);
+
+        return CommandFrameworkUtilities.GetPathToSourceDir(path, mustExist);
+    }
 }
