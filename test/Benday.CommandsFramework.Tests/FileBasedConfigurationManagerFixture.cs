@@ -84,7 +84,6 @@ public class FileBasedConfigurationManagerFixture
     public void SetValueCreatesConfigFile()
     {
         // arrange
-        var expected = FileBasedConfigurationManager.GetConfigurationFilePath(APPLICATION_NAME);
         DeleteDirectory();
 
         _SystemUnderTest = new FileBasedConfigurationManager(APPLICATION_NAME);
@@ -94,7 +93,28 @@ public class FileBasedConfigurationManagerFixture
 
         // assert
         Assert.IsTrue(SystemUnderTest.ConfigFileExists(),
-            $"config file should exist at {expected}");
+            $"config file should exist");
+    }
+
+    [TestMethod]
+    public void SetValue_NewValue_ReadItBack()
+    {
+        // arrange
+        DeleteDirectory();
+
+        _SystemUnderTest = new FileBasedConfigurationManager(APPLICATION_NAME);
+        var expectedKey = "testkey";
+        var expectedValue = "testvalue";
+
+        // act
+        SystemUnderTest.SetValue(expectedKey, expectedValue);
+
+        // assert
+        var reloaded = new FileBasedConfigurationManager(APPLICATION_NAME);
+
+        var actual = reloaded.GetValue(expectedKey);
+
+        Assert.AreEqual<string>(expectedValue, actual, $"Reloaded value was wrong.");
     }
 
     private void DeleteDirectory()

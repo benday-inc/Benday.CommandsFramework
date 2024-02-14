@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Benday.CommandsFramework;
@@ -47,11 +48,69 @@ public class FileBasedConfigurationManager
 
     public bool ConfigFileExists()
     {
-        return File.Exists(_ConfigFilePath);        
+        return File.Exists(_ConfigFilePath);
     }
     public void SetValue(string key, string val)
     {
         EnsureConfigFileExists();
+
+        ConfigurationData.Values.Add(key, val);
+
+        SaveConfigurationData();
+    }
+
+    private ConfigurationData? _ConfigurationData;
+    private ConfigurationData ConfigurationData
+    {
+        get
+        {
+            if (_ConfigurationData == null)
+            {
+                _ConfigurationData = LoadConfigurationData();
+
+                return _ConfigurationData;
+            }
+            else
+            {
+                return _ConfigurationData;
+            }            
+        }
+    }
+    private void SaveConfigurationData()
+    {
+        EnsureConfigFileExists();
+
+        var options = new JsonSerializerOptions
+        {            
+            WriteIndented = true
+        };
+
+        var json = System.Text.Json.JsonSerializer.Serialize(ConfigurationData, options);
+
+        System.IO.File.WriteAllText(_ConfigFilePath, json);
+    }
+
+    private ConfigurationData LoadConfigurationData()
+    {
+        EnsureConfigFileExists();
+
+        var json = System.IO.File.ReadAllText(_ConfigFilePath);
+
+        if (string.IsNullOrWhiteSpace(json) == true)
+        {
+            return new ConfigurationData();
+        }
+        else
+        {
+            var temp = System.Text.Json.JsonSerializer.Deserialize<ConfigurationData>(json);
+
+            if (temp == null)
+            {
+                temp = new ConfigurationData();
+            }
+
+            return temp;
+        }        
     }
 
     private void EnsureConfigFileExists()
@@ -65,7 +124,12 @@ public class FileBasedConfigurationManager
         // if file does not exist, create it
         if (System.IO.File.Exists(_ConfigFilePath) == false)
         {
-            System.IO.File.WriteAllText(_ConfigFilePath, "{}");
+            System.IO.File.WriteAllText(_ConfigFilePath, string.Empty);
         }
+    }
+
+    public string GetValue(string expectedKey)
+    {
+        return ConfigurationData.Values[expectedKey];
     }
 }
