@@ -137,6 +137,13 @@ public class FileBasedConfigurationManager : ICommandConfigurationManager
         }
     }
 
+    public IDictionary<string, string> GetValues()
+    {
+        var temp = ConfigurationData.Values;
+
+        return temp;
+    }
+
     public string GetValue(string expectedKey)
     {
         if (ConfigurationData.Values.ContainsKey(expectedKey) == false)

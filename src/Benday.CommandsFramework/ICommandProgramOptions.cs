@@ -7,4 +7,5 @@ public interface ICommandProgramOptions
     string Version { get; set; }
     string Website { get; set; }
     string ConfigurationFolderName { get; set; }
+    bool UsesConfiguration { get; set; }
 }

@@ -202,6 +202,25 @@ public class FileBasedConfigurationManagerFixture
     }
 
     [TestMethod]
+    public void GetValues_ReturnsAllValues()
+    {
+        // arrange
+        DeleteDirectory();
+
+        _SystemUnderTest = new FileBasedConfigurationManager(APPLICATION_NAME);
+        
+        SystemUnderTest.SetValue("testkey1", "testvalue1");
+        SystemUnderTest.SetValue("testkey2", "testvalue2");
+        SystemUnderTest.SetValue("testkey3", "testvalue3"); 
+
+        // act
+        var actual = SystemUnderTest.GetValues();
+
+        // assert
+        Assert.AreEqual<int>(3, actual.Count, $"Value count was wrong.");
+    }
+
+    [TestMethod]
     public void HasValue_ValueExists_True()
     {
         // arrange

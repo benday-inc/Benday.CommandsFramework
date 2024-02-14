@@ -23,4 +23,6 @@ public class DefaultProgramOptions : ICommandProgramOptions
         }
         set => _ConfigurationFolderName = value;
     }
+
+    public bool UsesConfiguration { get; set; } = true;
 }

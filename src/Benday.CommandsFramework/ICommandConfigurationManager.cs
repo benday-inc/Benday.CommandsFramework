@@ -5,8 +5,9 @@ namespace Benday.CommandsFramework;
 public interface ICommandConfigurationManager
 {
     bool ConfigFileExists();
-    string GetValue(string expectedKey);
-    bool HasValue(string expectedKey);
-    void RemoveValue(string expectedKey);
+    string GetValue(string key);
+    IDictionary<string, string> GetValues();
+    bool HasValue(string key);
+    void RemoveValue(string key);
     void SetValue(string key, string val);    
 }
