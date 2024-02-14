@@ -16,6 +16,8 @@ public class FileBasedConfigurationManagerFixture
         _SystemUnderTest = null;
     }
 
+    private const string APPLICATION_NAME = "BendayCommandsFrameworkTests-Deletable";
+
     private FileBasedConfigurationManager? _SystemUnderTest;
 
     private FileBasedConfigurationManager SystemUnderTest
@@ -35,7 +37,7 @@ public class FileBasedConfigurationManagerFixture
     public void ConfigFileExists_True()
     {
         // arrange
-        var applicationName = "BendayCommandsFrameworkTests-Deletable";
+        var applicationName = APPLICATION_NAME;
         var expected = FileBasedConfigurationManager.GetConfigurationFilePath(applicationName);
 
         // if file doesn't exist, create it
@@ -60,14 +62,13 @@ public class FileBasedConfigurationManagerFixture
     }
 
 
-
     [TestMethod]
     public void ConfigFileExists_False()
     {
         // arrange
         var applicationName = "BendayCommandsFrameworkTests-Deletable";
         var expected = FileBasedConfigurationManager.GetConfigurationFilePath(applicationName);
-        DeleteDirectory(FileBasedConfigurationManager.GetConfigurationDirectoryPath(applicationName));
+        DeleteDirectory();
 
         _SystemUnderTest = new FileBasedConfigurationManager(applicationName);
 
@@ -75,10 +76,31 @@ public class FileBasedConfigurationManagerFixture
         var configFileExists = SystemUnderTest.ConfigFileExists();
 
         // assert
-        Assert.IsFalse(configFileExists, $"config file should not exist at {expected}");
+    
+        Assert.IsFalse(configFileExists, $"Expected config file to not exist at {expected}");
     }
 
+    [TestMethod]
+    public void SetValueCreatesConfigFile()
+    {
+        // arrange
+        var expected = FileBasedConfigurationManager.GetConfigurationFilePath(APPLICATION_NAME);
+        DeleteDirectory();
 
+        _SystemUnderTest = new FileBasedConfigurationManager(APPLICATION_NAME);
+
+        // act
+        SystemUnderTest.SetValue("testkey", "testvalue");
+
+        // assert
+        Assert.IsTrue(SystemUnderTest.ConfigFileExists(),
+            $"config file should exist at {expected}");
+    }
+
+    private void DeleteDirectory()
+    {
+        DeleteDirectory(FileBasedConfigurationManager.GetConfigurationDirectoryPath(APPLICATION_NAME));
+    }
 
     private void DeleteDirectory(string expectedDir)
     {
@@ -101,15 +123,14 @@ public class FileBasedConfigurationManagerFixture
         // arrange
         // get path to user profile dir
         var userProfileDir = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        var applicationName = "BendayCommandsFrameworkTests-Deletable";
-
-        var expectedDir = System.IO.Path.Combine(userProfileDir, applicationName);
+        
+        var expectedDir = System.IO.Path.Combine(userProfileDir, APPLICATION_NAME);
         var expected = System.IO.Path.Combine(expectedDir, "config.json");
 
         DeleteDirectory(expectedDir);
 
         // act
-        var actual = FileBasedConfigurationManager.GetConfigurationFilePath(applicationName);
+        var actual = FileBasedConfigurationManager.GetConfigurationFilePath(APPLICATION_NAME);
 
         // assert
         Assert.AreEqual<string>(expected, actual, $"Config filename was wrong");
@@ -121,14 +142,13 @@ public class FileBasedConfigurationManagerFixture
         // arrange
         // get path to user profile dir
         var userProfileDir = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        var applicationName = "BendayCommandsFrameworkTests-Deletable";
-
-        var expectedDir = System.IO.Path.Combine(userProfileDir, applicationName);
+        
+        var expectedDir = System.IO.Path.Combine(userProfileDir, APPLICATION_NAME);
 
         DeleteDirectory(expectedDir);
 
         // act
-        var actual = FileBasedConfigurationManager.GetConfigurationDirectoryPath(applicationName);
+        var actual = FileBasedConfigurationManager.GetConfigurationDirectoryPath(APPLICATION_NAME);
 
         // assert
         Assert.AreEqual<string>(expectedDir, actual, $"Config dir path was wrong");

@@ -49,4 +49,23 @@ public class FileBasedConfigurationManager
     {
         return File.Exists(_ConfigFilePath);        
     }
+    public void SetValue(string key, string val)
+    {
+        EnsureConfigFileExists();
+    }
+
+    private void EnsureConfigFileExists()
+    {
+        // if directory does not exist, create it
+        if (System.IO.Directory.Exists(_ConfigDirPath) == false)
+        {
+            System.IO.Directory.CreateDirectory(_ConfigDirPath);
+        }
+
+        // if file does not exist, create it
+        if (System.IO.File.Exists(_ConfigFilePath) == false)
+        {
+            System.IO.File.WriteAllText(_ConfigFilePath, "{}");
+        }
+    }
 }
