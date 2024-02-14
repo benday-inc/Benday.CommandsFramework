@@ -127,6 +127,7 @@ public class CommandAttributeUtilityFixture
         Assert.IsNotNull(actual.ExecutionInfo, "Execution info was null");
         Assert.AreEqual<string>(expectedCommandName, actual.ExecutionInfo.CommandName, "Command name was wrong");
         Assert.AreEqual<int>(3, actual.ExecutionInfo.Arguments.Count, "Arg count was wrong");
+        Assert.AreSame(CommandProgramOptionsInstance, actual.ExecutionInfo.Options, "Options was wrong");
     }
 
     [TestMethod]
@@ -157,6 +158,7 @@ public class CommandAttributeUtilityFixture
         Assert.IsNotNull(actual.ExecutionInfo, "Execution info was null");
         Assert.AreEqual<string>(expectedCommandName, actual.ExecutionInfo.CommandName, "Command name was wrong");
         Assert.AreEqual<int>(3, actual.ExecutionInfo.Arguments.Count, "Arg count was wrong");
+        Assert.AreSame(CommandProgramOptionsInstance, actual.ExecutionInfo.Options, "Options was wrong");
     }
 
     [TestMethod]
