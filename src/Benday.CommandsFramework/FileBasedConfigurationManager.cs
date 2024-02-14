@@ -139,6 +139,13 @@ public class FileBasedConfigurationManager
 
     public string GetValue(string expectedKey)
     {
-        return ConfigurationData.Values[expectedKey];
+        if (ConfigurationData.Values.ContainsKey(expectedKey) == false)
+        {
+            return string.Empty;
+        }
+        else
+        {
+            return ConfigurationData.Values[expectedKey];
+        }        
     }
 }

@@ -141,6 +141,23 @@ public class FileBasedConfigurationManagerFixture
         Assert.AreEqual<string>(expectedValueAfter, actual, $"Reloaded value was wrong.");
     }
 
+    [TestMethod]
+    public void GetValue_ThatDoesNotExist_ReturnsStringEmpty()
+    {
+        // arrange
+        DeleteDirectory();
+
+        _SystemUnderTest = new FileBasedConfigurationManager(APPLICATION_NAME);
+        var expectedKey = "testkey";
+        var expectedValue = string.Empty;
+
+        // act
+        var actual = SystemUnderTest.GetValue(expectedKey);
+
+        // assert
+        Assert.AreEqual<string>(expectedValue, actual, $"Reloaded value was wrong.");
+    }
+
     private void DeleteDirectory()
     {
         DeleteDirectory(FileBasedConfigurationManager.GetConfigurationDirectoryPath(APPLICATION_NAME));
