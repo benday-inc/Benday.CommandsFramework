@@ -101,6 +101,48 @@ public class CommandAttributeUtilityFixture
     }
 
     [TestMethod]
+    [ExpectedException(typeof(MissingArgumentException))]
+    public void GetInstanceOfConfigCommand_ReturnsNothingWhenOptionToUseDefaultConfigIsFalse()
+    {
+        // arrange
+        CommandProgramOptionsInstance.UsesConfiguration = false;
+
+        var expectedCommandName = CommandFrameworkConstants.CommandName_GetConfig;
+
+        string[] args = { expectedCommandName };
+
+        var sampleAssembly = typeof(Benday.CommandsFramework.Samples.SampleCommand1).Assembly;
+
+        // act
+        var actual = SystemUnderTest.GetCommand(args, sampleAssembly);
+
+        // assert
+        Assert.IsNull(actual, "Result was null");
+    }
+
+    [TestMethod]
+    public void GetInstanceOfConfigCommand_ReturnsCommandWhenOptionToUseDefaultConfigIsTrue()
+    {
+        // arrange
+        CommandProgramOptionsInstance.UsesConfiguration = true;
+
+        var expectedCommandName = CommandFrameworkConstants.CommandName_GetConfig;
+
+        string[] args = { expectedCommandName };
+
+        var sampleAssembly = typeof(Benday.CommandsFramework.Samples.SampleCommand1).Assembly;
+
+        // act
+        var actual = SystemUnderTest.GetCommand(args, sampleAssembly);
+
+        // assert
+        Assert.IsNotNull(actual, "Result was null");
+        Assert.IsNotNull(actual.ExecutionInfo, "Execution info was null");
+        Assert.AreEqual<string>(expectedCommandName, actual.ExecutionInfo.CommandName, "Command name was wrong");
+        Assert.AreSame(CommandProgramOptionsInstance, actual.ExecutionInfo.Options, "Options was wrong");
+    }
+
+    [TestMethod]
     public void GetInstance_Command2()
     {
         // arrange

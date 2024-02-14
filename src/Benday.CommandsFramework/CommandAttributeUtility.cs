@@ -171,32 +171,64 @@ public class CommandAttributeUtility
             execInfo.Configuration = new FileBasedConfigurationManager(
                 _ProgramOptions.ConfigurationFolderName);
 
-            var commandNames = GetAvailableCommandNames(containingAssembly);
+            if (_ProgramOptions.UsesConfiguration == true)
+            {
+                var thisAssembly = this.GetType().Assembly;
 
-            if (commandNames.Contains(execInfo.CommandName) == false)
+                var defaultCommand = GetCommandInstance(thisAssembly, execInfo, false);
+
+                if (defaultCommand != null)
+                {
+                    return defaultCommand;
+                }
+                else
+                {
+                    return GetCommandInstance(containingAssembly, execInfo);
+                }
+            }
+            else
+            {
+                return GetCommandInstance(containingAssembly, execInfo);
+            }
+
+        }
+    }
+
+    private CommandBase? GetCommandInstance(Assembly containingAssembly, CommandExecutionInfo? execInfo, 
+        bool throwException = true)
+    {
+        var commandNames = GetAvailableCommandNames(containingAssembly);
+
+        if (commandNames.Contains(execInfo.CommandName) == false)
+        {
+            if (throwException == true)
             {
                 throw new MissingArgumentException($"Could not locate a command named '{execInfo.CommandName}'.");
             }
             else
             {
-                var commandType = GetAvailableCommandType(containingAssembly, execInfo.CommandName);
-
-                if (commandType is null)
-                {
-                    throw new MissingArgumentException($"Could not locate a command data type named '{execInfo.CommandName}'.");
-                }
-
-                var ctor = commandType.GetConstructor(new Type[] { typeof(CommandExecutionInfo), typeof(ITextOutputProvider) });
-
-                if (ctor is null)
-                {
-                    throw new MissingArgumentException($"Could not locate a constructor on command type named '{execInfo.CommandName}'.");
-                }
-
-                var instance = ctor.Invoke(new object[] { execInfo, new ConsoleTextOutputProvider() });
-
-                return instance as CommandBase;
+                return null;
             }
+        }
+        else
+        {
+            var commandType = GetAvailableCommandType(containingAssembly, execInfo.CommandName);
+
+            if (commandType is null)
+            {
+                throw new MissingArgumentException($"Could not locate a command data type named '{execInfo.CommandName}'.");
+            }
+
+            var ctor = commandType.GetConstructor(new Type[] { typeof(CommandExecutionInfo), typeof(ITextOutputProvider) });
+
+            if (ctor is null)
+            {
+                throw new MissingArgumentException($"Could not locate a constructor on command type named '{execInfo.CommandName}'.");
+            }
+
+            var instance = ctor.Invoke(new object[] { execInfo, new ConsoleTextOutputProvider() });
+
+            return instance as CommandBase;
         }
     }
 
