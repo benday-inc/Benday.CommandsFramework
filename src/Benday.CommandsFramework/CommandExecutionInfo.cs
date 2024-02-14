@@ -16,4 +16,20 @@ public class CommandExecutionInfo
     /// The requested command line arguments parsed into key/value pairs
     /// </summary>
     public Dictionary<string, string> Arguments { get; set; } = new();
+
+    private ICommandConfigurationManager? _Configuration;
+    public ICommandConfigurationManager Configuration
+    {
+        get
+        {
+            if (_Configuration == null)
+            {
+                throw new InvalidOperationException($"No configuration manager set");
+            }
+
+            return _Configuration;
+        }
+
+        set => _Configuration = value;
+    }
 }

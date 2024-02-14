@@ -6,7 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Benday.CommandsFramework;
-public class FileBasedConfigurationManager
+public class FileBasedConfigurationManager : ICommandConfigurationManager
 {
     private string _ConfigFilePath;
     private string _ConfigDirPath;
@@ -82,7 +82,7 @@ public class FileBasedConfigurationManager
             else
             {
                 return _ConfigurationData;
-            }            
+            }
         }
     }
     private void SaveConfigurationData()
@@ -90,7 +90,7 @@ public class FileBasedConfigurationManager
         EnsureConfigFileExists();
 
         var options = new JsonSerializerOptions
-        {            
+        {
             WriteIndented = true
         };
 
@@ -119,7 +119,7 @@ public class FileBasedConfigurationManager
             }
 
             return temp;
-        }        
+        }
     }
 
     private void EnsureConfigFileExists()
@@ -146,7 +146,7 @@ public class FileBasedConfigurationManager
         else
         {
             return ConfigurationData.Values[expectedKey];
-        }        
+        }
     }
 
     public bool HasValue(string expectedKey)

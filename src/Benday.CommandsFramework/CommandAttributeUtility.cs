@@ -168,6 +168,8 @@ public class CommandAttributeUtility
         else
         {
             execInfo.Options = _ProgramOptions;
+            execInfo.Configuration = new FileBasedConfigurationManager(
+                _ProgramOptions.ConfigurationFolderName);
 
             var commandNames = GetAvailableCommandNames(containingAssembly);
 
