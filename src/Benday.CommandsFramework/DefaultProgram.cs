@@ -25,7 +25,7 @@ public class DefaultProgram : ICommandProgram
 
     public void Run(string[] args)
     {
-        var util = new CommandAttributeUtility();
+        var util = new CommandAttributeUtility(Options);
 
         if (args.Length == 0)
         {

@@ -22,10 +22,31 @@ public class CommandAttributeUtilityFixture
         {
             if (_SystemUnderTest == null)
             {
-                _SystemUnderTest = new CommandAttributeUtility();
+                _SystemUnderTest = new CommandAttributeUtility(CommandProgramOptionsInstance);
             }
 
             return _SystemUnderTest;
+        }
+    }
+
+    private ICommandProgramOptions? _CommandProgramOptionsInstance;
+    private ICommandProgramOptions CommandProgramOptionsInstance
+    {
+        get
+        {
+            if (_CommandProgramOptionsInstance == null)
+            {
+                var options = new DefaultProgramOptions();
+
+                options.ApplicationName = "Test Sample Application";
+                options.Version = "1.0.0";  
+                options.Website = "https://www.benday.com";
+                options.ConfigurationFolderName = "TestSampleApplication";
+
+                _CommandProgramOptionsInstance = options;
+            }
+
+            return _CommandProgramOptionsInstance;
         }
     }
 
@@ -75,6 +96,7 @@ public class CommandAttributeUtilityFixture
         Assert.IsNotNull(actual.ExecutionInfo, "Execution info was null");
         Assert.AreEqual<string>(expectedCommandName, actual.ExecutionInfo.CommandName, "Command name was wrong");
         Assert.AreEqual<int>(3, actual.ExecutionInfo.Arguments.Count, "Arg count was wrong");
+        Assert.AreSame(CommandProgramOptionsInstance, actual.ExecutionInfo.Options, "Options was wrong");
     }
 
     [TestMethod]

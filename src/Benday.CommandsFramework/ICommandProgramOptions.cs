@@ -6,4 +6,5 @@ public interface ICommandProgramOptions
     DisplayUsageOptions DisplayUsageOptions { get; set; }
     string Version { get; set; }
     string Website { get; set; }
+    string ConfigurationFolderName { get; set; }
 }

@@ -5,6 +5,8 @@
 /// </summary>
 public class CommandExecutionInfo
 {
+    public ICommandProgramOptions Options { get; set; } = new DefaultProgramOptions();
+
     /// <summary>
     /// Requested command name. This is the first arg (args[0]) on the command line
     /// </summary>

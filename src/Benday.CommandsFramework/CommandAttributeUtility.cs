@@ -10,6 +10,13 @@ namespace Benday.CommandsFramework;
 /// </summary>
 public class CommandAttributeUtility
 {
+    private ICommandProgramOptions _ProgramOptions;
+
+    public CommandAttributeUtility(ICommandProgramOptions options)
+    {
+        _ProgramOptions = options;
+    }
+
     /// <summary>
     /// Get the list of command names in an assembly
     /// </summary>
@@ -160,6 +167,8 @@ public class CommandAttributeUtility
         }
         else
         {
+            execInfo.Options = _ProgramOptions;
+
             var commandNames = GetAvailableCommandNames(containingAssembly);
 
             if (commandNames.Contains(execInfo.CommandName) == false)
