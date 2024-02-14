@@ -54,7 +54,16 @@ public class FileBasedConfigurationManager
     {
         EnsureConfigFileExists();
 
-        ConfigurationData.Values.Add(key, val);
+        // if key exists, update it
+        if (ConfigurationData.Values.ContainsKey(key) == true)
+        {
+            ConfigurationData.Values[key] = val;
+        }
+        else
+        {
+            // if key does not exist, add it
+            ConfigurationData.Values.Add(key, val);
+        }
 
         SaveConfigurationData();
     }

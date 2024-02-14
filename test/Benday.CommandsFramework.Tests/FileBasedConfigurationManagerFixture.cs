@@ -111,10 +111,34 @@ public class FileBasedConfigurationManagerFixture
 
         // assert
         var reloaded = new FileBasedConfigurationManager(APPLICATION_NAME);
-
+        
         var actual = reloaded.GetValue(expectedKey);
 
         Assert.AreEqual<string>(expectedValue, actual, $"Reloaded value was wrong.");
+    }
+
+    [TestMethod]
+    public void SetValue_ExistingValue_ReadItBack()
+    {
+        // arrange
+        DeleteDirectory();
+
+        _SystemUnderTest = new FileBasedConfigurationManager(APPLICATION_NAME);
+        var expectedKey = "testkey";
+        var expectedValueBefore = "testvalue-before";
+        var expectedValueAfter = "testvalue-after";
+
+        SystemUnderTest.SetValue(expectedKey, expectedValueBefore);
+
+        // act
+        SystemUnderTest.SetValue(expectedKey, expectedValueAfter);
+
+        // assert
+        var reloaded = new FileBasedConfigurationManager(APPLICATION_NAME);
+
+        var actual = reloaded.GetValue(expectedKey);
+
+        Assert.AreEqual<string>(expectedValueAfter, actual, $"Reloaded value was wrong.");
     }
 
     private void DeleteDirectory()
