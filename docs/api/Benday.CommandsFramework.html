@@ -11,6 +11,7 @@
       <meta name="title" content="Namespace Benday.CommandsFramework
  ">
     
+    
       <link rel="shortcut icon" href="../favicon.ico">
       <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
       <link rel="stylesheet" href="../styles/docfx.css">
@@ -75,11 +76,9 @@
   <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="markdown level0 remarks"></div>
-    <h3 id="classes">Classes
+    <h3 id="classes">
+Classes
 </h3>
-      <h4><a class="xref" href="Benday.CommandsFramework.Argument-1.html">Argument&lt;T&gt;</a></h4>
-      <section><p>Base class for arguments</p>
-</section>
       <h4><a class="xref" href="Benday.CommandsFramework.ArgumentCollection.html">ArgumentCollection</a></h4>
       <section><p>Collection of arguments. Two common use cases: 1) create a
 collection of arguments in order to describe what arguments are available
@@ -92,6 +91,9 @@ This class <em>should</em> be named CommandExecutionInfoFactory and will be rena
 </section>
       <h4><a class="xref" href="Benday.CommandsFramework.ArgumentFrameworkConstants.html">ArgumentFrameworkConstants</a></h4>
       <section><p>Constant strings used by the argument framework.</p>
+</section>
+      <h4><a class="xref" href="Benday.CommandsFramework.Argument-1.html">Argument&lt;T&gt;</a></h4>
+      <section><p>Base class for arguments</p>
 </section>
       <h4><a class="xref" href="Benday.CommandsFramework.AsynchronousCommand.html">AsynchronousCommand</a></h4>
       <section><p>Base class for commands that require access to async functionality for execution.</p>
@@ -115,10 +117,16 @@ types in an assembly.</p>
       <h4><a class="xref" href="Benday.CommandsFramework.CommandExecutionInfo.html">CommandExecutionInfo</a></h4>
       <section><p>Information about the requested command execution.</p>
 </section>
+      <h4><a class="xref" href="Benday.CommandsFramework.CommandFrameworkConstants.html">CommandFrameworkConstants</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Benday.CommandsFramework.CommandFrameworkUtilities.html">CommandFrameworkUtilities</a></h4>
+      <section></section>
       <h4><a class="xref" href="Benday.CommandsFramework.CommandInfo.html">CommandInfo</a></h4>
       <section><p>Information about a command including name, description, and
 required/optional arguments.</p>
 </section>
+      <h4><a class="xref" href="Benday.CommandsFramework.ConfigurationData.html">ConfigurationData</a></h4>
+      <section></section>
       <h4><a class="xref" href="Benday.CommandsFramework.ConsoleTextOutputProvider.html">ConsoleTextOutputProvider</a></h4>
       <section><p>Implementation of ITextOutputProvider that outputs messages to the system console.</p>
 </section>
@@ -138,6 +146,10 @@ the list of available commands and usage information is displayed.</p>
       <section><p>Extension methods. Mostly methods for configuring command argument
 definitions using fluent config methods.</p>
 </section>
+      <h4><a class="xref" href="Benday.CommandsFramework.FileBasedConfigurationManager.html">FileBasedConfigurationManager</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Benday.CommandsFramework.GetConfigurationValueCommand.html">GetConfigurationValueCommand</a></h4>
+      <section></section>
       <h4><a class="xref" href="Benday.CommandsFramework.Int32Argument.html">Int32Argument</a></h4>
       <section><p>Argument that has an int value.</p>
 </section>
@@ -149,6 +161,10 @@ definitions using fluent config methods.</p>
       <h4><a class="xref" href="Benday.CommandsFramework.MissingArgumentException.html">MissingArgumentException</a></h4>
       <section><p>Exception class for describing missing arguments</p>
 </section>
+      <h4><a class="xref" href="Benday.CommandsFramework.RemoveConfigurationValueCommand.html">RemoveConfigurationValueCommand</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Benday.CommandsFramework.SetConfigurationValueCommand.html">SetConfigurationValueCommand</a></h4>
+      <section></section>
       <h4><a class="xref" href="Benday.CommandsFramework.StringArgument.html">StringArgument</a></h4>
       <section><p>Argument implementation for working with string values</p>
 </section>
@@ -160,7 +176,8 @@ for implementing a user interface that could call this command</p>
       <h4><a class="xref" href="Benday.CommandsFramework.SynchronousCommand.html">SynchronousCommand</a></h4>
       <section><p>Base class for commands that are run synchronously.</p>
 </section>
-    <h3 id="interfaces">Interfaces
+    <h3 id="interfaces">
+Interfaces
 </h3>
       <h4><a class="xref" href="Benday.CommandsFramework.IArgument.html">IArgument</a></h4>
       <section><p>Interface describing the methods and properties for an argument</p>
@@ -172,6 +189,12 @@ execution.</p>
       <h4><a class="xref" href="Benday.CommandsFramework.IBooleanArgument.html">IBooleanArgument</a></h4>
       <section><p>Interface for accessing a boolean argument value</p>
 </section>
+      <h4><a class="xref" href="Benday.CommandsFramework.ICommandConfigurationManager.html">ICommandConfigurationManager</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Benday.CommandsFramework.ICommandProgram.html">ICommandProgram</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Benday.CommandsFramework.ICommandProgramOptions.html">ICommandProgramOptions</a></h4>
+      <section></section>
       <h4><a class="xref" href="Benday.CommandsFramework.IDateTimeArgument.html">IDateTimeArgument</a></h4>
       <section><p>Interface for accessing a DateTime argument value</p>
 </section>
@@ -184,7 +207,8 @@ execution.</p>
       <h4><a class="xref" href="Benday.CommandsFramework.ITextOutputProvider.html">ITextOutputProvider</a></h4>
       <section><p>Interface for handling text output from commands</p>
 </section>
-    <h3 id="enums">Enums
+    <h3 id="enums">
+Enums
 </h3>
       <h4><a class="xref" href="Benday.CommandsFramework.ArgumentDataType.html">ArgumentDataType</a></h4>
       <section><p>Enumeration of the supported argument data types</p>
@@ -201,7 +225,7 @@ execution.</p>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
-                <h5>In This Article</h5>
+                <h5>In this article</h5>
                 <div></div>
               </nav>
             </div>

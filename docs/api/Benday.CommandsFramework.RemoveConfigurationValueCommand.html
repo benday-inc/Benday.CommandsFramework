@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-      <title>Class SynchronousCommand
+      <title>Class RemoveConfigurationValueCommand
  </title>
       <meta name="viewport" content="width=device-width">
-      <meta name="title" content="Class SynchronousCommand
+      <meta name="title" content="Class RemoveConfigurationValueCommand
  ">
     
     
@@ -69,23 +69,20 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Benday.CommandsFramework.SynchronousCommand">
+            <article class="content wrap" id="_content" data-uid="Benday.CommandsFramework.RemoveConfigurationValueCommand">
 
 
 
-  <h1 id="Benday_CommandsFramework_SynchronousCommand" data-uid="Benday.CommandsFramework.SynchronousCommand" class="text-break">Class SynchronousCommand
+  <h1 id="Benday_CommandsFramework_RemoveConfigurationValueCommand" data-uid="Benday.CommandsFramework.RemoveConfigurationValueCommand" class="text-break">Class RemoveConfigurationValueCommand
 </h1>
-  <div class="markdown level0 summary"><p>Base class for commands that are run synchronously.</p>
-</div>
+  <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
     <div class="level1"><a class="xref" href="Benday.CommandsFramework.CommandBase.html">CommandBase</a></div>
-    <div class="level2"><span class="xref">SynchronousCommand</span></div>
-      <div class="level3"><a class="xref" href="Benday.CommandsFramework.GetConfigurationValueCommand.html">GetConfigurationValueCommand</a></div>
-      <div class="level3"><a class="xref" href="Benday.CommandsFramework.RemoveConfigurationValueCommand.html">RemoveConfigurationValueCommand</a></div>
-      <div class="level3"><a class="xref" href="Benday.CommandsFramework.SetConfigurationValueCommand.html">SetConfigurationValueCommand</a></div>
+    <div class="level2"><a class="xref" href="Benday.CommandsFramework.SynchronousCommand.html">SynchronousCommand</a></div>
+    <div class="level3"><span class="xref">RemoveConfigurationValueCommand</span></div>
   </div>
   <div class="implements">
     <h5>Implements</h5>
@@ -94,6 +91,12 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
+      <a class="xref" href="Benday.CommandsFramework.SynchronousCommand.html#Benday_CommandsFramework_SynchronousCommand_Execute">SynchronousCommand.Execute()</a>
+    </div>
+    <div>
+      <a class="xref" href="Benday.CommandsFramework.SynchronousCommand.html#Benday_CommandsFramework_SynchronousCommand_OnValidationFailure_System_Collections_Generic_List_Benday_CommandsFramework_IArgument__">SynchronousCommand.OnValidationFailure(List&lt;IArgument&gt;)</a>
+    </div>
+    <div>
       <a class="xref" href="Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase__OutputProvider">CommandBase._OutputProvider</a>
     </div>
     <div>
@@ -101,9 +104,6 @@
     </div>
     <div>
       <a class="xref" href="Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_Arguments">CommandBase.Arguments</a>
-    </div>
-    <div>
-      <a class="xref" href="Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_GetArguments">CommandBase.GetArguments()</a>
     </div>
     <div>
       <a class="xref" href="Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_Description">CommandBase.Description</a>
@@ -153,27 +153,26 @@
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Benday.html">Benday</a>.<a class="xref" href="Benday.CommandsFramework.html">CommandsFramework</a></h6>
   <h6><strong>Assembly</strong>: Benday.CommandsFramework.dll</h6>
-  <h5 id="Benday_CommandsFramework_SynchronousCommand_syntax">Syntax</h5>
+  <h5 id="Benday_CommandsFramework_RemoveConfigurationValueCommand_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class SynchronousCommand : CommandBase, ISynchronousCommand</code></pre>
+    <pre><code class="lang-csharp hljs">public class RemoveConfigurationValueCommand : SynchronousCommand, ISynchronousCommand</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_SynchronousCommand__ctor_Benday_CommandsFramework_CommandExecutionInfo_Benday_CommandsFramework_ITextOutputProvider_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.SynchronousCommand.%23ctor(Benday.CommandsFramework.CommandExecutionInfo%2CBenday.CommandsFramework.ITextOutputProvider)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_RemoveConfigurationValueCommand__ctor_Benday_CommandsFramework_CommandExecutionInfo_Benday_CommandsFramework_ITextOutputProvider_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.RemoveConfigurationValueCommand.%23ctor(Benday.CommandsFramework.CommandExecutionInfo%2CBenday.CommandsFramework.ITextOutputProvider)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/SynchronousCommand.cs/#L13">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/RemoveConfigurationValueCommand.cs/#L9">View Source</a>
   </span>
-  <a id="Benday_CommandsFramework_SynchronousCommand__ctor_" data-uid="Benday.CommandsFramework.SynchronousCommand.#ctor*"></a>
-  <h4 id="Benday_CommandsFramework_SynchronousCommand__ctor_Benday_CommandsFramework_CommandExecutionInfo_Benday_CommandsFramework_ITextOutputProvider_" data-uid="Benday.CommandsFramework.SynchronousCommand.#ctor(Benday.CommandsFramework.CommandExecutionInfo,Benday.CommandsFramework.ITextOutputProvider)">SynchronousCommand(CommandExecutionInfo, ITextOutputProvider)</h4>
-  <div class="markdown level1 summary"><p>Constructor</p>
-</div>
+  <a id="Benday_CommandsFramework_RemoveConfigurationValueCommand__ctor_" data-uid="Benday.CommandsFramework.RemoveConfigurationValueCommand.#ctor*"></a>
+  <h4 id="Benday_CommandsFramework_RemoveConfigurationValueCommand__ctor_Benday_CommandsFramework_CommandExecutionInfo_Benday_CommandsFramework_ITextOutputProvider_" data-uid="Benday.CommandsFramework.RemoveConfigurationValueCommand.#ctor(Benday.CommandsFramework.CommandExecutionInfo,Benday.CommandsFramework.ITextOutputProvider)">RemoveConfigurationValueCommand(CommandExecutionInfo, ITextOutputProvider)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SynchronousCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider)</code></pre>
+    <pre><code class="lang-csharp hljs">public RemoveConfigurationValueCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -188,14 +187,12 @@
       <tr>
         <td><a class="xref" href="Benday.CommandsFramework.CommandExecutionInfo.html">CommandExecutionInfo</a></td>
         <td><span class="parametername">info</span></td>
-        <td><p>Command execution information</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><a class="xref" href="Benday.CommandsFramework.ITextOutputProvider.html">ITextOutputProvider</a></td>
         <td><span class="parametername">outputProvider</span></td>
-        <td><p>Output provider instance</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -203,70 +200,55 @@
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_SynchronousCommand_Execute.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.SynchronousCommand.Execute%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_RemoveConfigurationValueCommand_GetArguments.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.RemoveConfigurationValueCommand.GetArguments%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/SynchronousCommand.cs/#L23">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/RemoveConfigurationValueCommand.cs/#L14">View Source</a>
   </span>
-  <a id="Benday_CommandsFramework_SynchronousCommand_Execute_" data-uid="Benday.CommandsFramework.SynchronousCommand.Execute*"></a>
-  <h4 id="Benday_CommandsFramework_SynchronousCommand_Execute" data-uid="Benday.CommandsFramework.SynchronousCommand.Execute">Execute()</h4>
-  <div class="markdown level1 summary"><p>Executes the command</p>
+  <a id="Benday_CommandsFramework_RemoveConfigurationValueCommand_GetArguments_" data-uid="Benday.CommandsFramework.RemoveConfigurationValueCommand.GetArguments*"></a>
+  <h4 id="Benday_CommandsFramework_RemoveConfigurationValueCommand_GetArguments" data-uid="Benday.CommandsFramework.RemoveConfigurationValueCommand.GetArguments">GetArguments()</h4>
+  <div class="markdown level1 summary"><p>Get the arguments for the command execution</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void Execute()</code></pre>
+    <pre><code class="lang-csharp hljs">public override ArgumentCollection GetArguments()</code></pre>
   </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_SynchronousCommand_OnExecute.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.SynchronousCommand.OnExecute%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/SynchronousCommand.cs/#L60">View Source</a>
-  </span>
-  <a id="Benday_CommandsFramework_SynchronousCommand_OnExecute_" data-uid="Benday.CommandsFramework.SynchronousCommand.OnExecute*"></a>
-  <h4 id="Benday_CommandsFramework_SynchronousCommand_OnExecute" data-uid="Benday.CommandsFramework.SynchronousCommand.OnExecute">OnExecute()</h4>
-  <div class="markdown level1 summary"><p>Abstract method. This is where the work of the command should be added.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected abstract void OnExecute()</code></pre>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_SynchronousCommand_OnValidationFailure_System_Collections_Generic_List_Benday_CommandsFramework_IArgument__.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.SynchronousCommand.OnValidationFailure(System.Collections.Generic.List%7BBenday.CommandsFramework.IArgument%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/SynchronousCommand.cs/#L50">View Source</a>
-  </span>
-  <a id="Benday_CommandsFramework_SynchronousCommand_OnValidationFailure_" data-uid="Benday.CommandsFramework.SynchronousCommand.OnValidationFailure*"></a>
-  <h4 id="Benday_CommandsFramework_SynchronousCommand_OnValidationFailure_System_Collections_Generic_List_Benday_CommandsFramework_IArgument__" data-uid="Benday.CommandsFramework.SynchronousCommand.OnValidationFailure(System.Collections.Generic.List{Benday.CommandsFramework.IArgument})">OnValidationFailure(List&lt;IArgument&gt;)</h4>
-  <div class="markdown level1 summary"><p>Template method for handling validation failures. The default implementation
-displays the usage info for the command and the summary of validation errors.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual void OnValidationFailure(List&lt;IArgument&gt; validationResult)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
+  <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-condensed">
     <thead>
       <tr>
         <th>Type</th>
-        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Benday.CommandsFramework.IArgument.html">IArgument</a>&gt;</td>
-        <td><span class="parametername">validationResult</span></td>
+        <td><a class="xref" href="Benday.CommandsFramework.ArgumentCollection.html">ArgumentCollection</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_GetArguments">CommandBase.GetArguments()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_RemoveConfigurationValueCommand_OnExecute.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.RemoveConfigurationValueCommand.OnExecute%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/RemoveConfigurationValueCommand.cs/#L24">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_RemoveConfigurationValueCommand_OnExecute_" data-uid="Benday.CommandsFramework.RemoveConfigurationValueCommand.OnExecute*"></a>
+  <h4 id="Benday_CommandsFramework_RemoveConfigurationValueCommand_OnExecute" data-uid="Benday.CommandsFramework.RemoveConfigurationValueCommand.OnExecute">OnExecute()</h4>
+  <div class="markdown level1 summary"><p>Abstract method. This is where the work of the command should be added.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnExecute()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Benday.CommandsFramework.SynchronousCommand.html#Benday_CommandsFramework_SynchronousCommand_OnExecute">SynchronousCommand.OnExecute()</a></div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Benday.CommandsFramework.ISynchronousCommand.html">ISynchronousCommand</a>
@@ -280,10 +262,10 @@ displays the usage info for the command and the summary of validation errors.</p
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_SynchronousCommand.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.SynchronousCommand%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
+                    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_RemoveConfigurationValueCommand.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.RemoveConfigurationValueCommand%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
                   </li>
                   <li>
-                    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/SynchronousCommand.cs/#L6" class="contribution-link">View Source</a>
+                    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/RemoveConfigurationValueCommand.cs/#L3" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
