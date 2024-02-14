@@ -24,12 +24,61 @@ public class FileBasedConfigurationManagerFixture
         {
             if (_SystemUnderTest == null)
             {
-                _SystemUnderTest = new FileBasedConfigurationManager();
+                Assert.Fail("sut not initialized");
             }
 
             return _SystemUnderTest;
         }
     }
+
+    [TestMethod]
+    public void ConfigFileExists_True()
+    {
+        // arrange
+        var applicationName = "BendayCommandsFrameworkTests-Deletable";
+        var expected = FileBasedConfigurationManager.GetConfigurationFilePath(applicationName);
+
+        // if file doesn't exist, create it
+        if (System.IO.File.Exists(expected) == false)
+        {
+            // create dir if it doesn't exist
+            var dir = FileBasedConfigurationManager.GetConfigurationDirectoryPath(applicationName);
+            if (System.IO.Directory.Exists(dir) == false)
+            {
+                System.IO.Directory.CreateDirectory(dir);
+            }
+            System.IO.File.WriteAllText(expected, "test");
+        }
+
+        _SystemUnderTest = new FileBasedConfigurationManager(applicationName);
+
+        // act
+        var configFileExists = SystemUnderTest.ConfigFileExists();
+
+        // assert
+        Assert.IsTrue(configFileExists, $"Expected config file to exist at {expected}");
+    }
+
+
+
+    [TestMethod]
+    public void ConfigFileExists_False()
+    {
+        // arrange
+        var applicationName = "BendayCommandsFrameworkTests-Deletable";
+        var expected = FileBasedConfigurationManager.GetConfigurationFilePath(applicationName);
+        DeleteDirectory(FileBasedConfigurationManager.GetConfigurationDirectoryPath(applicationName));
+
+        _SystemUnderTest = new FileBasedConfigurationManager(applicationName);
+
+        // act
+        var configFileExists = SystemUnderTest.ConfigFileExists();
+
+        // assert
+        Assert.IsFalse(configFileExists, $"config file should not exist at {expected}");
+    }
+
+
 
     private void DeleteDirectory(string expectedDir)
     {

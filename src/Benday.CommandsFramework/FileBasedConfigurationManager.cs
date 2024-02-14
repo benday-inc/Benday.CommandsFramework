@@ -7,6 +7,18 @@ using System.Threading.Tasks;
 namespace Benday.CommandsFramework;
 public class FileBasedConfigurationManager
 {
+    private string _ConfigFilePath;
+    private string _ConfigDirPath;
+
+    public FileBasedConfigurationManager(string applicationName)
+    {
+        ApplicationName = applicationName;
+        _ConfigDirPath = GetConfigurationDirectoryPath(applicationName);
+        _ConfigFilePath = GetConfigurationFilePath(applicationName);
+    }
+
+    public string ApplicationName { get; }
+
     public static string GetConfigurationFilePath(string applicationName)
     {
         if (string.IsNullOrWhiteSpace(applicationName) == true)
@@ -31,5 +43,10 @@ public class FileBasedConfigurationManager
         var directory = System.IO.Path.Combine(userProfileDir, applicationName);
 
         return directory;
+    }
+
+    public bool ConfigFileExists()
+    {
+        return File.Exists(_ConfigFilePath);        
     }
 }
