@@ -41,4 +41,8 @@ public class StringBuilderTextOutputProvider : ITextOutputProvider
     {
         _Instance.AppendLine();
     }
+    public void Write(string message)
+    {
+        _Instance.Append(message);
+    }
 }

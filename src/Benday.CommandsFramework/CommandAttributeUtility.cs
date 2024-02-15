@@ -66,9 +66,19 @@ public class CommandAttributeUtility
         var returnValue = new List<CommandAttribute>();
 
         var matchingTypes =
-            from type in containingAssembly.GetTypes()
-            where type.GetCustomAttributes<CommandAttribute>().Any()
-            select type;
+            (from type in containingAssembly.GetTypes()
+             where type.GetCustomAttributes<CommandAttribute>().Any()
+             select type).ToList();
+
+        if (_ProgramOptions.UsesConfiguration == true)
+        {
+            var thisAssembly = this.GetType().Assembly;
+
+            matchingTypes.AddRange(
+                (from type in thisAssembly.GetTypes()
+                where type.GetCustomAttributes<CommandAttribute>().Any()
+                select type).ToList());
+        }
 
         foreach (var type in matchingTypes)
         {
@@ -99,10 +109,10 @@ public class CommandAttributeUtility
 
         var match =
             (from type in containingAssembly.GetTypes()
-            where 
-                type.IsSubclassOf(typeof(CommandBase)) == true &&
-                type.GetCustomAttributes<CommandAttribute>().Any(t=> t.Name == commandName)
-            select type).FirstOrDefault();
+             where
+                 type.IsSubclassOf(typeof(CommandBase)) == true &&
+                 type.GetCustomAttributes<CommandAttribute>().Any(t => t.Name == commandName)
+             select type).FirstOrDefault();
 
         return match;
     }
@@ -194,7 +204,7 @@ public class CommandAttributeUtility
         }
     }
 
-    private CommandBase? GetCommandInstance(Assembly containingAssembly, CommandExecutionInfo? execInfo, 
+    private CommandBase? GetCommandInstance(Assembly containingAssembly, CommandExecutionInfo? execInfo,
         bool throwException = true)
     {
         var commandNames = GetAvailableCommandNames(containingAssembly);
@@ -226,7 +236,7 @@ public class CommandAttributeUtility
                 throw new MissingArgumentException($"Could not locate a constructor on command type named '{execInfo.CommandName}'.");
             }
 
-            var instance = ctor.Invoke(new object[] { execInfo, new ConsoleTextOutputProvider() });
+            var instance = ctor.Invoke(new object[] { execInfo, _ProgramOptions.OutputProvider });
 
             return instance as CommandBase;
         }

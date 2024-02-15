@@ -15,4 +15,10 @@ public interface ITextOutputProvider
     /// Write a new line to the output
     /// </summary>
     void WriteLine();
+
+    /// <summary>
+    /// Write text to output without an ending newline
+    /// </summary>
+    /// <param name="line">Text to write</param>
+    void Write(string message);
 }

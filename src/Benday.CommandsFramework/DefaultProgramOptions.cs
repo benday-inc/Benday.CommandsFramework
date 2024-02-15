@@ -25,4 +25,5 @@ public class DefaultProgramOptions : ICommandProgramOptions
     }
 
     public bool UsesConfiguration { get; set; } = true;
+    public ITextOutputProvider OutputProvider { get; set; } = new ConsoleTextOutputProvider();
 }

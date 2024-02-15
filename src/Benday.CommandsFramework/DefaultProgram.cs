@@ -11,6 +11,7 @@ public class DefaultProgram : ICommandProgram
 {
     public ICommandProgramOptions Options { get; private set; }
     public Assembly ImplementationAssembly { get; }
+    public ITextOutputProvider OutputProvider { get; private set; }
 
     /// <summary>
     /// Constructor
@@ -21,6 +22,22 @@ public class DefaultProgram : ICommandProgram
     {
         Options = options;
         ImplementationAssembly = implementationAssembly;
+        OutputProvider = options.OutputProvider;
+    }
+
+    private void WriteLine(string message)
+    {
+        OutputProvider.WriteLine(message);
+    }
+
+    private void Write(string message)
+    {
+        OutputProvider.Write(message);
+    }
+
+    private void WriteLine()
+    {
+        OutputProvider.WriteLine();
     }
 
     public void Run(string[] args)
@@ -94,7 +111,7 @@ public class DefaultProgram : ICommandProgram
             }
             catch (KnownException ex)
             {
-                Console.WriteLine(ex.Message);
+                WriteLine(ex.Message);
             }
 
         }
@@ -108,25 +125,25 @@ public class DefaultProgram : ICommandProgram
     {
         if (Options.DisplayUsageOptions.ShowApplicationName)
         {
-            Console.WriteLine($"{Options.ApplicationName}");
+            WriteLine($"{Options.ApplicationName}");
         }
 
         if (Options.DisplayUsageOptions.ShowWebsite)
         {
-            Console.WriteLine($"{Options.Website}");
+            WriteLine($"{Options.Website}");
         }
 
         if (Options.DisplayUsageOptions.ShowVersion)
         {
-            Console.WriteLine($"{Options.Version}");
+            WriteLine($"{Options.Version}");
         }
 
         if (Options.DisplayUsageOptions.NewLineAfterHeaderInfo)
         {
-            Console.WriteLine();
+            WriteLine();
         }
 
-        Console.WriteLine($"Available commands:");
+        WriteLine($"Available commands:");
 
         var commands = util.GetAvailableCommandAttributes(ImplementationAssembly);
 
@@ -148,18 +165,30 @@ public class DefaultProgram : ICommandProgram
     {
         var longestName = commands.Max(x => x.Name.Length);
 
-        var consoleWidth = Console.WindowWidth;
+        var consoleWidth = GetConsoleWidth();
         var separator = " - ";
         int commandNameColumnWidth = (longestName + separator.Length);
 
         foreach (var command in commands.OrderBy(x => x.Name))
         {
-            Console.Write(LineWrapUtilities.GetValueWithPadding(command.Name, longestName));
-            Console.Write(separator);
+            Write(LineWrapUtilities.GetValueWithPadding(command.Name, longestName));
+            Write(separator);
 
-            Console.WriteLine(
+            WriteLine(
                 LineWrapUtilities.WrapValue(commandNameColumnWidth,
                 consoleWidth, command.Description));
+        }
+    }
+
+    private int GetConsoleWidth()
+    {
+        if (Console.IsOutputRedirected == true)
+        {
+            return 80;
+        }
+        else
+        {
+            return Console.WindowWidth;
         }
     }
 
@@ -172,27 +201,27 @@ public class DefaultProgram : ICommandProgram
         var categories = commands.Select(x => x.Category).Distinct().Order();
 
         var longestName = commands.Max(x => x.Name.Length);
-
-        var consoleWidth = Console.WindowWidth;
+        
+        var consoleWidth = GetConsoleWidth();
         var separator = " - ";
         int commandNameColumnWidth = (longestName + separator.Length);
 
         foreach (var category in categories)
         {
-            Console.WriteLine($"* {category} *");
-            Console.WriteLine();
+            WriteLine($"* {category} *");
+            WriteLine();
 
             foreach (var command in commands.Where(x => x.Category == category).OrderBy(x => x.Name))
             {
-                Console.Write(LineWrapUtilities.GetValueWithPadding(command.Name, longestName));
-                Console.Write(separator);
+                Write(LineWrapUtilities.GetValueWithPadding(command.Name, longestName));
+                Write(separator);
 
-                Console.WriteLine(
+                WriteLine(
                     LineWrapUtilities.WrapValue(commandNameColumnWidth,
                     consoleWidth, command.Description));
             }
 
-            Console.WriteLine();
+            WriteLine();
         }
     }
 }

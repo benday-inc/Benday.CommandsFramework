@@ -21,4 +21,8 @@ public class ConsoleTextOutputProvider : ITextOutputProvider
     {
         Console.WriteLine();
     }
+    public void Write(string message)
+    {
+        Console.Write(message);
+    }
 }
