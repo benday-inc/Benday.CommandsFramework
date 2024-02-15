@@ -1296,6 +1296,22 @@ references:
   commentId: T:Benday.CommandsFramework.ConsoleTextOutputProvider
   fullName: Benday.CommandsFramework.ConsoleTextOutputProvider
   nameWithType: ConsoleTextOutputProvider
+- uid: Benday.CommandsFramework.ConsoleTextOutputProvider.Write(System.String)
+  name: Write(string)
+  href: api/Benday.CommandsFramework.ConsoleTextOutputProvider.html#Benday_CommandsFramework_ConsoleTextOutputProvider_Write_System_String_
+  commentId: M:Benday.CommandsFramework.ConsoleTextOutputProvider.Write(System.String)
+  name.vb: Write(String)
+  fullName: Benday.CommandsFramework.ConsoleTextOutputProvider.Write(string)
+  fullName.vb: Benday.CommandsFramework.ConsoleTextOutputProvider.Write(String)
+  nameWithType: ConsoleTextOutputProvider.Write(string)
+  nameWithType.vb: ConsoleTextOutputProvider.Write(String)
+- uid: Benday.CommandsFramework.ConsoleTextOutputProvider.Write*
+  name: Write
+  href: api/Benday.CommandsFramework.ConsoleTextOutputProvider.html#Benday_CommandsFramework_ConsoleTextOutputProvider_Write_
+  commentId: Overload:Benday.CommandsFramework.ConsoleTextOutputProvider.Write
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.ConsoleTextOutputProvider.Write
+  nameWithType: ConsoleTextOutputProvider.Write
 - uid: Benday.CommandsFramework.ConsoleTextOutputProvider.WriteLine
   name: WriteLine()
   href: api/Benday.CommandsFramework.ConsoleTextOutputProvider.html#Benday_CommandsFramework_ConsoleTextOutputProvider_WriteLine
@@ -1512,6 +1528,19 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.DefaultProgram.Options
   nameWithType: DefaultProgram.Options
+- uid: Benday.CommandsFramework.DefaultProgram.OutputProvider
+  name: OutputProvider
+  href: api/Benday.CommandsFramework.DefaultProgram.html#Benday_CommandsFramework_DefaultProgram_OutputProvider
+  commentId: P:Benday.CommandsFramework.DefaultProgram.OutputProvider
+  fullName: Benday.CommandsFramework.DefaultProgram.OutputProvider
+  nameWithType: DefaultProgram.OutputProvider
+- uid: Benday.CommandsFramework.DefaultProgram.OutputProvider*
+  name: OutputProvider
+  href: api/Benday.CommandsFramework.DefaultProgram.html#Benday_CommandsFramework_DefaultProgram_OutputProvider_
+  commentId: Overload:Benday.CommandsFramework.DefaultProgram.OutputProvider
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DefaultProgram.OutputProvider
+  nameWithType: DefaultProgram.OutputProvider
 - uid: Benday.CommandsFramework.DefaultProgram.Run(System.String[])
   name: Run(string[])
   href: api/Benday.CommandsFramework.DefaultProgram.html#Benday_CommandsFramework_DefaultProgram_Run_System_String___
@@ -1573,6 +1602,19 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.DefaultProgramOptions.DisplayUsageOptions
   nameWithType: DefaultProgramOptions.DisplayUsageOptions
+- uid: Benday.CommandsFramework.DefaultProgramOptions.OutputProvider
+  name: OutputProvider
+  href: api/Benday.CommandsFramework.DefaultProgramOptions.html#Benday_CommandsFramework_DefaultProgramOptions_OutputProvider
+  commentId: P:Benday.CommandsFramework.DefaultProgramOptions.OutputProvider
+  fullName: Benday.CommandsFramework.DefaultProgramOptions.OutputProvider
+  nameWithType: DefaultProgramOptions.OutputProvider
+- uid: Benday.CommandsFramework.DefaultProgramOptions.OutputProvider*
+  name: OutputProvider
+  href: api/Benday.CommandsFramework.DefaultProgramOptions.html#Benday_CommandsFramework_DefaultProgramOptions_OutputProvider_
+  commentId: Overload:Benday.CommandsFramework.DefaultProgramOptions.OutputProvider
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DefaultProgramOptions.OutputProvider
+  nameWithType: DefaultProgramOptions.OutputProvider
 - uid: Benday.CommandsFramework.DefaultProgramOptions.UsesConfiguration
   name: UsesConfiguration
   href: api/Benday.CommandsFramework.DefaultProgramOptions.html#Benday_CommandsFramework_DefaultProgramOptions_UsesConfiguration
@@ -2673,6 +2715,19 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.ICommandProgramOptions.DisplayUsageOptions
   nameWithType: ICommandProgramOptions.DisplayUsageOptions
+- uid: Benday.CommandsFramework.ICommandProgramOptions.OutputProvider
+  name: OutputProvider
+  href: api/Benday.CommandsFramework.ICommandProgramOptions.html#Benday_CommandsFramework_ICommandProgramOptions_OutputProvider
+  commentId: P:Benday.CommandsFramework.ICommandProgramOptions.OutputProvider
+  fullName: Benday.CommandsFramework.ICommandProgramOptions.OutputProvider
+  nameWithType: ICommandProgramOptions.OutputProvider
+- uid: Benday.CommandsFramework.ICommandProgramOptions.OutputProvider*
+  name: OutputProvider
+  href: api/Benday.CommandsFramework.ICommandProgramOptions.html#Benday_CommandsFramework_ICommandProgramOptions_OutputProvider_
+  commentId: Overload:Benday.CommandsFramework.ICommandProgramOptions.OutputProvider
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.ICommandProgramOptions.OutputProvider
+  nameWithType: ICommandProgramOptions.OutputProvider
 - uid: Benday.CommandsFramework.ICommandProgramOptions.UsesConfiguration
   name: UsesConfiguration
   href: api/Benday.CommandsFramework.ICommandProgramOptions.html#Benday_CommandsFramework_ICommandProgramOptions_UsesConfiguration
@@ -2775,6 +2830,22 @@ references:
   commentId: T:Benday.CommandsFramework.ITextOutputProvider
   fullName: Benday.CommandsFramework.ITextOutputProvider
   nameWithType: ITextOutputProvider
+- uid: Benday.CommandsFramework.ITextOutputProvider.Write(System.String)
+  name: Write(string)
+  href: api/Benday.CommandsFramework.ITextOutputProvider.html#Benday_CommandsFramework_ITextOutputProvider_Write_System_String_
+  commentId: M:Benday.CommandsFramework.ITextOutputProvider.Write(System.String)
+  name.vb: Write(String)
+  fullName: Benday.CommandsFramework.ITextOutputProvider.Write(string)
+  fullName.vb: Benday.CommandsFramework.ITextOutputProvider.Write(String)
+  nameWithType: ITextOutputProvider.Write(string)
+  nameWithType.vb: ITextOutputProvider.Write(String)
+- uid: Benday.CommandsFramework.ITextOutputProvider.Write*
+  name: Write
+  href: api/Benday.CommandsFramework.ITextOutputProvider.html#Benday_CommandsFramework_ITextOutputProvider_Write_
+  commentId: Overload:Benday.CommandsFramework.ITextOutputProvider.Write
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.ITextOutputProvider.Write
+  nameWithType: ITextOutputProvider.Write
 - uid: Benday.CommandsFramework.ITextOutputProvider.WriteLine
   name: WriteLine()
   href: api/Benday.CommandsFramework.ITextOutputProvider.html#Benday_CommandsFramework_ITextOutputProvider_WriteLine
@@ -3280,6 +3351,22 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.StringBuilderTextOutputProvider.GetOutput
   nameWithType: StringBuilderTextOutputProvider.GetOutput
+- uid: Benday.CommandsFramework.StringBuilderTextOutputProvider.Write(System.String)
+  name: Write(string)
+  href: api/Benday.CommandsFramework.StringBuilderTextOutputProvider.html#Benday_CommandsFramework_StringBuilderTextOutputProvider_Write_System_String_
+  commentId: M:Benday.CommandsFramework.StringBuilderTextOutputProvider.Write(System.String)
+  name.vb: Write(String)
+  fullName: Benday.CommandsFramework.StringBuilderTextOutputProvider.Write(string)
+  fullName.vb: Benday.CommandsFramework.StringBuilderTextOutputProvider.Write(String)
+  nameWithType: StringBuilderTextOutputProvider.Write(string)
+  nameWithType.vb: StringBuilderTextOutputProvider.Write(String)
+- uid: Benday.CommandsFramework.StringBuilderTextOutputProvider.Write*
+  name: Write
+  href: api/Benday.CommandsFramework.StringBuilderTextOutputProvider.html#Benday_CommandsFramework_StringBuilderTextOutputProvider_Write_
+  commentId: Overload:Benday.CommandsFramework.StringBuilderTextOutputProvider.Write
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.StringBuilderTextOutputProvider.Write
+  nameWithType: StringBuilderTextOutputProvider.Write
 - uid: Benday.CommandsFramework.StringBuilderTextOutputProvider.WriteLine
   name: WriteLine()
   href: api/Benday.CommandsFramework.StringBuilderTextOutputProvider.html#Benday_CommandsFramework_StringBuilderTextOutputProvider_WriteLine
