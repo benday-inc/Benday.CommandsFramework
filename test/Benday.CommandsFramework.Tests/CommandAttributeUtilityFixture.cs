@@ -52,10 +52,34 @@ public class CommandAttributeUtilityFixture
     }
 
     [TestMethod]
-    public void GetAvailableCommandNames()
+    public void GetAvailableCommandNames_UsesConfigurationCommands_False()
     {
         // arrange
+        CommandProgramOptionsInstance.UsesConfiguration = false;
+
         var expectedCount = 7;
+        var sampleAssembly = typeof(Benday.CommandsFramework.Samples.SampleCommand1).Assembly;
+
+        // act
+        var actual = SystemUnderTest.GetAvailableCommandNames(sampleAssembly);
+
+        // assert
+        Assert.IsNotNull(actual, "Result was null");
+        Assert.AreNotEqual<int>(0, actual.Count, "Result count was zero");
+        Assert.AreEqual<int>(expectedCount, actual.Count, "result count wrong");
+
+        actual.ForEach(x => { Console.WriteLine($"{x}"); });
+    }
+
+    [TestMethod]
+    public void GetAvailableCommandNames_UsesConfigurationCommands_True()
+    {
+        // arrange
+        CommandProgramOptionsInstance.UsesConfiguration = true;
+
+        var expectedNumberOfConfigCommands = 3;
+
+        var expectedCount = 7 + expectedNumberOfConfigCommands;
         var sampleAssembly = typeof(Benday.CommandsFramework.Samples.SampleCommand1).Assembly;
 
         // act

@@ -60,7 +60,25 @@ public class DefaultProgram : ICommandProgram
                             $"Invalid command name '{args[0]}'.");
                 }
 
-                var command = util.GetCommand(args, ImplementationAssembly);
+
+
+                CommandBase? command;
+
+                if (Options.UsesConfiguration == false)
+                {
+                    command = util.GetCommand(args, ImplementationAssembly);
+                }
+                else
+                {
+                    if (IsDefaultCommandName(args[0]) == true)
+                    {
+                        command = util.GetCommand(args, this.GetType().Assembly);
+                    }
+                    else
+                    {
+                        command = util.GetCommand(args, ImplementationAssembly);
+                    }
+                }
 
                 if (command == null)
                 {
@@ -68,8 +86,26 @@ public class DefaultProgram : ICommandProgram
                 }
                 else
                 {
-                    var attr = util.GetCommandAttributeForCommandName(ImplementationAssembly,
-                        command.ExecutionInfo.CommandName);
+                    CommandAttribute? attr;
+
+                    if (Options.UsesConfiguration == false)
+                    {
+                        attr = util.GetCommandAttributeForCommandName(ImplementationAssembly,
+                                                command.ExecutionInfo.CommandName);
+                    }
+                    else
+                    {
+                        if (IsDefaultCommandName(command.ExecutionInfo.CommandName) == true)
+                        {
+                            attr = util.GetCommandAttributeForCommandName(this.GetType().Assembly,
+                                                command.ExecutionInfo.CommandName);
+                        }
+                        else
+                        {
+                            attr = util.GetCommandAttributeForCommandName(ImplementationAssembly,
+                                                command.ExecutionInfo.CommandName);
+                        }
+                    }
 
                     if (attr == null)
                     {
@@ -115,6 +151,17 @@ public class DefaultProgram : ICommandProgram
             }
 
         }
+    }
+    private bool IsDefaultCommandName(string commandName)
+    {
+        var commandNames = new string[]
+        {
+            CommandFrameworkConstants.CommandName_GetConfig,
+            CommandFrameworkConstants.CommandName_SetConfig,
+            CommandFrameworkConstants.CommandName_RemoveConfig
+        };
+
+        return commandNames.Contains(commandName);
     }
 
     /// <summary>

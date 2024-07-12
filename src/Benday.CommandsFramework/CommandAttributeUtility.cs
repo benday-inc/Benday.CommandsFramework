@@ -33,9 +33,19 @@ public class CommandAttributeUtility
         var returnValue = new List<string>();
 
         var matchingTypes =
-            from type in containingAssembly.GetTypes()
+            (from type in containingAssembly.GetTypes()
             where type.GetCustomAttributes<CommandAttribute>().Any()
-            select type;
+            select type).ToList();
+
+        if (_ProgramOptions.UsesConfiguration == true)
+        {
+            var thisAssembly = this.GetType().Assembly;
+
+            matchingTypes.AddRange(
+                (from type in thisAssembly.GetTypes()
+                 where type.GetCustomAttributes<CommandAttribute>().Any()
+                 select type).ToList());
+        }
 
         foreach (var type in matchingTypes)
         {
