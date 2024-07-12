@@ -13,10 +13,12 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>bdc_mark_128_128.png</PackageIcon>
-    <AssemblyVersion>3.1.0.0</AssemblyVersion>
-    <Version>$(VersionPrefix)3.1.0</Version>
-    <PackageReleaseNotes>v3.1 - Bug fixes. Added ability to inject an instance of ITextOutputProvider for testability.
-v3.0 - Upgraded to .NET 8.0. Added default commands for managing basic string configuration values. Added extension methods for working with relative paths as arguments.</PackageReleaseNotes>
+    <AssemblyVersion>3.2.0.0</AssemblyVersion>
+    <Version>$(VersionPrefix)3.2.0</Version>
+    <PackageReleaseNotes>
+      v3.2 - Fixed 'display usage' formatting bug when argument does not have a description. Added logic to DefaultProgram to set ExitCode to 1 automatically on error.
+      v3.1 - Bug fixes. Added ability to inject an instance of ITextOutputProvider for testability.
+      v3.0 - Upgraded to .NET 8.0. Added default commands for managing basic string configuration values. Added extension methods for working with relative paths as arguments.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
