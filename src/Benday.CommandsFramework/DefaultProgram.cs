@@ -112,8 +112,13 @@ public class DefaultProgram : ICommandProgram
             catch (KnownException ex)
             {
                 WriteLine(ex.Message);
+                Environment.ExitCode = 1;
             }
-
+            catch
+            {
+                Environment.ExitCode = 1;
+                throw;
+            }
         }
     }
 
