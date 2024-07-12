@@ -138,5 +138,23 @@ public class SampleCommand1Fixture
         Console.WriteLine(output);
         Assert.IsTrue(output.Contains("** USAGE **"), "Did not contain expected string");
         Assert.IsTrue(output.Contains("This is the description for command one."), "Did not contain expected string");
+
+        var lines = output.Split(Environment.NewLine);
+
+        var expectedLineStarts = new string[]
+        {
+            "/arg1",
+            "/isawesome",
+            "/count",
+            "/dateofthingy",
+            "[/verbose"
+        };
+
+        foreach (var lineStart in expectedLineStarts)
+        {
+            var foundLine = lines.Any(x => x.StartsWith(lineStart));
+
+            Assert.IsTrue(foundLine, $"Did not find line that starts with '{lineStart}'");
+        }
     }
 }

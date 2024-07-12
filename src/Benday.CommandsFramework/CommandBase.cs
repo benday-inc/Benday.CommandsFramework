@@ -193,6 +193,7 @@ public abstract class CommandBase
             {
                 // description has an empty value or the value is the same as the arg name
                 builder.AppendWithPadding(GetKeyString(arg), longestNameLength);
+                builder.AppendLine();
             }
             else
             {
