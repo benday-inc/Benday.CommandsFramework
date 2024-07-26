@@ -13,9 +13,10 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>bdc_mark_128_128.png</PackageIcon>
-    <AssemblyVersion>3.3.0.0</AssemblyVersion>
-    <Version>$(VersionPrefix)3.3.0</Version>
+    <AssemblyVersion>3.4.0.0</AssemblyVersion>
+    <Version>$(VersionPrefix)3.4.0</Version>
     <PackageReleaseNotes>
+      v3.4 - Changed 'display usage' on commands to return ExitCode of 1 if there is an invalid/missing parameter.
       v3.3 - Fixed 'display usage' formatting bug when argument does not have a description. Added logic to DefaultProgram to set ExitCode to 1 automatically on error.
       v3.2 - Bug fixes.
       v3.1 - Bug fixes. Added ability to inject an instance of ITextOutputProvider for testability.
