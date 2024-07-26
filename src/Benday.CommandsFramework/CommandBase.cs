@@ -285,6 +285,11 @@ public abstract class CommandBase
             }
         }
 
+        if (returnValue.Count > 0)
+        {
+            Environment.ExitCode = 1;
+        }
+
         return returnValue;
     }
 

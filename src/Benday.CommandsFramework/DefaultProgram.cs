@@ -207,6 +207,8 @@ public class DefaultProgram : ICommandProgram
         {
             DisplayCommandsWithoutCategories(commands);
         }
+
+        Environment.ExitCode = 1;
     }
 
     /// <summary>
