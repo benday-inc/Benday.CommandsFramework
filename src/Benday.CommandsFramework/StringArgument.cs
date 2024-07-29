@@ -14,24 +14,8 @@ public class StringArgument : Argument<string>
     /// <param name="allowEmptyValue">If true, then you can use this argument as a flag without 
     /// having to explicitly supply a value. This is helpful for scenarios like /debug or /verbose
     /// where it's easier than specifying fully populated arguments like /debug:true or /verbose:true.</param>
-    public StringArgument(string name, bool isRequired = true, bool allowEmptyValue = true) :
-        base(name, name, name, isRequired, allowEmptyValue)
-    {
-
-    }
-
-    /// <summary>
-    /// Constructor. Creates an argument definition along with a value and description. 
-    /// </summary>
-    /// <param name="name">Name of the argument on the command line</param>
-    /// <param name="value">Value for the argument</param>
-    /// <param name="description">Human friendly description of the argument</param>
-    /// <param name="isRequired">Is this argument required</param>
-    /// <param name="allowEmptyValue">If true, then you can use this argument as a flag without 
-    /// having to explicitly supply a value. This is helpful for scenarios like /debug or /verbose
-    /// where it's easier than specifying fully populated arguments like /debug:true or /verbose:true.</param>
-    public StringArgument(string name, string value, string description, bool isRequired, bool allowEmptyValue) :
-        base(name, value, description, isRequired, allowEmptyValue)
+    public StringArgument(string name) :
+        base(name)
     {
 
     }

@@ -66,10 +66,11 @@ public class BooleanArgumentFixture
 
     private void InitializeNotRequiredAllowEmptyValue()
     {
-        _SystemUnderTest = new BooleanArgument(
-            EXPECTED_ARG_NAME,
-            false,
-            EXPECTED_ARG_ALLOWEMPTYVALUE);
+        var arg = new BooleanArgument(EXPECTED_ARG_NAME).AsNotRequired().AllowEmptyValue();
+
+        var temp = arg as BooleanArgument ?? throw new InvalidOperationException("Wrong type");
+
+        _SystemUnderTest = temp;
     }
 
     [TestMethod]

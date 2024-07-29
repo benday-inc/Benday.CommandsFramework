@@ -16,7 +16,7 @@ public static class ExtensionMethods
     /// <returns></returns>
     public static StringArgument AddString(this ArgumentCollection collection, string argumentName)
     {
-        var arg = new StringArgument(argumentName, true, false);
+        var arg = new StringArgument(argumentName);
 
         collection.Add(argumentName, arg);
 
@@ -31,7 +31,7 @@ public static class ExtensionMethods
     public static DateTimeArgument AddDateTime(this ArgumentCollection collection,
         string argumentName)
     {        
-        var arg = new DateTimeArgument(argumentName, true, false);
+        var arg = new DateTimeArgument(argumentName);
 
         collection.Add(argumentName, arg);
 
@@ -45,7 +45,7 @@ public static class ExtensionMethods
     /// <param name="argumentName">Argument name on the command line</param>
     public static BooleanArgument AddBoolean(this ArgumentCollection collection, string argumentName)
     {
-        var arg = new BooleanArgument(argumentName, true, false);
+        var arg = new BooleanArgument(argumentName);
 
         collection.Add(argumentName, arg);
 
@@ -59,7 +59,7 @@ public static class ExtensionMethods
     /// <param name="argumentName">Argument name on the command line</param>
     public static Int32Argument AddInt32(this ArgumentCollection collection, string argumentName)
     {
-        var arg = new Int32Argument(argumentName, true, false);
+        var arg = new Int32Argument(argumentName);
 
         collection.Add(argumentName, arg);
 

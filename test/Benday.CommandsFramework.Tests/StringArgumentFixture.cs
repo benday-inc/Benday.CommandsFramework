@@ -107,7 +107,7 @@ public class StringArgumentFixture
         Assert.AreEqual<string>(EXPECTED_ARG_NAME, SystemUnderTest.Name, "Name was wrong");
         Assert.AreEqual<bool>(EXPECTED_ARG_ISREQUIRED, SystemUnderTest.IsRequired, "IsRequired was wrong");
         Assert.AreEqual<ArgumentDataType>(EXPECTED_ARG_DATATYPE, SystemUnderTest.DataType, "DataType was wrong");
-        Assert.AreEqual<bool>(EXPECTED_ARG_ALLOWEMPTYVALUE, SystemUnderTest.AllowEmptyValue, "AllowEmptyValue was wrong");
+        Assert.AreEqual<bool>(false, SystemUnderTest.AllowEmptyValue, "AllowEmptyValue was wrong");
         Assert.IsFalse(SystemUnderTest.HasValue, "HasValue was wrong");
     }
 

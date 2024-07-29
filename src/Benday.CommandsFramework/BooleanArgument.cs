@@ -14,8 +14,8 @@ public class BooleanArgument : Argument<bool>, IBooleanArgument
     /// <param name="allowEmptyValue">If true, then you can use this argument as a flag without 
     /// having to explicitly supply a value. This is helpful for scenarios like /debug or /verbose
     /// where it's easier than specifying fully populated arguments like /debug:true or /verbose:true.</param>
-    public BooleanArgument(string name, bool isRequired = true, bool allowEmptyValue = true) :
-        base(name, name, name, isRequired, allowEmptyValue)
+    public BooleanArgument(string name) :
+        base(name)
     {
 
     }
@@ -37,15 +37,7 @@ public class BooleanArgument : Argument<bool>, IBooleanArgument
     /// <returns></returns>
     protected override bool GetDefaultValue()
     {
-        if (AllowEmptyValue)
-        {
-            // if the value isn't set, always return false
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+        return false;
     }
 
 

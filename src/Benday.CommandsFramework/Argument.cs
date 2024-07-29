@@ -11,37 +11,25 @@ namespace Benday.CommandsFramework;
 /// <typeparam name="T">The data type for the argument</typeparam>
 public abstract class Argument<T> : IArgument
 {
-    /// <summary>
-    /// Constructor. Create an argument with a value and description.
-    /// </summary>
-    /// <param name="name">Name of the argument</param>
-    /// <param name="value">Value for the argument</param>
-    /// <param name="description">Human readable description for the argument</param>
-    /// <param name="friendlyName">Human readable namefor the argument</param>
-    /// <param name="isRequired">Is this argument required</param>
-    /// <param name="allowEmptyValue">Are empty values considered valid?</param>
-    public Argument(string name, T value, string description, string friendlyName, bool isRequired, bool allowEmptyValue)
+    public Argument(string name)
     {
-        if (name is null)
+        if (string.IsNullOrEmpty(name))
         {
-            throw new ArgumentException($"'{nameof(name)}' cannot be null.", nameof(name));
-        }
-
-        if (string.IsNullOrEmpty(description))
-        {
-            throw new ArgumentException($"'{nameof(description)}' cannot be null or empty.", nameof(description));
+            throw new ArgumentException($"'{nameof(name)}' cannot be null or empty.", nameof(name));
         }
 
         Name = name;
-        Description = description;
-        FriendlyName = friendlyName;
-        Value = value;
-        IsRequired = isRequired;
-        AllowEmptyValue = allowEmptyValue;
-
+        Description = name;
+        FriendlyName = name;
+        IsRequired = true;
+        AllowEmptyValue = false;
+        HasValue = false;
+        _Value = GetDefaultValue();
+        Alias = string.Empty;
         OnInitialize();
     }
 
+    /*
     /// <summary>
     /// Constructor. Create an argument with description but no value.
     /// </summary>
@@ -80,6 +68,7 @@ public abstract class Argument<T> : IArgument
 
         OnInitialize();
     }
+    */
 
     /// <summary>
     /// Template method for adding logic at the end of the initialization process

@@ -30,10 +30,10 @@ public class SampleAsyncCommand : AsynchronousCommand
 
     public override ArgumentCollection GetArguments()
     {
-        var expectedArgs = new Dictionary<string, IArgument>();
+        var args = new ArgumentCollection();
 
-        expectedArgs.Add("isawesome", new BooleanArgument("isawesome", true, true));
-        
-        return new(expectedArgs);
+        args.AddBoolean("isawesome").AsRequired().AllowEmptyValue();
+
+        return args;
     }
 }

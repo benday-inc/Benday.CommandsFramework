@@ -15,8 +15,8 @@ public class DateTimeArgument : Argument<DateTime>, IDateTimeArgument
     /// having to explicitly supply a value. This is helpful for scenarios like /debug or /verbose
     /// where it's easier than specifying fully populated arguments like /debug:true or /verbose:true.
     /// </param>
-    public DateTimeArgument(string name, bool isRequired = true, bool allowEmptyValue = true) :
-        base(name, name, name, isRequired, allowEmptyValue)
+    public DateTimeArgument(string name) :
+        base(name)
     {
 
     }

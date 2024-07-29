@@ -5,10 +5,10 @@
 /// </summary>
 public class Int32Argument : Argument<int>, IInt32Argument
 {
-    public Int32Argument(string name, bool isRequired = true, bool allowEmptyValue = true) :
-        base(name, name, name, isRequired, allowEmptyValue)
+    public Int32Argument(string name) :
+        base(name)
     {
-
+        
     }
 
     /// <summary>
