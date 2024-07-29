@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Text.Json;
 
 namespace Benday.CommandsFramework;
 
@@ -52,94 +53,101 @@ public class DefaultProgram : ICommandProgram
         {
             try
             {
-                var names = util.GetAvailableCommandNames(ImplementationAssembly);
-
-                if (names.Contains(args[0]) == false)
+                if (args[0] == ArgumentFrameworkConstants.ArgumentJson)
                 {
-                    throw new KnownException(
-                            $"Invalid command name '{args[0]}'.");
-                }
-
-
-
-                CommandBase? command;
-
-                if (Options.UsesConfiguration == false)
-                {
-                    command = util.GetCommand(args, ImplementationAssembly);
+                    DumpJson(util);
                 }
                 else
                 {
-                    if (IsDefaultCommandName(args[0]) == true)
-                    {
-                        command = util.GetCommand(args, this.GetType().Assembly);
-                    }
-                    else
-                    {
-                        command = util.GetCommand(args, ImplementationAssembly);
-                    }
-                }
+                    var names = util.GetAvailableCommandNames(ImplementationAssembly);
 
-                if (command == null)
-                {
-                    DisplayUsage(util);
-                }
-                else
-                {
-                    CommandAttribute? attr;
+                    if (names.Contains(args[0]) == false)
+                    {
+                        throw new KnownException(
+                                $"Invalid command name '{args[0]}'.");
+                    }
+
+
+
+                    CommandBase? command;
 
                     if (Options.UsesConfiguration == false)
                     {
-                        attr = util.GetCommandAttributeForCommandName(ImplementationAssembly,
-                                                command.ExecutionInfo.CommandName);
+                        command = util.GetCommand(args, ImplementationAssembly);
                     }
                     else
                     {
-                        if (IsDefaultCommandName(command.ExecutionInfo.CommandName) == true)
+                        if (IsDefaultCommandName(args[0]) == true)
                         {
-                            attr = util.GetCommandAttributeForCommandName(this.GetType().Assembly,
-                                                command.ExecutionInfo.CommandName);
+                            command = util.GetCommand(args, this.GetType().Assembly);
                         }
                         else
+                        {
+                            command = util.GetCommand(args, ImplementationAssembly);
+                        }
+                    }
+
+                    if (command == null)
+                    {
+                        DisplayUsage(util);
+                    }
+                    else
+                    {
+                        CommandAttribute? attr;
+
+                        if (Options.UsesConfiguration == false)
                         {
                             attr = util.GetCommandAttributeForCommandName(ImplementationAssembly,
-                                                command.ExecutionInfo.CommandName);
-                        }
-                    }
-
-                    if (attr == null)
-                    {
-                        throw new KnownException(
-                            $"Invalid command name '{command.ExecutionInfo.CommandName}'.");
-                    }
-                    else
-                    {
-                        if (attr.IsAsync == false)
-                        {
-                            var runThis = command as ISynchronousCommand;
-
-                            if (runThis == null)
-                            {
-                                throw new InvalidOperationException($"Could not convert type to {typeof(ISynchronousCommand)}.");
-                            }
-                            else
-                            {
-                                runThis.Execute();
-                            }
+                                                    command.ExecutionInfo.CommandName);
                         }
                         else
                         {
-                            var runThis = command as IAsyncCommand;
-
-                            if (runThis == null)
+                            if (IsDefaultCommandName(command.ExecutionInfo.CommandName) == true)
                             {
-                                throw new InvalidOperationException($"Could not convert type to {typeof(IAsyncCommand)}.");
+                                attr = util.GetCommandAttributeForCommandName(this.GetType().Assembly,
+                                                    command.ExecutionInfo.CommandName);
                             }
                             else
                             {
-                                var temp = runThis.ExecuteAsync().GetAwaiter();
+                                attr = util.GetCommandAttributeForCommandName(ImplementationAssembly,
+                                                    command.ExecutionInfo.CommandName);
+                            }
+                        }
 
-                                temp.GetResult();
+                        if (attr == null)
+                        {
+                            throw new KnownException(
+                                $"Invalid command name '{command.ExecutionInfo.CommandName}'.");
+                        }
+                        else
+                        {
+                            if (attr.IsAsync == false)
+                            {
+                                var runThis = command as ISynchronousCommand;
+
+                                if (runThis == null)
+                                {
+                                    throw new InvalidOperationException($"Could not convert type to {typeof(ISynchronousCommand)}.");
+                                }
+                                else
+                                {
+                                    runThis.Execute();
+                                }
+                            }
+                            else
+                            {
+                                var runThis = command as IAsyncCommand;
+
+                                if (runThis == null)
+                                {
+                                    throw new InvalidOperationException($"Could not convert type to {typeof(IAsyncCommand)}.");
+                                }
+                                else
+                                {
+                                    var temp = runThis.ExecuteAsync().GetAwaiter();
+
+                                    temp.GetResult();
+                                }
                             }
                         }
                     }
@@ -157,6 +165,19 @@ public class DefaultProgram : ICommandProgram
             }
         }
     }
+
+    private void DumpJson(CommandAttributeUtility util)
+    {
+        var usages = util.GetAllCommandUsages(ImplementationAssembly);
+
+        var json = JsonSerializer.Serialize(usages, new JsonSerializerOptions()
+        {
+            WriteIndented = true
+        });
+
+        WriteLine(json);
+    }
+
     private bool IsDefaultCommandName(string commandName)
     {
         var commandNames = new string[]

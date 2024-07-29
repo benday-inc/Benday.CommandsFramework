@@ -146,4 +146,34 @@ public class DefaultProgramFixture
 
         Assert.IsTrue(output.Contains("Invalid command name"), "Should have error message for invalid command name");
     }
+
+    [TestMethod]
+    public void GetJsonForDefaultProgram()
+    {
+        // arrange
+        var options = new DefaultProgramOptions();
+        options.ApplicationName = "My App";
+        options.Version = "1.0.0";
+        options.Website = "https://www.benday.com";
+        options.UsesConfiguration = false;
+
+        var outputProvider = new StringBuilderTextOutputProvider();
+
+        options.OutputProvider = outputProvider;
+
+        var sut =
+            new DefaultProgram(options, typeof(SampleAsyncCommand).Assembly);
+
+        // act
+
+        sut.Run(new string[] {
+            ArgumentFrameworkConstants.ArgumentJson});
+
+        // assert
+        var output = outputProvider.GetOutput();
+
+        Console.WriteLine(output);
+
+        Assert.IsFalse(string.IsNullOrWhiteSpace(output), "Output is empty");
+    }
 }

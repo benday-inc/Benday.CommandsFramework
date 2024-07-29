@@ -9,4 +9,5 @@ public static class ArgumentFrameworkConstants
     /// Help request string argument
     /// </summary>
     public const string ArgumentHelpString = "--help";
+    public const string ArgumentJson = "--json";
 }
