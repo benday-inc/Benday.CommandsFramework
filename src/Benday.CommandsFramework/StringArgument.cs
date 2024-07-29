@@ -37,19 +37,6 @@ public class StringArgument : Argument<string>
     }
 
     /// <summary>
-    /// Add a string argument definition with a description
-    /// </summary>
-    /// <param name="name">Argument name</param>
-    /// <param name="noValue">Not used. Only here to distinguish this overload.</param>
-    /// <param name="description">Human-friendly description of the argument</param>
-    /// <param name="isRequired">Is this a required argument?</param>
-    /// <param name="allowEmptyValue">Allow empty values</param>
-    public StringArgument(string name, bool noValue, string description, string friendlyName, bool isRequired, bool allowEmptyValue) :
-        base(name, description, friendlyName, isRequired, allowEmptyValue)
-    {
-    }
-
-    /// <summary>
     /// Data type for the argument
     /// </summary>
     public override ArgumentDataType DataType { get => ArgumentDataType.String; }

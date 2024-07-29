@@ -11,18 +11,6 @@ public class Int32Argument : Argument<int>, IInt32Argument
 
     }
 
-    public Int32Argument(
-        string name,
-        int value,
-        string description,
-        string friendlyName,
-        bool isRequired,
-        bool allowEmptyValue) :
-        base(name, value, description, friendlyName, isRequired, allowEmptyValue)
-    {
-
-    }
-
     /// <summary>
     /// DataType for the argument
     /// </summary>
