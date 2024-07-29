@@ -6,19 +6,19 @@
 public class Int32Argument : Argument<int>, IInt32Argument
 {
     public Int32Argument(string name, bool isRequired = true, bool allowEmptyValue = true) :
-        base(name, name, isRequired, allowEmptyValue)
+        base(name, name, name, isRequired, allowEmptyValue)
     {
 
     }
 
-    public Int32Argument(string name, int value, bool isRequired = true, bool allowEmptyValue = true) :
-        base(name, value, name, isRequired, allowEmptyValue)
-    {
-
-    }
-
-    public Int32Argument(string name, int value, string description, bool isRequired, bool allowEmptyValue) :
-        base(name, value, description, isRequired, allowEmptyValue)
+    public Int32Argument(
+        string name,
+        int value,
+        string description,
+        string friendlyName,
+        bool isRequired,
+        bool allowEmptyValue) :
+        base(name, value, description, friendlyName, isRequired, allowEmptyValue)
     {
 
     }

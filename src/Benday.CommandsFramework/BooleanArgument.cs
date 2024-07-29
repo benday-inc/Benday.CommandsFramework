@@ -15,22 +15,7 @@ public class BooleanArgument : Argument<bool>, IBooleanArgument
     /// having to explicitly supply a value. This is helpful for scenarios like /debug or /verbose
     /// where it's easier than specifying fully populated arguments like /debug:true or /verbose:true.</param>
     public BooleanArgument(string name, bool isRequired = true, bool allowEmptyValue = true) :
-        base(name, name, isRequired, allowEmptyValue)
-    {
-
-    }
-
-    /// <summary>
-    /// Constructor. Creates an argument definition along with a value. 
-    /// </summary>
-    /// <param name="name">Name of the argument on the command line</param>
-    /// <param name="value">Value for the argument</param>
-    /// <param name="isRequired">Is this argument required</param>
-    /// <param name="allowEmptyValue">If true, then you can use this argument as a flag without 
-    /// having to explicitly supply a value. This is helpful for scenarios like /debug or /verbose
-    /// where it's easier than specifying fully populated arguments like /debug:true or /verbose:true.</param>
-    public BooleanArgument(string name, bool value, bool isRequired = true, bool allowEmptyValue = true) :
-        base(name, value, name, isRequired, allowEmptyValue)
+        base(name, name, name, isRequired, allowEmptyValue)
     {
 
     }
@@ -41,12 +26,13 @@ public class BooleanArgument : Argument<bool>, IBooleanArgument
     /// <param name="name">Name of the argument on the command line</param>
     /// <param name="value">Value for the argument</param>
     /// <param name="description">Human friendly description of the argument</param>
+    /// <param name="friendlyName">Human friendly name for the argument</param>
     /// <param name="isRequired">Is this argument required</param>
     /// <param name="allowEmptyValue">If true, then you can use this argument as a flag without 
     /// having to explicitly supply a value. This is helpful for scenarios like /debug or /verbose
     /// where it's easier than specifying fully populated arguments like /debug:true or /verbose:true.</param>
-    public BooleanArgument(string name, bool value, string description, bool isRequired, bool allowEmptyValue) :
-        base(name, value, description, isRequired, allowEmptyValue)
+    public BooleanArgument(string name, bool value, string description, string friendlyName, bool isRequired, bool allowEmptyValue) :
+        base(name, value, description, friendlyName, isRequired, allowEmptyValue)
     {
 
     }

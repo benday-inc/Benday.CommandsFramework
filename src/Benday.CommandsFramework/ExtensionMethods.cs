@@ -86,6 +86,25 @@ public static class ExtensionMethods
     }
 
     /// <summary>
+    /// Adds a user friendly name to an argument definition
+    /// </summary>
+    /// <param name="collection">Argument collection</param>
+    /// <param name="friendlyName">Human readable name for the argument</param>
+    public static Argument<T> WithFriendlyName<T>(
+        this Argument<T> arg, string friendlyName)
+    {
+        if (arg == null)
+        {
+            throw new ArgumentNullException(nameof(arg));
+        }
+        else
+        {
+            arg.FriendlyName = friendlyName;
+            return arg;
+        }
+    }
+
+    /// <summary>
     /// Adds a alias to an argument definition
     /// </summary>
     /// <param name="collection">Argument collection</param>

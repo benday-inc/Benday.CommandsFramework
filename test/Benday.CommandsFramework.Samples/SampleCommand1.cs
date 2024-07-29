@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Benday.CommandsFramework;
 
 namespace Benday.CommandsFramework.Samples;
 
@@ -34,14 +35,14 @@ public class SampleCommand1 : SynchronousCommand
 
     public override ArgumentCollection GetArguments()
     {
-        var expectedArgs = new Dictionary<string, IArgument>();
+        var args = new ArgumentCollection();
 
-        expectedArgs.Add("arg1", new StringArgument("arg1", true, "argument 1", true, false));
-        expectedArgs.Add("isawesome", new BooleanArgument("isawesome", true, true));
-        expectedArgs.Add("count", new Int32Argument("count", true, true));
-        expectedArgs.Add("dateofthingy", new DateTimeArgument("dateofthingy", true, true));
-        expectedArgs.Add("verbose", new BooleanArgument("verbose", false, true));
+        args.AddString("arg1").AsRequired().WithDescription("argument 1").AsRequired();
+        args.AddBoolean("isawesome").WithDescription("is awesome?").AsRequired().AllowEmptyValue();
+        args.AddInt32("count").WithDescription("count of things").AsRequired().AllowEmptyValue();
+        args.AddDateTime("dateofthingy").WithDescription("date of thingy").AsRequired();
+        args.AddBoolean("verbose").AsNotRequired().AllowEmptyValue();
 
-        return new(expectedArgs);
+        return args;
     }
 }

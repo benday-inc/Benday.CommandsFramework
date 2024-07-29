@@ -44,12 +44,24 @@ public class BooleanArgumentFixture
 
     private void InitializeWithAllTheArgs_AllowEmptyValue()
     {
-        _SystemUnderTest = new BooleanArgument(
-            EXPECTED_ARG_NAME,
-            EXPECTED_ARG_VALUE,
-            EXPECTED_ARG_DESC,
-            EXPECTED_ARG_ISREQUIRED,
-            EXPECTED_ARG_ALLOWEMPTYVALUE);
+        //_SystemUnderTest = new BooleanArgument(
+        //    EXPECTED_ARG_NAME,
+        //    EXPECTED_ARG_VALUE,
+        //    EXPECTED_ARG_DESC,
+        //    EXPECTED_ARG_ISREQUIRED,
+        //    EXPECTED_ARG_ALLOWEMPTYVALUE);
+
+        var arg = new ArgumentCollection()
+            .AddBoolean(EXPECTED_ARG_NAME)
+            .AsRequired()
+            .AllowEmptyValue()
+            .WithDescription(EXPECTED_ARG_DESC);
+
+        arg.Value = EXPECTED_ARG_VALUE;
+
+        var temp = arg as BooleanArgument ?? throw new InvalidOperationException("Wrong type");
+
+        _SystemUnderTest = temp;
     }
 
     private void InitializeNotRequiredAllowEmptyValue()

@@ -44,22 +44,36 @@ public class StringArgumentFixture
 
     private void InitializeWithAllTheArgsExceptAlias()
     {
-        _SystemUnderTest = new StringArgument(
-            EXPECTED_ARG_NAME,
-            EXPECTED_ARG_VALUE,
-            EXPECTED_ARG_DESC,
-            EXPECTED_ARG_ISREQUIRED,
-            EXPECTED_ARG_ALLOWEMPTYVALUE);
+        var arg = new ArgumentCollection().AddString(EXPECTED_ARG_NAME)
+           .AsRequired()
+           .AllowEmptyValue()
+           .WithDescription(EXPECTED_ARG_DESC);
+
+        arg.Value = EXPECTED_ARG_VALUE;
+
+        var temp = arg as StringArgument ?? throw new InvalidOperationException("Wrong type");
+
+        _SystemUnderTest = temp;
     }
 
     private void InitializeWithAllTheArgsExceptValue()
     {
-        _SystemUnderTest = new StringArgument(
-            EXPECTED_ARG_NAME,
-            noValue: true,
-            EXPECTED_ARG_DESC,
-            EXPECTED_ARG_ISREQUIRED,
-            EXPECTED_ARG_ALLOWEMPTYVALUE);
+        //_SystemUnderTest = new StringArgument(
+        //    EXPECTED_ARG_NAME,
+        //    noValue: true,
+        //    EXPECTED_ARG_DESC,
+        //    EXPECTED_ARG_ISREQUIRED,
+        //    EXPECTED_ARG_ALLOWEMPTYVALUE);
+
+
+        var arg = new ArgumentCollection().AddString(EXPECTED_ARG_NAME)
+            .AsRequired()
+            .AllowEmptyValue()
+            .WithDescription(EXPECTED_ARG_DESC);
+
+        var temp = arg as StringArgument ?? throw new InvalidOperationException("Wrong type");
+
+        _SystemUnderTest = temp;
     }
 
     [TestMethod]
@@ -102,7 +116,11 @@ public class StringArgumentFixture
         // arrange
 
         // act
-        _SystemUnderTest = new StringArgument(EXPECTED_ARG_NAME, EXPECTED_ARG_VALUE);
+        var arg = new ArgumentCollection().AddString(EXPECTED_ARG_NAME);
+
+        arg.Value = EXPECTED_ARG_VALUE;
+
+        _SystemUnderTest = arg;
 
         // assert
         Assert.AreEqual<string>(EXPECTED_ARG_NAME, SystemUnderTest.Description, "Description was wrong");

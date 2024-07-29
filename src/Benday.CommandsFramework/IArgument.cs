@@ -21,6 +21,11 @@ public interface IArgument
     string Description { get; }
 
     /// <summary>
+    /// Human readable name label for the argument
+    /// </summary>
+    string FriendlyName { get; }
+
+    /// <summary>
     /// Does this argument have a value?
     /// </summary>
     bool HasValue { get; }

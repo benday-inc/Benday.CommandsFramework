@@ -175,5 +175,7 @@ public class DefaultProgramFixture
         Console.WriteLine(output);
 
         Assert.IsFalse(string.IsNullOrWhiteSpace(output), "Output is empty");
+
+        StringAssert.Contains(output, "\"FriendlyName\": \"Thing Date\"");
     }
 }
