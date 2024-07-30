@@ -1,4 +1,6 @@
-﻿namespace Benday.CommandsFramework;
+﻿using System.Text.Json.Serialization;
+
+namespace Benday.CommandsFramework;
 
 /// <summary>
 /// Interface describing the methods and properties for an argument
@@ -13,12 +15,18 @@ public interface IArgument
     /// <summary>
     /// Data type for the argument
     /// </summary>
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     ArgumentDataType DataType { get; }
 
     /// <summary>
     /// Human readable description for the argument
     /// </summary>
     string Description { get; }
+
+    /// <summary>
+    /// Human readable name label for the argument
+    /// </summary>
+    string FriendlyName { get; }
 
     /// <summary>
     /// Does this argument have a value?

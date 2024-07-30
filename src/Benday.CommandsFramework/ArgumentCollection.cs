@@ -84,7 +84,9 @@ public class ArgumentCollection : IEnumerable<IArgument>
     /// <param name="value">Value for the argument</param>
     public void Add(string key, string value)
     {
-        _Arguments.Add(key, new StringArgument(key, value, key, true, false));
+        var arg = new StringArgument(key) { Value = value };
+
+        _Arguments.Add(key, arg);
     }
 
     /// <summary>

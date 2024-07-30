@@ -1,4 +1,7 @@
-﻿namespace Benday.CommandsFramework;
+﻿using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
+
+namespace Benday.CommandsFramework;
 
 /// <summary>
 /// Enumeration of the supported argument data types
@@ -7,6 +10,6 @@ public enum ArgumentDataType
 {
     String,
     DateTime,
-    Int32,
+    Int32,    
     Boolean
 }

@@ -11,69 +11,34 @@ namespace Benday.CommandsFramework;
 /// <typeparam name="T">The data type for the argument</typeparam>
 public abstract class Argument<T> : IArgument
 {
-    /// <summary>
-    /// Constructor. Create an argument without a value.
-    /// </summary>
-    /// <param name="name">Name of the argument</param>
-    /// <param name="isRequired">Is this argument required</param>
-    /// <param name="allowEmptyValue">Are empty values considered valid?</param>
-    public Argument(string name, bool isRequired = true, bool allowEmptyValue = true) :
-        this(name, name, isRequired, allowEmptyValue)
+    public Argument(string name)
     {
-
-    }
-
-    /// <summary>
-    /// Constructor. Create an argument with a value.
-    /// </summary>
-    /// <param name="name">Name of the argument</param>
-    /// <param name="value">Value for the argument</param>
-    /// <param name="isRequired">Is this argument required</param>
-    /// <param name="allowEmptyValue">Are empty values considered valid?</param>
-    public Argument(string name, T value, bool isRequired = true, bool allowEmptyValue = true) :
-        this(name, value, name, isRequired, allowEmptyValue)
-    {
-
-    }
-
-
-    /// <summary>
-    /// Constructor. Create an argument with a value and description.
-    /// </summary>
-    /// <param name="name">Name of the argument</param>
-    /// <param name="value">Value for the argument</param>
-    /// <param name="description">Human readable for the argument</param>
-    /// <param name="isRequired">Is this argument required</param>
-    /// <param name="allowEmptyValue">Are empty values considered valid?</param>
-    public Argument(string name, T value, string description, bool isRequired, bool allowEmptyValue)
-    {
-        if (name is null)
+        if (string.IsNullOrEmpty(name))
         {
-            throw new ArgumentException($"'{nameof(name)}' cannot be null.", nameof(name));
-        }
-
-        if (string.IsNullOrEmpty(description))
-        {
-            throw new ArgumentException($"'{nameof(description)}' cannot be null or empty.", nameof(description));
+            throw new ArgumentException($"'{nameof(name)}' cannot be null or empty.", nameof(name));
         }
 
         Name = name;
-        Description = description;
-        Value = value;
-        IsRequired = isRequired;
-        AllowEmptyValue = allowEmptyValue;
-
+        Description = name;
+        FriendlyName = name;
+        IsRequired = true;
+        AllowEmptyValue = false;
+        HasValue = false;
+        _Value = GetDefaultValue();
+        Alias = string.Empty;
         OnInitialize();
     }
 
+    /*
     /// <summary>
     /// Constructor. Create an argument with description but no value.
     /// </summary>
     /// <param name="name">Name of the argument</param>
     /// <param name="description">Human readable for the argument</param>
+    /// /// <param name="friendlyName">Human readable namefor the argument</param>
     /// <param name="isRequired">Is this argument required</param>
     /// <param name="allowEmptyValue">Are empty values considered valid?</param>
-    public Argument(string name, string description, bool isRequired, bool allowEmptyValue)
+    public Argument(string name, string description, string friendlyName, bool isRequired, bool allowEmptyValue)
     {
         if (string.IsNullOrEmpty(name))
         {
@@ -85,6 +50,15 @@ public abstract class Argument<T> : IArgument
             throw new ArgumentException($"'{nameof(description)}' cannot be null or empty.", nameof(description));
         }
 
+        if (string.IsNullOrEmpty(friendlyName) == true)
+        {
+            FriendlyName = name;
+        }
+        else
+        {
+            FriendlyName = friendlyName;
+        }
+
         Name = name;
         Description = description;
         IsRequired = isRequired;
@@ -94,6 +68,7 @@ public abstract class Argument<T> : IArgument
 
         OnInitialize();
     }
+    */
 
     /// <summary>
     /// Template method for adding logic at the end of the initialization process
@@ -113,6 +88,11 @@ public abstract class Argument<T> : IArgument
     /// Human readable description of this argument
     /// </summary>
     public string Description { get; set; }
+    
+    /// <summary>
+    /// Human readable friendly name for this argument
+    /// </summary>
+    public string FriendlyName { get; set; }
 
     private T _Value;
 

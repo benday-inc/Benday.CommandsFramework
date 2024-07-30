@@ -47,12 +47,16 @@ public class DateTimeArgumentFixture
 
     private void InitializeWithAllTheArgs()
     {
-        _SystemUnderTest = new DateTimeArgument(
-            EXPECTED_ARG_NAME,
-            EXPECTED_ARG_VALUE,
-            EXPECTED_ARG_DESC,
-            EXPECTED_ARG_ISREQUIRED,
-            EXPECTED_ARG_ALLOWEMPTYVALUE);
+        var arg = new DateTimeArgument(EXPECTED_ARG_NAME)
+            .WithDescription(EXPECTED_ARG_DESC)
+            .AsRequired()
+            .AllowEmptyValue();
+
+        arg.Value = EXPECTED_ARG_VALUE;
+
+        var temp = arg as DateTimeArgument ?? throw new InvalidOperationException("Wrong type");
+
+        _SystemUnderTest = temp;
     }
 
     [TestMethod]

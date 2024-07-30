@@ -44,22 +44,36 @@ public class StringArgumentFixture
 
     private void InitializeWithAllTheArgsExceptAlias()
     {
-        _SystemUnderTest = new StringArgument(
-            EXPECTED_ARG_NAME,
-            EXPECTED_ARG_VALUE,
-            EXPECTED_ARG_DESC,
-            EXPECTED_ARG_ISREQUIRED,
-            EXPECTED_ARG_ALLOWEMPTYVALUE);
+        var arg = new ArgumentCollection().AddString(EXPECTED_ARG_NAME)
+           .AsRequired()
+           .AllowEmptyValue()
+           .WithDescription(EXPECTED_ARG_DESC);
+
+        arg.Value = EXPECTED_ARG_VALUE;
+
+        var temp = arg as StringArgument ?? throw new InvalidOperationException("Wrong type");
+
+        _SystemUnderTest = temp;
     }
 
     private void InitializeWithAllTheArgsExceptValue()
     {
-        _SystemUnderTest = new StringArgument(
-            EXPECTED_ARG_NAME,
-            noValue: true,
-            EXPECTED_ARG_DESC,
-            EXPECTED_ARG_ISREQUIRED,
-            EXPECTED_ARG_ALLOWEMPTYVALUE);
+        //_SystemUnderTest = new StringArgument(
+        //    EXPECTED_ARG_NAME,
+        //    noValue: true,
+        //    EXPECTED_ARG_DESC,
+        //    EXPECTED_ARG_ISREQUIRED,
+        //    EXPECTED_ARG_ALLOWEMPTYVALUE);
+
+
+        var arg = new ArgumentCollection().AddString(EXPECTED_ARG_NAME)
+            .AsRequired()
+            .AllowEmptyValue()
+            .WithDescription(EXPECTED_ARG_DESC);
+
+        var temp = arg as StringArgument ?? throw new InvalidOperationException("Wrong type");
+
+        _SystemUnderTest = temp;
     }
 
     [TestMethod]
@@ -93,7 +107,7 @@ public class StringArgumentFixture
         Assert.AreEqual<string>(EXPECTED_ARG_NAME, SystemUnderTest.Name, "Name was wrong");
         Assert.AreEqual<bool>(EXPECTED_ARG_ISREQUIRED, SystemUnderTest.IsRequired, "IsRequired was wrong");
         Assert.AreEqual<ArgumentDataType>(EXPECTED_ARG_DATATYPE, SystemUnderTest.DataType, "DataType was wrong");
-        Assert.AreEqual<bool>(EXPECTED_ARG_ALLOWEMPTYVALUE, SystemUnderTest.AllowEmptyValue, "AllowEmptyValue was wrong");
+        Assert.AreEqual<bool>(false, SystemUnderTest.AllowEmptyValue, "AllowEmptyValue was wrong");
         Assert.IsFalse(SystemUnderTest.HasValue, "HasValue was wrong");
     }
 
@@ -102,7 +116,11 @@ public class StringArgumentFixture
         // arrange
 
         // act
-        _SystemUnderTest = new StringArgument(EXPECTED_ARG_NAME, EXPECTED_ARG_VALUE);
+        var arg = new ArgumentCollection().AddString(EXPECTED_ARG_NAME);
+
+        arg.Value = EXPECTED_ARG_VALUE;
+
+        _SystemUnderTest = arg;
 
         // assert
         Assert.AreEqual<string>(EXPECTED_ARG_NAME, SystemUnderTest.Description, "Description was wrong");

@@ -184,15 +184,15 @@ public class ArgumentCollectionFixture
     public void SetValues()
     {
         // arrange
-        var expectedArgs = new Dictionary<string, IArgument>();
+        var expectedArgs = new ArgumentCollection();
 
-        expectedArgs.Add("arg1", new StringArgument("arg1", true, "argument 1", true, false));
-        expectedArgs.Add("isawesome", new BooleanArgument("isawesome", true, true));
-        expectedArgs.Add("count", new Int32Argument("count", true, true));
-        expectedArgs.Add("dateofthingy", new DateTimeArgument("dateofthingy", true, true));
-        expectedArgs.Add("verbose", new BooleanArgument("verbose", false, true));
+        expectedArgs.AddString("arg1").AsRequired().WithDescription("argument 1").AsRequired();
+        expectedArgs.AddBoolean("isawesome").WithDescription("is awesome?").AsRequired().AllowEmptyValue();
+        expectedArgs.AddInt32("count").WithDescription("count of things").AsRequired().AllowEmptyValue();
+        expectedArgs.AddDateTime("dateofthingy").WithDescription("date of thingy").AsRequired();
+        expectedArgs.AddBoolean("verbose").AsNotRequired().AllowEmptyValue();
 
-        _SystemUnderTest = new(expectedArgs);
+        _SystemUnderTest = expectedArgs;
         
         var commandLineArgs = Utilities.GetStringArray(
             "commandname1",
@@ -220,11 +220,11 @@ public class ArgumentCollectionFixture
     public void SetValues_PositionalArgs()
     {
         // arrange
-        var expectedArgs = new Dictionary<string, IArgument>();
+        var expectedArgs = new ArgumentCollection();
         
-        expectedArgs.Add("arg1", new StringArgument("arg1", true, "argument 1", true, false).FromPositionalArgument(1));
+        expectedArgs.AddString("arg1").WithDescription("argument 1").AsRequired().FromPositionalArgument(1);
 
-        _SystemUnderTest = new(expectedArgs);
+        _SystemUnderTest = expectedArgs;
 
         var commandLineArgs = Utilities.GetStringArray(
             "commandname1",
@@ -248,11 +248,11 @@ public class ArgumentCollectionFixture
     public void ExtensionMethods_GetBooleanValue_ArgDoesNotAllowEmptyValue_True()
     {
         // arrange
-        var expectedArgs = new Dictionary<string, IArgument>();
+        var expectedArgs = new ArgumentCollection();
 
-        expectedArgs.Add("isawesome", new BooleanArgument("isawesome", true, true));
-        
-        _SystemUnderTest = new(expectedArgs);
+        expectedArgs.AddBoolean("isawesome").WithDescription("is awesome?").AsRequired().AllowEmptyValue();
+
+        _SystemUnderTest = expectedArgs;
 
         var expected = true;
 
@@ -275,11 +275,11 @@ public class ArgumentCollectionFixture
     public void ExtensionMethods_GetBooleanValue_ArgDoesNotAllowEmptyValue_False()
     {
         // arrange
-        var expectedArgs = new Dictionary<string, IArgument>();
+        var expectedArgs = new ArgumentCollection();
 
-        expectedArgs.Add("isawesome", new BooleanArgument("isawesome", true, true));
+        expectedArgs.AddBoolean("isawesome").WithDescription("is awesome?").AsRequired().AllowEmptyValue();
 
-        _SystemUnderTest = new(expectedArgs);
+        _SystemUnderTest = expectedArgs;
 
         var expected = false;
 
@@ -302,11 +302,11 @@ public class ArgumentCollectionFixture
     public void ExtensionMethods_GetBooleanValue_ArgAllowsEmptyValue_True()
     {
         // arrange
-        var expectedArgs = new Dictionary<string, IArgument>();
+        var expectedArgs = new ArgumentCollection();
 
-        expectedArgs.Add("verbose", new BooleanArgument("verbose", false, true));
+        expectedArgs.AddBoolean("verbose").AsNotRequired().AllowEmptyValue();
 
-        _SystemUnderTest = new(expectedArgs);
+        _SystemUnderTest = expectedArgs;
 
         var expected = true;
 
@@ -330,11 +330,11 @@ public class ArgumentCollectionFixture
     public void ExtensionMethods_GetBooleanValue_ArgAllowsEmptyValue_False()
     {
         // arrange
-        var expectedArgs = new Dictionary<string, IArgument>();
+        var expectedArgs = new ArgumentCollection();
 
-        expectedArgs.Add("verbose", new BooleanArgument("verbose", false, true));
+        expectedArgs.AddBoolean("verbose").AsNotRequired().AllowEmptyValue();
 
-        _SystemUnderTest = new(expectedArgs);
+        _SystemUnderTest = expectedArgs;
 
         var expected = false;
 
