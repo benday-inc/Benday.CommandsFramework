@@ -9,4 +9,6 @@ public static class CommandFrameworkConstants
     public const string CommandArgName_ConfigValue = "value";
     public const string CategoryName_Configuration = "Configuration";
     public const string CommandArgName_QuietMode = "quiet";
+    public const int ExitCode_Success = 0;
+    public const int ExitCode_Failure = 1;
 }

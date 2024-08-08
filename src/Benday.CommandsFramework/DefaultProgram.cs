@@ -59,7 +59,8 @@ public class DefaultProgram : ICommandProgram
                 }
                 else if (args[0] == ArgumentFrameworkConstants.ArgumentHelpString)
                 {
-                   DisplayUsage(util);
+                    DisplayUsage(util);
+                    Environment.ExitCode = CommandFrameworkConstants.ExitCode_Success;
                 }
                 else
                 {
@@ -231,7 +232,7 @@ public class DefaultProgram : ICommandProgram
             DisplayCommandsWithoutCategories(commands);
         }
 
-        Environment.ExitCode = 1;
+        Environment.ExitCode = CommandFrameworkConstants.ExitCode_Failure;
     }
 
     /// <summary>
@@ -278,7 +279,7 @@ public class DefaultProgram : ICommandProgram
         var categories = commands.Select(x => x.Category).Distinct().Order();
 
         var longestName = commands.Max(x => x.Name.Length);
-        
+
         var consoleWidth = GetConsoleWidth();
         var separator = " - ";
         int commandNameColumnWidth = (longestName + separator.Length);
