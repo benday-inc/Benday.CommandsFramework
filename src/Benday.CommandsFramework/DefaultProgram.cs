@@ -57,6 +57,10 @@ public class DefaultProgram : ICommandProgram
                 {
                     DumpJson(util);
                 }
+                else if (args[0] == ArgumentFrameworkConstants.ArgumentHelpString)
+                {
+                   DisplayUsage(util);
+                }
                 else
                 {
                     var names = util.GetAvailableCommandNames(ImplementationAssembly);
@@ -66,8 +70,6 @@ public class DefaultProgram : ICommandProgram
                         throw new KnownException(
                                 $"Invalid command name '{args[0]}'.");
                     }
-
-
 
                     CommandBase? command;
 
