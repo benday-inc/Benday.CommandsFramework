@@ -141,4 +141,36 @@ public class DateTimeArgumentFixture
         Assert.AreEqual<bool>(expected, actual, "Wrong try set value return value");
         Assert.AreEqual<DateTime>(expectedValue, SystemUnderTest.Value, "Value was wrong");
     }
+
+    [DataTestMethod]
+    [DataRow("12/1/2022", true, "12/1/2022 12:00:00 AM", DisplayName = "month day year")]
+    [DataRow("12/31/2022 18:21:14", true, "12/1/2022 6:21:14 PM", DisplayName = "month day year hour min sec in 24h")]
+    [DataRow("20240816T1515295960Z", true, "8/16/2024 3:15:29 PM", DisplayName = "zulu")]
+    [DataRow("asdf", false, "", DisplayName = "junk")]
+    [DataRow(null, false, "", DisplayName = "null")]
+    [DataRow("", false, "", DisplayName = "empty string")]
+    public void TrySetValueAndVerifyValue(string input, bool expectedOutcome, string expectedDateString)
+    {
+        // arrange
+        var arg = new DateTimeArgument(EXPECTED_ARG_NAME)
+            .WithDescription(EXPECTED_ARG_DESC)
+            .AsRequired();
+
+        var temp = arg as DateTimeArgument ?? throw new InvalidOperationException("Wrong type");
+
+        _SystemUnderTest = temp;
+
+        // act
+        var actual = SystemUnderTest.TrySetValue(input);
+
+        // assert
+        Assert.AreEqual<bool>(expectedOutcome, actual, "Wrong try set value return value");
+
+        if (expectedOutcome == true)
+        {
+            var actualDateString = SystemUnderTest.Value.ToString();
+
+            Assert.AreEqual<string>(expectedDateString, actualDateString, "Value was wrong");
+        }
+    }
 }
