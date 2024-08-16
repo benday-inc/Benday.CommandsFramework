@@ -13,9 +13,10 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>bdc_mark_128_128.png</PackageIcon>
-    <AssemblyVersion>4.1.1.0</AssemblyVersion>
-    <Version>$(VersionPrefix)4.1.1</Version>
+    <AssemblyVersion>4.2.0.0</AssemblyVersion>
+    <Version>$(VersionPrefix)4.2.0</Version>
     <PackageReleaseNotes>
+      v4.2 - Added support for more datetime files in the DateTime argument type.
       v4.1.1 - Fixed bug in DefaultProgram where it was not setting the ExitCode to 1 when there was an error.
       v4.1 - Added '--help' option to default program implementation in order to display usages.
       v4.0 - Refactored argument base classes to remove unnecessary constructors. Added option to get all usages in JSON format using '--json' option.
