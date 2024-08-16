@@ -148,7 +148,7 @@ public class DateTimeArgumentFixture
     [DataRow("12/1/2022 6:21:14 PM", true, "12/1/2022 6:21:14 PM", DisplayName = "month day year hour min sec in PM")]
     [DataRow("12/1/2022 6:21:14 AM", true, "12/1/2022 6:21:14 AM", DisplayName = "month day year hour min sec in AM")]
     [DataRow("20240816T1750349136Z", true, "8/16/2024 5:50:34 PM", DisplayName = "Get-Date -Format FileDateTimeUniversal")]
-    [DataRow("2024-08-16T17:29:39Z", true, "8/16/2024 1:29:39 PM", DisplayName = "universal")]
+    [DataRow("2024-08-16T17:29:39Z", true, "8/16/2024 5:29:39 PM", DisplayName = "universal")]
     [DataRow("asdf", false, "", DisplayName = "junk")]
     [DataRow(null, false, "", DisplayName = "null")]
     [DataRow("", false, "", DisplayName = "empty string")]
