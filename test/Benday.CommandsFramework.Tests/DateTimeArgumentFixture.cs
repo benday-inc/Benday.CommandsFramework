@@ -171,7 +171,7 @@ public class DateTimeArgumentFixture
 
         if (expectedOutcome == true)
         {
-            var actualDateString = SystemUnderTest.Value.ToString();
+            var actualDateString = SystemUnderTest.Value.ToString("M/d/yyyy h:mm:ss tt");
 
             Assert.AreEqual<string>(expectedDateString, actualDateString, "Value was wrong");
         }
