@@ -29,6 +29,6 @@ public class DateTimeTestCommand : SynchronousCommand
 
         WriteLine($"** SUCCESS **");
 
-        WriteLine($"Date: {date}");
+        WriteLine($"Date: {date.ToUniversalTime()}");
     }
 }

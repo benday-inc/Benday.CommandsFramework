@@ -45,7 +45,7 @@ public class DateTimeTestCommandFixture
     {
         // arrange
         var inputDateString = "12/24/2022";
-        var expectedDateString = "12/24/2022 12:00:00 AM";
+        var expectedDateString = "12/24/2022 5:00:00 AM";
 
         var commandLineArgs = Utilities.GetStringArray(
             "datetimetest",
@@ -72,7 +72,7 @@ public class DateTimeTestCommandFixture
     {
         // arrange
         var inputDateString = "12/24/2022 14:30";
-        var expectedDateString = "12/24/2022 2:30:00 PM";
+        var expectedDateString = "12/24/2022 7:30:00 PM";
 
         var commandLineArgs = Utilities.GetStringArray(
             "datetimetest",
@@ -98,7 +98,7 @@ public class DateTimeTestCommandFixture
     {
         // arrange
         var inputDateString = "12/24/2022 14:30:30";
-        var expectedDateString = "12/24/2022 2:30:30 PM";
+        var expectedDateString = "12/24/2022 7:30:30 PM";
 
         var commandLineArgs = Utilities.GetStringArray(
             "datetimetest",
@@ -125,7 +125,7 @@ public class DateTimeTestCommandFixture
         // arrange
 
         var inputDateString = "20240816T1515295960Z";
-        var expectedDateString = "8/16/2024 11:15:29 AM";
+        var expectedDateString = "8/16/2024 3:15:29 PM";
 
         var commandLineArgs = Utilities.GetStringArray(
             "datetimetest",
