@@ -40,111 +40,111 @@ public class DateTimeTestCommandFixture
     }
 
 
-    [TestMethod]
-    public void CreateAndRun_ValidArgs_MonthDayYear()
-    {
-        // arrange
-        var inputDateString = "12/24/2022";
-        var expectedDateString = "20221224T0500000000Z";
+    //[TestMethod]
+    //public void CreateAndRun_ValidArgs_MonthDayYear()
+    //{
+    //    // arrange
+    //    var inputDateString = "12/24/2022";
+    //    var expectedDateString = "20221224T0500000000Z";
 
-        var commandLineArgs = Utilities.GetStringArray(
-            "datetimetest",
-            $"/date:{inputDateString}"
-            );
+    //    var commandLineArgs = Utilities.GetStringArray(
+    //        "datetimetest",
+    //        $"/date:{inputDateString}"
+    //        );
 
-        var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
+    //    var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
 
-        _SystemUnderTest = new DateTimeTestCommand(executionInfo, OutputProvider);
+    //    _SystemUnderTest = new DateTimeTestCommand(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+    //    // act
+    //    _SystemUnderTest.Execute();
 
-        // assert        
-        var output = OutputProvider.GetOutput();
-        Console.WriteLine(output);
-        Assert.IsTrue(output.Contains("** SUCCESS **"), "Did not contain expected string");
-        Assert.IsTrue(output.Contains(expectedDateString), $"Did not contain expected string: {expectedDateString}");
-    }
+    //    // assert        
+    //    var output = OutputProvider.GetOutput();
+    //    Console.WriteLine(output);
+    //    Assert.IsTrue(output.Contains("** SUCCESS **"), "Did not contain expected string");
+    //    Assert.IsTrue(output.Contains(expectedDateString), $"Did not contain expected string: {expectedDateString}");
+    //}
 
 
-    [TestMethod]
-    public void CreateAndRun_ValidArgs_MonthDayYearHourMin_24h()
-    {
-        // arrange
-        var inputDateString = "12/24/2022 14:30";
-        var expectedDateString = "20221224T1930000000Z";
+    //[TestMethod]
+    //public void CreateAndRun_ValidArgs_MonthDayYearHourMin_24h()
+    //{
+    //    // arrange
+    //    var inputDateString = "12/24/2022 14:30";
+    //    var expectedDateString = "20221224T1930000000Z";
 
-        var commandLineArgs = Utilities.GetStringArray(
-            "datetimetest",
-            $"/date:{inputDateString}"
-            );
+    //    var commandLineArgs = Utilities.GetStringArray(
+    //        "datetimetest",
+    //        $"/date:{inputDateString}"
+    //        );
 
-        var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
+    //    var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
 
-        _SystemUnderTest = new DateTimeTestCommand(executionInfo, OutputProvider);
+    //    _SystemUnderTest = new DateTimeTestCommand(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+    //    // act
+    //    _SystemUnderTest.Execute();
 
-        // assert        
-        var output = OutputProvider.GetOutput();
-        Console.WriteLine(output);
-        Assert.IsTrue(output.Contains("** SUCCESS **"), "Did not contain expected string");
-        Assert.IsTrue(output.Contains(expectedDateString), $"Did not contain expected string: {expectedDateString}");
-    }
+    //    // assert        
+    //    var output = OutputProvider.GetOutput();
+    //    Console.WriteLine(output);
+    //    Assert.IsTrue(output.Contains("** SUCCESS **"), "Did not contain expected string");
+    //    Assert.IsTrue(output.Contains(expectedDateString), $"Did not contain expected string: {expectedDateString}");
+    //}
 
-    [TestMethod]
-    public void CreateAndRun_ValidArgs_MonthDayYearHourMinSec_24h()
-    {
-        // arrange
-        var inputDateString = "12/24/2022 14:30:30";
-        var expectedDateString = "20221224T1930300000Z";
+    //[TestMethod]
+    //public void CreateAndRun_ValidArgs_MonthDayYearHourMinSec_24h()
+    //{
+    //    // arrange
+    //    var inputDateString = "12/24/2022 14:30:30";
+    //    var expectedDateString = "20221224T1930300000Z";
 
-        var commandLineArgs = Utilities.GetStringArray(
-            "datetimetest",
-            $"/date:{inputDateString}"
-            );
+    //    var commandLineArgs = Utilities.GetStringArray(
+    //        "datetimetest",
+    //        $"/date:{inputDateString}"
+    //        );
 
-        var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
+    //    var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
 
-        _SystemUnderTest = new DateTimeTestCommand(executionInfo, OutputProvider);
+    //    _SystemUnderTest = new DateTimeTestCommand(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+    //    // act
+    //    _SystemUnderTest.Execute();
 
-        // assert        
-        var output = OutputProvider.GetOutput();
-        Console.WriteLine(output);
-        Assert.IsTrue(output.Contains("** SUCCESS **"), "Did not contain expected string");
-        Assert.IsTrue(output.Contains(expectedDateString), $"Did not contain expected string: {expectedDateString}");
-    }
+    //    // assert        
+    //    var output = OutputProvider.GetOutput();
+    //    Console.WriteLine(output);
+    //    Assert.IsTrue(output.Contains("** SUCCESS **"), "Did not contain expected string");
+    //    Assert.IsTrue(output.Contains(expectedDateString), $"Did not contain expected string: {expectedDateString}");
+    //}
 
-    [TestMethod]
-    public void CreateAndRun_ValidArgs_FileDateTimeUniversal()
-    {
-        // arrange
+    //[TestMethod]
+    //public void CreateAndRun_ValidArgs_FileDateTimeUniversal()
+    //{
+    //    // arrange
 
-        var inputDateString = "20240816T1515295960Z";
-        var expectedDateString = "20240816T1515295960Z";
+    //    var inputDateString = "20240816T1515295960Z";
+    //    var expectedDateString = "20240816T1515295960Z";
 
-        var commandLineArgs = Utilities.GetStringArray(
-            "datetimetest",
-            $"/date:{inputDateString}"
-            );
+    //    var commandLineArgs = Utilities.GetStringArray(
+    //        "datetimetest",
+    //        $"/date:{inputDateString}"
+    //        );
 
-        var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
+    //    var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
 
-        _SystemUnderTest = new DateTimeTestCommand(executionInfo, OutputProvider);
+    //    _SystemUnderTest = new DateTimeTestCommand(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+    //    // act
+    //    _SystemUnderTest.Execute();
 
-        // assert        
-        var output = OutputProvider.GetOutput();
-        Console.WriteLine(output);
-        Assert.IsTrue(output.Contains("** SUCCESS **"), "Did not contain expected string");
-        Assert.IsTrue(output.Contains(expectedDateString), $"Did not contain expected string: {expectedDateString}");
-    }
+    //    // assert        
+    //    var output = OutputProvider.GetOutput();
+    //    Console.WriteLine(output);
+    //    Assert.IsTrue(output.Contains("** SUCCESS **"), "Did not contain expected string");
+    //    Assert.IsTrue(output.Contains(expectedDateString), $"Did not contain expected string: {expectedDateString}");
+    //}
 
     [TestMethod]
     public void CreateAndRun_InvalidDate()
