@@ -1,4 +1,6 @@
-﻿namespace Benday.CommandsFramework;
+﻿using System.Globalization;
+
+namespace Benday.CommandsFramework;
 
 /// <summary>
 /// Argument implementation for working with DateTime values
@@ -54,7 +56,61 @@ public class DateTimeArgument : Argument<DateTime>, IDateTimeArgument
         }
         else
         {
-            if (DateTime.TryParse(input, out var temp) == false)
+            DateTime temp;
+
+            //                                 20240816T1515295960Z
+            if (DateTime.TryParseExact(input, "yyyyMMddTHHmmssfffZ", CultureInfo.InvariantCulture,
+            DateTimeStyles.AssumeUniversal, out temp) == true)
+            {
+                Value = temp;
+                return true;
+            }
+
+            if (DateTime.TryParseExact(input, "yyyyMMddTHHmmssffffZ", CultureInfo.InvariantCulture,
+            DateTimeStyles.AssumeUniversal, out temp) == true)
+            {
+                Value = temp;
+                return true;
+            }
+
+            if (DateTime.TryParseExact(input, "yyyyMMdd'T'HHmmss'Z'", CultureInfo.InvariantCulture,
+            DateTimeStyles.AssumeUniversal, out temp) == true)
+            {
+                Value = temp;
+                return true;
+            }
+
+            if (DateTime.TryParseExact(input, "yyyyMMddTHHmmssZ", CultureInfo.InvariantCulture,
+            DateTimeStyles.AssumeUniversal, out temp) == true)
+            {
+                Value = temp;
+                return true;
+            }
+
+            if (DateTime.TryParseExact(input, "yyyyMMddTHHmmss", CultureInfo.InvariantCulture,
+            DateTimeStyles.AssumeUniversal, out temp) == true)
+            {
+                Value = temp;
+                return true;
+            }
+
+            if (DateTime.TryParseExact(input, "yyyyMMddTHHmmssZ", CultureInfo.InvariantCulture,
+            DateTimeStyles.AssumeUniversal, out temp) == true)
+            {
+                Value = temp;
+                return true;
+            }
+
+            // yyyyMMddTHHmmss
+
+            if (DateTime.TryParseExact(input, "yyyyMMdd'T'HHmmssfff'Z'", CultureInfo.InvariantCulture,
+            DateTimeStyles.AssumeUniversal, out temp) == true)
+            {
+                Value = temp;
+                return true;
+            }
+
+            if (DateTime.TryParse(input, out temp) == false)
             {
                 return false;
             }
