@@ -112,6 +112,13 @@ public class DateTimeArgument : Argument<DateTime>, IDateTimeArgument
                 return true;
             }
 
+            if (DateTime.TryParseExact(input, "yyyyMMddZ", culture,
+            DateTimeStyles.AdjustToUniversal, out temp) == true)
+            {
+                Value = temp;
+                return true;
+            }
+
             // yyyyMMddTHHmmss
 
             if (DateTime.TryParseExact(input, "yyyyMMdd'T'HHmmssfff'Z'", culture,
