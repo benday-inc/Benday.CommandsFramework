@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Globalization;
 namespace Benday.CommandsFramework.Tests;
 
 [TestClass]
@@ -155,10 +156,13 @@ public class DateTimeArgumentFixture
     public void TrySetValueAndVerifyValue(string input, bool expectedOutcome, string expectedDateString)
     {
         // arrange
-        var arg = new DateTimeArgument(EXPECTED_ARG_NAME)
-            .WithDescription(EXPECTED_ARG_DESC)
-            .AsRequired();
 
+        CultureInfo enUSCulture = new CultureInfo("en-US");
+        
+        var arg = new DateTimeArgument(EXPECTED_ARG_NAME);             
+        arg.IsRequired = true;
+        arg.CultureInfo = enUSCulture;
+        
         var temp = arg as DateTimeArgument ?? throw new InvalidOperationException("Wrong type");
 
         _SystemUnderTest = temp;

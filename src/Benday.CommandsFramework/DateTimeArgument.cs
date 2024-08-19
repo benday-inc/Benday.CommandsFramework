@@ -42,7 +42,8 @@ public class DateTimeArgument : Argument<DateTime>, IDateTimeArgument
         return DateTime.MinValue;
     }
 
-
+    public CultureInfo? CultureInfo { get; set; }
+    
     /// <summary>
     /// Try to set a string value to this DateTime argument
     /// </summary>
@@ -58,44 +59,54 @@ public class DateTimeArgument : Argument<DateTime>, IDateTimeArgument
         {
             DateTime temp;
 
-            //                                 20240816T1515295960Z
-            if (DateTime.TryParseExact(input, "yyyyMMddTHHmmssfffZ", CultureInfo.InvariantCulture,
-            DateTimeStyles.AssumeUniversal, out temp) == true)
+            CultureInfo culture;
+
+            if (CultureInfo != null)
+            {
+                culture = CultureInfo;
+            }
+            else
+            {
+                culture = CultureInfo.CurrentCulture;
+            }
+
+            if (DateTime.TryParseExact(input, "yyyyMMddTHHmmssfffZ", culture,
+            DateTimeStyles.AdjustToUniversal, out temp) == true)
             {
                 Value = temp;
                 return true;
             }
 
-            if (DateTime.TryParseExact(input, "yyyyMMddTHHmmssffffZ", CultureInfo.InvariantCulture,
-            DateTimeStyles.AssumeUniversal, out temp) == true)
+            if (DateTime.TryParseExact(input, "yyyyMMddTHHmmssffffZ", culture,
+            DateTimeStyles.AdjustToUniversal, out temp) == true)
             {
                 Value = temp;
                 return true;
             }
 
-            if (DateTime.TryParseExact(input, "yyyyMMdd'T'HHmmss'Z'", CultureInfo.InvariantCulture,
-            DateTimeStyles.AssumeUniversal, out temp) == true)
+            if (DateTime.TryParseExact(input, "yyyyMMdd'T'HHmmss'Z'", culture,
+            DateTimeStyles.AdjustToUniversal, out temp) == true)
             {
                 Value = temp;
                 return true;
             }
 
-            if (DateTime.TryParseExact(input, "yyyyMMddTHHmmssZ", CultureInfo.InvariantCulture,
-            DateTimeStyles.AssumeUniversal, out temp) == true)
+            if (DateTime.TryParseExact(input, "yyyyMMddTHHmmssZ", culture,
+            DateTimeStyles.AdjustToUniversal, out temp) == true)
             {
                 Value = temp;
                 return true;
             }
 
-            if (DateTime.TryParseExact(input, "yyyyMMddTHHmmss", CultureInfo.InvariantCulture,
-            DateTimeStyles.AssumeUniversal, out temp) == true)
+            if (DateTime.TryParseExact(input, "yyyyMMddTHHmmss", culture,
+            DateTimeStyles.AdjustToUniversal, out temp) == true)
             {
                 Value = temp;
                 return true;
             }
 
-            if (DateTime.TryParseExact(input, "yyyyMMddTHHmmssZ", CultureInfo.InvariantCulture,
-            DateTimeStyles.AssumeUniversal, out temp) == true)
+            if (DateTime.TryParseExact(input, "yyyyMMddTHHmmssZ", culture,
+            DateTimeStyles.AdjustToUniversal, out temp) == true)
             {
                 Value = temp;
                 return true;
@@ -103,14 +114,14 @@ public class DateTimeArgument : Argument<DateTime>, IDateTimeArgument
 
             // yyyyMMddTHHmmss
 
-            if (DateTime.TryParseExact(input, "yyyyMMdd'T'HHmmssfff'Z'", CultureInfo.InvariantCulture,
-            DateTimeStyles.AssumeUniversal, out temp) == true)
+            if (DateTime.TryParseExact(input, "yyyyMMdd'T'HHmmssfff'Z'", culture,
+            DateTimeStyles.AdjustToUniversal, out temp) == true)
             {
                 Value = temp;
                 return true;
             }
 
-            if (DateTime.TryParse(input, out temp) == false)
+            if (DateTime.TryParse(input, culture, DateTimeStyles.AdjustToUniversal, out temp) == false)
             {
                 return false;
             }
