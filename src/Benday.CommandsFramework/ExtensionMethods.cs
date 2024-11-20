@@ -39,6 +39,21 @@ public static class ExtensionMethods
     }
 
     /// <summary>
+    /// Adds a file argument definition
+    /// </summary>
+    /// <param name="collection">Argument collection</param>
+    /// <param name="argumentName">Argument name on the command line</param>
+    /// <returns></returns>
+    public static FileArgument AddFile(this ArgumentCollection collection, string argumentName)
+    {
+        var arg = new FileArgument(argumentName);
+
+        collection.Add(argumentName, arg);
+
+        return arg;
+    }
+
+    /// <summary>
     /// Adds a datetime argument definition
     /// </summary>
     /// <param name="collection">Argument collection</param>
@@ -115,9 +130,15 @@ public static class ExtensionMethods
 
                 return arg;
             }
+            else if (arg is FileArgument fileArg)
+            {
+                fileArg.MustExist = true;
+
+                return arg;
+            }
             else
             {
-                throw new InvalidOperationException($"Cannot call MustExist() on non-directory arg '{arg.Name}'.");
+                throw new InvalidOperationException($"Cannot call MustExist() on non-directory/non-file arg '{arg.Name}'.");
             }   
         }
     }
@@ -137,9 +158,15 @@ public static class ExtensionMethods
 
                 return arg;
             }
+            else if (arg is FileArgument fileArg)
+            {
+                fileArg.MustExist = false;
+
+                return arg;
+            }
             else
             {
-                throw new InvalidOperationException($"Cannot call MustExist() on non-directory arg '{arg.Name}'.");
+                throw new InvalidOperationException($"Cannot call MustExist() on non-directory/non-file arg '{arg.Name}'.");
             }
         }
     }
