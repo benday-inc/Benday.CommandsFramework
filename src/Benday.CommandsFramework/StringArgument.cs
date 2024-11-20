@@ -1,5 +1,6 @@
 ﻿namespace Benday.CommandsFramework;
 
+
 /// <summary>
 /// Argument implementation for working with string values
 /// </summary>

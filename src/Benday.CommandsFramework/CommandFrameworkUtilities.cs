@@ -52,6 +52,21 @@ public static class CommandFrameworkUtilities
         }
     }
 
+    public static string GetFullyQualifiedPath(string argumentValue)
+    {
+        if (Path.IsPathFullyQualified(argumentValue) == true)
+        {
+
+            return argumentValue;
+        }
+        else
+        {
+            argumentValue = Path.Combine(Directory.GetCurrentDirectory(), argumentValue);
+
+            return argumentValue;
+        }
+    }
+
     public static string GetPathToSourceDir(string sourceDir, bool mustExist)
     {
         if (Path.IsPathFullyQualified(sourceDir) == true)

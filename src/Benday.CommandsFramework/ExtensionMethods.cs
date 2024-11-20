@@ -24,6 +24,21 @@ public static class ExtensionMethods
     }
 
     /// <summary>
+    /// Adds a directory argument definition
+    /// </summary>
+    /// <param name="collection">Argument collection</param>
+    /// <param name="argumentName">Argument name on the command line</param>
+    /// <returns></returns>
+    public static DirectoryArgument AddDirectory(this ArgumentCollection collection, string argumentName)
+    {
+        var arg = new DirectoryArgument(argumentName);
+
+        collection.Add(argumentName, arg);
+
+        return arg;
+    }
+
+    /// <summary>
     /// Adds a datetime argument definition
     /// </summary>
     /// <param name="collection">Argument collection</param>
@@ -82,6 +97,50 @@ public static class ExtensionMethods
         {
             arg.Description = description;
             return arg;
+        }
+    }
+
+    public static Argument<T> MustExist<T>(
+        this Argument<T> arg)
+    {
+        if (arg == null)
+        {
+            throw new ArgumentNullException(nameof(arg));
+        }
+        else
+        {
+            if (arg is DirectoryArgument dirArg)
+            {
+                dirArg.MustExist = true;
+
+                return arg;
+            }
+            else
+            {
+                throw new InvalidOperationException($"Cannot call MustExist() on non-directory arg '{arg.Name}'.");
+            }   
+        }
+    }
+
+    public static Argument<T> ExistenceOptional<T>(
+        this Argument<T> arg)
+    {
+        if (arg == null)
+        {
+            throw new ArgumentNullException(nameof(arg));
+        }
+        else
+        {
+            if (arg is DirectoryArgument dirArg)
+            {
+                dirArg.MustExist = false;
+
+                return arg;
+            }
+            else
+            {
+                throw new InvalidOperationException($"Cannot call MustExist() on non-directory arg '{arg.Name}'.");
+            }
         }
     }
 
