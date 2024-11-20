@@ -101,7 +101,7 @@ public class DateTimeArgumentFixture
         InitializeWithAllTheArgs();
 
         var expected = false;
-        string input = null;
+        string? input = null;
 
         // act
         var actual = SystemUnderTest.TrySetValue(input!);

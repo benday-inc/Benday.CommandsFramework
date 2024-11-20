@@ -261,6 +261,12 @@ references:
   commentId: F:Benday.CommandsFramework.ArgumentFrameworkConstants.ArgumentHelpString
   fullName: Benday.CommandsFramework.ArgumentFrameworkConstants.ArgumentHelpString
   nameWithType: ArgumentFrameworkConstants.ArgumentHelpString
+- uid: Benday.CommandsFramework.ArgumentFrameworkConstants.ArgumentJson
+  name: ArgumentJson
+  href: api/Benday.CommandsFramework.ArgumentFrameworkConstants.html#Benday_CommandsFramework_ArgumentFrameworkConstants_ArgumentJson
+  commentId: F:Benday.CommandsFramework.ArgumentFrameworkConstants.ArgumentJson
+  fullName: Benday.CommandsFramework.ArgumentFrameworkConstants.ArgumentJson
+  nameWithType: ArgumentFrameworkConstants.ArgumentJson
 - uid: Benday.CommandsFramework.Argument`1
   name: Argument<T>
   href: api/Benday.CommandsFramework.Argument-1.html
@@ -270,42 +276,15 @@ references:
   fullName.vb: Benday.CommandsFramework.Argument(Of T)
   nameWithType: Argument<T>
   nameWithType.vb: Argument(Of T)
-- uid: Benday.CommandsFramework.Argument`1.#ctor(System.String,System.Boolean,System.Boolean)
-  name: Argument(string, bool, bool)
-  href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1__ctor_System_String_System_Boolean_System_Boolean_
-  commentId: M:Benday.CommandsFramework.Argument`1.#ctor(System.String,System.Boolean,System.Boolean)
-  name.vb: New(String, Boolean, Boolean)
-  fullName: Benday.CommandsFramework.Argument<T>.Argument(string, bool, bool)
-  fullName.vb: Benday.CommandsFramework.Argument(Of T).New(String, Boolean, Boolean)
-  nameWithType: Argument<T>.Argument(string, bool, bool)
-  nameWithType.vb: Argument(Of T).New(String, Boolean, Boolean)
-- uid: Benday.CommandsFramework.Argument`1.#ctor(System.String,System.String,System.Boolean,System.Boolean)
-  name: Argument(string, string, bool, bool)
-  href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1__ctor_System_String_System_String_System_Boolean_System_Boolean_
-  commentId: M:Benday.CommandsFramework.Argument`1.#ctor(System.String,System.String,System.Boolean,System.Boolean)
-  name.vb: New(String, String, Boolean, Boolean)
-  fullName: Benday.CommandsFramework.Argument<T>.Argument(string, string, bool, bool)
-  fullName.vb: Benday.CommandsFramework.Argument(Of T).New(String, String, Boolean, Boolean)
-  nameWithType: Argument<T>.Argument(string, string, bool, bool)
-  nameWithType.vb: Argument(Of T).New(String, String, Boolean, Boolean)
-- uid: Benday.CommandsFramework.Argument`1.#ctor(System.String,`0,System.Boolean,System.Boolean)
-  name: Argument(string, T, bool, bool)
-  href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1__ctor_System_String__0_System_Boolean_System_Boolean_
-  commentId: M:Benday.CommandsFramework.Argument`1.#ctor(System.String,`0,System.Boolean,System.Boolean)
-  name.vb: New(String, T, Boolean, Boolean)
-  fullName: Benday.CommandsFramework.Argument<T>.Argument(string, T, bool, bool)
-  fullName.vb: Benday.CommandsFramework.Argument(Of T).New(String, T, Boolean, Boolean)
-  nameWithType: Argument<T>.Argument(string, T, bool, bool)
-  nameWithType.vb: Argument(Of T).New(String, T, Boolean, Boolean)
-- uid: Benday.CommandsFramework.Argument`1.#ctor(System.String,`0,System.String,System.Boolean,System.Boolean)
-  name: Argument(string, T, string, bool, bool)
-  href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1__ctor_System_String__0_System_String_System_Boolean_System_Boolean_
-  commentId: M:Benday.CommandsFramework.Argument`1.#ctor(System.String,`0,System.String,System.Boolean,System.Boolean)
-  name.vb: New(String, T, String, Boolean, Boolean)
-  fullName: Benday.CommandsFramework.Argument<T>.Argument(string, T, string, bool, bool)
-  fullName.vb: Benday.CommandsFramework.Argument(Of T).New(String, T, String, Boolean, Boolean)
-  nameWithType: Argument<T>.Argument(string, T, string, bool, bool)
-  nameWithType.vb: Argument(Of T).New(String, T, String, Boolean, Boolean)
+- uid: Benday.CommandsFramework.Argument`1.#ctor(System.String)
+  name: Argument(string)
+  href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1__ctor_System_String_
+  commentId: M:Benday.CommandsFramework.Argument`1.#ctor(System.String)
+  name.vb: New(String)
+  fullName: Benday.CommandsFramework.Argument<T>.Argument(string)
+  fullName.vb: Benday.CommandsFramework.Argument(Of T).New(String)
+  nameWithType: Argument<T>.Argument(string)
+  nameWithType.vb: Argument(Of T).New(String)
 - uid: Benday.CommandsFramework.Argument`1.#ctor*
   name: Argument
   href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1__ctor_
@@ -384,6 +363,23 @@ references:
   fullName.vb: Benday.CommandsFramework.Argument(Of T).Description
   nameWithType: Argument<T>.Description
   nameWithType.vb: Argument(Of T).Description
+- uid: Benday.CommandsFramework.Argument`1.FriendlyName
+  name: FriendlyName
+  href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_FriendlyName
+  commentId: P:Benday.CommandsFramework.Argument`1.FriendlyName
+  fullName: Benday.CommandsFramework.Argument<T>.FriendlyName
+  fullName.vb: Benday.CommandsFramework.Argument(Of T).FriendlyName
+  nameWithType: Argument<T>.FriendlyName
+  nameWithType.vb: Argument(Of T).FriendlyName
+- uid: Benday.CommandsFramework.Argument`1.FriendlyName*
+  name: FriendlyName
+  href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_FriendlyName_
+  commentId: Overload:Benday.CommandsFramework.Argument`1.FriendlyName
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.Argument<T>.FriendlyName
+  fullName.vb: Benday.CommandsFramework.Argument(Of T).FriendlyName
+  nameWithType: Argument<T>.FriendlyName
+  nameWithType.vb: Argument(Of T).FriendlyName
 - uid: Benday.CommandsFramework.Argument`1.GetDefaultValue
   name: GetDefaultValue()
   href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_GetDefaultValue
@@ -628,33 +624,15 @@ references:
   commentId: T:Benday.CommandsFramework.BooleanArgument
   fullName: Benday.CommandsFramework.BooleanArgument
   nameWithType: BooleanArgument
-- uid: Benday.CommandsFramework.BooleanArgument.#ctor(System.String,System.Boolean,System.Boolean)
-  name: BooleanArgument(string, bool, bool)
-  href: api/Benday.CommandsFramework.BooleanArgument.html#Benday_CommandsFramework_BooleanArgument__ctor_System_String_System_Boolean_System_Boolean_
-  commentId: M:Benday.CommandsFramework.BooleanArgument.#ctor(System.String,System.Boolean,System.Boolean)
-  name.vb: New(String, Boolean, Boolean)
-  fullName: Benday.CommandsFramework.BooleanArgument.BooleanArgument(string, bool, bool)
-  fullName.vb: Benday.CommandsFramework.BooleanArgument.New(String, Boolean, Boolean)
-  nameWithType: BooleanArgument.BooleanArgument(string, bool, bool)
-  nameWithType.vb: BooleanArgument.New(String, Boolean, Boolean)
-- uid: Benday.CommandsFramework.BooleanArgument.#ctor(System.String,System.Boolean,System.Boolean,System.Boolean)
-  name: BooleanArgument(string, bool, bool, bool)
-  href: api/Benday.CommandsFramework.BooleanArgument.html#Benday_CommandsFramework_BooleanArgument__ctor_System_String_System_Boolean_System_Boolean_System_Boolean_
-  commentId: M:Benday.CommandsFramework.BooleanArgument.#ctor(System.String,System.Boolean,System.Boolean,System.Boolean)
-  name.vb: New(String, Boolean, Boolean, Boolean)
-  fullName: Benday.CommandsFramework.BooleanArgument.BooleanArgument(string, bool, bool, bool)
-  fullName.vb: Benday.CommandsFramework.BooleanArgument.New(String, Boolean, Boolean, Boolean)
-  nameWithType: BooleanArgument.BooleanArgument(string, bool, bool, bool)
-  nameWithType.vb: BooleanArgument.New(String, Boolean, Boolean, Boolean)
-- uid: Benday.CommandsFramework.BooleanArgument.#ctor(System.String,System.Boolean,System.String,System.Boolean,System.Boolean)
-  name: BooleanArgument(string, bool, string, bool, bool)
-  href: api/Benday.CommandsFramework.BooleanArgument.html#Benday_CommandsFramework_BooleanArgument__ctor_System_String_System_Boolean_System_String_System_Boolean_System_Boolean_
-  commentId: M:Benday.CommandsFramework.BooleanArgument.#ctor(System.String,System.Boolean,System.String,System.Boolean,System.Boolean)
-  name.vb: New(String, Boolean, String, Boolean, Boolean)
-  fullName: Benday.CommandsFramework.BooleanArgument.BooleanArgument(string, bool, string, bool, bool)
-  fullName.vb: Benday.CommandsFramework.BooleanArgument.New(String, Boolean, String, Boolean, Boolean)
-  nameWithType: BooleanArgument.BooleanArgument(string, bool, string, bool, bool)
-  nameWithType.vb: BooleanArgument.New(String, Boolean, String, Boolean, Boolean)
+- uid: Benday.CommandsFramework.BooleanArgument.#ctor(System.String)
+  name: BooleanArgument(string)
+  href: api/Benday.CommandsFramework.BooleanArgument.html#Benday_CommandsFramework_BooleanArgument__ctor_System_String_
+  commentId: M:Benday.CommandsFramework.BooleanArgument.#ctor(System.String)
+  name.vb: New(String)
+  fullName: Benday.CommandsFramework.BooleanArgument.BooleanArgument(string)
+  fullName.vb: Benday.CommandsFramework.BooleanArgument.New(String)
+  nameWithType: BooleanArgument.BooleanArgument(string)
+  nameWithType.vb: BooleanArgument.New(String)
 - uid: Benday.CommandsFramework.BooleanArgument.#ctor*
   name: BooleanArgument
   href: api/Benday.CommandsFramework.BooleanArgument.html#Benday_CommandsFramework_BooleanArgument__ctor_
@@ -1162,12 +1140,40 @@ references:
   commentId: F:Benday.CommandsFramework.CommandFrameworkConstants.CommandName_SetConfig
   fullName: Benday.CommandsFramework.CommandFrameworkConstants.CommandName_SetConfig
   nameWithType: CommandFrameworkConstants.CommandName_SetConfig
+- uid: Benday.CommandsFramework.CommandFrameworkConstants.ExitCode_Failure
+  name: ExitCode_Failure
+  href: api/Benday.CommandsFramework.CommandFrameworkConstants.html#Benday_CommandsFramework_CommandFrameworkConstants_ExitCode_Failure
+  commentId: F:Benday.CommandsFramework.CommandFrameworkConstants.ExitCode_Failure
+  fullName: Benday.CommandsFramework.CommandFrameworkConstants.ExitCode_Failure
+  nameWithType: CommandFrameworkConstants.ExitCode_Failure
+- uid: Benday.CommandsFramework.CommandFrameworkConstants.ExitCode_Success
+  name: ExitCode_Success
+  href: api/Benday.CommandsFramework.CommandFrameworkConstants.html#Benday_CommandsFramework_CommandFrameworkConstants_ExitCode_Success
+  commentId: F:Benday.CommandsFramework.CommandFrameworkConstants.ExitCode_Success
+  fullName: Benday.CommandsFramework.CommandFrameworkConstants.ExitCode_Success
+  nameWithType: CommandFrameworkConstants.ExitCode_Success
 - uid: Benday.CommandsFramework.CommandFrameworkUtilities
   name: CommandFrameworkUtilities
   href: api/Benday.CommandsFramework.CommandFrameworkUtilities.html
   commentId: T:Benday.CommandsFramework.CommandFrameworkUtilities
   fullName: Benday.CommandsFramework.CommandFrameworkUtilities
   nameWithType: CommandFrameworkUtilities
+- uid: Benday.CommandsFramework.CommandFrameworkUtilities.GetFullyQualifiedPath(System.String)
+  name: GetFullyQualifiedPath(string)
+  href: api/Benday.CommandsFramework.CommandFrameworkUtilities.html#Benday_CommandsFramework_CommandFrameworkUtilities_GetFullyQualifiedPath_System_String_
+  commentId: M:Benday.CommandsFramework.CommandFrameworkUtilities.GetFullyQualifiedPath(System.String)
+  name.vb: GetFullyQualifiedPath(String)
+  fullName: Benday.CommandsFramework.CommandFrameworkUtilities.GetFullyQualifiedPath(string)
+  fullName.vb: Benday.CommandsFramework.CommandFrameworkUtilities.GetFullyQualifiedPath(String)
+  nameWithType: CommandFrameworkUtilities.GetFullyQualifiedPath(string)
+  nameWithType.vb: CommandFrameworkUtilities.GetFullyQualifiedPath(String)
+- uid: Benday.CommandsFramework.CommandFrameworkUtilities.GetFullyQualifiedPath*
+  name: GetFullyQualifiedPath
+  href: api/Benday.CommandsFramework.CommandFrameworkUtilities.html#Benday_CommandsFramework_CommandFrameworkUtilities_GetFullyQualifiedPath_
+  commentId: Overload:Benday.CommandsFramework.CommandFrameworkUtilities.GetFullyQualifiedPath
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandFrameworkUtilities.GetFullyQualifiedPath
+  nameWithType: CommandFrameworkUtilities.GetFullyQualifiedPath
 - uid: Benday.CommandsFramework.CommandFrameworkUtilities.GetPathToSourceDir(System.String,System.Boolean)
   name: GetPathToSourceDir(string, bool)
   href: api/Benday.CommandsFramework.CommandFrameworkUtilities.html#Benday_CommandsFramework_CommandFrameworkUtilities_GetPathToSourceDir_System_String_System_Boolean_
@@ -1340,33 +1346,15 @@ references:
   commentId: T:Benday.CommandsFramework.DateTimeArgument
   fullName: Benday.CommandsFramework.DateTimeArgument
   nameWithType: DateTimeArgument
-- uid: Benday.CommandsFramework.DateTimeArgument.#ctor(System.String,System.Boolean,System.Boolean)
-  name: DateTimeArgument(string, bool, bool)
-  href: api/Benday.CommandsFramework.DateTimeArgument.html#Benday_CommandsFramework_DateTimeArgument__ctor_System_String_System_Boolean_System_Boolean_
-  commentId: M:Benday.CommandsFramework.DateTimeArgument.#ctor(System.String,System.Boolean,System.Boolean)
-  name.vb: New(String, Boolean, Boolean)
-  fullName: Benday.CommandsFramework.DateTimeArgument.DateTimeArgument(string, bool, bool)
-  fullName.vb: Benday.CommandsFramework.DateTimeArgument.New(String, Boolean, Boolean)
-  nameWithType: DateTimeArgument.DateTimeArgument(string, bool, bool)
-  nameWithType.vb: DateTimeArgument.New(String, Boolean, Boolean)
-- uid: Benday.CommandsFramework.DateTimeArgument.#ctor(System.String,System.DateTime,System.Boolean,System.Boolean)
-  name: DateTimeArgument(string, DateTime, bool, bool)
-  href: api/Benday.CommandsFramework.DateTimeArgument.html#Benday_CommandsFramework_DateTimeArgument__ctor_System_String_System_DateTime_System_Boolean_System_Boolean_
-  commentId: M:Benday.CommandsFramework.DateTimeArgument.#ctor(System.String,System.DateTime,System.Boolean,System.Boolean)
-  name.vb: New(String, Date, Boolean, Boolean)
-  fullName: Benday.CommandsFramework.DateTimeArgument.DateTimeArgument(string, System.DateTime, bool, bool)
-  fullName.vb: Benday.CommandsFramework.DateTimeArgument.New(String, Date, Boolean, Boolean)
-  nameWithType: DateTimeArgument.DateTimeArgument(string, DateTime, bool, bool)
-  nameWithType.vb: DateTimeArgument.New(String, Date, Boolean, Boolean)
-- uid: Benday.CommandsFramework.DateTimeArgument.#ctor(System.String,System.DateTime,System.String,System.Boolean,System.Boolean)
-  name: DateTimeArgument(string, DateTime, string, bool, bool)
-  href: api/Benday.CommandsFramework.DateTimeArgument.html#Benday_CommandsFramework_DateTimeArgument__ctor_System_String_System_DateTime_System_String_System_Boolean_System_Boolean_
-  commentId: M:Benday.CommandsFramework.DateTimeArgument.#ctor(System.String,System.DateTime,System.String,System.Boolean,System.Boolean)
-  name.vb: New(String, Date, String, Boolean, Boolean)
-  fullName: Benday.CommandsFramework.DateTimeArgument.DateTimeArgument(string, System.DateTime, string, bool, bool)
-  fullName.vb: Benday.CommandsFramework.DateTimeArgument.New(String, Date, String, Boolean, Boolean)
-  nameWithType: DateTimeArgument.DateTimeArgument(string, DateTime, string, bool, bool)
-  nameWithType.vb: DateTimeArgument.New(String, Date, String, Boolean, Boolean)
+- uid: Benday.CommandsFramework.DateTimeArgument.#ctor(System.String)
+  name: DateTimeArgument(string)
+  href: api/Benday.CommandsFramework.DateTimeArgument.html#Benday_CommandsFramework_DateTimeArgument__ctor_System_String_
+  commentId: M:Benday.CommandsFramework.DateTimeArgument.#ctor(System.String)
+  name.vb: New(String)
+  fullName: Benday.CommandsFramework.DateTimeArgument.DateTimeArgument(string)
+  fullName.vb: Benday.CommandsFramework.DateTimeArgument.New(String)
+  nameWithType: DateTimeArgument.DateTimeArgument(string)
+  nameWithType.vb: DateTimeArgument.New(String)
 - uid: Benday.CommandsFramework.DateTimeArgument.#ctor*
   name: DateTimeArgument
   href: api/Benday.CommandsFramework.DateTimeArgument.html#Benday_CommandsFramework_DateTimeArgument__ctor_
@@ -1377,6 +1365,19 @@ references:
   fullName.vb: Benday.CommandsFramework.DateTimeArgument.New
   nameWithType: DateTimeArgument.DateTimeArgument
   nameWithType.vb: DateTimeArgument.New
+- uid: Benday.CommandsFramework.DateTimeArgument.CultureInfo
+  name: CultureInfo
+  href: api/Benday.CommandsFramework.DateTimeArgument.html#Benday_CommandsFramework_DateTimeArgument_CultureInfo
+  commentId: P:Benday.CommandsFramework.DateTimeArgument.CultureInfo
+  fullName: Benday.CommandsFramework.DateTimeArgument.CultureInfo
+  nameWithType: DateTimeArgument.CultureInfo
+- uid: Benday.CommandsFramework.DateTimeArgument.CultureInfo*
+  name: CultureInfo
+  href: api/Benday.CommandsFramework.DateTimeArgument.html#Benday_CommandsFramework_DateTimeArgument_CultureInfo_
+  commentId: Overload:Benday.CommandsFramework.DateTimeArgument.CultureInfo
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DateTimeArgument.CultureInfo
+  nameWithType: DateTimeArgument.CultureInfo
 - uid: Benday.CommandsFramework.DateTimeArgument.DataType
   name: DataType
   href: api/Benday.CommandsFramework.DateTimeArgument.html#Benday_CommandsFramework_DateTimeArgument_DataType
@@ -1654,6 +1655,96 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.DefaultProgramOptions.Website
   nameWithType: DefaultProgramOptions.Website
+- uid: Benday.CommandsFramework.DirectoryArgument
+  name: DirectoryArgument
+  href: api/Benday.CommandsFramework.DirectoryArgument.html
+  commentId: T:Benday.CommandsFramework.DirectoryArgument
+  fullName: Benday.CommandsFramework.DirectoryArgument
+  nameWithType: DirectoryArgument
+- uid: Benday.CommandsFramework.DirectoryArgument.#ctor(System.String)
+  name: DirectoryArgument(string)
+  href: api/Benday.CommandsFramework.DirectoryArgument.html#Benday_CommandsFramework_DirectoryArgument__ctor_System_String_
+  commentId: M:Benday.CommandsFramework.DirectoryArgument.#ctor(System.String)
+  name.vb: New(String)
+  fullName: Benday.CommandsFramework.DirectoryArgument.DirectoryArgument(string)
+  fullName.vb: Benday.CommandsFramework.DirectoryArgument.New(String)
+  nameWithType: DirectoryArgument.DirectoryArgument(string)
+  nameWithType.vb: DirectoryArgument.New(String)
+- uid: Benday.CommandsFramework.DirectoryArgument.#ctor*
+  name: DirectoryArgument
+  href: api/Benday.CommandsFramework.DirectoryArgument.html#Benday_CommandsFramework_DirectoryArgument__ctor_
+  commentId: Overload:Benday.CommandsFramework.DirectoryArgument.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Benday.CommandsFramework.DirectoryArgument.DirectoryArgument
+  fullName.vb: Benday.CommandsFramework.DirectoryArgument.New
+  nameWithType: DirectoryArgument.DirectoryArgument
+  nameWithType.vb: DirectoryArgument.New
+- uid: Benday.CommandsFramework.DirectoryArgument.AbsolutePath
+  name: AbsolutePath
+  href: api/Benday.CommandsFramework.DirectoryArgument.html#Benday_CommandsFramework_DirectoryArgument_AbsolutePath
+  commentId: P:Benday.CommandsFramework.DirectoryArgument.AbsolutePath
+  fullName: Benday.CommandsFramework.DirectoryArgument.AbsolutePath
+  nameWithType: DirectoryArgument.AbsolutePath
+- uid: Benday.CommandsFramework.DirectoryArgument.AbsolutePath*
+  name: AbsolutePath
+  href: api/Benday.CommandsFramework.DirectoryArgument.html#Benday_CommandsFramework_DirectoryArgument_AbsolutePath_
+  commentId: Overload:Benday.CommandsFramework.DirectoryArgument.AbsolutePath
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DirectoryArgument.AbsolutePath
+  nameWithType: DirectoryArgument.AbsolutePath
+- uid: Benday.CommandsFramework.DirectoryArgument.DataType
+  name: DataType
+  href: api/Benday.CommandsFramework.DirectoryArgument.html#Benday_CommandsFramework_DirectoryArgument_DataType
+  commentId: P:Benday.CommandsFramework.DirectoryArgument.DataType
+  fullName: Benday.CommandsFramework.DirectoryArgument.DataType
+  nameWithType: DirectoryArgument.DataType
+- uid: Benday.CommandsFramework.DirectoryArgument.DataType*
+  name: DataType
+  href: api/Benday.CommandsFramework.DirectoryArgument.html#Benday_CommandsFramework_DirectoryArgument_DataType_
+  commentId: Overload:Benday.CommandsFramework.DirectoryArgument.DataType
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DirectoryArgument.DataType
+  nameWithType: DirectoryArgument.DataType
+- uid: Benday.CommandsFramework.DirectoryArgument.GetDefaultValue
+  name: GetDefaultValue()
+  href: api/Benday.CommandsFramework.DirectoryArgument.html#Benday_CommandsFramework_DirectoryArgument_GetDefaultValue
+  commentId: M:Benday.CommandsFramework.DirectoryArgument.GetDefaultValue
+  fullName: Benday.CommandsFramework.DirectoryArgument.GetDefaultValue()
+  nameWithType: DirectoryArgument.GetDefaultValue()
+- uid: Benday.CommandsFramework.DirectoryArgument.GetDefaultValue*
+  name: GetDefaultValue
+  href: api/Benday.CommandsFramework.DirectoryArgument.html#Benday_CommandsFramework_DirectoryArgument_GetDefaultValue_
+  commentId: Overload:Benday.CommandsFramework.DirectoryArgument.GetDefaultValue
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DirectoryArgument.GetDefaultValue
+  nameWithType: DirectoryArgument.GetDefaultValue
+- uid: Benday.CommandsFramework.DirectoryArgument.MustExist
+  name: MustExist
+  href: api/Benday.CommandsFramework.DirectoryArgument.html#Benday_CommandsFramework_DirectoryArgument_MustExist
+  commentId: P:Benday.CommandsFramework.DirectoryArgument.MustExist
+  fullName: Benday.CommandsFramework.DirectoryArgument.MustExist
+  nameWithType: DirectoryArgument.MustExist
+- uid: Benday.CommandsFramework.DirectoryArgument.MustExist*
+  name: MustExist
+  href: api/Benday.CommandsFramework.DirectoryArgument.html#Benday_CommandsFramework_DirectoryArgument_MustExist_
+  commentId: Overload:Benday.CommandsFramework.DirectoryArgument.MustExist
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DirectoryArgument.MustExist
+  nameWithType: DirectoryArgument.MustExist
+- uid: Benday.CommandsFramework.DirectoryArgument.Validate
+  name: Validate()
+  href: api/Benday.CommandsFramework.DirectoryArgument.html#Benday_CommandsFramework_DirectoryArgument_Validate
+  commentId: M:Benday.CommandsFramework.DirectoryArgument.Validate
+  fullName: Benday.CommandsFramework.DirectoryArgument.Validate()
+  nameWithType: DirectoryArgument.Validate()
+- uid: Benday.CommandsFramework.DirectoryArgument.Validate*
+  name: Validate
+  href: api/Benday.CommandsFramework.DirectoryArgument.html#Benday_CommandsFramework_DirectoryArgument_Validate_
+  commentId: Overload:Benday.CommandsFramework.DirectoryArgument.Validate
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DirectoryArgument.Validate
+  nameWithType: DirectoryArgument.Validate
 - uid: Benday.CommandsFramework.DisplayUsageOptions
   name: DisplayUsageOptions
   href: api/Benday.CommandsFramework.DisplayUsageOptions.html
@@ -1779,6 +1870,38 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.ExtensionMethods.AddDateTime
   nameWithType: ExtensionMethods.AddDateTime
+- uid: Benday.CommandsFramework.ExtensionMethods.AddDirectory(Benday.CommandsFramework.ArgumentCollection,System.String)
+  name: AddDirectory(ArgumentCollection, string)
+  href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_AddDirectory_Benday_CommandsFramework_ArgumentCollection_System_String_
+  commentId: M:Benday.CommandsFramework.ExtensionMethods.AddDirectory(Benday.CommandsFramework.ArgumentCollection,System.String)
+  name.vb: AddDirectory(ArgumentCollection, String)
+  fullName: Benday.CommandsFramework.ExtensionMethods.AddDirectory(Benday.CommandsFramework.ArgumentCollection, string)
+  fullName.vb: Benday.CommandsFramework.ExtensionMethods.AddDirectory(Benday.CommandsFramework.ArgumentCollection, String)
+  nameWithType: ExtensionMethods.AddDirectory(ArgumentCollection, string)
+  nameWithType.vb: ExtensionMethods.AddDirectory(ArgumentCollection, String)
+- uid: Benday.CommandsFramework.ExtensionMethods.AddDirectory*
+  name: AddDirectory
+  href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_AddDirectory_
+  commentId: Overload:Benday.CommandsFramework.ExtensionMethods.AddDirectory
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.ExtensionMethods.AddDirectory
+  nameWithType: ExtensionMethods.AddDirectory
+- uid: Benday.CommandsFramework.ExtensionMethods.AddFile(Benday.CommandsFramework.ArgumentCollection,System.String)
+  name: AddFile(ArgumentCollection, string)
+  href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_AddFile_Benday_CommandsFramework_ArgumentCollection_System_String_
+  commentId: M:Benday.CommandsFramework.ExtensionMethods.AddFile(Benday.CommandsFramework.ArgumentCollection,System.String)
+  name.vb: AddFile(ArgumentCollection, String)
+  fullName: Benday.CommandsFramework.ExtensionMethods.AddFile(Benday.CommandsFramework.ArgumentCollection, string)
+  fullName.vb: Benday.CommandsFramework.ExtensionMethods.AddFile(Benday.CommandsFramework.ArgumentCollection, String)
+  nameWithType: ExtensionMethods.AddFile(ArgumentCollection, string)
+  nameWithType.vb: ExtensionMethods.AddFile(ArgumentCollection, String)
+- uid: Benday.CommandsFramework.ExtensionMethods.AddFile*
+  name: AddFile
+  href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_AddFile_
+  commentId: Overload:Benday.CommandsFramework.ExtensionMethods.AddFile
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.ExtensionMethods.AddFile
+  nameWithType: ExtensionMethods.AddFile
 - uid: Benday.CommandsFramework.ExtensionMethods.AddInt32(Benday.CommandsFramework.ArgumentCollection,System.String)
   name: AddInt32(ArgumentCollection, string)
   href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_AddInt32_Benday_CommandsFramework_ArgumentCollection_System_String_
@@ -1859,6 +1982,22 @@ references:
   fullName.vb: Benday.CommandsFramework.ExtensionMethods.AsRequired(Of T)(Benday.CommandsFramework.Argument(Of T))
   nameWithType: ExtensionMethods.AsRequired<T>(Argument<T>)
   nameWithType.vb: ExtensionMethods.AsRequired(Of T)(Argument(Of T))
+- uid: Benday.CommandsFramework.ExtensionMethods.ExistenceOptional*
+  name: ExistenceOptional
+  href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_ExistenceOptional_
+  commentId: Overload:Benday.CommandsFramework.ExtensionMethods.ExistenceOptional
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.ExtensionMethods.ExistenceOptional
+  nameWithType: ExtensionMethods.ExistenceOptional
+- uid: Benday.CommandsFramework.ExtensionMethods.ExistenceOptional``1(Benday.CommandsFramework.Argument{``0})
+  name: ExistenceOptional<T>(Argument<T>)
+  href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_ExistenceOptional__1_Benday_CommandsFramework_Argument___0__
+  commentId: M:Benday.CommandsFramework.ExtensionMethods.ExistenceOptional``1(Benday.CommandsFramework.Argument{``0})
+  name.vb: ExistenceOptional(Of T)(Argument(Of T))
+  fullName: Benday.CommandsFramework.ExtensionMethods.ExistenceOptional<T>(Benday.CommandsFramework.Argument<T>)
+  fullName.vb: Benday.CommandsFramework.ExtensionMethods.ExistenceOptional(Of T)(Benday.CommandsFramework.Argument(Of T))
+  nameWithType: ExtensionMethods.ExistenceOptional<T>(Argument<T>)
+  nameWithType.vb: ExtensionMethods.ExistenceOptional(Of T)(Argument(Of T))
 - uid: Benday.CommandsFramework.ExtensionMethods.FromPositionalArgument*
   name: FromPositionalArgument
   href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_FromPositionalArgument_
@@ -2003,6 +2142,22 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.ExtensionMethods.HasValue
   nameWithType: ExtensionMethods.HasValue
+- uid: Benday.CommandsFramework.ExtensionMethods.MustExist*
+  name: MustExist
+  href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_MustExist_
+  commentId: Overload:Benday.CommandsFramework.ExtensionMethods.MustExist
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.ExtensionMethods.MustExist
+  nameWithType: ExtensionMethods.MustExist
+- uid: Benday.CommandsFramework.ExtensionMethods.MustExist``1(Benday.CommandsFramework.Argument{``0})
+  name: MustExist<T>(Argument<T>)
+  href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_MustExist__1_Benday_CommandsFramework_Argument___0__
+  commentId: M:Benday.CommandsFramework.ExtensionMethods.MustExist``1(Benday.CommandsFramework.Argument{``0})
+  name.vb: MustExist(Of T)(Argument(Of T))
+  fullName: Benday.CommandsFramework.ExtensionMethods.MustExist<T>(Benday.CommandsFramework.Argument<T>)
+  fullName.vb: Benday.CommandsFramework.ExtensionMethods.MustExist(Of T)(Benday.CommandsFramework.Argument(Of T))
+  nameWithType: ExtensionMethods.MustExist<T>(Argument<T>)
+  nameWithType.vb: ExtensionMethods.MustExist(Of T)(Argument(Of T))
 - uid: Benday.CommandsFramework.ExtensionMethods.RemoveArgumentValue(Benday.CommandsFramework.CommandExecutionInfo,System.String)
   name: RemoveArgumentValue(CommandExecutionInfo, string)
   href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_RemoveArgumentValue_Benday_CommandsFramework_CommandExecutionInfo_System_String_
@@ -2067,6 +2222,112 @@ references:
   fullName.vb: Benday.CommandsFramework.ExtensionMethods.WithDescription(Of T)(Benday.CommandsFramework.Argument(Of T), String)
   nameWithType: ExtensionMethods.WithDescription<T>(Argument<T>, string)
   nameWithType.vb: ExtensionMethods.WithDescription(Of T)(Argument(Of T), String)
+- uid: Benday.CommandsFramework.ExtensionMethods.WithFriendlyName*
+  name: WithFriendlyName
+  href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_WithFriendlyName_
+  commentId: Overload:Benday.CommandsFramework.ExtensionMethods.WithFriendlyName
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.ExtensionMethods.WithFriendlyName
+  nameWithType: ExtensionMethods.WithFriendlyName
+- uid: Benday.CommandsFramework.ExtensionMethods.WithFriendlyName``1(Benday.CommandsFramework.Argument{``0},System.String)
+  name: WithFriendlyName<T>(Argument<T>, string)
+  href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_WithFriendlyName__1_Benday_CommandsFramework_Argument___0__System_String_
+  commentId: M:Benday.CommandsFramework.ExtensionMethods.WithFriendlyName``1(Benday.CommandsFramework.Argument{``0},System.String)
+  name.vb: WithFriendlyName(Of T)(Argument(Of T), String)
+  fullName: Benday.CommandsFramework.ExtensionMethods.WithFriendlyName<T>(Benday.CommandsFramework.Argument<T>, string)
+  fullName.vb: Benday.CommandsFramework.ExtensionMethods.WithFriendlyName(Of T)(Benday.CommandsFramework.Argument(Of T), String)
+  nameWithType: ExtensionMethods.WithFriendlyName<T>(Argument<T>, string)
+  nameWithType.vb: ExtensionMethods.WithFriendlyName(Of T)(Argument(Of T), String)
+- uid: Benday.CommandsFramework.FileArgument
+  name: FileArgument
+  href: api/Benday.CommandsFramework.FileArgument.html
+  commentId: T:Benday.CommandsFramework.FileArgument
+  fullName: Benday.CommandsFramework.FileArgument
+  nameWithType: FileArgument
+- uid: Benday.CommandsFramework.FileArgument.#ctor(System.String)
+  name: FileArgument(string)
+  href: api/Benday.CommandsFramework.FileArgument.html#Benday_CommandsFramework_FileArgument__ctor_System_String_
+  commentId: M:Benday.CommandsFramework.FileArgument.#ctor(System.String)
+  name.vb: New(String)
+  fullName: Benday.CommandsFramework.FileArgument.FileArgument(string)
+  fullName.vb: Benday.CommandsFramework.FileArgument.New(String)
+  nameWithType: FileArgument.FileArgument(string)
+  nameWithType.vb: FileArgument.New(String)
+- uid: Benday.CommandsFramework.FileArgument.#ctor*
+  name: FileArgument
+  href: api/Benday.CommandsFramework.FileArgument.html#Benday_CommandsFramework_FileArgument__ctor_
+  commentId: Overload:Benday.CommandsFramework.FileArgument.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Benday.CommandsFramework.FileArgument.FileArgument
+  fullName.vb: Benday.CommandsFramework.FileArgument.New
+  nameWithType: FileArgument.FileArgument
+  nameWithType.vb: FileArgument.New
+- uid: Benday.CommandsFramework.FileArgument.AbsolutePath
+  name: AbsolutePath
+  href: api/Benday.CommandsFramework.FileArgument.html#Benday_CommandsFramework_FileArgument_AbsolutePath
+  commentId: P:Benday.CommandsFramework.FileArgument.AbsolutePath
+  fullName: Benday.CommandsFramework.FileArgument.AbsolutePath
+  nameWithType: FileArgument.AbsolutePath
+- uid: Benday.CommandsFramework.FileArgument.AbsolutePath*
+  name: AbsolutePath
+  href: api/Benday.CommandsFramework.FileArgument.html#Benday_CommandsFramework_FileArgument_AbsolutePath_
+  commentId: Overload:Benday.CommandsFramework.FileArgument.AbsolutePath
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.FileArgument.AbsolutePath
+  nameWithType: FileArgument.AbsolutePath
+- uid: Benday.CommandsFramework.FileArgument.DataType
+  name: DataType
+  href: api/Benday.CommandsFramework.FileArgument.html#Benday_CommandsFramework_FileArgument_DataType
+  commentId: P:Benday.CommandsFramework.FileArgument.DataType
+  fullName: Benday.CommandsFramework.FileArgument.DataType
+  nameWithType: FileArgument.DataType
+- uid: Benday.CommandsFramework.FileArgument.DataType*
+  name: DataType
+  href: api/Benday.CommandsFramework.FileArgument.html#Benday_CommandsFramework_FileArgument_DataType_
+  commentId: Overload:Benday.CommandsFramework.FileArgument.DataType
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.FileArgument.DataType
+  nameWithType: FileArgument.DataType
+- uid: Benday.CommandsFramework.FileArgument.GetDefaultValue
+  name: GetDefaultValue()
+  href: api/Benday.CommandsFramework.FileArgument.html#Benday_CommandsFramework_FileArgument_GetDefaultValue
+  commentId: M:Benday.CommandsFramework.FileArgument.GetDefaultValue
+  fullName: Benday.CommandsFramework.FileArgument.GetDefaultValue()
+  nameWithType: FileArgument.GetDefaultValue()
+- uid: Benday.CommandsFramework.FileArgument.GetDefaultValue*
+  name: GetDefaultValue
+  href: api/Benday.CommandsFramework.FileArgument.html#Benday_CommandsFramework_FileArgument_GetDefaultValue_
+  commentId: Overload:Benday.CommandsFramework.FileArgument.GetDefaultValue
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.FileArgument.GetDefaultValue
+  nameWithType: FileArgument.GetDefaultValue
+- uid: Benday.CommandsFramework.FileArgument.MustExist
+  name: MustExist
+  href: api/Benday.CommandsFramework.FileArgument.html#Benday_CommandsFramework_FileArgument_MustExist
+  commentId: P:Benday.CommandsFramework.FileArgument.MustExist
+  fullName: Benday.CommandsFramework.FileArgument.MustExist
+  nameWithType: FileArgument.MustExist
+- uid: Benday.CommandsFramework.FileArgument.MustExist*
+  name: MustExist
+  href: api/Benday.CommandsFramework.FileArgument.html#Benday_CommandsFramework_FileArgument_MustExist_
+  commentId: Overload:Benday.CommandsFramework.FileArgument.MustExist
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.FileArgument.MustExist
+  nameWithType: FileArgument.MustExist
+- uid: Benday.CommandsFramework.FileArgument.Validate
+  name: Validate()
+  href: api/Benday.CommandsFramework.FileArgument.html#Benday_CommandsFramework_FileArgument_Validate
+  commentId: M:Benday.CommandsFramework.FileArgument.Validate
+  fullName: Benday.CommandsFramework.FileArgument.Validate()
+  nameWithType: FileArgument.Validate()
+- uid: Benday.CommandsFramework.FileArgument.Validate*
+  name: Validate
+  href: api/Benday.CommandsFramework.FileArgument.html#Benday_CommandsFramework_FileArgument_Validate_
+  commentId: Overload:Benday.CommandsFramework.FileArgument.Validate
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.FileArgument.Validate
+  nameWithType: FileArgument.Validate
 - uid: Benday.CommandsFramework.FileBasedConfigurationManager
   name: FileBasedConfigurationManager
   href: api/Benday.CommandsFramework.FileBasedConfigurationManager.html
@@ -2336,6 +2597,19 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.IArgument.Description
   nameWithType: IArgument.Description
+- uid: Benday.CommandsFramework.IArgument.FriendlyName
+  name: FriendlyName
+  href: api/Benday.CommandsFramework.IArgument.html#Benday_CommandsFramework_IArgument_FriendlyName
+  commentId: P:Benday.CommandsFramework.IArgument.FriendlyName
+  fullName: Benday.CommandsFramework.IArgument.FriendlyName
+  nameWithType: IArgument.FriendlyName
+- uid: Benday.CommandsFramework.IArgument.FriendlyName*
+  name: FriendlyName
+  href: api/Benday.CommandsFramework.IArgument.html#Benday_CommandsFramework_IArgument_FriendlyName_
+  commentId: Overload:Benday.CommandsFramework.IArgument.FriendlyName
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.IArgument.FriendlyName
+  nameWithType: IArgument.FriendlyName
 - uid: Benday.CommandsFramework.IArgument.HasAlias
   name: HasAlias
   href: api/Benday.CommandsFramework.IArgument.html#Benday_CommandsFramework_IArgument_HasAlias
@@ -2874,33 +3148,15 @@ references:
   commentId: T:Benday.CommandsFramework.Int32Argument
   fullName: Benday.CommandsFramework.Int32Argument
   nameWithType: Int32Argument
-- uid: Benday.CommandsFramework.Int32Argument.#ctor(System.String,System.Boolean,System.Boolean)
-  name: Int32Argument(string, bool, bool)
-  href: api/Benday.CommandsFramework.Int32Argument.html#Benday_CommandsFramework_Int32Argument__ctor_System_String_System_Boolean_System_Boolean_
-  commentId: M:Benday.CommandsFramework.Int32Argument.#ctor(System.String,System.Boolean,System.Boolean)
-  name.vb: New(String, Boolean, Boolean)
-  fullName: Benday.CommandsFramework.Int32Argument.Int32Argument(string, bool, bool)
-  fullName.vb: Benday.CommandsFramework.Int32Argument.New(String, Boolean, Boolean)
-  nameWithType: Int32Argument.Int32Argument(string, bool, bool)
-  nameWithType.vb: Int32Argument.New(String, Boolean, Boolean)
-- uid: Benday.CommandsFramework.Int32Argument.#ctor(System.String,System.Int32,System.Boolean,System.Boolean)
-  name: Int32Argument(string, int, bool, bool)
-  href: api/Benday.CommandsFramework.Int32Argument.html#Benday_CommandsFramework_Int32Argument__ctor_System_String_System_Int32_System_Boolean_System_Boolean_
-  commentId: M:Benday.CommandsFramework.Int32Argument.#ctor(System.String,System.Int32,System.Boolean,System.Boolean)
-  name.vb: New(String, Integer, Boolean, Boolean)
-  fullName: Benday.CommandsFramework.Int32Argument.Int32Argument(string, int, bool, bool)
-  fullName.vb: Benday.CommandsFramework.Int32Argument.New(String, Integer, Boolean, Boolean)
-  nameWithType: Int32Argument.Int32Argument(string, int, bool, bool)
-  nameWithType.vb: Int32Argument.New(String, Integer, Boolean, Boolean)
-- uid: Benday.CommandsFramework.Int32Argument.#ctor(System.String,System.Int32,System.String,System.Boolean,System.Boolean)
-  name: Int32Argument(string, int, string, bool, bool)
-  href: api/Benday.CommandsFramework.Int32Argument.html#Benday_CommandsFramework_Int32Argument__ctor_System_String_System_Int32_System_String_System_Boolean_System_Boolean_
-  commentId: M:Benday.CommandsFramework.Int32Argument.#ctor(System.String,System.Int32,System.String,System.Boolean,System.Boolean)
-  name.vb: New(String, Integer, String, Boolean, Boolean)
-  fullName: Benday.CommandsFramework.Int32Argument.Int32Argument(string, int, string, bool, bool)
-  fullName.vb: Benday.CommandsFramework.Int32Argument.New(String, Integer, String, Boolean, Boolean)
-  nameWithType: Int32Argument.Int32Argument(string, int, string, bool, bool)
-  nameWithType.vb: Int32Argument.New(String, Integer, String, Boolean, Boolean)
+- uid: Benday.CommandsFramework.Int32Argument.#ctor(System.String)
+  name: Int32Argument(string)
+  href: api/Benday.CommandsFramework.Int32Argument.html#Benday_CommandsFramework_Int32Argument__ctor_System_String_
+  commentId: M:Benday.CommandsFramework.Int32Argument.#ctor(System.String)
+  name.vb: New(String)
+  fullName: Benday.CommandsFramework.Int32Argument.Int32Argument(string)
+  fullName.vb: Benday.CommandsFramework.Int32Argument.New(String)
+  nameWithType: Int32Argument.Int32Argument(string)
+  nameWithType.vb: Int32Argument.New(String)
 - uid: Benday.CommandsFramework.Int32Argument.#ctor*
   name: Int32Argument
   href: api/Benday.CommandsFramework.Int32Argument.html#Benday_CommandsFramework_Int32Argument__ctor_
@@ -3212,42 +3468,15 @@ references:
   commentId: T:Benday.CommandsFramework.StringArgument
   fullName: Benday.CommandsFramework.StringArgument
   nameWithType: StringArgument
-- uid: Benday.CommandsFramework.StringArgument.#ctor(System.String,System.Boolean,System.Boolean)
-  name: StringArgument(string, bool, bool)
-  href: api/Benday.CommandsFramework.StringArgument.html#Benday_CommandsFramework_StringArgument__ctor_System_String_System_Boolean_System_Boolean_
-  commentId: M:Benday.CommandsFramework.StringArgument.#ctor(System.String,System.Boolean,System.Boolean)
-  name.vb: New(String, Boolean, Boolean)
-  fullName: Benday.CommandsFramework.StringArgument.StringArgument(string, bool, bool)
-  fullName.vb: Benday.CommandsFramework.StringArgument.New(String, Boolean, Boolean)
-  nameWithType: StringArgument.StringArgument(string, bool, bool)
-  nameWithType.vb: StringArgument.New(String, Boolean, Boolean)
-- uid: Benday.CommandsFramework.StringArgument.#ctor(System.String,System.Boolean,System.String,System.Boolean,System.Boolean)
-  name: StringArgument(string, bool, string, bool, bool)
-  href: api/Benday.CommandsFramework.StringArgument.html#Benday_CommandsFramework_StringArgument__ctor_System_String_System_Boolean_System_String_System_Boolean_System_Boolean_
-  commentId: M:Benday.CommandsFramework.StringArgument.#ctor(System.String,System.Boolean,System.String,System.Boolean,System.Boolean)
-  name.vb: New(String, Boolean, String, Boolean, Boolean)
-  fullName: Benday.CommandsFramework.StringArgument.StringArgument(string, bool, string, bool, bool)
-  fullName.vb: Benday.CommandsFramework.StringArgument.New(String, Boolean, String, Boolean, Boolean)
-  nameWithType: StringArgument.StringArgument(string, bool, string, bool, bool)
-  nameWithType.vb: StringArgument.New(String, Boolean, String, Boolean, Boolean)
-- uid: Benday.CommandsFramework.StringArgument.#ctor(System.String,System.String,System.Boolean,System.Boolean)
-  name: StringArgument(string, string, bool, bool)
-  href: api/Benday.CommandsFramework.StringArgument.html#Benday_CommandsFramework_StringArgument__ctor_System_String_System_String_System_Boolean_System_Boolean_
-  commentId: M:Benday.CommandsFramework.StringArgument.#ctor(System.String,System.String,System.Boolean,System.Boolean)
-  name.vb: New(String, String, Boolean, Boolean)
-  fullName: Benday.CommandsFramework.StringArgument.StringArgument(string, string, bool, bool)
-  fullName.vb: Benday.CommandsFramework.StringArgument.New(String, String, Boolean, Boolean)
-  nameWithType: StringArgument.StringArgument(string, string, bool, bool)
-  nameWithType.vb: StringArgument.New(String, String, Boolean, Boolean)
-- uid: Benday.CommandsFramework.StringArgument.#ctor(System.String,System.String,System.String,System.Boolean,System.Boolean)
-  name: StringArgument(string, string, string, bool, bool)
-  href: api/Benday.CommandsFramework.StringArgument.html#Benday_CommandsFramework_StringArgument__ctor_System_String_System_String_System_String_System_Boolean_System_Boolean_
-  commentId: M:Benday.CommandsFramework.StringArgument.#ctor(System.String,System.String,System.String,System.Boolean,System.Boolean)
-  name.vb: New(String, String, String, Boolean, Boolean)
-  fullName: Benday.CommandsFramework.StringArgument.StringArgument(string, string, string, bool, bool)
-  fullName.vb: Benday.CommandsFramework.StringArgument.New(String, String, String, Boolean, Boolean)
-  nameWithType: StringArgument.StringArgument(string, string, string, bool, bool)
-  nameWithType.vb: StringArgument.New(String, String, String, Boolean, Boolean)
+- uid: Benday.CommandsFramework.StringArgument.#ctor(System.String)
+  name: StringArgument(string)
+  href: api/Benday.CommandsFramework.StringArgument.html#Benday_CommandsFramework_StringArgument__ctor_System_String_
+  commentId: M:Benday.CommandsFramework.StringArgument.#ctor(System.String)
+  name.vb: New(String)
+  fullName: Benday.CommandsFramework.StringArgument.StringArgument(string)
+  fullName.vb: Benday.CommandsFramework.StringArgument.New(String)
+  nameWithType: StringArgument.StringArgument(string)
+  nameWithType.vb: StringArgument.New(String)
 - uid: Benday.CommandsFramework.StringArgument.#ctor*
   name: StringArgument
   href: api/Benday.CommandsFramework.StringArgument.html#Benday_CommandsFramework_StringArgument__ctor_

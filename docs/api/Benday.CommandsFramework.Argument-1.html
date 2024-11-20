@@ -141,19 +141,18 @@
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_Argument_1__ctor_System_String_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.Argument%601.%23ctor(System.String%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_Argument_1__ctor_System_String_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.Argument%601.%23ctor(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L20">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L14">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_Argument_1__ctor_" data-uid="Benday.CommandsFramework.Argument`1.#ctor*"></a>
-  <h4 id="Benday_CommandsFramework_Argument_1__ctor_System_String_System_Boolean_System_Boolean_" data-uid="Benday.CommandsFramework.Argument`1.#ctor(System.String,System.Boolean,System.Boolean)">Argument(string, bool, bool)</h4>
-  <div class="markdown level1 summary"><p>Constructor. Create an argument without a value.</p>
-</div>
+  <h4 id="Benday_CommandsFramework_Argument_1__ctor_System_String_" data-uid="Benday.CommandsFramework.Argument`1.#ctor(System.String)">Argument(string)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Argument(string name, bool isRequired = true, bool allowEmptyValue = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public Argument(string name)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -168,182 +167,7 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
         <td><span class="parametername">name</span></td>
-        <td><p>Name of the argument</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><span class="parametername">isRequired</span></td>
-        <td><p>Is this argument required</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><span class="parametername">allowEmptyValue</span></td>
-        <td><p>Are empty values considered valid?</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_Argument_1__ctor_System_String_System_String_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.Argument%601.%23ctor(System.String%2CSystem.String%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L76">View Source</a>
-  </span>
-  <a id="Benday_CommandsFramework_Argument_1__ctor_" data-uid="Benday.CommandsFramework.Argument`1.#ctor*"></a>
-  <h4 id="Benday_CommandsFramework_Argument_1__ctor_System_String_System_String_System_Boolean_System_Boolean_" data-uid="Benday.CommandsFramework.Argument`1.#ctor(System.String,System.String,System.Boolean,System.Boolean)">Argument(string, string, bool, bool)</h4>
-  <div class="markdown level1 summary"><p>Constructor. Create an argument with description but no value.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Argument(string name, string description, bool isRequired, bool allowEmptyValue)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>Name of the argument</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">description</span></td>
-        <td><p>Human readable for the argument</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><span class="parametername">isRequired</span></td>
-        <td><p>Is this argument required</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><span class="parametername">allowEmptyValue</span></td>
-        <td><p>Are empty values considered valid?</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_Argument_1__ctor_System_String__0_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.Argument%601.%23ctor(System.String%2C%600%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L33">View Source</a>
-  </span>
-  <a id="Benday_CommandsFramework_Argument_1__ctor_" data-uid="Benday.CommandsFramework.Argument`1.#ctor*"></a>
-  <h4 id="Benday_CommandsFramework_Argument_1__ctor_System_String__0_System_Boolean_System_Boolean_" data-uid="Benday.CommandsFramework.Argument`1.#ctor(System.String,`0,System.Boolean,System.Boolean)">Argument(string, T, bool, bool)</h4>
-  <div class="markdown level1 summary"><p>Constructor. Create an argument with a value.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Argument(string name, T value, bool isRequired = true, bool allowEmptyValue = true)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>Name of the argument</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">T</span></td>
-        <td><span class="parametername">value</span></td>
-        <td><p>Value for the argument</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><span class="parametername">isRequired</span></td>
-        <td><p>Is this argument required</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><span class="parametername">allowEmptyValue</span></td>
-        <td><p>Are empty values considered valid?</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_Argument_1__ctor_System_String__0_System_String_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.Argument%601.%23ctor(System.String%2C%600%2CSystem.String%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L48">View Source</a>
-  </span>
-  <a id="Benday_CommandsFramework_Argument_1__ctor_" data-uid="Benday.CommandsFramework.Argument`1.#ctor*"></a>
-  <h4 id="Benday_CommandsFramework_Argument_1__ctor_System_String__0_System_String_System_Boolean_System_Boolean_" data-uid="Benday.CommandsFramework.Argument`1.#ctor(System.String,`0,System.String,System.Boolean,System.Boolean)">Argument(string, T, string, bool, bool)</h4>
-  <div class="markdown level1 summary"><p>Constructor. Create an argument with a value and description.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Argument(string name, T value, string description, bool isRequired, bool allowEmptyValue)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>Name of the argument</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">T</span></td>
-        <td><span class="parametername">value</span></td>
-        <td><p>Value for the argument</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">description</span></td>
-        <td><p>Human readable for the argument</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><span class="parametername">isRequired</span></td>
-        <td><p>Is this argument required</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><span class="parametername">allowEmptyValue</span></td>
-        <td><p>Are empty values considered valid?</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -354,7 +178,7 @@
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_Argument_1_Alias.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.Argument%601.Alias%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L157">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L137">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_Argument_1_Alias_" data-uid="Benday.CommandsFramework.Argument`1.Alias*"></a>
   <h4 id="Benday_CommandsFramework_Argument_1_Alias" data-uid="Benday.CommandsFramework.Argument`1.Alias">Alias</h4>
@@ -385,7 +209,7 @@
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_Argument_1_AllowEmptyValue.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.Argument%601.AllowEmptyValue%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L205">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L185">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_Argument_1_AllowEmptyValue_" data-uid="Benday.CommandsFramework.Argument`1.AllowEmptyValue*"></a>
   <h4 id="Benday_CommandsFramework_Argument_1_AllowEmptyValue" data-uid="Benday.CommandsFramework.Argument`1.AllowEmptyValue">AllowEmptyValue</h4>
@@ -418,7 +242,7 @@ indicates that something should be done.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_Argument_1_DataType.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.Argument%601.DataType%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L198">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L178">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_Argument_1_DataType_" data-uid="Benday.CommandsFramework.Argument`1.DataType*"></a>
   <h4 id="Benday_CommandsFramework_Argument_1_DataType" data-uid="Benday.CommandsFramework.Argument`1.DataType">DataType</h4>
@@ -449,7 +273,7 @@ indicates that something should be done.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_Argument_1_Description.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.Argument%601.Description%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L115">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L90">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_Argument_1_Description_" data-uid="Benday.CommandsFramework.Argument`1.Description*"></a>
   <h4 id="Benday_CommandsFramework_Argument_1_Description" data-uid="Benday.CommandsFramework.Argument`1.Description">Description</h4>
@@ -477,10 +301,41 @@ indicates that something should be done.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_Argument_1_FriendlyName.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.Argument%601.FriendlyName%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L95">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_Argument_1_FriendlyName_" data-uid="Benday.CommandsFramework.Argument`1.FriendlyName*"></a>
+  <h4 id="Benday_CommandsFramework_Argument_1_FriendlyName" data-uid="Benday.CommandsFramework.Argument`1.FriendlyName">FriendlyName</h4>
+  <div class="markdown level1 summary"><p>Human readable friendly name for this argument</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string FriendlyName { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_Argument_1_HasAlias.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.Argument%601.HasAlias%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L162">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L142">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_Argument_1_HasAlias_" data-uid="Benday.CommandsFramework.Argument`1.HasAlias*"></a>
   <h4 id="Benday_CommandsFramework_Argument_1_HasAlias" data-uid="Benday.CommandsFramework.Argument`1.HasAlias">HasAlias</h4>
@@ -511,7 +366,7 @@ indicates that something should be done.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_Argument_1_HasValue.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.Argument%601.HasValue%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L147">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L127">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_Argument_1_HasValue_" data-uid="Benday.CommandsFramework.Argument`1.HasValue*"></a>
   <h4 id="Benday_CommandsFramework_Argument_1_HasValue" data-uid="Benday.CommandsFramework.Argument`1.HasValue">HasValue</h4>
@@ -542,7 +397,7 @@ indicates that something should be done.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_Argument_1_IsPositionalSource.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.Argument%601.IsPositionalSource%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L188">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L168">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_Argument_1_IsPositionalSource_" data-uid="Benday.CommandsFramework.Argument`1.IsPositionalSource*"></a>
   <h4 id="Benday_CommandsFramework_Argument_1_IsPositionalSource" data-uid="Benday.CommandsFramework.Argument`1.IsPositionalSource">IsPositionalSource</h4>
@@ -574,7 +429,7 @@ If yes, the Alias value will be the POSITION_x.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_Argument_1_IsRequired.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.Argument%601.IsRequired%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L193">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L173">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_Argument_1_IsRequired_" data-uid="Benday.CommandsFramework.Argument`1.IsRequired*"></a>
   <h4 id="Benday_CommandsFramework_Argument_1_IsRequired" data-uid="Benday.CommandsFramework.Argument`1.IsRequired">IsRequired</h4>
@@ -605,7 +460,7 @@ If yes, the Alias value will be the POSITION_x.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_Argument_1_Name.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.Argument%601.Name%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L152">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L132">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_Argument_1_Name_" data-uid="Benday.CommandsFramework.Argument`1.Name*"></a>
   <h4 id="Benday_CommandsFramework_Argument_1_Name" data-uid="Benday.CommandsFramework.Argument`1.Name">Name</h4>
@@ -636,7 +491,7 @@ If yes, the Alias value will be the POSITION_x.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_Argument_1_Value.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.Argument%601.Value%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L122">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L102">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_Argument_1_Value_" data-uid="Benday.CommandsFramework.Argument`1.Value*"></a>
   <h4 id="Benday_CommandsFramework_Argument_1_Value" data-uid="Benday.CommandsFramework.Argument`1.Value">Value</h4>
@@ -669,7 +524,7 @@ If yes, the Alias value will be the POSITION_x.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_Argument_1_GetDefaultValue.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.Argument%601.GetDefaultValue%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L110">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L85">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_Argument_1_GetDefaultValue_" data-uid="Benday.CommandsFramework.Argument`1.GetDefaultValue*"></a>
   <h4 id="Benday_CommandsFramework_Argument_1_GetDefaultValue" data-uid="Benday.CommandsFramework.Argument`1.GetDefaultValue">GetDefaultValue()</h4>
@@ -700,7 +555,7 @@ If yes, the Alias value will be the POSITION_x.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_Argument_1_OnInitialize.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.Argument%601.OnInitialize%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L101">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L76">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_Argument_1_OnInitialize_" data-uid="Benday.CommandsFramework.Argument`1.OnInitialize*"></a>
   <h4 id="Benday_CommandsFramework_Argument_1_OnInitialize" data-uid="Benday.CommandsFramework.Argument`1.OnInitialize">OnInitialize()</h4>
@@ -716,7 +571,7 @@ If yes, the Alias value will be the POSITION_x.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_Argument_1_TrySetValue_System_String_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.Argument%601.TrySetValue(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L142">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L122">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_Argument_1_TrySetValue_" data-uid="Benday.CommandsFramework.Argument`1.TrySetValue*"></a>
   <h4 id="Benday_CommandsFramework_Argument_1_TrySetValue_System_String_" data-uid="Benday.CommandsFramework.Argument`1.TrySetValue(System.String)">TrySetValue(string)</h4>
@@ -766,7 +621,7 @@ If yes, the Alias value will be the POSITION_x.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_Argument_1_Validate.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.Argument%601.Validate%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L211">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/Argument.cs/#L191">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_Argument_1_Validate_" data-uid="Benday.CommandsFramework.Argument`1.Validate*"></a>
   <h4 id="Benday_CommandsFramework_Argument_1_Validate" data-uid="Benday.CommandsFramework.Argument`1.Validate">Validate()</h4>
@@ -808,7 +663,13 @@ If yes, the Alias value will be the POSITION_x.</p>
       <a class="xref" href="Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_AsRequired__1_Benday_CommandsFramework_Argument___0__">ExtensionMethods.AsRequired&lt;T&gt;(Argument&lt;T&gt;)</a>
   </div>
   <div>
+      <a class="xref" href="Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_ExistenceOptional__1_Benday_CommandsFramework_Argument___0__">ExtensionMethods.ExistenceOptional&lt;T&gt;(Argument&lt;T&gt;)</a>
+  </div>
+  <div>
       <a class="xref" href="Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_FromPositionalArgument__1_Benday_CommandsFramework_Argument___0__System_Int32_">ExtensionMethods.FromPositionalArgument&lt;T&gt;(Argument&lt;T&gt;, int)</a>
+  </div>
+  <div>
+      <a class="xref" href="Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_MustExist__1_Benday_CommandsFramework_Argument___0__">ExtensionMethods.MustExist&lt;T&gt;(Argument&lt;T&gt;)</a>
   </div>
   <div>
       <a class="xref" href="Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_WithAlias__1_Benday_CommandsFramework_Argument___0__System_String_">ExtensionMethods.WithAlias&lt;T&gt;(Argument&lt;T&gt;, string)</a>
@@ -818,6 +679,9 @@ If yes, the Alias value will be the POSITION_x.</p>
   </div>
   <div>
       <a class="xref" href="Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_WithDescription__1_Benday_CommandsFramework_Argument___0__System_String_">ExtensionMethods.WithDescription&lt;T&gt;(Argument&lt;T&gt;, string)</a>
+  </div>
+  <div>
+      <a class="xref" href="Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_WithFriendlyName__1_Benday_CommandsFramework_Argument___0__System_String_">ExtensionMethods.WithFriendlyName&lt;T&gt;(Argument&lt;T&gt;, string)</a>
   </div>
 
 </article>

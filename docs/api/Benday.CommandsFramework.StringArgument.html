@@ -83,6 +83,8 @@
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
     <div class="level1"><a class="xref" href="Benday.CommandsFramework.Argument-1.html">Argument</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</div>
     <div class="level2"><span class="xref">StringArgument</span></div>
+      <div class="level3"><a class="xref" href="Benday.CommandsFramework.DirectoryArgument.html">DirectoryArgument</a></div>
+      <div class="level3"><a class="xref" href="Benday.CommandsFramework.FileArgument.html">FileArgument</a></div>
   </div>
   <div class="implements">
     <h5>Implements</h5>
@@ -95,6 +97,9 @@
     </div>
     <div>
       <a class="xref" href="Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_Description">Argument&lt;string&gt;.Description</a>
+    </div>
+    <div>
+      <a class="xref" href="Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_FriendlyName">Argument&lt;string&gt;.FriendlyName</a>
     </div>
     <div>
       <a class="xref" href="Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_Value">Argument&lt;string&gt;.Value</a>
@@ -152,20 +157,20 @@
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_StringArgument__ctor_System_String_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.StringArgument.%23ctor(System.String%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_StringArgument__ctor_System_String_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.StringArgument.%23ctor(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/StringArgument.cs/#L17">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/StringArgument.cs/#L18">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_StringArgument__ctor_" data-uid="Benday.CommandsFramework.StringArgument.#ctor*"></a>
-  <h4 id="Benday_CommandsFramework_StringArgument__ctor_System_String_System_Boolean_System_Boolean_" data-uid="Benday.CommandsFramework.StringArgument.#ctor(System.String,System.Boolean,System.Boolean)">StringArgument(string, bool, bool)</h4>
+  <h4 id="Benday_CommandsFramework_StringArgument__ctor_System_String_" data-uid="Benday.CommandsFramework.StringArgument.#ctor(System.String)">StringArgument(string)</h4>
   <div class="markdown level1 summary"><p>Constructor. Creates an argument definition without a value. This is typically used
 in a command for describing the available arguments.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public StringArgument(string name, bool isRequired = true, bool allowEmptyValue = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public StringArgument(string name)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -181,192 +186,6 @@ in a command for describing the available arguments.</p>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
         <td><span class="parametername">name</span></td>
         <td><p>Name of the argument on the command line</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><span class="parametername">isRequired</span></td>
-        <td><p>Is this argument required</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><span class="parametername">allowEmptyValue</span></td>
-        <td><p>If true, then you can use this argument as a flag without
-having to explicitly supply a value. This is helpful for scenarios like /debug or /verbose
-where it's easier than specifying fully populated arguments like /debug:true or /verbose:true.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_StringArgument__ctor_System_String_System_Boolean_System_String_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.StringArgument.%23ctor(System.String%2CSystem.Boolean%2CSystem.String%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/StringArgument.cs/#L62">View Source</a>
-  </span>
-  <a id="Benday_CommandsFramework_StringArgument__ctor_" data-uid="Benday.CommandsFramework.StringArgument.#ctor*"></a>
-  <h4 id="Benday_CommandsFramework_StringArgument__ctor_System_String_System_Boolean_System_String_System_Boolean_System_Boolean_" data-uid="Benday.CommandsFramework.StringArgument.#ctor(System.String,System.Boolean,System.String,System.Boolean,System.Boolean)">StringArgument(string, bool, string, bool, bool)</h4>
-  <div class="markdown level1 summary"><p>Add a string argument definition with a description</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public StringArgument(string name, bool noValue, string description, bool isRequired, bool allowEmptyValue)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>Argument name</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><span class="parametername">noValue</span></td>
-        <td><p>Not used. Only here to distinguish this overload.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">description</span></td>
-        <td><p>Human-friendly description of the argument</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><span class="parametername">isRequired</span></td>
-        <td><p>Is this a required argument?</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><span class="parametername">allowEmptyValue</span></td>
-        <td><p>Allow empty values</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_StringArgument__ctor_System_String_System_String_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.StringArgument.%23ctor(System.String%2CSystem.String%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/StringArgument.cs/#L32">View Source</a>
-  </span>
-  <a id="Benday_CommandsFramework_StringArgument__ctor_" data-uid="Benday.CommandsFramework.StringArgument.#ctor*"></a>
-  <h4 id="Benday_CommandsFramework_StringArgument__ctor_System_String_System_String_System_Boolean_System_Boolean_" data-uid="Benday.CommandsFramework.StringArgument.#ctor(System.String,System.String,System.Boolean,System.Boolean)">StringArgument(string, string, bool, bool)</h4>
-  <div class="markdown level1 summary"><p>Constructor. Creates an argument definition along with a value.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public StringArgument(string name, string value, bool isRequired = true, bool allowEmptyValue = true)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>Name of the argument on the command line</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">value</span></td>
-        <td><p>Value for the argument</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><span class="parametername">isRequired</span></td>
-        <td><p>Is this argument required</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><span class="parametername">allowEmptyValue</span></td>
-        <td><p>If true, then you can use this argument as a flag without
-having to explicitly supply a value. This is helpful for scenarios like /debug or /verbose
-where it's easier than specifying fully populated arguments like /debug:true or /verbose:true.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_StringArgument__ctor_System_String_System_String_System_String_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.StringArgument.%23ctor(System.String%2CSystem.String%2CSystem.String%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/StringArgument.cs/#L48">View Source</a>
-  </span>
-  <a id="Benday_CommandsFramework_StringArgument__ctor_" data-uid="Benday.CommandsFramework.StringArgument.#ctor*"></a>
-  <h4 id="Benday_CommandsFramework_StringArgument__ctor_System_String_System_String_System_String_System_Boolean_System_Boolean_" data-uid="Benday.CommandsFramework.StringArgument.#ctor(System.String,System.String,System.String,System.Boolean,System.Boolean)">StringArgument(string, string, string, bool, bool)</h4>
-  <div class="markdown level1 summary"><p>Constructor. Creates an argument definition along with a value and description.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public StringArgument(string name, string value, string description, bool isRequired, bool allowEmptyValue)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>Name of the argument on the command line</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">value</span></td>
-        <td><p>Value for the argument</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">description</span></td>
-        <td><p>Human friendly description of the argument</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><span class="parametername">isRequired</span></td>
-        <td><p>Is this argument required</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><span class="parametername">allowEmptyValue</span></td>
-        <td><p>If true, then you can use this argument as a flag without
-having to explicitly supply a value. This is helpful for scenarios like /debug or /verbose
-where it's easier than specifying fully populated arguments like /debug:true or /verbose:true.</p>
 </td>
       </tr>
     </tbody>
@@ -378,7 +197,7 @@ where it's easier than specifying fully populated arguments like /debug:true or 
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_StringArgument_DataType.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.StringArgument.DataType%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/StringArgument.cs/#L70">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/StringArgument.cs/#L27">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_StringArgument_DataType_" data-uid="Benday.CommandsFramework.StringArgument.DataType*"></a>
   <h4 id="Benday_CommandsFramework_StringArgument_DataType" data-uid="Benday.CommandsFramework.StringArgument.DataType">DataType</h4>
@@ -413,7 +232,7 @@ where it's easier than specifying fully populated arguments like /debug:true or 
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_StringArgument_GetDefaultValue.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.StringArgument.GetDefaultValue%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/StringArgument.cs/#L76">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/StringArgument.cs/#L33">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_StringArgument_GetDefaultValue_" data-uid="Benday.CommandsFramework.StringArgument.GetDefaultValue*"></a>
   <h4 id="Benday_CommandsFramework_StringArgument_GetDefaultValue" data-uid="Benday.CommandsFramework.StringArgument.GetDefaultValue">GetDefaultValue()</h4>
@@ -447,7 +266,7 @@ where it's easier than specifying fully populated arguments like /debug:true or 
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_StringArgument_TrySetValue_System_String_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.StringArgument.TrySetValue(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/StringArgument.cs/#L116">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/StringArgument.cs/#L73">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_StringArgument_TrySetValue_" data-uid="Benday.CommandsFramework.StringArgument.TrySetValue*"></a>
   <h4 id="Benday_CommandsFramework_StringArgument_TrySetValue_System_String_" data-uid="Benday.CommandsFramework.StringArgument.TrySetValue(System.String)">TrySetValue(string)</h4>
@@ -500,7 +319,7 @@ and set into the value</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_StringArgument_Validate.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.StringArgument.Validate%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/StringArgument.cs/#L85">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/StringArgument.cs/#L42">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_StringArgument_Validate_" data-uid="Benday.CommandsFramework.StringArgument.Validate*"></a>
   <h4 id="Benday_CommandsFramework_StringArgument_Validate" data-uid="Benday.CommandsFramework.StringArgument.Validate">Validate()</h4>
@@ -544,7 +363,13 @@ and set into the value</p>
       <a class="xref" href="Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_AsRequired__1_Benday_CommandsFramework_Argument___0__">ExtensionMethods.AsRequired&lt;T&gt;(Argument&lt;T&gt;)</a>
   </div>
   <div>
+      <a class="xref" href="Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_ExistenceOptional__1_Benday_CommandsFramework_Argument___0__">ExtensionMethods.ExistenceOptional&lt;T&gt;(Argument&lt;T&gt;)</a>
+  </div>
+  <div>
       <a class="xref" href="Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_FromPositionalArgument__1_Benday_CommandsFramework_Argument___0__System_Int32_">ExtensionMethods.FromPositionalArgument&lt;T&gt;(Argument&lt;T&gt;, int)</a>
+  </div>
+  <div>
+      <a class="xref" href="Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_MustExist__1_Benday_CommandsFramework_Argument___0__">ExtensionMethods.MustExist&lt;T&gt;(Argument&lt;T&gt;)</a>
   </div>
   <div>
       <a class="xref" href="Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_WithAlias__1_Benday_CommandsFramework_Argument___0__System_String_">ExtensionMethods.WithAlias&lt;T&gt;(Argument&lt;T&gt;, string)</a>
@@ -554,6 +379,9 @@ and set into the value</p>
   </div>
   <div>
       <a class="xref" href="Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_WithDescription__1_Benday_CommandsFramework_Argument___0__System_String_">ExtensionMethods.WithDescription&lt;T&gt;(Argument&lt;T&gt;, string)</a>
+  </div>
+  <div>
+      <a class="xref" href="Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_WithFriendlyName__1_Benday_CommandsFramework_Argument___0__System_String_">ExtensionMethods.WithFriendlyName&lt;T&gt;(Argument&lt;T&gt;, string)</a>
   </div>
 
 </article>
@@ -567,7 +395,7 @@ and set into the value</p>
                     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_StringArgument.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.StringArgument%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
                   </li>
                   <li>
-                    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/StringArgument.cs/#L6" class="contribution-link">View Source</a>
+                    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/StringArgument.cs/#L7" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

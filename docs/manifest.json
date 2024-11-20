@@ -194,6 +194,16 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.DirectoryArgument.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.DirectoryArgument.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Benday.CommandsFramework.DisplayUsageOptions.yml",
       "output": {
         ".html": {
@@ -208,6 +218,16 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.ExtensionMethods.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.FileArgument.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.FileArgument.html"
         }
       },
       "version": ""

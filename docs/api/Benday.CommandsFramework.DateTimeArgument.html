@@ -98,6 +98,9 @@
       <a class="xref" href="Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_Description">Argument&lt;DateTime&gt;.Description</a>
     </div>
     <div>
+      <a class="xref" href="Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_FriendlyName">Argument&lt;DateTime&gt;.FriendlyName</a>
+    </div>
+    <div>
       <a class="xref" href="Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_Value">Argument&lt;DateTime&gt;.Value</a>
     </div>
     <div>
@@ -156,20 +159,20 @@
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DateTimeArgument__ctor_System_String_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DateTimeArgument.%23ctor(System.String%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DateTimeArgument__ctor_System_String_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DateTimeArgument.%23ctor(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DateTimeArgument.cs/#L18">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DateTimeArgument.cs/#L20">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_DateTimeArgument__ctor_" data-uid="Benday.CommandsFramework.DateTimeArgument.#ctor*"></a>
-  <h4 id="Benday_CommandsFramework_DateTimeArgument__ctor_System_String_System_Boolean_System_Boolean_" data-uid="Benday.CommandsFramework.DateTimeArgument.#ctor(System.String,System.Boolean,System.Boolean)">DateTimeArgument(string, bool, bool)</h4>
+  <h4 id="Benday_CommandsFramework_DateTimeArgument__ctor_System_String_" data-uid="Benday.CommandsFramework.DateTimeArgument.#ctor(System.String)">DateTimeArgument(string)</h4>
   <div class="markdown level1 summary"><p>Constructor. Creates an argument definition without a value. This is
 typically used in a command for describing the available arguments.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DateTimeArgument(string name, bool isRequired = true, bool allowEmptyValue = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public DateTimeArgument(string name)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -185,134 +188,6 @@ typically used in a command for describing the available arguments.</p>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
         <td><span class="parametername">name</span></td>
         <td><p>Name of the argument on the command line</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><span class="parametername">isRequired</span></td>
-        <td><p>Is this argument required</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><span class="parametername">allowEmptyValue</span></td>
-        <td><p>If true, then you can use this argument as a flag without
-having to explicitly supply a value. This is helpful for scenarios like /debug or /verbose
-where it's easier than specifying fully populated arguments like /debug:true or /verbose:true.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DateTimeArgument__ctor_System_String_System_DateTime_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DateTimeArgument.%23ctor(System.String%2CSystem.DateTime%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DateTimeArgument.cs/#L33">View Source</a>
-  </span>
-  <a id="Benday_CommandsFramework_DateTimeArgument__ctor_" data-uid="Benday.CommandsFramework.DateTimeArgument.#ctor*"></a>
-  <h4 id="Benday_CommandsFramework_DateTimeArgument__ctor_System_String_System_DateTime_System_Boolean_System_Boolean_" data-uid="Benday.CommandsFramework.DateTimeArgument.#ctor(System.String,System.DateTime,System.Boolean,System.Boolean)">DateTimeArgument(string, DateTime, bool, bool)</h4>
-  <div class="markdown level1 summary"><p>Constructor. Creates an argument definition along with a value.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DateTimeArgument(string name, DateTime value, bool isRequired = true, bool allowEmptyValue = true)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>Name of the argument on the command line</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a></td>
-        <td><span class="parametername">value</span></td>
-        <td><p>Value for the argument</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><span class="parametername">isRequired</span></td>
-        <td><p>Is this argument required</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><span class="parametername">allowEmptyValue</span></td>
-        <td><p>If true, then you can use this argument as a flag without
-having to explicitly supply a value. This is helpful for scenarios like /debug or /verbose
-where it's easier than specifying fully populated arguments like /debug:true or /verbose:true.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DateTimeArgument__ctor_System_String_System_DateTime_System_String_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DateTimeArgument.%23ctor(System.String%2CSystem.DateTime%2CSystem.String%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DateTimeArgument.cs/#L49">View Source</a>
-  </span>
-  <a id="Benday_CommandsFramework_DateTimeArgument__ctor_" data-uid="Benday.CommandsFramework.DateTimeArgument.#ctor*"></a>
-  <h4 id="Benday_CommandsFramework_DateTimeArgument__ctor_System_String_System_DateTime_System_String_System_Boolean_System_Boolean_" data-uid="Benday.CommandsFramework.DateTimeArgument.#ctor(System.String,System.DateTime,System.String,System.Boolean,System.Boolean)">DateTimeArgument(string, DateTime, string, bool, bool)</h4>
-  <div class="markdown level1 summary"><p>Constructor. Creates an argument definition along with a value and description.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DateTimeArgument(string name, DateTime value, string description, bool isRequired, bool allowEmptyValue)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>Name of the argument on the command line</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a></td>
-        <td><span class="parametername">value</span></td>
-        <td><p>Value for the argument</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">description</span></td>
-        <td><p>Human friendly description of the argument</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><span class="parametername">isRequired</span></td>
-        <td><p>Is this argument required</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><span class="parametername">allowEmptyValue</span></td>
-        <td><p>If true, then you can use this argument as a flag without
-having to explicitly supply a value. This is helpful for scenarios like /debug or /verbose
-where it's easier than specifying fully populated arguments like /debug:true or /verbose:true.</p>
 </td>
       </tr>
     </tbody>
@@ -321,10 +196,40 @@ where it's easier than specifying fully populated arguments like /debug:true or 
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DateTimeArgument_CultureInfo.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DateTimeArgument.CultureInfo%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DateTimeArgument.cs/#L45">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_DateTimeArgument_CultureInfo_" data-uid="Benday.CommandsFramework.DateTimeArgument.CultureInfo*"></a>
+  <h4 id="Benday_CommandsFramework_DateTimeArgument_CultureInfo" data-uid="Benday.CommandsFramework.DateTimeArgument.CultureInfo">CultureInfo</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CultureInfo? CultureInfo { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.globalization.cultureinfo">CultureInfo</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DateTimeArgument_DataType.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DateTimeArgument.DataType%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DateTimeArgument.cs/#L58">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DateTimeArgument.cs/#L29">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_DateTimeArgument_DataType_" data-uid="Benday.CommandsFramework.DateTimeArgument.DataType*"></a>
   <h4 id="Benday_CommandsFramework_DateTimeArgument_DataType" data-uid="Benday.CommandsFramework.DateTimeArgument.DataType">DataType</h4>
@@ -357,7 +262,7 @@ where it's easier than specifying fully populated arguments like /debug:true or 
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DateTimeArgument_ValueAsDateTime.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DateTimeArgument.ValueAsDateTime%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DateTimeArgument.cs/#L63">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DateTimeArgument.cs/#L34">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_DateTimeArgument_ValueAsDateTime_" data-uid="Benday.CommandsFramework.DateTimeArgument.ValueAsDateTime*"></a>
   <h4 id="Benday_CommandsFramework_DateTimeArgument_ValueAsDateTime" data-uid="Benday.CommandsFramework.DateTimeArgument.ValueAsDateTime">ValueAsDateTime</h4>
@@ -390,7 +295,7 @@ where it's easier than specifying fully populated arguments like /debug:true or 
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DateTimeArgument_GetDefaultValue.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DateTimeArgument.GetDefaultValue%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DateTimeArgument.cs/#L69">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DateTimeArgument.cs/#L40">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_DateTimeArgument_GetDefaultValue_" data-uid="Benday.CommandsFramework.DateTimeArgument.GetDefaultValue*"></a>
   <h4 id="Benday_CommandsFramework_DateTimeArgument_GetDefaultValue" data-uid="Benday.CommandsFramework.DateTimeArgument.GetDefaultValue">GetDefaultValue()</h4>
@@ -424,7 +329,7 @@ where it's easier than specifying fully populated arguments like /debug:true or 
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DateTimeArgument_TrySetValue_System_String_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DateTimeArgument.TrySetValue(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DateTimeArgument.cs/#L80">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DateTimeArgument.cs/#L52">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_DateTimeArgument_TrySetValue_" data-uid="Benday.CommandsFramework.DateTimeArgument.TrySetValue*"></a>
   <h4 id="Benday_CommandsFramework_DateTimeArgument_TrySetValue_System_String_" data-uid="Benday.CommandsFramework.DateTimeArgument.TrySetValue(System.String)">TrySetValue(string)</h4>
@@ -489,7 +394,13 @@ where it's easier than specifying fully populated arguments like /debug:true or 
       <a class="xref" href="Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_AsRequired__1_Benday_CommandsFramework_Argument___0__">ExtensionMethods.AsRequired&lt;T&gt;(Argument&lt;T&gt;)</a>
   </div>
   <div>
+      <a class="xref" href="Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_ExistenceOptional__1_Benday_CommandsFramework_Argument___0__">ExtensionMethods.ExistenceOptional&lt;T&gt;(Argument&lt;T&gt;)</a>
+  </div>
+  <div>
       <a class="xref" href="Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_FromPositionalArgument__1_Benday_CommandsFramework_Argument___0__System_Int32_">ExtensionMethods.FromPositionalArgument&lt;T&gt;(Argument&lt;T&gt;, int)</a>
+  </div>
+  <div>
+      <a class="xref" href="Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_MustExist__1_Benday_CommandsFramework_Argument___0__">ExtensionMethods.MustExist&lt;T&gt;(Argument&lt;T&gt;)</a>
   </div>
   <div>
       <a class="xref" href="Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_WithAlias__1_Benday_CommandsFramework_Argument___0__System_String_">ExtensionMethods.WithAlias&lt;T&gt;(Argument&lt;T&gt;, string)</a>
@@ -499,6 +410,9 @@ where it's easier than specifying fully populated arguments like /debug:true or 
   </div>
   <div>
       <a class="xref" href="Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_WithDescription__1_Benday_CommandsFramework_Argument___0__System_String_">ExtensionMethods.WithDescription&lt;T&gt;(Argument&lt;T&gt;, string)</a>
+  </div>
+  <div>
+      <a class="xref" href="Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_WithFriendlyName__1_Benday_CommandsFramework_Argument___0__System_String_">ExtensionMethods.WithFriendlyName&lt;T&gt;(Argument&lt;T&gt;, string)</a>
   </div>
 
 </article>
@@ -512,7 +426,7 @@ where it's easier than specifying fully populated arguments like /debug:true or 
                     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DateTimeArgument.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DateTimeArgument%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
                   </li>
                   <li>
-                    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DateTimeArgument.cs/#L6" class="contribution-link">View Source</a>
+                    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DateTimeArgument.cs/#L8" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
