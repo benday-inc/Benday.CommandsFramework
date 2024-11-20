@@ -115,6 +115,15 @@ public static class ExtensionMethods
         }
     }
 
+    /// <summary>
+    /// Configures an argument definition to require existence. 
+    /// Must be a file or directory argument.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="arg"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="InvalidOperationException"></exception>
     public static Argument<T> MustExist<T>(
         this Argument<T> arg)
     {
@@ -143,6 +152,15 @@ public static class ExtensionMethods
         }
     }
 
+    /// <summary>
+    /// Configures an argument definition to not require existence.
+    /// Must be a file or directory argument.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="arg"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="InvalidOperationException"></exception>
     public static Argument<T> ExistenceOptional<T>(
         this Argument<T> arg)
     {

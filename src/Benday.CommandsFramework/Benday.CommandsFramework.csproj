@@ -13,9 +13,10 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>bdc_mark_128_128.png</PackageIcon>
-    <AssemblyVersion>4.3.0.0</AssemblyVersion>
-    <Version>$(VersionPrefix)4.3.0</Version>
+    <AssemblyVersion>4.4.0.0</AssemblyVersion>
+    <Version>$(VersionPrefix)4.4.0</Version>
     <PackageReleaseNotes>
+      v4.4 - Added FileArgument and DirectoryArgument types. 
       v4.3 - Added support for GetDate -Format FileDateUniversal datetime parsing.
       v4.2 - Added support for more datetime files in the DateTime argument type.
       v4.1.1 - Fixed bug in DefaultProgram where it was not setting the ExitCode to 1 when there was an error.
