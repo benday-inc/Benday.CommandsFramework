@@ -14,7 +14,7 @@ Let us know by submitting an [issue](https://github.com/benday-inc/Benday.Comman
 
 [Source code](https://github.com/benday-inc/Benday.CommandsFramework)
 
-[API Documentation](api/Benday.CommandsFramework.html)
+[API Documentation](api/Benday.CommandsFramework.yml)
 
 [NuGet Package](https://www.nuget.org/packages/Benday.CommandsFramework/)
 
