@@ -1,1 +1,1 @@
-Copy-Item -Recurse .\docfx_project\_site\ .\docs
+Copy-Item -Recurse .\docfx_project\_site\*.* .\docs
