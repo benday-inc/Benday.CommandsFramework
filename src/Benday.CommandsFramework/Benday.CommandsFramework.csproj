@@ -16,17 +16,18 @@
     <AssemblyVersion>4.5.0.0</AssemblyVersion>
     <Version>$(VersionPrefix)4.5.0</Version>
     <PackageReleaseNotes>
-      v4.4 - Added FileArgument and DirectoryArgument types. 
-      v4.3 - Added support for GetDate -Format FileDateUniversal datetime parsing.
-      v4.2 - Added support for more datetime files in the DateTime argument type.
-      v4.1.1 - Fixed bug in DefaultProgram where it was not setting the ExitCode to 1 when there was an error.
-      v4.1 - Added '--help' option to default program implementation in order to display usages.
-      v4.0 - Refactored argument base classes to remove unnecessary constructors. Added option to get all usages in JSON format using '--json' option.
-      v3.4 - Changed 'display usage' on commands to return ExitCode of 1 if there is an invalid/missing parameter.
-      v3.3 - Fixed 'display usage' formatting bug when argument does not have a description. Added logic to DefaultProgram to set ExitCode to 1 automatically on error.
-      v3.2 - Bug fixes.
-      v3.1 - Bug fixes. Added ability to inject an instance of ITextOutputProvider for testability.
-      v3.0 - Upgraded to .NET 8.0. Added default commands for managing basic string configuration values. Added extension methods for working with relative paths as arguments.</PackageReleaseNotes>
+v4.5 - Added TableFormatter to help with formatting tabular data and filtered tabular data.
+v4.4 - Added FileArgument and DirectoryArgument types. 
+v4.3 - Added support for GetDate -Format FileDateUniversal datetime parsing.
+v4.2 - Added support for more datetime files in the DateTime argument type.
+v4.1.1 - Fixed bug in DefaultProgram where it was not setting the ExitCode to 1 when there was an error.
+v4.1 - Added '--help' option to default program implementation in order to display usages.
+v4.0 - Refactored argument base classes to remove unnecessary constructors. Added option to get all usages in JSON format using '--json' option.
+v3.4 - Changed 'display usage' on commands to return ExitCode of 1 if there is an invalid/missing parameter.
+v3.3 - Fixed 'display usage' formatting bug when argument does not have a description. Added logic to DefaultProgram to set ExitCode to 1 automatically on error.
+v3.2 - Bug fixes.
+v3.1 - Bug fixes. Added ability to inject an instance of ITextOutputProvider for testability.
+v3.0 - Upgraded to .NET 8.0. Added default commands for managing basic string configuration values. Added extension methods for working with relative paths as arguments.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
