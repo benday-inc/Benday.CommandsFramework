@@ -15,8 +15,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benday.CommandsFramework.Sa
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{02F1D445-A13A-453C-9F4D-3D311394F630}"
 	ProjectSection(SolutionItems) = preProject
+		copy-docfx-site-to-docs.ps1 = copy-docfx-site-to-docs.ps1
+		copy-docfx-site-to-docs.sh = copy-docfx-site-to-docs.sh
 		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
+		generate-docfx-docs.ps1 = generate-docfx-docs.ps1
+		generate-docfx-docs.sh = generate-docfx-docs.sh
 		README.md = README.md
+		serve-docfx-docs.ps1 = serve-docfx-docs.ps1
+		serve-docfx-docs.sh = serve-docfx-docs.sh
 	EndProjectSection
 EndProject
 Global
