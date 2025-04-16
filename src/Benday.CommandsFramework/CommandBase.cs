@@ -158,11 +158,19 @@ public abstract class CommandBase
         builder.AppendLine("** USAGE **");
         builder.AppendLine(ExecutionInfo.CommandName);
 
-        var longestNameLength = Arguments.Keys.Max(x =>
-        {
-            return GetKeyString(Arguments[x]).Length;
-        });
+        int longestNameLength;
 
+        if (Arguments.Count < 1)
+        {
+            longestNameLength = 0;
+        }
+        else
+        {
+            longestNameLength = Arguments.Keys.Max(x =>
+                    {
+                        return GetKeyString(Arguments[x]).Length;
+                    });
+        }
 
         int consoleWidth; 
         

@@ -10,4 +10,5 @@ public static class ApplicationConstants
     public const string CommandName_CommandWithPositionalSources = "positionals";
     public const string CommandName_CommandWithAliases = "aliases";
     public const string CommandName_CommandThatUsesConfig = "useconfig";
+    public const string CommandName_CommandWithNoArgs = "noargs";
 }

@@ -352,7 +352,7 @@ public class StringArgumentFixture
         // arrange
         InitializeWithAllTheArgsExceptValue();
         var expected = false;
-        string input = null;
+        string? input = null;
 
         // act
         var actual = SystemUnderTest.TrySetValue(input!);
