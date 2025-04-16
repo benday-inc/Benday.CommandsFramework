@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFrameworks>net8.0;net9.0;</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Title>Command line argument framework for .NET Core</Title>
@@ -13,9 +13,10 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>bdc_mark_128_128.png</PackageIcon>
-    <AssemblyVersion>4.5.0.0</AssemblyVersion>
-    <Version>$(VersionPrefix)4.5.0</Version>
+    <AssemblyVersion>4.6.0.0</AssemblyVersion>
+    <Version>$(VersionPrefix)4.6.0</Version>
     <PackageReleaseNotes>
+v4.6 - Added support for .NET Core 9.
 v4.5 - Added TableFormatter to help with formatting tabular data and filtered tabular data.
 v4.4 - Added FileArgument and DirectoryArgument types. 
 v4.3 - Added support for GetDate -Format FileDateUniversal datetime parsing.
