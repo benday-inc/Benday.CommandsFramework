@@ -967,6 +967,22 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.CommandBase.ExecutionInfo
   nameWithType: CommandBase.ExecutionInfo
+- uid: Benday.CommandsFramework.CommandBase.GetArgValueOrRequiredConfigValue(System.String,System.String)
+  name: GetArgValueOrRequiredConfigValue(string, string)
+  href: api/Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_GetArgValueOrRequiredConfigValue_System_String_System_String_
+  commentId: M:Benday.CommandsFramework.CommandBase.GetArgValueOrRequiredConfigValue(System.String,System.String)
+  name.vb: GetArgValueOrRequiredConfigValue(String, String)
+  fullName: Benday.CommandsFramework.CommandBase.GetArgValueOrRequiredConfigValue(string, string)
+  fullName.vb: Benday.CommandsFramework.CommandBase.GetArgValueOrRequiredConfigValue(String, String)
+  nameWithType: CommandBase.GetArgValueOrRequiredConfigValue(string, string)
+  nameWithType.vb: CommandBase.GetArgValueOrRequiredConfigValue(String, String)
+- uid: Benday.CommandsFramework.CommandBase.GetArgValueOrRequiredConfigValue*
+  name: GetArgValueOrRequiredConfigValue
+  href: api/Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_GetArgValueOrRequiredConfigValue_
+  commentId: Overload:Benday.CommandsFramework.CommandBase.GetArgValueOrRequiredConfigValue
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandBase.GetArgValueOrRequiredConfigValue
+  nameWithType: CommandBase.GetArgValueOrRequiredConfigValue
 - uid: Benday.CommandsFramework.CommandBase.GetArguments
   name: GetArguments()
   href: api/Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_GetArguments
@@ -2315,6 +2331,22 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.ExtensionMethods.GetPathToFile
   nameWithType: ExtensionMethods.GetPathToFile
+- uid: Benday.CommandsFramework.ExtensionMethods.GetRequiredConfigurationValue(Benday.CommandsFramework.CommandExecutionInfo,System.String)
+  name: GetRequiredConfigurationValue(CommandExecutionInfo, string)
+  href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_GetRequiredConfigurationValue_Benday_CommandsFramework_CommandExecutionInfo_System_String_
+  commentId: M:Benday.CommandsFramework.ExtensionMethods.GetRequiredConfigurationValue(Benday.CommandsFramework.CommandExecutionInfo,System.String)
+  name.vb: GetRequiredConfigurationValue(CommandExecutionInfo, String)
+  fullName: Benday.CommandsFramework.ExtensionMethods.GetRequiredConfigurationValue(Benday.CommandsFramework.CommandExecutionInfo, string)
+  fullName.vb: Benday.CommandsFramework.ExtensionMethods.GetRequiredConfigurationValue(Benday.CommandsFramework.CommandExecutionInfo, String)
+  nameWithType: ExtensionMethods.GetRequiredConfigurationValue(CommandExecutionInfo, string)
+  nameWithType.vb: ExtensionMethods.GetRequiredConfigurationValue(CommandExecutionInfo, String)
+- uid: Benday.CommandsFramework.ExtensionMethods.GetRequiredConfigurationValue*
+  name: GetRequiredConfigurationValue
+  href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_GetRequiredConfigurationValue_
+  commentId: Overload:Benday.CommandsFramework.ExtensionMethods.GetRequiredConfigurationValue
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.ExtensionMethods.GetRequiredConfigurationValue
+  nameWithType: ExtensionMethods.GetRequiredConfigurationValue
 - uid: Benday.CommandsFramework.ExtensionMethods.GetStringValue(Benday.CommandsFramework.ArgumentCollection,System.String)
   name: GetStringValue(ArgumentCollection, string)
   href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_GetStringValue_Benday_CommandsFramework_ArgumentCollection_System_String_

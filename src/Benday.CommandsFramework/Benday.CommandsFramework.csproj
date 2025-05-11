@@ -13,9 +13,10 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>bdc_mark_128_128.png</PackageIcon>
-    <AssemblyVersion>4.7.0.0</AssemblyVersion>
-    <Version>$(VersionPrefix)4.7.0</Version>
+    <AssemblyVersion>4.8.0.0</AssemblyVersion>
+    <Version>$(VersionPrefix)4.8.0</Version>
     <PackageReleaseNotes>
+v4.8 - Changed visibility of runtime args collection; Added utility method to pull value from args collection or config collection;
 v4.7 - Fixed bug getting --help for commands with no parameters.
 v4.6 - Added support for .NET Core 9.
 v4.5 - Added TableFormatter to help with formatting tabular data and filtered tabular data.
