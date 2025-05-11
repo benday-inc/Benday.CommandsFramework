@@ -46,9 +46,10 @@ public abstract class CommandBase
     }
 
     /// <summary>
-    /// Arguments and values for the command
+    /// Arguments and values for the command. These are the combination of the argument definitions
+    /// with the values from the command line. The values are set when the command is executed.
     /// </summary>
-    protected ArgumentCollection Arguments 
+    public ArgumentCollection Arguments 
     { 
         get
         {
@@ -56,8 +57,25 @@ public abstract class CommandBase
         }        
     }
 
+    public string GetArgValueOrRequiredConfigValue(string argumentName, string configValueName)
+    {
+        string returnValue;
+
+        if (Arguments.HasValue(argumentName) == false)
+        {
+            returnValue = ExecutionInfo.GetRequiredConfigurationValue(configValueName);
+        }
+        else
+        {
+            returnValue = Arguments.GetStringValue(argumentName);
+        }
+
+        return returnValue;
+    }
+
     /// <summary>
-    /// Get the arguments for the command execution
+    /// Get the argument definitions for the command execution. These are used to validate the execution
+    /// but do not have any actual values.
     /// </summary>
     /// <returns></returns>
     public virtual ArgumentCollection GetArguments()

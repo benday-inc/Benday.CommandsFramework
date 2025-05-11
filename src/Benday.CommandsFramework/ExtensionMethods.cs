@@ -575,4 +575,16 @@ public static class ExtensionMethods
 
         return CommandFrameworkUtilities.GetPathToSourceDir(path, mustExist);
     }
+
+    public static string GetRequiredConfigurationValue(this CommandExecutionInfo executionInfo, string configValueName)
+    {
+        if (executionInfo.Configuration.HasValue(configValueName) == false)
+        {
+            throw new KnownException($"Missing required configuration value '{configValueName}'.");
+        }
+        else
+        {
+            return executionInfo.Configuration.GetValue(configValueName);
+        }
+    }
 }
