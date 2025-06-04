@@ -15,7 +15,7 @@ public class CommandAttributeUtility
     public CommandAttributeUtility(ICommandProgramOptions options)
     {
         _ProgramOptions = options;
-    }
+    }    
 
     /// <summary>
     /// Get the list of command names in an assembly

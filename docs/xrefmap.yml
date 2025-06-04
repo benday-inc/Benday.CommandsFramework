@@ -1837,6 +1837,19 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.DefaultProgramOptions.OutputProvider
   nameWithType: DefaultProgramOptions.OutputProvider
+- uid: Benday.CommandsFramework.DefaultProgramOptions.ServiceCollection
+  name: ServiceCollection
+  href: api/Benday.CommandsFramework.DefaultProgramOptions.html#Benday_CommandsFramework_DefaultProgramOptions_ServiceCollection
+  commentId: P:Benday.CommandsFramework.DefaultProgramOptions.ServiceCollection
+  fullName: Benday.CommandsFramework.DefaultProgramOptions.ServiceCollection
+  nameWithType: DefaultProgramOptions.ServiceCollection
+- uid: Benday.CommandsFramework.DefaultProgramOptions.ServiceCollection*
+  name: ServiceCollection
+  href: api/Benday.CommandsFramework.DefaultProgramOptions.html#Benday_CommandsFramework_DefaultProgramOptions_ServiceCollection_
+  commentId: Overload:Benday.CommandsFramework.DefaultProgramOptions.ServiceCollection
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DefaultProgramOptions.ServiceCollection
+  nameWithType: DefaultProgramOptions.ServiceCollection
 - uid: Benday.CommandsFramework.DefaultProgramOptions.UsesConfiguration
   name: UsesConfiguration
   href: api/Benday.CommandsFramework.DefaultProgramOptions.html#Benday_CommandsFramework_DefaultProgramOptions_UsesConfiguration
@@ -3239,6 +3252,19 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.ICommandProgramOptions.OutputProvider
   nameWithType: ICommandProgramOptions.OutputProvider
+- uid: Benday.CommandsFramework.ICommandProgramOptions.ServiceCollection
+  name: ServiceCollection
+  href: api/Benday.CommandsFramework.ICommandProgramOptions.html#Benday_CommandsFramework_ICommandProgramOptions_ServiceCollection
+  commentId: P:Benday.CommandsFramework.ICommandProgramOptions.ServiceCollection
+  fullName: Benday.CommandsFramework.ICommandProgramOptions.ServiceCollection
+  nameWithType: ICommandProgramOptions.ServiceCollection
+- uid: Benday.CommandsFramework.ICommandProgramOptions.ServiceCollection*
+  name: ServiceCollection
+  href: api/Benday.CommandsFramework.ICommandProgramOptions.html#Benday_CommandsFramework_ICommandProgramOptions_ServiceCollection_
+  commentId: Overload:Benday.CommandsFramework.ICommandProgramOptions.ServiceCollection
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.ICommandProgramOptions.ServiceCollection
+  nameWithType: ICommandProgramOptions.ServiceCollection
 - uid: Benday.CommandsFramework.ICommandProgramOptions.UsesConfiguration
   name: UsesConfiguration
   href: api/Benday.CommandsFramework.ICommandProgramOptions.html#Benday_CommandsFramework_ICommandProgramOptions_UsesConfiguration

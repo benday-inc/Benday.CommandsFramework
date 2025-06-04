@@ -10,11 +10,7 @@
           "relative_path": "api/Benday.CommandsFramework.Argument-1.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.Argument<T>",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.Argument-1.yml\" sourcestartlinenumber=\"1\">Base class for arguments</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -24,11 +20,7 @@
           "relative_path": "api/Benday.CommandsFramework.ArgumentCollection.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.ArgumentCollection",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.ArgumentCollection.yml\" sourcestartlinenumber=\"1\">Collection of arguments. Two common use cases: 1) create a\ncollection of arguments in order to describe what arguments are available\nfor a command and 2) to represent the arguments on a command with the values\npopulated from the command line.</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -38,11 +30,7 @@
           "relative_path": "api/Benday.CommandsFramework.ArgumentCollectionFactory.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.ArgumentCollectionFactory",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.ArgumentCollectionFactory.yml\" sourcestartlinenumber=\"1\">Factory for creating CommandExecutionInfo instances from command line arguments.\nThis class <em sourcefile=\"api/Benday.CommandsFramework.ArgumentCollectionFactory.yml\" sourcestartlinenumber=\"2\">should</em> be named CommandExecutionInfoFactory and will be renamed in a future release.</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -52,11 +40,7 @@
           "relative_path": "api/Benday.CommandsFramework.ArgumentDataType.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.ArgumentDataType",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.ArgumentDataType.yml\" sourcestartlinenumber=\"1\">Enumeration of the supported argument data types</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -66,11 +50,7 @@
           "relative_path": "api/Benday.CommandsFramework.ArgumentFrameworkConstants.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.ArgumentFrameworkConstants",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.ArgumentFrameworkConstants.yml\" sourcestartlinenumber=\"1\">Constant strings used by the argument framework.</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -80,11 +60,7 @@
           "relative_path": "api/Benday.CommandsFramework.AsynchronousCommand.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.AsynchronousCommand",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.AsynchronousCommand.yml\" sourcestartlinenumber=\"1\">Base class for commands that require access to async functionality for execution.</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -94,11 +70,7 @@
           "relative_path": "api/Benday.CommandsFramework.BooleanArgument.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.BooleanArgument",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.BooleanArgument.yml\" sourcestartlinenumber=\"1\">Argument implementation for working with boolean values</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -108,11 +80,7 @@
           "relative_path": "api/Benday.CommandsFramework.CommandAttribute.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.CommandAttribute",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.CommandAttribute.yml\" sourcestartlinenumber=\"1\">Add this attribute to a class to indicate that the class contains a command that\nis runnable through the commands framework. This attribute provides information\nabout the command name, whether it uses async execution, and optionally the human\nreadable description.</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -122,11 +90,7 @@
           "relative_path": "api/Benday.CommandsFramework.CommandAttributeUtility.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.CommandAttributeUtility",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.CommandAttributeUtility.yml\" sourcestartlinenumber=\"1\">Utility methods for accessing command attribute information on the\ntypes in an assembly.</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -136,11 +100,7 @@
           "relative_path": "api/Benday.CommandsFramework.CommandBase.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.CommandBase",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.CommandBase.yml\" sourcestartlinenumber=\"1\">Base class for all command implementations</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -150,11 +110,7 @@
           "relative_path": "api/Benday.CommandsFramework.CommandExecutionInfo.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.CommandExecutionInfo",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.CommandExecutionInfo.yml\" sourcestartlinenumber=\"1\">Information about the requested command execution.</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -164,11 +120,7 @@
           "relative_path": "api/Benday.CommandsFramework.CommandFrameworkConstants.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.CommandFrameworkConstants",
-      "Summary": null
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -178,11 +130,7 @@
           "relative_path": "api/Benday.CommandsFramework.CommandFrameworkUtilities.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.CommandFrameworkUtilities",
-      "Summary": null
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -192,11 +140,7 @@
           "relative_path": "api/Benday.CommandsFramework.CommandInfo.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.CommandInfo",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.CommandInfo.yml\" sourcestartlinenumber=\"1\">Information about a command including name, description, and\nrequired/optional arguments.</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -206,11 +150,7 @@
           "relative_path": "api/Benday.CommandsFramework.ConfigurationData.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.ConfigurationData",
-      "Summary": null
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -220,11 +160,7 @@
           "relative_path": "api/Benday.CommandsFramework.ConsoleTextOutputProvider.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.ConsoleTextOutputProvider",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.ConsoleTextOutputProvider.yml\" sourcestartlinenumber=\"1\">Implementation of ITextOutputProvider that outputs messages to the system console.</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -234,11 +170,7 @@
           "relative_path": "api/Benday.CommandsFramework.DataFormatting.TableColumnDefinition.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.DataFormatting.TableColumnDefinition",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.DataFormatting.TableColumnDefinition.yml\" sourcestartlinenumber=\"1\">Definition of a column in a table.</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -248,11 +180,7 @@
           "relative_path": "api/Benday.CommandsFramework.DataFormatting.TableFormatter.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.DataFormatting.TableFormatter",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.DataFormatting.TableFormatter.yml\" sourcestartlinenumber=\"1\">This class formats data as a table for display in the console.  It also provides some basic filtering capabilities.</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -262,11 +190,7 @@
           "relative_path": "api/Benday.CommandsFramework.DataFormatting.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.DataFormatting",
-      "Summary": null
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -276,11 +200,7 @@
           "relative_path": "api/Benday.CommandsFramework.DateTimeArgument.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.DateTimeArgument",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.DateTimeArgument.yml\" sourcestartlinenumber=\"1\">Argument implementation for working with DateTime values</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -290,11 +210,7 @@
           "relative_path": "api/Benday.CommandsFramework.DefaultProgram.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.DefaultProgram",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.DefaultProgram.yml\" sourcestartlinenumber=\"1\">This class provides a default implementation of a program that uses the CommandsFramework. There are options for\nsupplying the application name, version, and website. Customize these options in order to control how\nthe list of available commands and usage information is displayed.</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -304,11 +220,7 @@
           "relative_path": "api/Benday.CommandsFramework.DefaultProgramOptions.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.DefaultProgramOptions",
-      "Summary": null
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -318,11 +230,7 @@
           "relative_path": "api/Benday.CommandsFramework.DirectoryArgument.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.DirectoryArgument",
-      "Summary": null
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -332,11 +240,7 @@
           "relative_path": "api/Benday.CommandsFramework.DisplayUsageOptions.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.DisplayUsageOptions",
-      "Summary": null
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -346,11 +250,7 @@
           "relative_path": "api/Benday.CommandsFramework.ExtensionMethods.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.ExtensionMethods",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.ExtensionMethods.yml\" sourcestartlinenumber=\"1\">Extension methods. Mostly methods for configuring command argument\ndefinitions using fluent config methods.</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -360,11 +260,7 @@
           "relative_path": "api/Benday.CommandsFramework.FileArgument.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.FileArgument",
-      "Summary": null
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -374,11 +270,7 @@
           "relative_path": "api/Benday.CommandsFramework.FileBasedConfigurationManager.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.FileBasedConfigurationManager",
-      "Summary": null
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -388,11 +280,7 @@
           "relative_path": "api/Benday.CommandsFramework.GetConfigurationValueCommand.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.GetConfigurationValueCommand",
-      "Summary": null
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -402,11 +290,7 @@
           "relative_path": "api/Benday.CommandsFramework.IArgument.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.IArgument",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.IArgument.yml\" sourcestartlinenumber=\"1\">Interface describing the methods and properties for an argument</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -416,11 +300,7 @@
           "relative_path": "api/Benday.CommandsFramework.IAsyncCommand.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.IAsyncCommand",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.IAsyncCommand.yml\" sourcestartlinenumber=\"1\">Interface for defining a command as using async\nexecution.</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -430,11 +310,7 @@
           "relative_path": "api/Benday.CommandsFramework.IBooleanArgument.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.IBooleanArgument",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.IBooleanArgument.yml\" sourcestartlinenumber=\"1\">Interface for accessing a boolean argument value</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -444,11 +320,7 @@
           "relative_path": "api/Benday.CommandsFramework.ICommandConfigurationManager.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.ICommandConfigurationManager",
-      "Summary": null
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -458,11 +330,7 @@
           "relative_path": "api/Benday.CommandsFramework.ICommandProgram.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.ICommandProgram",
-      "Summary": null
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -472,11 +340,7 @@
           "relative_path": "api/Benday.CommandsFramework.ICommandProgramOptions.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.ICommandProgramOptions",
-      "Summary": null
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -486,11 +350,7 @@
           "relative_path": "api/Benday.CommandsFramework.IDateTimeArgument.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.IDateTimeArgument",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.IDateTimeArgument.yml\" sourcestartlinenumber=\"1\">Interface for accessing a DateTime argument value</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -500,11 +360,7 @@
           "relative_path": "api/Benday.CommandsFramework.IInt32Argument.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.IInt32Argument",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.IInt32Argument.yml\" sourcestartlinenumber=\"1\">Interface for accessing a int argument value</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -514,11 +370,7 @@
           "relative_path": "api/Benday.CommandsFramework.ISynchronousCommand.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.ISynchronousCommand",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.ISynchronousCommand.yml\" sourcestartlinenumber=\"1\">Interface for definiting a command as using synchronous execution</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -528,11 +380,7 @@
           "relative_path": "api/Benday.CommandsFramework.ITextOutputProvider.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.ITextOutputProvider",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.ITextOutputProvider.yml\" sourcestartlinenumber=\"1\">Interface for handling text output from commands</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -542,11 +390,7 @@
           "relative_path": "api/Benday.CommandsFramework.Int32Argument.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.Int32Argument",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.Int32Argument.yml\" sourcestartlinenumber=\"1\">Argument that has an int value.</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -556,11 +400,7 @@
           "relative_path": "api/Benday.CommandsFramework.KnownException.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.KnownException",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.KnownException.yml\" sourcestartlinenumber=\"1\">This represents a known exception that should end execution of the application.</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -570,11 +410,7 @@
           "relative_path": "api/Benday.CommandsFramework.LineWrapUtilities.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.LineWrapUtilities",
-      "Summary": null
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -584,11 +420,7 @@
           "relative_path": "api/Benday.CommandsFramework.MissingArgumentException.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.MissingArgumentException",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.MissingArgumentException.yml\" sourcestartlinenumber=\"1\">Exception class for describing missing arguments</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -598,11 +430,7 @@
           "relative_path": "api/Benday.CommandsFramework.RemoveConfigurationValueCommand.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.RemoveConfigurationValueCommand",
-      "Summary": null
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -612,11 +440,7 @@
           "relative_path": "api/Benday.CommandsFramework.SetConfigurationValueCommand.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.SetConfigurationValueCommand",
-      "Summary": null
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -626,11 +450,7 @@
           "relative_path": "api/Benday.CommandsFramework.StringArgument.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.StringArgument",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.StringArgument.yml\" sourcestartlinenumber=\"1\">Argument implementation for working with string values</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -640,11 +460,7 @@
           "relative_path": "api/Benday.CommandsFramework.StringBuilderTextOutputProvider.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.StringBuilderTextOutputProvider",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.StringBuilderTextOutputProvider.yml\" sourcestartlinenumber=\"1\">Implementation of ITextOutputProvider that wraps a StringBuilder.\nThis is helpful for checking output during unit testing or\nfor implementing a user interface that could call this command</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -654,11 +470,7 @@
           "relative_path": "api/Benday.CommandsFramework.SynchronousCommand.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework.SynchronousCommand",
-      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.SynchronousCommand.yml\" sourcestartlinenumber=\"1\">Base class for commands that are run synchronously.</p>\n"
+      "version": ""
     },
     {
       "type": "ManagedReference",
@@ -668,11 +480,7 @@
           "relative_path": "api/Benday.CommandsFramework.html"
         }
       },
-      "version": "",
-      "Uid": null,
-      "IsMRef": true,
-      "Title": "Benday.CommandsFramework",
-      "Summary": null
+      "version": ""
     },
     {
       "type": "Conceptual",

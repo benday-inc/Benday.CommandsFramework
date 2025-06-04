@@ -1,4 +1,6 @@
-﻿namespace Benday.CommandsFramework;
+﻿using Microsoft.Extensions.DependencyInjection;
+
+namespace Benday.CommandsFramework;
 
 public interface ICommandProgramOptions
 {
@@ -9,4 +11,5 @@ public interface ICommandProgramOptions
     string ConfigurationFolderName { get; set; }
     bool UsesConfiguration { get; set; }
     ITextOutputProvider OutputProvider { get; set; }
+    IServiceCollection? ServiceCollection { get; set; }
 }
