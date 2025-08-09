@@ -43,7 +43,9 @@ public class SampleCommand3Fixture
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
-            "commandname3");
+            "commandname3",
+            ArgumentFrameworkConstants.ArgumentHelpString
+            );
 
         var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
 

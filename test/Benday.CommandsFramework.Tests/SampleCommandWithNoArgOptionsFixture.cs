@@ -43,7 +43,9 @@ public class SampleCommandWithNoArgOptionsFixture
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
-            "commandname1");
+            "commandname1",
+            ArgumentFrameworkConstants.ArgumentHelpString
+            );
 
         var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
 

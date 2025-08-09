@@ -44,7 +44,9 @@ public class SampleCommandWithDefaultValuesFixture
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
-            ApplicationConstants.CommandName_CommandWithDefaultValues);
+            ApplicationConstants.CommandName_CommandWithDefaultValues,
+            ArgumentFrameworkConstants.ArgumentHelpString
+            );
 
         var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
 
@@ -81,7 +83,7 @@ public class SampleCommandWithDefaultValuesFixture
         Console.WriteLine(output);
         Assert.True(output.Contains("** SUCCESS **"));
 
-        Assert.True(output.Contains($"thing-date: {new DateTime(2023)}"), "Did not contain expected string for thing-date");
+        Assert.True(output.Contains($"thing-date: {new DateTime(2023, 06, 23)}"));
         Assert.True(output.Contains("thing-number: 123"));
         Assert.True(output.Contains("isThingy: True"));
         Assert.True(output.Contains("bingbong: wickid awesome"));
@@ -111,7 +113,7 @@ public class SampleCommandWithDefaultValuesFixture
         Console.WriteLine(output);
         Assert.True(output.Contains("** SUCCESS **"));
 
-        Assert.True(output.Contains($"thing-date: {new DateTime(2001)}"), "Did not contain expected string for thing-date");
+        Assert.True(output.Contains($"thing-date: {new DateTime(2001, 01, 01)}"));
         Assert.True(output.Contains("thing-number: 456"));
         Assert.True(output.Contains("isThingy: False"));
         Assert.True(output.Contains("bingbong: blah"));

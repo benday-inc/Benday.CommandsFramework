@@ -43,7 +43,13 @@ public class SampleCommand1Fixture
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
-            "commandname1");
+            "commandname1",
+            "/arg1:Hello",
+            "/isawesome:true",
+            "/count:4321",
+            "/dateofthingy:12/25/2022",
+            "/verbose"
+            );
 
         var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
 

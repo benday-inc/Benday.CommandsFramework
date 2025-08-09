@@ -43,7 +43,9 @@ public class SampleAsyncCommandFixture
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
-            "commandname2");
+            "commandname2",
+            "/isawesome:false"
+            );
 
         var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
 
