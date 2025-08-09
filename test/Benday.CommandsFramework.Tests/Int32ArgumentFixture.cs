@@ -1,10 +1,8 @@
 ﻿namespace Benday.CommandsFramework.Tests;
 
-[TestClass]
 public class Int32ArgumentFixture
 {
-    [TestInitialize]
-    public void OnTestInitialize()
+        public Int32ArgumentFixture()
     {
         _SystemUnderTest = null;
     }
@@ -63,7 +61,7 @@ public class Int32ArgumentFixture
         _SystemUnderTest = temp;
     }
 
-    [TestMethod]
+    [Fact]
     public void Ctor_WithAllValues()
     {
         // arrange
@@ -72,16 +70,16 @@ public class Int32ArgumentFixture
         InitializeWithAllTheArgs();
 
         // assert
-        Assert.AreEqual<string>(EXPECTED_ARG_DESC, SystemUnderTest.Description, "Description was wrong");
-        Assert.AreEqual<int>(EXPECTED_ARG_VALUE, SystemUnderTest.Value, "Value was wrong");
-        Assert.AreEqual<string>(EXPECTED_ARG_NAME, SystemUnderTest.Name, "Name was wrong");
-        Assert.AreEqual<bool>(EXPECTED_ARG_ISREQUIRED, SystemUnderTest.IsRequired, "IsRequired was wrong");
-        Assert.AreEqual<string>(EXPECTED_ARG_DESC, SystemUnderTest.Description, "Description was wrong");
-        Assert.AreEqual<ArgumentDataType>(EXPECTED_ARG_DATATYPE, SystemUnderTest.DataType, "DataType was wrong");
-        Assert.AreEqual<bool>(EXPECTED_ARG_ALLOWEMPTYVALUE, SystemUnderTest.AllowEmptyValue, "AllowEmptyValue was wrong");
+        Assert.Equal(EXPECTED_ARG_DESC, SystemUnderTest.Description);
+        Assert.Equal(EXPECTED_ARG_VALUE, SystemUnderTest.Value);
+        Assert.Equal(EXPECTED_ARG_NAME, SystemUnderTest.Name);
+        Assert.Equal(EXPECTED_ARG_ISREQUIRED, SystemUnderTest.IsRequired);
+        Assert.Equal(EXPECTED_ARG_DESC, SystemUnderTest.Description);
+        Assert.Equal(EXPECTED_ARG_DATATYPE, SystemUnderTest.DataType);
+        Assert.Equal(EXPECTED_ARG_ALLOWEMPTYVALUE, SystemUnderTest.AllowEmptyValue);
     }
 
-    [TestMethod]
+    [Fact]
     public void IsValid_Required_ValidValue_True()
     {
         // arrange
@@ -94,10 +92,10 @@ public class Int32ArgumentFixture
         var actual = SystemUnderTest.Validate();
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "Validation value is wrong");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void TrySetValue_False_NullString()
     {
         // arrange
@@ -110,10 +108,10 @@ public class Int32ArgumentFixture
         var actual = SystemUnderTest.TrySetValue(input!);
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "Wrong try set value return value");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void TrySetValue_False_NotANumber()
     {
         // arrange
@@ -126,10 +124,10 @@ public class Int32ArgumentFixture
         var actual = SystemUnderTest.TrySetValue(input!);
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "Wrong try set value return value");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void TrySetValue_True_ValidInteger()
     {
         // arrange
@@ -142,7 +140,7 @@ public class Int32ArgumentFixture
         var actual = SystemUnderTest.TrySetValue(input);
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "Wrong try set value return value");
-        Assert.AreEqual<int>(expectedValue, SystemUnderTest.Value, "Value was wrong");
+        Assert.Equal(expected, actual);
+        Assert.Equal(expectedValue, SystemUnderTest.Value);
     }
 }

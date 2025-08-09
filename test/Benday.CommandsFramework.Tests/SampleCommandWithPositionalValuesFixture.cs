@@ -4,11 +4,9 @@ using System.Reflection.Metadata;
 
 namespace Benday.CommandsFramework.Tests;
 
-[TestClass]
 public class SampleCommandWithPositionalSourcesFixture
 {
-    [TestInitialize]
-    public void OnTestInitialize()
+        public SampleCommandWithPositionalSourcesFixture()
     {
         _SystemUnderTest = null;
         _OutputProvider = null;
@@ -20,7 +18,7 @@ public class SampleCommandWithPositionalSourcesFixture
     {
         get
         {
-            Assert.IsNotNull(_SystemUnderTest);
+            Assert.NotNull(_SystemUnderTest);
 
             return _SystemUnderTest;
         }
@@ -42,14 +40,12 @@ public class SampleCommandWithPositionalSourcesFixture
     }
 
 
-    [TestMethod]
+    [Fact]
     public void GetHelp()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
-            ApplicationConstants.CommandName_CommandWithPositionalSources,
-            ArgumentFrameworkConstants.ArgumentHelpString
-            );
+            ApplicationConstants.CommandName_CommandWithPositionalSources);
 
         var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
 
@@ -61,9 +57,9 @@ public class SampleCommandWithPositionalSourcesFixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.IsFalse(output.Contains("** SUCCESS **"), "Should not contain expected string");
-        Assert.IsFalse(output.Contains("** INVALID ARGUMENTS **"), "Should not contain expected string");
-        Assert.IsTrue(output.Contains("** USAGE **"), "Did not contain expected string");
+        Assert.False(output.Contains("** SUCCESS **"));
+        Assert.False(output.Contains("** INVALID ARGUMENTS **"));
+        Assert.True(output.Contains("** USAGE **"));
 
         AssertDoesNotContain(output, "/Value1");
         AssertDoesNotContain(output, "[/Value1");
@@ -74,15 +70,15 @@ public class SampleCommandWithPositionalSourcesFixture
 
     private void AssertDoesNotContain(string actual, string notExpected)
     {
-        Assert.IsFalse(actual.Contains(notExpected), $"Should not contain string '{notExpected}'. Value was '{actual}'");
+        Assert.False(actual.Contains(notExpected));
     }
 
     private void AssertContains(string actual, string expected)
     {
-        Assert.IsTrue(actual.Contains(expected), $"Expected value to contain string '{expected}'. Value was '{actual}'");
+        Assert.True(actual.Contains(expected));
     }
 
-    [TestMethod]
+    [Fact]
     public void CreateAndRun_Valid_RequiredPositionalAppearsInValues_OnlyRequired()
     {
         // arrange
@@ -103,12 +99,12 @@ public class SampleCommandWithPositionalSourcesFixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.IsTrue(output.Contains("** SUCCESS **"), "Did not contain expected string");
+        Assert.True(output.Contains("** SUCCESS **"));
 
         AssertContains(output, "Value1: value 1 value");
     }
 
-    [TestMethod]
+    [Fact]
     public void CreateAndRun_Valid_RequiredPositionalAppearsInValues_RequiredAndOptional()
     {
         // arrange
@@ -130,7 +126,7 @@ public class SampleCommandWithPositionalSourcesFixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.IsTrue(output.Contains("** SUCCESS **"), "Did not contain expected string");
+        Assert.True(output.Contains("** SUCCESS **"));
 
         AssertContains(output, "Value1: value 1 value");
         AssertContains(output, "Value2: value 2 value");

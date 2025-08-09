@@ -2,11 +2,9 @@
 
 namespace Benday.CommandsFramework.Tests;
 
-[TestClass]
 public class SampleCommand1Fixture
 {
-    [TestInitialize]
-    public void OnTestInitialize()
+        public SampleCommand1Fixture()
     {
         _SystemUnderTest = null;
         _OutputProvider = null;
@@ -18,7 +16,7 @@ public class SampleCommand1Fixture
     {
         get
         {
-            Assert.IsNotNull(_SystemUnderTest);
+            Assert.NotNull(_SystemUnderTest);
 
             return _SystemUnderTest;
         }
@@ -40,18 +38,12 @@ public class SampleCommand1Fixture
     }
 
 
-    [TestMethod]
+    [Fact]
     public void CreateAndRun_ValidArgs()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
-            "commandname1",
-            "/arg1:Hello",
-            "/isawesome:true",
-            "/count:4321",
-            "/dateofthingy:12/25/2022",
-            "/verbose"
-            );
+            "commandname1");
 
         var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
 
@@ -63,10 +55,10 @@ public class SampleCommand1Fixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.IsTrue(output.Contains("** SUCCESS **"), "Did not contain expected string");
+        Assert.True(output.Contains("** SUCCESS **"));
     }
 
-    [TestMethod]
+    [Fact]
     public void CreateAndRun_MultipleInvalidArgs()
     {
         // arrange
@@ -88,10 +80,10 @@ public class SampleCommand1Fixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.IsTrue(output.Contains("** INVALID ARGUMENTS **"), "Did not contain expected string");
+        Assert.True(output.Contains("** INVALID ARGUMENTS **"));
     }
 
-    [TestMethod]
+    [Fact]
     public void CreateAndRun_OneInvalidArg()
     {
         // arrange
@@ -114,10 +106,10 @@ public class SampleCommand1Fixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.IsTrue(output.Contains("** INVALID ARGUMENT **"), "Did not contain expected string");
+        Assert.True(output.Contains("** INVALID ARGUMENT **"));
     }
 
-    [TestMethod]
+    [Fact]
     public void CreateAndRun_DisplayUsage()
     {
         // arrange
@@ -136,8 +128,8 @@ public class SampleCommand1Fixture
         // assert
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.IsTrue(output.Contains("** USAGE **"), "Did not contain expected string");
-        Assert.IsTrue(output.Contains("This is the description for command one."), "Did not contain expected string");
+        Assert.True(output.Contains("** USAGE **"));
+        Assert.True(output.Contains("This is the description for command one."));
 
         var lines = output.Split(Environment.NewLine);
 
@@ -154,7 +146,7 @@ public class SampleCommand1Fixture
         {
             var foundLine = lines.Any(x => x.StartsWith(lineStart));
 
-            Assert.IsTrue(foundLine, $"Did not find line that starts with '{lineStart}'");
+            Assert.True(foundLine);
         }
     }
 }

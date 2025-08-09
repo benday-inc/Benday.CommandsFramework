@@ -1,10 +1,8 @@
 ﻿namespace Benday.CommandsFramework.Tests;
 
-[TestClass]
 public class FileArgumentFixture
 {
-    [TestInitialize]
-    public void OnTestInitialize()
+    public FileArgumentFixture()
     {
         _SystemUnderTest = null;
     }
@@ -43,7 +41,7 @@ public class FileArgumentFixture
     }
 
 
-    [TestMethod]
+    [Fact]
     public void IsValid_Required_MustExistIsFalse_RelativePath_DirExists()
     {
         // arrange
@@ -68,11 +66,11 @@ public class FileArgumentFixture
         var actual = SystemUnderTest.Validate();
 
         // assert        
-        Assert.IsFalse(SystemUnderTest.MustExist, "Must exist should be false");
-        Assert.IsTrue(actual, "IsValid() should have returned true.");
+        Assert.False(SystemUnderTest.MustExist);
+        Assert.True(actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void IsValid_Required_MustExistIsFalse_AbsolutePath_DirExists()
     {
         // arrange
@@ -98,11 +96,11 @@ public class FileArgumentFixture
         var actual = SystemUnderTest.Validate();
 
         // assert        
-        Assert.IsFalse(SystemUnderTest.MustExist, "Must exist should be false");
-        Assert.IsTrue(actual, "IsValid() should have returned true.");
+        Assert.False(SystemUnderTest.MustExist);
+        Assert.True(actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void IsValid_Required_MustExistIsFalse_RelativePath_DirDoesNotExist()
     {
         // arrange
@@ -130,11 +128,11 @@ public class FileArgumentFixture
         var actual = SystemUnderTest.Validate();
 
         // assert        
-        Assert.IsFalse(SystemUnderTest.MustExist, "Must exist should be false");
-        Assert.IsTrue(actual, "IsValid() should have returned true.");
+        Assert.False(SystemUnderTest.MustExist);
+        Assert.True(actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void IsValid_Required_MustExistIsTrue_RelativePath_DirDoesNotExist()
     {
         // arrange
@@ -162,11 +160,11 @@ public class FileArgumentFixture
         var actual = SystemUnderTest.Validate();
 
         // assert        
-        Assert.IsTrue(SystemUnderTest.MustExist, "Must exist should be true");
-        Assert.IsFalse(actual, "IsValid() should have returned false.");
+        Assert.True(SystemUnderTest.MustExist);
+        Assert.False(actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void IsValid_Required_MustExistIsTrue_AbsolutePath_DirDoesNotExist()
     {
         // arrange
@@ -194,11 +192,11 @@ public class FileArgumentFixture
         var actual = SystemUnderTest.Validate();
 
         // assert        
-        Assert.IsTrue(SystemUnderTest.MustExist, "Must exist should be true");
-        Assert.IsFalse(actual, "IsValid() should have returned false.");
+        Assert.True(SystemUnderTest.MustExist);
+        Assert.False(actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void IsValid_Required_MustExistIsFalse_AbsolutePath_DirDoesNotExist()
     {
         // arrange
@@ -226,11 +224,11 @@ public class FileArgumentFixture
         var actual = SystemUnderTest.Validate();
 
         // assert        
-        Assert.IsFalse(SystemUnderTest.MustExist, "Must exist should be false");
-        Assert.IsTrue(actual, "IsValid() should have returned true.");
+        Assert.False(SystemUnderTest.MustExist);
+        Assert.True(actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void IsValid_Required_MustExistIsTrue_RelativePath_DirNotExist()
     {
         // arrange
@@ -257,11 +255,11 @@ public class FileArgumentFixture
         var actual = SystemUnderTest.Validate();
 
         // assert        
-        Assert.IsTrue(SystemUnderTest.MustExist, "Must exist should be true");
-        Assert.IsFalse(actual, "IsValid() should have returned false.");
+        Assert.True(SystemUnderTest.MustExist);
+        Assert.False(actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void IsValid_Required_MustExistIsTrue_AbsolutePath_DirDoesExist()
     {
         // arrange
@@ -288,8 +286,8 @@ public class FileArgumentFixture
         var actual = SystemUnderTest.Validate();
 
         // assert        
-        Assert.IsTrue(SystemUnderTest.MustExist, "Must exist should be true");
-        Assert.IsFalse(actual, "IsValid() should have returned false.");
+        Assert.True(SystemUnderTest.MustExist);
+        Assert.False(actual);
     }
 
     public static FileInfo GetTestFile()

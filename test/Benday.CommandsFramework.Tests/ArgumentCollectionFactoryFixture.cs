@@ -1,11 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-namespace Benday.CommandsFramework.Tests;
+﻿namespace Benday.CommandsFramework.Tests;
 
-[TestClass]
 public class ArgumentCollectionFactoryFixture
 {
-    [TestInitialize]
-    public void OnTestInitialize()
+        public ArgumentCollectionFactoryFixture()
     {
         _SystemUnderTest = null;
     }
@@ -25,7 +22,7 @@ public class ArgumentCollectionFactoryFixture
         }
     }
 
-    [TestMethod]
+    [Fact]
     public void Parse()
     {
         // arrange
@@ -47,19 +44,19 @@ public class ArgumentCollectionFactoryFixture
         var actual = SystemUnderTest.Parse(input);
 
         // assert
-        Assert.AreEqual<string>(expectedCommandName, actual.CommandName, "Command name was wrong");
-        Assert.AreEqual<int>(3, actual.Arguments.Count, "Argument count was wrong");
+        Assert.Equal(expectedCommandName, actual.CommandName);
+        Assert.Equal(3, actual.Arguments.Count);
 
-        Assert.IsTrue(actual.Arguments.ContainsKey(expectedKey1), "key 1 missing");
-        Assert.IsTrue(actual.Arguments.ContainsKey(expectedKey2), "key 2 missing");
-        Assert.IsTrue(actual.Arguments.ContainsKey(expectedKey3), "key 3 missing");
+        Assert.True(actual.Arguments.ContainsKey(expectedKey1));
+        Assert.True(actual.Arguments.ContainsKey(expectedKey2));
+        Assert.True(actual.Arguments.ContainsKey(expectedKey3));
 
-        Assert.AreEqual<string>(expectedVal1, actual.Arguments[expectedKey1], "Key1 value was wrong");
-        Assert.AreEqual<string>(expectedVal2, actual.Arguments[expectedKey2], "Key2 value was wrong");
-        Assert.AreEqual<string>(expectedVal3, actual.Arguments[expectedKey3], "Key3 value was wrong");
+        Assert.Equal(expectedVal1, actual.Arguments[expectedKey1]);
+        Assert.Equal(expectedVal2, actual.Arguments[expectedKey2]);
+        Assert.Equal(expectedVal3, actual.Arguments[expectedKey3]);
     }
 
-    [TestMethod]
+    [Fact]
     public void Parse_Positional_OnePositionalArg()
     {
         // arrange
@@ -84,23 +81,21 @@ public class ArgumentCollectionFactoryFixture
         var actual = SystemUnderTest.Parse(input);
 
         // assert
-        Assert.AreEqual<string>(expectedCommandName, actual.CommandName, "Command name was wrong");
-        Assert.AreEqual<int>(4, actual.Arguments.Count, "Argument count was wrong");
+        Assert.Equal(expectedCommandName, actual.CommandName);
+        Assert.Equal(4, actual.Arguments.Count);
 
-        Assert.IsTrue(actual.Arguments.ContainsKey(expectedKey1), "key 1 missing");
-        Assert.IsTrue(actual.Arguments.ContainsKey(expectedKey2), "key 2 missing");
-        Assert.IsTrue(actual.Arguments.ContainsKey(expectedKey3), "key 3 missing");
-        Assert.IsTrue(actual.Arguments.ContainsKey(expectedPositionalKey1),
-            $"{expectedPositionalKey1} key is missing");
+        Assert.True(actual.Arguments.ContainsKey(expectedKey1));
+        Assert.True(actual.Arguments.ContainsKey(expectedKey2));
+        Assert.True(actual.Arguments.ContainsKey(expectedKey3));
+        Assert.True(actual.Arguments.ContainsKey(expectedPositionalKey1));
 
-        Assert.AreEqual<string>(expectedVal1, actual.Arguments[expectedKey1], "Key1 value was wrong");
-        Assert.AreEqual<string>(expectedVal2, actual.Arguments[expectedKey2], "Key2 value was wrong");
-        Assert.AreEqual<string>(expectedVal3, actual.Arguments[expectedKey3], "Key3 value was wrong");
-        Assert.AreEqual<string>(expectedPositionalValue1,
-            actual.Arguments[expectedPositionalKey1], $"{expectedPositionalKey1} value was wrong");
+        Assert.Equal(expectedVal1, actual.Arguments[expectedKey1]);
+        Assert.Equal(expectedVal2, actual.Arguments[expectedKey2]);
+        Assert.Equal(expectedVal3, actual.Arguments[expectedKey3]);
+        Assert.Equal(expectedPositionalValue1, actual.Arguments[expectedPositionalKey1]);
     }
 
-    [TestMethod]
+    [Fact]
     public void Parse_Positional_TwoPositionalArg()
     {
         // arrange
@@ -128,27 +123,22 @@ public class ArgumentCollectionFactoryFixture
         var actual = SystemUnderTest.Parse(input);
 
         // assert
-        Assert.AreEqual<string>(expectedCommandName, actual.CommandName, "Command name was wrong");
-        Assert.AreEqual<int>(5, actual.Arguments.Count, "Argument count was wrong");
+        Assert.Equal(expectedCommandName, actual.CommandName);
+        Assert.Equal(5, actual.Arguments.Count);
 
-        Assert.IsTrue(actual.Arguments.ContainsKey(expectedKey1), "key 1 missing");
-        Assert.IsTrue(actual.Arguments.ContainsKey(expectedKey2), "key 2 missing");
-        Assert.IsTrue(actual.Arguments.ContainsKey(expectedKey3), "key 3 missing");
-        Assert.IsTrue(actual.Arguments.ContainsKey(expectedPositionalKey1),
-            $"{expectedPositionalKey1} key is missing");
+        Assert.True(actual.Arguments.ContainsKey(expectedKey1));
+        Assert.True(actual.Arguments.ContainsKey(expectedKey2));
+        Assert.True(actual.Arguments.ContainsKey(expectedKey3));
+        Assert.True(actual.Arguments.ContainsKey(expectedPositionalKey1));
 
-        Assert.AreEqual<string>(expectedVal1, actual.Arguments[expectedKey1], "Key1 value was wrong");
-        Assert.AreEqual<string>(expectedVal2, actual.Arguments[expectedKey2], "Key2 value was wrong");
-        Assert.AreEqual<string>(expectedVal3, actual.Arguments[expectedKey3], "Key3 value was wrong");
-        Assert.AreEqual<string>(expectedPositionalValue1,
-            actual.Arguments[expectedPositionalKey1], 
-            $"{expectedPositionalKey1} value was wrong");
-        Assert.AreEqual<string>(expectedPositionalValue2,
-            actual.Arguments[expectedPositionalKey2],
-            $"{expectedPositionalKey2} value was wrong");
+        Assert.Equal(expectedVal1, actual.Arguments[expectedKey1]);
+        Assert.Equal(expectedVal2, actual.Arguments[expectedKey2]);
+        Assert.Equal(expectedVal3, actual.Arguments[expectedKey3]);
+        Assert.Equal(expectedPositionalValue1, actual.Arguments[expectedPositionalKey1]);
+        Assert.Equal(expectedPositionalValue2, actual.Arguments[expectedPositionalKey2]);
     }
 
-    [TestMethod]
+    [Fact]
     public void Parse_Positional_OnePositionalArg_UnixFilePath()
     {
         // arrange
@@ -173,25 +163,23 @@ public class ArgumentCollectionFactoryFixture
         var actual = SystemUnderTest.Parse(input);
 
         // assert
-        Assert.AreEqual<string>(expectedCommandName, actual.CommandName, "Command name was wrong");
-        Assert.AreEqual<int>(4, actual.Arguments.Count, "Argument count was wrong");
+        Assert.Equal(expectedCommandName, actual.CommandName);
+        Assert.Equal(4, actual.Arguments.Count);
 
-        Assert.IsTrue(actual.Arguments.ContainsKey(expectedKey1), "key 1 missing");
-        Assert.IsTrue(actual.Arguments.ContainsKey(expectedKey2), "key 2 missing");
-        Assert.IsTrue(actual.Arguments.ContainsKey(expectedKey3), "key 3 missing");
-        Assert.IsTrue(actual.Arguments.ContainsKey(expectedPositionalKey1),
-            $"{expectedPositionalKey1} key is missing");
+        Assert.True(actual.Arguments.ContainsKey(expectedKey1));
+        Assert.True(actual.Arguments.ContainsKey(expectedKey2));
+        Assert.True(actual.Arguments.ContainsKey(expectedKey3));
+        Assert.True(actual.Arguments.ContainsKey(expectedPositionalKey1));
 
-        Assert.AreEqual<string>(expectedVal1, actual.Arguments[expectedKey1], "Key1 value was wrong");
-        Assert.AreEqual<string>(expectedVal2, actual.Arguments[expectedKey2], "Key2 value was wrong");
-        Assert.AreEqual<string>(expectedVal3, actual.Arguments[expectedKey3], "Key3 value was wrong");
-        Assert.AreEqual<string>(expectedPositionalValue1,
-            actual.Arguments[expectedPositionalKey1], $"{expectedPositionalKey1} value was wrong");
+        Assert.Equal(expectedVal1, actual.Arguments[expectedKey1]);
+        Assert.Equal(expectedVal2, actual.Arguments[expectedKey2]);
+        Assert.Equal(expectedVal3, actual.Arguments[expectedKey3]);
+        Assert.Equal(expectedPositionalValue1, actual.Arguments[expectedPositionalKey1]);
     }
 
 
 
-    [TestMethod]
+    [Fact]
     public void Parse_ContainsHelpString()
     {
         // arrange
@@ -206,14 +194,13 @@ public class ArgumentCollectionFactoryFixture
         var actual = SystemUnderTest.Parse(input);
 
         // assert
-        Assert.AreEqual<string>(expectedCommandName, actual.CommandName, "Command name was wrong");
-        Assert.AreEqual<int>(1, actual.Arguments.Count, "Argument count was wrong");
+        Assert.Equal(expectedCommandName, actual.CommandName);
+        Assert.Equal(1, actual.Arguments.Count);
 
-        Assert.IsTrue(actual.Arguments.ContainsKey(ArgumentFrameworkConstants.ArgumentHelpString),
-            $"key {ArgumentFrameworkConstants.ArgumentHelpString} missing");
+        Assert.True(actual.Arguments.ContainsKey(ArgumentFrameworkConstants.ArgumentHelpString));
     }
 
-    [TestMethod]
+    [Fact]
     public void Parse_OnlyCommandName()
     {
         // arrange
@@ -225,11 +212,11 @@ public class ArgumentCollectionFactoryFixture
         var actual = SystemUnderTest.Parse(input);
 
         // assert
-        Assert.AreEqual<string>(expectedCommandName, actual.CommandName, "Command name was wrong");
-        Assert.AreEqual<int>(0, actual.Arguments.Count, "Argument count was wrong");
+        Assert.Equal(expectedCommandName, actual.CommandName);
+        Assert.Equal(0, actual.Arguments.Count);
     }
 
-    [TestMethod]
+    [Fact]
     public void Parse_MessyInputArgs_IgnorePositionalArgs()
     {
         // arrange
@@ -259,26 +246,26 @@ public class ArgumentCollectionFactoryFixture
         var actual = SystemUnderTest.Parse(input);
 
         // assert
-        Assert.AreEqual<string>(expectedCommandName, actual.CommandName, "Command name was wrong");
-        Assert.AreEqual<int>(5, actual.Arguments.Count, "Argument count was wrong");
+        Assert.Equal(expectedCommandName, actual.CommandName);
+        Assert.Equal(5, actual.Arguments.Count);
 
-        Assert.IsTrue(actual.Arguments.ContainsKey(expectedKey1), "key 1 missing");
-        Assert.IsTrue(actual.Arguments.ContainsKey(expectedKey2), "key 2 missing");
-        Assert.IsTrue(actual.Arguments.ContainsKey(expectedKey3), "key 3 missing");
-        Assert.IsTrue(actual.Arguments.ContainsKey(expectedKey4), "key 4 missing");
-        Assert.IsTrue(actual.Arguments.ContainsKey(expectedKey5), "key 5 missing");
+        Assert.True(actual.Arguments.ContainsKey(expectedKey1));
+        Assert.True(actual.Arguments.ContainsKey(expectedKey2));
+        Assert.True(actual.Arguments.ContainsKey(expectedKey3));
+        Assert.True(actual.Arguments.ContainsKey(expectedKey4));
+        Assert.True(actual.Arguments.ContainsKey(expectedKey5));
 
-        Assert.AreEqual<string>(expectedVal1, actual.Arguments[expectedKey1], "Key1 value was wrong");
-        Assert.AreEqual<string>(expectedVal2, actual.Arguments[expectedKey2], "Key2 value was wrong");
-        Assert.AreEqual<string>(expectedVal3, actual.Arguments[expectedKey3], "Key3 value was wrong");
-        Assert.AreEqual<string>(expectedVal4, actual.Arguments[expectedKey4], "Key4 value was wrong");
-        Assert.AreEqual<string>(expectedVal5, actual.Arguments[expectedKey5], "Key5 value was wrong");
+        Assert.Equal(expectedVal1, actual.Arguments[expectedKey1]);
+        Assert.Equal(expectedVal2, actual.Arguments[expectedKey2]);
+        Assert.Equal(expectedVal3, actual.Arguments[expectedKey3]);
+        Assert.Equal(expectedVal4, actual.Arguments[expectedKey4]);
+        Assert.Equal(expectedVal5, actual.Arguments[expectedKey5]);
     }
 
-    [TestMethod]
-    [DataRow("/asdf/asdf.txt", 2)]
-    [DataRow("/asdf:asdf.txt", 1)]
-    [DataRow("asdf", 0)]
+    [Theory]
+    [InlineData("/asdf/asdf.txt", 2)]
+    [InlineData("/asdf:asdf.txt", 1)]
+    [InlineData("asdf", 0)]
     public void GetSlashCount(
         string inputString, int expected)
     {
@@ -288,6 +275,6 @@ public class ArgumentCollectionFactoryFixture
         var actual = ArgumentCollectionFactory.GetSlashCount(inputString);
 
         // assert
-        Assert.AreEqual<int>(expected, actual, $"Slash count was wrong");
+        Assert.Equal(expected, actual);
     }
 }

@@ -3,11 +3,9 @@ using Benday.CommandsFramework.DataFormatting;
 
 namespace Benday.CommandsFramework.Tests;
 
-[TestClass]
 public class TableFormatterFixture
 {
-    [TestInitialize]
-    public void OnTestInitialize()
+        public TableFormatterFixture()
     {
         _SystemUnderTest = null;
     }
@@ -27,7 +25,7 @@ public class TableFormatterFixture
         }
     }
 
-    [TestMethod]
+    [Fact]
     public void MultiColumn_PopulatesColumnWidths()
     {
         // arrange
@@ -48,12 +46,12 @@ public class TableFormatterFixture
         }
 
         // assert
-        Assert.AreEqual(longestLastName, SystemUnderTest.Columns[0].WidthOfLongestValue);
-        Assert.AreEqual(longestFirstName, SystemUnderTest.Columns[1].WidthOfLongestValue);
-        Assert.AreEqual(longestEmailAddress, SystemUnderTest.Columns[2].WidthOfLongestValue);
+        Assert.Equal(longestLastName, SystemUnderTest.Columns[0].WidthOfLongestValue);
+        Assert.Equal(longestFirstName, SystemUnderTest.Columns[1].WidthOfLongestValue);
+        Assert.Equal(longestEmailAddress, SystemUnderTest.Columns[2].WidthOfLongestValue);
     }
 
-    [TestMethod]
+    [Fact]
     public void FormatTable()
     {
         // arrange
@@ -102,15 +100,15 @@ public class TableFormatterFixture
             }
         }
 
-        Assert.AreEqual(data.Count + 1, lines.Length, "Line count is wrong.");
+        Assert.Equal(data.Count + 1, lines.Length);
 
         var actualRowLength = SystemUnderTest.Columns.Sum(x => x.Width) + SystemUnderTest.Columns.Count - 1;
 
-        Assert.AreEqual(expectedLineLength, actualRowLength, "Row length is wrong.");
+        Assert.Equal(expectedLineLength, actualRowLength);
 
         var expectedHeaderRow = $"{SystemUnderTest.Columns[0].NamePadded} {SystemUnderTest.Columns[1].NamePadded} {SystemUnderTest.Columns[2].NamePadded}";
-        Assert.AreEqual(expectedHeaderRow, lines[0], "Header row is wrong.");
-        Assert.AreEqual(expectedLineLength, lines[0].Length, $"Line 0 length is wrong.");
+        Assert.Equal(expectedHeaderRow, lines[0]);
+        Assert.Equal(expectedLineLength, lines[0].Length);
 
         var lineNumber = 0;
 
@@ -123,7 +121,7 @@ public class TableFormatterFixture
                 continue;
             }
 
-            Assert.AreEqual(expectedLineLength, line.Length, $"Line {lineNumber} length is wrong.");
+            Assert.Equal(expectedLineLength, line.Length);
             lineNumber++;
         }
 
@@ -140,7 +138,7 @@ public class TableFormatterFixture
 
             var expectedLine = $"{paddedLastName} {paddedFirstName} {paddedEmailAddress}";
 
-            Assert.AreEqual(expectedLine, line, $"Line {index} is wrong.");
+            Assert.Equal(expectedLine, line);
         }
     }
 

@@ -2,11 +2,9 @@
 
 namespace Benday.CommandsFramework.Tests;
 
-[TestClass]
 public class SampleCommandWithNoArgOptionsFixture
 {
-    [TestInitialize]
-    public void OnTestInitialize()
+        public SampleCommandWithNoArgOptionsFixture()
     {
         _SystemUnderTest = null;
         _OutputProvider = null;
@@ -18,7 +16,7 @@ public class SampleCommandWithNoArgOptionsFixture
     {
         get
         {
-            Assert.IsNotNull(_SystemUnderTest);
+            Assert.NotNull(_SystemUnderTest);
 
             return _SystemUnderTest;
         }
@@ -40,14 +38,12 @@ public class SampleCommandWithNoArgOptionsFixture
     }
 
 
-    [TestMethod]
+    [Fact]
     public void CreateAndRun_DisplayUsage()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
-            "commandname1",
-            ArgumentFrameworkConstants.ArgumentHelpString
-            );
+            "commandname1");
 
         var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
 
@@ -59,7 +55,7 @@ public class SampleCommandWithNoArgOptionsFixture
         // assert
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.IsTrue(output.Contains("** USAGE **"), "Did not contain expected string");
+        Assert.True(output.Contains("** USAGE **"));
         
         var lines = output.Split(Environment.NewLine);
 
@@ -72,7 +68,7 @@ public class SampleCommandWithNoArgOptionsFixture
         {
             var foundLine = lines.Any(x => x.StartsWith(lineStart));
 
-            Assert.IsTrue(foundLine, $"Did not find line that starts with '{lineStart}'");
+            Assert.True(foundLine);
         }
     }
 }

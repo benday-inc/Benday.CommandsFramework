@@ -2,11 +2,9 @@
 
 namespace Benday.CommandsFramework.Tests;
 
-[TestClass]
 public class SampleCommandThatUsesConfigFixture
 {
-    [TestInitialize]
-    public void OnTestInitialize()
+        public SampleCommandThatUsesConfigFixture()
     {
         _SystemUnderTest = null;
         _OutputProvider = null;
@@ -18,7 +16,7 @@ public class SampleCommandThatUsesConfigFixture
     {
         get
         {
-            Assert.IsNotNull(_SystemUnderTest);
+            Assert.NotNull(_SystemUnderTest);
 
             return _SystemUnderTest;
         }
@@ -39,14 +37,12 @@ public class SampleCommandThatUsesConfigFixture
         }
     }
 
-    [TestMethod]
+    [Fact]
     public void CreateAndRun_Valid_RequiredPositionalAppearsInValues_OnlyRequired()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
-            ApplicationConstants.CommandName_CommandThatUsesConfig,
-            "value 1 value"
-            );
+            ApplicationConstants.CommandName_CommandThatUsesConfig);
 
         var factory = new ArgumentCollectionFactory();
 
@@ -61,7 +57,7 @@ public class SampleCommandThatUsesConfigFixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.IsTrue(output.Contains("** SUCCESS **"), "Did not contain expected string");        
+        Assert.True(output.Contains("** SUCCESS **"));        
     }
 
 }

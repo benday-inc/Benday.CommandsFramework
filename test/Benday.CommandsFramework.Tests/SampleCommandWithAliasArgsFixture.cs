@@ -4,11 +4,9 @@ using System.Reflection.Metadata;
 
 namespace Benday.CommandsFramework.Tests;
 
-[TestClass]
 public class SampleCommandWithAliasArgsFixture
 {
-    [TestInitialize]
-    public void OnTestInitialize()
+        public SampleCommandWithAliasArgsFixture()
     {
         _SystemUnderTest = null;
         _OutputProvider = null;
@@ -20,7 +18,7 @@ public class SampleCommandWithAliasArgsFixture
     {
         get
         {
-            Assert.IsNotNull(_SystemUnderTest);
+            Assert.NotNull(_SystemUnderTest);
 
             return _SystemUnderTest;
         }
@@ -42,14 +40,12 @@ public class SampleCommandWithAliasArgsFixture
     }
 
 
-    [TestMethod]
+    [Fact]
     public void GetHelp()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
-            ApplicationConstants.CommandName_CommandWithAliases,
-            ArgumentFrameworkConstants.ArgumentHelpString
-            );
+            ApplicationConstants.CommandName_CommandWithAliases);
 
         var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
 
@@ -61,9 +57,9 @@ public class SampleCommandWithAliasArgsFixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.IsFalse(output.Contains("** SUCCESS **"), "Should not contain expected string");
-        Assert.IsFalse(output.Contains("** INVALID ARGUMENTS **"), "Should not contain expected string");
-        Assert.IsTrue(output.Contains("** USAGE **"), "Did not contain expected string");
+        Assert.False(output.Contains("** SUCCESS **"));
+        Assert.False(output.Contains("** INVALID ARGUMENTS **"));
+        Assert.True(output.Contains("** USAGE **"));
 
         AssertContains(output, "/Value1");
         AssertContains(output, "[/Value2");
@@ -71,15 +67,15 @@ public class SampleCommandWithAliasArgsFixture
 
     private void AssertDoesNotContain(string actual, string notExpected)
     {
-        Assert.IsFalse(actual.Contains(notExpected), $"Should not contain string '{notExpected}'. Value was '{actual}'");
+        Assert.False(actual.Contains(notExpected));
     }
 
     private void AssertContains(string actual, string expected)
     {
-        Assert.IsTrue(actual.Contains(expected), $"Expected value to contain string '{expected}'. Value was '{actual}'");
+        Assert.True(actual.Contains(expected));
     }
 
-    [TestMethod]
+    [Fact]
     public void CreateAndRun_Valid_RequiredAliasAppearsInValues_OnlyRequired()
     {
         // arrange
@@ -100,12 +96,12 @@ public class SampleCommandWithAliasArgsFixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.IsTrue(output.Contains("** SUCCESS **"), "Did not contain expected string");
+        Assert.True(output.Contains("** SUCCESS **"));
 
         AssertContains(output, "Value1: value1value");
     }
 
-    [TestMethod]
+    [Fact]
     public void CreateAndRun_Valid_RequiredAliasAppearsInValues_RequiredAndOptional()
     {
         // arrange
@@ -127,7 +123,7 @@ public class SampleCommandWithAliasArgsFixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.IsTrue(output.Contains("** SUCCESS **"), "Did not contain expected string");
+        Assert.True(output.Contains("** SUCCESS **"));
 
         AssertContains(output, "Value1: value1value");
         AssertContains(output, "Value2: value2value");

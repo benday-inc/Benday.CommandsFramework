@@ -1,12 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Globalization;
+﻿using System.Globalization;
 namespace Benday.CommandsFramework.Tests;
 
-[TestClass]
 public class DateTimeArgumentFixture
 {
-    [TestInitialize]
-    public void OnTestInitialize()
+        public DateTimeArgumentFixture()
     {
         _SystemUnderTest = null;
     }
@@ -60,7 +57,7 @@ public class DateTimeArgumentFixture
         _SystemUnderTest = temp;
     }
 
-    [TestMethod]
+    [Fact]
     public void Ctor_WithAllValues()
     {
         // arrange
@@ -69,16 +66,16 @@ public class DateTimeArgumentFixture
         InitializeWithAllTheArgs();
 
         // assert
-        Assert.AreEqual<string>(EXPECTED_ARG_DESC, SystemUnderTest.Description, "Description was wrong");
-        Assert.AreEqual<DateTime>(EXPECTED_ARG_VALUE, SystemUnderTest.Value, "Value was wrong");
-        Assert.AreEqual<string>(EXPECTED_ARG_NAME, SystemUnderTest.Name, "Name was wrong");
-        Assert.AreEqual<bool>(EXPECTED_ARG_ISREQUIRED, SystemUnderTest.IsRequired, "IsRequired was wrong");
-        Assert.AreEqual<string>(EXPECTED_ARG_DESC, SystemUnderTest.Description, "Description was wrong");
-        Assert.AreEqual<ArgumentDataType>(EXPECTED_ARG_DATATYPE, SystemUnderTest.DataType, "DataType was wrong");
-        Assert.AreEqual<bool>(EXPECTED_ARG_ALLOWEMPTYVALUE, SystemUnderTest.AllowEmptyValue, "AllowEmptyValue was wrong");
+        Assert.Equal(EXPECTED_ARG_DESC, SystemUnderTest.Description);
+        Assert.Equal(EXPECTED_ARG_VALUE, SystemUnderTest.Value);
+        Assert.Equal(EXPECTED_ARG_NAME, SystemUnderTest.Name);
+        Assert.Equal(EXPECTED_ARG_ISREQUIRED, SystemUnderTest.IsRequired);
+        Assert.Equal(EXPECTED_ARG_DESC, SystemUnderTest.Description);
+        Assert.Equal(EXPECTED_ARG_DATATYPE, SystemUnderTest.DataType);
+        Assert.Equal(EXPECTED_ARG_ALLOWEMPTYVALUE, SystemUnderTest.AllowEmptyValue);
     }
 
-    [TestMethod]
+    [Fact]
     public void IsValid_Required_ValidValue_True()
     {
         // arrange
@@ -91,10 +88,10 @@ public class DateTimeArgumentFixture
         var actual = SystemUnderTest.Validate();
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "Validation value is wrong");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void TrySetValue_False_NullString()
     {
         // arrange
@@ -107,10 +104,10 @@ public class DateTimeArgumentFixture
         var actual = SystemUnderTest.TrySetValue(input!);
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "Wrong try set value return value");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void TrySetValue_False_NotADateTime()
     {
         // arrange
@@ -123,10 +120,10 @@ public class DateTimeArgumentFixture
         var actual = SystemUnderTest.TrySetValue(input!);
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "Wrong try set value return value");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void TrySetValue_True_ValidDateTime()
     {
         // arrange
@@ -139,21 +136,21 @@ public class DateTimeArgumentFixture
         var actual = SystemUnderTest.TrySetValue(input);
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "Wrong try set value return value");
-        Assert.AreEqual<DateTime>(expectedValue, SystemUnderTest.Value, "Value was wrong");
+        Assert.Equal(expected, actual);
+        Assert.Equal(expectedValue, SystemUnderTest.Value);
     }
 
-    [DataTestMethod]
-    [DataRow("12/1/2022", true, "12/1/2022 12:00:00 AM", DisplayName = "month day year")]
-    [DataRow("12/31/2022 18:21:14", true, "12/31/2022 6:21:14 PM", DisplayName = "month day year hour min sec in 24h")]
-    [DataRow("12/1/2022 6:21:14 PM", true, "12/1/2022 6:21:14 PM", DisplayName = "month day year hour min sec in PM")]
-    [DataRow("12/1/2022 6:21:14 AM", true, "12/1/2022 6:21:14 AM", DisplayName = "month day year hour min sec in AM")]
-    [DataRow("20240816T1750349136Z", true, "8/16/2024 5:50:34 PM", DisplayName = "Get-Date -Format FileDateTimeUniversal")]
-    [DataRow("20240816Z", true, "8/16/2024 12:00:00 AM", DisplayName = "Get-Date -Format FileDateUniversal")]
-    [DataRow("2024-08-16T17:29:39Z", true, "8/16/2024 5:29:39 PM", DisplayName = "universal")]
-    [DataRow("asdf", false, "", DisplayName = "junk")]
-    [DataRow(null, false, "", DisplayName = "null")]
-    [DataRow("", false, "", DisplayName = "empty string")]
+    [Theory]
+    [InlineData("12/1/2022", true, "12/1/2022 12:00:00 AM")]
+    [InlineData("12/31/2022 18:21:14", true, "12/31/2022 6:21:14 PM")]
+    [InlineData("12/1/2022 6:21:14 PM", true, "12/1/2022 6:21:14 PM")]
+    [InlineData("12/1/2022 6:21:14 AM", true, "12/1/2022 6:21:14 AM")]
+    [InlineData("20240816T1750349136Z", true, "8/16/2024 5:50:34 PM")]
+    [InlineData("20240816Z", true, "8/16/2024 12:00:00 AM")]
+    [InlineData("2024-08-16T17:29:39Z", true, "8/16/2024 5:29:39 PM")]
+    [InlineData("asdf", false, "")]
+    [InlineData(null, false, "")]
+    [InlineData("", false, "")]
     public void TrySetValueAndVerifyValue(string input, bool expectedOutcome, string expectedDateString)
     {
         // arrange
@@ -172,17 +169,17 @@ public class DateTimeArgumentFixture
         var actual = SystemUnderTest.TrySetValue(input);
 
         // assert
-        Assert.AreEqual<bool>(expectedOutcome, actual, "Wrong try set value return value");
+        Assert.Equal(expectedOutcome, actual);
 
         if (expectedOutcome == true)
         {
             var actualDateString = SystemUnderTest.Value.ToString("M/d/yyyy h:mm:ss tt");
 
-            Assert.AreEqual<string>(expectedDateString, actualDateString, "Value was wrong");
+            Assert.Equal(expectedDateString, actualDateString);
         }
     }
 
-    [TestMethod]
+    [Fact]
     public void GetTimeZone()
     {
         var localZone = TimeZoneInfo.Local;

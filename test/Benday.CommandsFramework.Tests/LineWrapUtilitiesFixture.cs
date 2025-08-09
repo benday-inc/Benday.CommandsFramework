@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace Benday.CommandsFramework.Tests;
 
-[TestClass]
 public class LineWrapUtilitiesFixture
 {
 
-    [TestMethod]
+    [Fact]
     public void WrapString_NoWrappingRequired()
     {
         int linePadding = 10;
@@ -22,10 +20,10 @@ public class LineWrapUtilitiesFixture
 
         var actual = LineWrapUtilities.WrapValue(linePadding, maxLineLength, input);
 
-        Assert.AreEqual<string>(expected, actual, "Wrong value");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void WrapString_WrappingRequired_TwoLines()
     {
         int linePadding = 10;
@@ -38,10 +36,10 @@ public class LineWrapUtilitiesFixture
 
         var actual = LineWrapUtilities.WrapValue(linePadding, maxLineLength, input);
 
-        Assert.AreEqual<string>(expected, actual, "Wrong value");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void WrapString_WrappingRequired_ThreeLines()
     {
         int linePadding = 10;
@@ -55,10 +53,10 @@ public class LineWrapUtilitiesFixture
 
         var actual = LineWrapUtilities.WrapValue(linePadding, maxLineLength, input);
 
-        Assert.AreEqual<string>(expected, actual, "Wrong value");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void WrapString_WrappingRequired_FourLines()
     {
         int linePadding = 10;
@@ -74,7 +72,7 @@ public class LineWrapUtilitiesFixture
 
         var actual = LineWrapUtilities.WrapValue(linePadding, maxLineLength, input);
 
-        Assert.AreEqual<string>(expected, actual, "Wrong value");
+        Assert.Equal(expected, actual);
     }
 
 }
