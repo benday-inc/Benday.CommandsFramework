@@ -35,19 +35,17 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
 
-    - name: Build with .NET 8
-      run: dotnet build --no-restore -c ${{ env.BUILD_CONFIGURATION }}
-
-    - name: Build with .NET 9
-      run: dotnet build --no-restore -c ${{ env.BUILD_CONFIGURATION }} -f net9.0 || true
-      # The `|| true` allows the workflow to continue if net9.0 is not supported everywhere.
+    - name: Build
+      run: dotnet build -c ${{ env.BUILD_CONFIGURATION }}
 
     - name: Test
       run: dotnet test
 
-    - name: Pack NuGet Package(s)
-      run: dotnet pack --no-build -c ${{ env.BUILD_CONFIGURATION }} --output ./nupkgs
-
+    - name: Copy NuGet package(s) to artifact staging directory
+      run: |
+        mkdir -p ./nupkgs
+        cp src/Benday.CommandsFramework/bin/Debug/*.nupkg ./nupkgs/
+    
     - name: Publish nupkg artifact
       uses: actions/upload-artifact@v4
       with:
