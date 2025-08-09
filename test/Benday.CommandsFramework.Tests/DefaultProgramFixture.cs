@@ -35,11 +35,11 @@ public class DefaultProgramFixture
             CommandFrameworkConstants.CommandName_RemoveConfig
         };
 
-        Assert.True(output.Contains("defaultvaluescommand"));
+        Assert.Contains("defaultvaluescommand", output);
 
         foreach (var commandName in commandNames)
         {
-            Assert.False(output.Contains(commandName));
+            Assert.DoesNotContain(commandName, output);
         }
     }
 
@@ -76,11 +76,11 @@ public class DefaultProgramFixture
             CommandFrameworkConstants.CommandName_RemoveConfig
         };
 
-        Assert.True(output.Contains("defaultvaluescommand"));
+        Assert.Contains("defaultvaluescommand", output);
 
         foreach (var commandName in commandNames)
         {
-            Assert.True(output.Contains(commandName));
+            Assert.Contains(commandName, output);
         }
     }
 
@@ -112,7 +112,7 @@ public class DefaultProgramFixture
 
         Console.WriteLine(output);
 
-        Assert.False(output.Contains("Invalid command name"));
+        Assert.DoesNotContain("Invalid command name", output);
     }
 
     [Fact]
@@ -143,7 +143,7 @@ public class DefaultProgramFixture
         
         Console.WriteLine(output);
 
-        Assert.True(output.Contains("Invalid command name"));
+        Assert.Contains("Invalid command name", output);
     }
 
     [Fact]

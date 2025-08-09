@@ -57,8 +57,8 @@ public class SampleAsyncCommandFixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.True(output.Contains("** SUCCESS **"));
-        Assert.True(output.Contains("isawesome:False:"));
+        Assert.Contains("** SUCCESS **", output);
+        Assert.Contains("isawesome:False:", output);
     }
 
     [Fact]
@@ -80,8 +80,8 @@ public class SampleAsyncCommandFixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.True(output.Contains("** SUCCESS **"));
-        Assert.True(output.Contains("isawesome:True:"));
+        Assert.Contains("** SUCCESS **", output);
+        Assert.Contains("isawesome:True:", output);
     }
 
     [Fact]
@@ -103,9 +103,9 @@ public class SampleAsyncCommandFixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.False(output.Contains("** SUCCESS **"));
-        Assert.False(output.Contains("** INVALID ARGUMENTS **"));
-        Assert.True(output.Contains("** USAGE **"));
+        Assert.DoesNotContain("** SUCCESS **", output);
+        Assert.DoesNotContain("** INVALID ARGUMENTS **", output);
+        Assert.Contains("** USAGE **", output);
 
     }
 }

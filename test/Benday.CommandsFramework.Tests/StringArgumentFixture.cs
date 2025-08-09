@@ -105,10 +105,11 @@ public class StringArgumentFixture
         Assert.Equal(EXPECTED_ARG_NAME, SystemUnderTest.Name);
         Assert.Equal(EXPECTED_ARG_ISREQUIRED, SystemUnderTest.IsRequired);
         Assert.Equal(EXPECTED_ARG_DATATYPE, SystemUnderTest.DataType);
-        Assert.Equal(false, SystemUnderTest.AllowEmptyValue);
+        Assert.False(SystemUnderTest.AllowEmptyValue);
         Assert.False(SystemUnderTest.HasValue);
     }
 
+    [Fact]
     public void Ctor_WithNameAndValue()
     {
         // arrange
@@ -126,7 +127,7 @@ public class StringArgumentFixture
         Assert.Equal(EXPECTED_ARG_NAME, SystemUnderTest.Name);
         Assert.Equal(EXPECTED_ARG_ISREQUIRED, SystemUnderTest.IsRequired);
         Assert.Equal(EXPECTED_ARG_DATATYPE, SystemUnderTest.DataType);
-        Assert.Equal(EXPECTED_ARG_ALLOWEMPTYVALUE, SystemUnderTest.AllowEmptyValue);
+        Assert.False(SystemUnderTest.AllowEmptyValue);
         Assert.True(SystemUnderTest.HasValue);
     }
 

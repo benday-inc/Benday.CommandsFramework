@@ -1,7 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net8.0;</TargetFrameworks>
+    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Title>Command line argument framework for .NET Core</Title>
@@ -13,9 +12,11 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>bdc_mark_128_128.png</PackageIcon>
-    <AssemblyVersion>4.9.0.0</AssemblyVersion>
-    <Version>$(VersionPrefix)4.9.0</Version>
+    <TheVersion>4.10.0</TheVersion>
+    <AssemblyVersion>$(TheVersion).0</AssemblyVersion>
+    <Version>$(TheVersion)</Version>
     <PackageReleaseNotes>
+v4.10 - Added support for .NET 9.0 and netstandard2.1;
 v4.9 - Added ability to pass in an IServiceCollection to the commands framework via IProgramOptions in order to optionally allow commands to use dependency injection;
 v4.8 - Changed visibility of runtime args collection; Added utility method to pull value from args collection or config collection;
 v4.7 - Fixed bug getting --help for commands with no parameters.
@@ -33,7 +34,6 @@ v3.2 - Bug fixes.
 v3.1 - Bug fixes. Added ability to inject an instance of ITextOutputProvider for testability.
 v3.0 - Upgraded to .NET 8.0. Added default commands for managing basic string configuration values. Added extension methods for working with relative paths as arguments.</PackageReleaseNotes>
   </PropertyGroup>
-
   <ItemGroup>
     <None Include="..\..\bdc_mark_128_128.png">
       <Pack>True</Pack>
@@ -44,9 +44,7 @@ v3.0 - Upgraded to .NET 8.0. Added default commands for managing basic string co
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.5" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.*" />
   </ItemGroup>
-
 </Project>

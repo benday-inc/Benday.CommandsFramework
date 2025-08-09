@@ -57,7 +57,7 @@ public class SampleCommandThatUsesConfigFixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.True(output.Contains("** SUCCESS **"));        
+        Assert.Contains("** SUCCESS **", output);        
     }
 
 }

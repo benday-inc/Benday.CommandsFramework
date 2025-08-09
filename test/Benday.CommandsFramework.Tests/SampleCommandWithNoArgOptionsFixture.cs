@@ -57,7 +57,7 @@ public class SampleCommandWithNoArgOptionsFixture
         // assert
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.True(output.Contains("** USAGE **"));
+        Assert.Contains("** USAGE **", output);
         
         var lines = output.Split(Environment.NewLine);
 

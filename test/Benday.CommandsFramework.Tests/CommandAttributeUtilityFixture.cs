@@ -62,7 +62,7 @@ public class CommandAttributeUtilityFixture
 
         // assert
         Assert.NotNull(actual);
-        Assert.NotEqual(0, actual.Count);
+        Assert.NotEmpty(actual);
         Assert.Equal(expectedCount, actual.Count);
 
         actual.ForEach(x => { Console.WriteLine($"{x}"); });
@@ -84,7 +84,7 @@ public class CommandAttributeUtilityFixture
 
         // assert
         Assert.NotNull(actual);
-        Assert.NotEqual(0, actual.Count);
+        Assert.NotEmpty(actual);
         Assert.Equal(expectedCount, actual.Count);
 
         actual.ForEach(x => { Console.WriteLine($"{x}"); });
@@ -261,7 +261,7 @@ public class CommandAttributeUtilityFixture
         var actual = SystemUnderTest.GetAllCommandUsages(sampleAssembly);
 
         // assert
-        Assert.NotEqual(0, actual.Count);
+        Assert.NotEmpty(actual);
 
         AssertConfigCommands(actual, false);
 
@@ -290,7 +290,7 @@ public class CommandAttributeUtilityFixture
         var actual = SystemUnderTest.GetAllCommandUsages(sampleAssembly);
 
         // assert
-        Assert.NotEqual(0, actual.Count);
+        Assert.NotEmpty(actual);
 
         AssertConfigCommands(actual, true);
 

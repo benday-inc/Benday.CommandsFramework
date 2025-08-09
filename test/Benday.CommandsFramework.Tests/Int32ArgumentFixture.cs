@@ -102,7 +102,7 @@ public class Int32ArgumentFixture
         InitializeWithAllTheArgs();
 
         var expected = false;
-        string input = null;
+        string? input = null;
 
         // act
         var actual = SystemUnderTest.TrySetValue(input!);

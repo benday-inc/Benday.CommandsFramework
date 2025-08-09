@@ -58,9 +58,9 @@ public class SampleCommandWithDefaultValuesFixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.False(output.Contains("** SUCCESS **"));
-        Assert.False(output.Contains("** INVALID ARGUMENTS **"));
-        Assert.True(output.Contains("** USAGE **"));
+        Assert.DoesNotContain("** SUCCESS **", output);
+        Assert.DoesNotContain("** INVALID ARGUMENTS **", output);
+        Assert.Contains("** USAGE **", output);
     }
 
     [Fact]
@@ -81,12 +81,12 @@ public class SampleCommandWithDefaultValuesFixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.True(output.Contains("** SUCCESS **"));
+        Assert.Contains("** SUCCESS **", output);
 
-        Assert.True(output.Contains($"thing-date: {new DateTime(2023, 06, 23)}"));
-        Assert.True(output.Contains("thing-number: 123"));
-        Assert.True(output.Contains("isThingy: True"));
-        Assert.True(output.Contains("bingbong: wickid awesome"));
+        Assert.Contains($"thing-date: {new DateTime(2023, 06, 23)}", output);
+        Assert.Contains("thing-number: 123", output);
+        Assert.Contains("isThingy: True", output);
+        Assert.Contains("bingbong: wickid awesome", output);
     }
 
     [Fact]
@@ -111,11 +111,11 @@ public class SampleCommandWithDefaultValuesFixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.True(output.Contains("** SUCCESS **"));
+        Assert.Contains("** SUCCESS **", output);
 
-        Assert.True(output.Contains($"thing-date: {new DateTime(2001, 01, 01)}"));
-        Assert.True(output.Contains("thing-number: 456"));
-        Assert.True(output.Contains("isThingy: False"));
-        Assert.True(output.Contains("bingbong: blah"));
+        Assert.Contains($"thing-date: {new DateTime(2001, 01, 01)}", output);
+        Assert.Contains("thing-number: 456", output);
+        Assert.Contains("isThingy: False", output);
+        Assert.Contains("bingbong: blah", output);
     }
 }

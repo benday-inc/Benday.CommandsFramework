@@ -195,7 +195,7 @@ public class ArgumentCollectionFactoryFixture
 
         // assert
         Assert.Equal(expectedCommandName, actual.CommandName);
-        Assert.Equal(1, actual.Arguments.Count);
+        Assert.Single(actual.Arguments);
 
         Assert.True(actual.Arguments.ContainsKey(ArgumentFrameworkConstants.ArgumentHelpString));
     }
@@ -213,7 +213,7 @@ public class ArgumentCollectionFactoryFixture
 
         // assert
         Assert.Equal(expectedCommandName, actual.CommandName);
-        Assert.Equal(0, actual.Arguments.Count);
+        Assert.Empty(actual.Arguments);
     }
 
     [Fact]

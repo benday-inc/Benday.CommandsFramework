@@ -61,7 +61,7 @@ public class SampleCommand1Fixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.True(output.Contains("** SUCCESS **"));
+        Assert.Contains("** SUCCESS **", output);
     }
 
     [Fact]
@@ -86,7 +86,7 @@ public class SampleCommand1Fixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.True(output.Contains("** INVALID ARGUMENTS **"));
+        Assert.Contains("** INVALID ARGUMENTS **", output);
     }
 
     [Fact]
@@ -112,7 +112,7 @@ public class SampleCommand1Fixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.True(output.Contains("** INVALID ARGUMENT **"));
+        Assert.Contains("** INVALID ARGUMENT **", output);
     }
 
     [Fact]
@@ -134,8 +134,8 @@ public class SampleCommand1Fixture
         // assert
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.True(output.Contains("** USAGE **"));
-        Assert.True(output.Contains("This is the description for command one."));
+        Assert.Contains("** USAGE **", output);
+        Assert.Contains("This is the description for command one.", output);
 
         var lines = output.Split(Environment.NewLine);
 

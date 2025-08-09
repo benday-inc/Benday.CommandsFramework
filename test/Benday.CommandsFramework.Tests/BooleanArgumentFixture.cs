@@ -125,7 +125,7 @@ public class BooleanArgumentFixture
         // assert
         var actual = SystemUnderTest.ValueAsBoolean;
         Assert.Equal(expected, actual);
-        Assert.Equal(true, SystemUnderTest.HasValue);
+        Assert.True(SystemUnderTest.HasValue);
     }
 
     [Fact]
@@ -158,7 +158,7 @@ public class BooleanArgumentFixture
         // assert
         var actual = SystemUnderTest.ValueAsBoolean;
         Assert.Equal(expected, actual);
-        Assert.Equal(false, SystemUnderTest.HasValue);
+        Assert.False(SystemUnderTest.HasValue);
     }
 
     [Fact]
@@ -183,7 +183,7 @@ public class BooleanArgumentFixture
         // assert
         var actual = SystemUnderTest.ValueAsBoolean;
         Assert.Equal(expected, actual);
-        Assert.Equal(true, SystemUnderTest.HasValue);
+        Assert.True(SystemUnderTest.HasValue);
     }
 
     [Fact]
@@ -208,7 +208,7 @@ public class BooleanArgumentFixture
         // assert
         var actual = SystemUnderTest.ValueAsBoolean;
         Assert.Equal(expected, actual);
-        Assert.Equal(true, SystemUnderTest.HasValue);
+        Assert.True(SystemUnderTest.HasValue);
     }
 
     [Fact]
@@ -218,7 +218,7 @@ public class BooleanArgumentFixture
         InitializeWithAllTheArgs_AllowEmptyValue();
         
         var expected = false;
-        string input = null;
+        string? input = null;
 
         // act
         var actual = SystemUnderTest.TrySetValue(input!);

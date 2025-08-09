@@ -161,6 +161,6 @@ public class DateTimeTestCommandFixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.True(output.Contains("** INVALID ARGUMENT **"));
+        Assert.Contains("** INVALID ARGUMENT **", output);
     }    
 }

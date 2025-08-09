@@ -57,9 +57,9 @@ public class SampleCommandWithPositionalSourcesFixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.False(output.Contains("** SUCCESS **"));
-        Assert.False(output.Contains("** INVALID ARGUMENTS **"));
-        Assert.True(output.Contains("** USAGE **"));
+        Assert.DoesNotContain("** SUCCESS **", output);
+        Assert.DoesNotContain("** INVALID ARGUMENTS **", output);
+        Assert.Contains("** USAGE **", output);
 
         AssertDoesNotContain(output, "/Value1");
         AssertDoesNotContain(output, "[/Value1");
@@ -70,12 +70,12 @@ public class SampleCommandWithPositionalSourcesFixture
 
     private void AssertDoesNotContain(string actual, string notExpected)
     {
-        Assert.False(actual.Contains(notExpected));
+        Assert.DoesNotContain(notExpected, actual);
     }
 
     private void AssertContains(string actual, string expected)
     {
-        Assert.True(actual.Contains(expected));
+        Assert.Contains(expected, actual);
     }
 
     [Fact]
@@ -99,7 +99,7 @@ public class SampleCommandWithPositionalSourcesFixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.True(output.Contains("** SUCCESS **"));
+        Assert.Contains("** SUCCESS **", output);
 
         AssertContains(output, "Value1: value 1 value");
     }
@@ -126,7 +126,7 @@ public class SampleCommandWithPositionalSourcesFixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.True(output.Contains("** SUCCESS **"));
+        Assert.Contains("** SUCCESS **", output);
 
         AssertContains(output, "Value1: value 1 value");
         AssertContains(output, "Value2: value 2 value");

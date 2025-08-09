@@ -151,7 +151,7 @@ public class DateTimeArgumentFixture
     [InlineData("asdf", false, "")]
     [InlineData(null, false, "")]
     [InlineData("", false, "")]
-    public void TrySetValueAndVerifyValue(string input, bool expectedOutcome, string expectedDateString)
+    public void TrySetValueAndVerifyValue(string? input, bool expectedOutcome, string expectedDateString)
     {
         // arrange
 
@@ -166,7 +166,7 @@ public class DateTimeArgumentFixture
         _SystemUnderTest = temp;
 
         // act
-        var actual = SystemUnderTest.TrySetValue(input);
+        var actual = SystemUnderTest.TrySetValue(input!);
 
         // assert
         Assert.Equal(expectedOutcome, actual);

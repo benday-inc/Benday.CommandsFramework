@@ -57,9 +57,9 @@ public class SampleCommand3Fixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.False(output.Contains("** SUCCESS **"));
-        Assert.False(output.Contains("** INVALID ARGUMENTS **"));
-        Assert.True(output.Contains("** USAGE **"));
+        Assert.DoesNotContain("** SUCCESS **", output);
+        Assert.DoesNotContain("** INVALID ARGUMENTS **", output);
+        Assert.Contains("** USAGE **", output);
 
     }
 }
