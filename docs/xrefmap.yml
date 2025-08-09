@@ -967,22 +967,6 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.CommandBase.ExecutionInfo
   nameWithType: CommandBase.ExecutionInfo
-- uid: Benday.CommandsFramework.CommandBase.GetArgValueOrRequiredConfigValue(System.String,System.String)
-  name: GetArgValueOrRequiredConfigValue(string, string)
-  href: api/Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_GetArgValueOrRequiredConfigValue_System_String_System_String_
-  commentId: M:Benday.CommandsFramework.CommandBase.GetArgValueOrRequiredConfigValue(System.String,System.String)
-  name.vb: GetArgValueOrRequiredConfigValue(String, String)
-  fullName: Benday.CommandsFramework.CommandBase.GetArgValueOrRequiredConfigValue(string, string)
-  fullName.vb: Benday.CommandsFramework.CommandBase.GetArgValueOrRequiredConfigValue(String, String)
-  nameWithType: CommandBase.GetArgValueOrRequiredConfigValue(string, string)
-  nameWithType.vb: CommandBase.GetArgValueOrRequiredConfigValue(String, String)
-- uid: Benday.CommandsFramework.CommandBase.GetArgValueOrRequiredConfigValue*
-  name: GetArgValueOrRequiredConfigValue
-  href: api/Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_GetArgValueOrRequiredConfigValue_
-  commentId: Overload:Benday.CommandsFramework.CommandBase.GetArgValueOrRequiredConfigValue
-  isSpec: "True"
-  fullName: Benday.CommandsFramework.CommandBase.GetArgValueOrRequiredConfigValue
-  nameWithType: CommandBase.GetArgValueOrRequiredConfigValue
 - uid: Benday.CommandsFramework.CommandBase.GetArguments
   name: GetArguments()
   href: api/Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_GetArguments
@@ -1356,211 +1340,6 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.ConsoleTextOutputProvider.WriteLine
   nameWithType: ConsoleTextOutputProvider.WriteLine
-- uid: Benday.CommandsFramework.DataFormatting
-  name: Benday.CommandsFramework.DataFormatting
-  href: api/Benday.CommandsFramework.DataFormatting.html
-  commentId: N:Benday.CommandsFramework.DataFormatting
-  fullName: Benday.CommandsFramework.DataFormatting
-  nameWithType: Benday.CommandsFramework.DataFormatting
-- uid: Benday.CommandsFramework.DataFormatting.TableColumnDefinition
-  name: TableColumnDefinition
-  href: api/Benday.CommandsFramework.DataFormatting.TableColumnDefinition.html
-  commentId: T:Benday.CommandsFramework.DataFormatting.TableColumnDefinition
-  fullName: Benday.CommandsFramework.DataFormatting.TableColumnDefinition
-  nameWithType: TableColumnDefinition
-- uid: Benday.CommandsFramework.DataFormatting.TableColumnDefinition.CheckValueLength(System.String)
-  name: CheckValueLength(string)
-  href: api/Benday.CommandsFramework.DataFormatting.TableColumnDefinition.html#Benday_CommandsFramework_DataFormatting_TableColumnDefinition_CheckValueLength_System_String_
-  commentId: M:Benday.CommandsFramework.DataFormatting.TableColumnDefinition.CheckValueLength(System.String)
-  name.vb: CheckValueLength(String)
-  fullName: Benday.CommandsFramework.DataFormatting.TableColumnDefinition.CheckValueLength(string)
-  fullName.vb: Benday.CommandsFramework.DataFormatting.TableColumnDefinition.CheckValueLength(String)
-  nameWithType: TableColumnDefinition.CheckValueLength(string)
-  nameWithType.vb: TableColumnDefinition.CheckValueLength(String)
-- uid: Benday.CommandsFramework.DataFormatting.TableColumnDefinition.CheckValueLength*
-  name: CheckValueLength
-  href: api/Benday.CommandsFramework.DataFormatting.TableColumnDefinition.html#Benday_CommandsFramework_DataFormatting_TableColumnDefinition_CheckValueLength_
-  commentId: Overload:Benday.CommandsFramework.DataFormatting.TableColumnDefinition.CheckValueLength
-  isSpec: "True"
-  fullName: Benday.CommandsFramework.DataFormatting.TableColumnDefinition.CheckValueLength
-  nameWithType: TableColumnDefinition.CheckValueLength
-- uid: Benday.CommandsFramework.DataFormatting.TableColumnDefinition.IsColumnNameLongerThanLongestValue
-  name: IsColumnNameLongerThanLongestValue
-  href: api/Benday.CommandsFramework.DataFormatting.TableColumnDefinition.html#Benday_CommandsFramework_DataFormatting_TableColumnDefinition_IsColumnNameLongerThanLongestValue
-  commentId: P:Benday.CommandsFramework.DataFormatting.TableColumnDefinition.IsColumnNameLongerThanLongestValue
-  fullName: Benday.CommandsFramework.DataFormatting.TableColumnDefinition.IsColumnNameLongerThanLongestValue
-  nameWithType: TableColumnDefinition.IsColumnNameLongerThanLongestValue
-- uid: Benday.CommandsFramework.DataFormatting.TableColumnDefinition.IsColumnNameLongerThanLongestValue*
-  name: IsColumnNameLongerThanLongestValue
-  href: api/Benday.CommandsFramework.DataFormatting.TableColumnDefinition.html#Benday_CommandsFramework_DataFormatting_TableColumnDefinition_IsColumnNameLongerThanLongestValue_
-  commentId: Overload:Benday.CommandsFramework.DataFormatting.TableColumnDefinition.IsColumnNameLongerThanLongestValue
-  isSpec: "True"
-  fullName: Benday.CommandsFramework.DataFormatting.TableColumnDefinition.IsColumnNameLongerThanLongestValue
-  nameWithType: TableColumnDefinition.IsColumnNameLongerThanLongestValue
-- uid: Benday.CommandsFramework.DataFormatting.TableColumnDefinition.Name
-  name: Name
-  href: api/Benday.CommandsFramework.DataFormatting.TableColumnDefinition.html#Benday_CommandsFramework_DataFormatting_TableColumnDefinition_Name
-  commentId: P:Benday.CommandsFramework.DataFormatting.TableColumnDefinition.Name
-  fullName: Benday.CommandsFramework.DataFormatting.TableColumnDefinition.Name
-  nameWithType: TableColumnDefinition.Name
-- uid: Benday.CommandsFramework.DataFormatting.TableColumnDefinition.Name*
-  name: Name
-  href: api/Benday.CommandsFramework.DataFormatting.TableColumnDefinition.html#Benday_CommandsFramework_DataFormatting_TableColumnDefinition_Name_
-  commentId: Overload:Benday.CommandsFramework.DataFormatting.TableColumnDefinition.Name
-  isSpec: "True"
-  fullName: Benday.CommandsFramework.DataFormatting.TableColumnDefinition.Name
-  nameWithType: TableColumnDefinition.Name
-- uid: Benday.CommandsFramework.DataFormatting.TableColumnDefinition.NamePadded
-  name: NamePadded
-  href: api/Benday.CommandsFramework.DataFormatting.TableColumnDefinition.html#Benday_CommandsFramework_DataFormatting_TableColumnDefinition_NamePadded
-  commentId: P:Benday.CommandsFramework.DataFormatting.TableColumnDefinition.NamePadded
-  fullName: Benday.CommandsFramework.DataFormatting.TableColumnDefinition.NamePadded
-  nameWithType: TableColumnDefinition.NamePadded
-- uid: Benday.CommandsFramework.DataFormatting.TableColumnDefinition.NamePadded*
-  name: NamePadded
-  href: api/Benday.CommandsFramework.DataFormatting.TableColumnDefinition.html#Benday_CommandsFramework_DataFormatting_TableColumnDefinition_NamePadded_
-  commentId: Overload:Benday.CommandsFramework.DataFormatting.TableColumnDefinition.NamePadded
-  isSpec: "True"
-  fullName: Benday.CommandsFramework.DataFormatting.TableColumnDefinition.NamePadded
-  nameWithType: TableColumnDefinition.NamePadded
-- uid: Benday.CommandsFramework.DataFormatting.TableColumnDefinition.Width
-  name: Width
-  href: api/Benday.CommandsFramework.DataFormatting.TableColumnDefinition.html#Benday_CommandsFramework_DataFormatting_TableColumnDefinition_Width
-  commentId: P:Benday.CommandsFramework.DataFormatting.TableColumnDefinition.Width
-  fullName: Benday.CommandsFramework.DataFormatting.TableColumnDefinition.Width
-  nameWithType: TableColumnDefinition.Width
-- uid: Benday.CommandsFramework.DataFormatting.TableColumnDefinition.Width*
-  name: Width
-  href: api/Benday.CommandsFramework.DataFormatting.TableColumnDefinition.html#Benday_CommandsFramework_DataFormatting_TableColumnDefinition_Width_
-  commentId: Overload:Benday.CommandsFramework.DataFormatting.TableColumnDefinition.Width
-  isSpec: "True"
-  fullName: Benday.CommandsFramework.DataFormatting.TableColumnDefinition.Width
-  nameWithType: TableColumnDefinition.Width
-- uid: Benday.CommandsFramework.DataFormatting.TableColumnDefinition.WidthOfLongestValue
-  name: WidthOfLongestValue
-  href: api/Benday.CommandsFramework.DataFormatting.TableColumnDefinition.html#Benday_CommandsFramework_DataFormatting_TableColumnDefinition_WidthOfLongestValue
-  commentId: P:Benday.CommandsFramework.DataFormatting.TableColumnDefinition.WidthOfLongestValue
-  fullName: Benday.CommandsFramework.DataFormatting.TableColumnDefinition.WidthOfLongestValue
-  nameWithType: TableColumnDefinition.WidthOfLongestValue
-- uid: Benday.CommandsFramework.DataFormatting.TableColumnDefinition.WidthOfLongestValue*
-  name: WidthOfLongestValue
-  href: api/Benday.CommandsFramework.DataFormatting.TableColumnDefinition.html#Benday_CommandsFramework_DataFormatting_TableColumnDefinition_WidthOfLongestValue_
-  commentId: Overload:Benday.CommandsFramework.DataFormatting.TableColumnDefinition.WidthOfLongestValue
-  isSpec: "True"
-  fullName: Benday.CommandsFramework.DataFormatting.TableColumnDefinition.WidthOfLongestValue
-  nameWithType: TableColumnDefinition.WidthOfLongestValue
-- uid: Benday.CommandsFramework.DataFormatting.TableFormatter
-  name: TableFormatter
-  href: api/Benday.CommandsFramework.DataFormatting.TableFormatter.html
-  commentId: T:Benday.CommandsFramework.DataFormatting.TableFormatter
-  fullName: Benday.CommandsFramework.DataFormatting.TableFormatter
-  nameWithType: TableFormatter
-- uid: Benday.CommandsFramework.DataFormatting.TableFormatter.#ctor
-  name: TableFormatter()
-  href: api/Benday.CommandsFramework.DataFormatting.TableFormatter.html#Benday_CommandsFramework_DataFormatting_TableFormatter__ctor
-  commentId: M:Benday.CommandsFramework.DataFormatting.TableFormatter.#ctor
-  name.vb: New()
-  fullName: Benday.CommandsFramework.DataFormatting.TableFormatter.TableFormatter()
-  fullName.vb: Benday.CommandsFramework.DataFormatting.TableFormatter.New()
-  nameWithType: TableFormatter.TableFormatter()
-  nameWithType.vb: TableFormatter.New()
-- uid: Benday.CommandsFramework.DataFormatting.TableFormatter.#ctor*
-  name: TableFormatter
-  href: api/Benday.CommandsFramework.DataFormatting.TableFormatter.html#Benday_CommandsFramework_DataFormatting_TableFormatter__ctor_
-  commentId: Overload:Benday.CommandsFramework.DataFormatting.TableFormatter.#ctor
-  isSpec: "True"
-  name.vb: New
-  fullName: Benday.CommandsFramework.DataFormatting.TableFormatter.TableFormatter
-  fullName.vb: Benday.CommandsFramework.DataFormatting.TableFormatter.New
-  nameWithType: TableFormatter.TableFormatter
-  nameWithType.vb: TableFormatter.New
-- uid: Benday.CommandsFramework.DataFormatting.TableFormatter.AddColumn(System.String)
-  name: AddColumn(string)
-  href: api/Benday.CommandsFramework.DataFormatting.TableFormatter.html#Benday_CommandsFramework_DataFormatting_TableFormatter_AddColumn_System_String_
-  commentId: M:Benday.CommandsFramework.DataFormatting.TableFormatter.AddColumn(System.String)
-  name.vb: AddColumn(String)
-  fullName: Benday.CommandsFramework.DataFormatting.TableFormatter.AddColumn(string)
-  fullName.vb: Benday.CommandsFramework.DataFormatting.TableFormatter.AddColumn(String)
-  nameWithType: TableFormatter.AddColumn(string)
-  nameWithType.vb: TableFormatter.AddColumn(String)
-- uid: Benday.CommandsFramework.DataFormatting.TableFormatter.AddColumn*
-  name: AddColumn
-  href: api/Benday.CommandsFramework.DataFormatting.TableFormatter.html#Benday_CommandsFramework_DataFormatting_TableFormatter_AddColumn_
-  commentId: Overload:Benday.CommandsFramework.DataFormatting.TableFormatter.AddColumn
-  isSpec: "True"
-  fullName: Benday.CommandsFramework.DataFormatting.TableFormatter.AddColumn
-  nameWithType: TableFormatter.AddColumn
-- uid: Benday.CommandsFramework.DataFormatting.TableFormatter.AddData(System.String[])
-  name: AddData(params string[])
-  href: api/Benday.CommandsFramework.DataFormatting.TableFormatter.html#Benday_CommandsFramework_DataFormatting_TableFormatter_AddData_System_String___
-  commentId: M:Benday.CommandsFramework.DataFormatting.TableFormatter.AddData(System.String[])
-  name.vb: AddData(ParamArray String())
-  fullName: Benday.CommandsFramework.DataFormatting.TableFormatter.AddData(params string[])
-  fullName.vb: Benday.CommandsFramework.DataFormatting.TableFormatter.AddData(ParamArray String())
-  nameWithType: TableFormatter.AddData(params string[])
-  nameWithType.vb: TableFormatter.AddData(ParamArray String())
-- uid: Benday.CommandsFramework.DataFormatting.TableFormatter.AddData*
-  name: AddData
-  href: api/Benday.CommandsFramework.DataFormatting.TableFormatter.html#Benday_CommandsFramework_DataFormatting_TableFormatter_AddData_
-  commentId: Overload:Benday.CommandsFramework.DataFormatting.TableFormatter.AddData
-  isSpec: "True"
-  fullName: Benday.CommandsFramework.DataFormatting.TableFormatter.AddData
-  nameWithType: TableFormatter.AddData
-- uid: Benday.CommandsFramework.DataFormatting.TableFormatter.AddDataWithFilter(System.String,System.String[])
-  name: AddDataWithFilter(string, params string[])
-  href: api/Benday.CommandsFramework.DataFormatting.TableFormatter.html#Benday_CommandsFramework_DataFormatting_TableFormatter_AddDataWithFilter_System_String_System_String___
-  commentId: M:Benday.CommandsFramework.DataFormatting.TableFormatter.AddDataWithFilter(System.String,System.String[])
-  name.vb: AddDataWithFilter(String, ParamArray String())
-  fullName: Benday.CommandsFramework.DataFormatting.TableFormatter.AddDataWithFilter(string, params string[])
-  fullName.vb: Benday.CommandsFramework.DataFormatting.TableFormatter.AddDataWithFilter(String, ParamArray String())
-  nameWithType: TableFormatter.AddDataWithFilter(string, params string[])
-  nameWithType.vb: TableFormatter.AddDataWithFilter(String, ParamArray String())
-- uid: Benday.CommandsFramework.DataFormatting.TableFormatter.AddDataWithFilter*
-  name: AddDataWithFilter
-  href: api/Benday.CommandsFramework.DataFormatting.TableFormatter.html#Benday_CommandsFramework_DataFormatting_TableFormatter_AddDataWithFilter_
-  commentId: Overload:Benday.CommandsFramework.DataFormatting.TableFormatter.AddDataWithFilter
-  isSpec: "True"
-  fullName: Benday.CommandsFramework.DataFormatting.TableFormatter.AddDataWithFilter
-  nameWithType: TableFormatter.AddDataWithFilter
-- uid: Benday.CommandsFramework.DataFormatting.TableFormatter.Columns
-  name: Columns
-  href: api/Benday.CommandsFramework.DataFormatting.TableFormatter.html#Benday_CommandsFramework_DataFormatting_TableFormatter_Columns
-  commentId: P:Benday.CommandsFramework.DataFormatting.TableFormatter.Columns
-  fullName: Benday.CommandsFramework.DataFormatting.TableFormatter.Columns
-  nameWithType: TableFormatter.Columns
-- uid: Benday.CommandsFramework.DataFormatting.TableFormatter.Columns*
-  name: Columns
-  href: api/Benday.CommandsFramework.DataFormatting.TableFormatter.html#Benday_CommandsFramework_DataFormatting_TableFormatter_Columns_
-  commentId: Overload:Benday.CommandsFramework.DataFormatting.TableFormatter.Columns
-  isSpec: "True"
-  fullName: Benday.CommandsFramework.DataFormatting.TableFormatter.Columns
-  nameWithType: TableFormatter.Columns
-- uid: Benday.CommandsFramework.DataFormatting.TableFormatter.Data
-  name: Data
-  href: api/Benday.CommandsFramework.DataFormatting.TableFormatter.html#Benday_CommandsFramework_DataFormatting_TableFormatter_Data
-  commentId: P:Benday.CommandsFramework.DataFormatting.TableFormatter.Data
-  fullName: Benday.CommandsFramework.DataFormatting.TableFormatter.Data
-  nameWithType: TableFormatter.Data
-- uid: Benday.CommandsFramework.DataFormatting.TableFormatter.Data*
-  name: Data
-  href: api/Benday.CommandsFramework.DataFormatting.TableFormatter.html#Benday_CommandsFramework_DataFormatting_TableFormatter_Data_
-  commentId: Overload:Benday.CommandsFramework.DataFormatting.TableFormatter.Data
-  isSpec: "True"
-  fullName: Benday.CommandsFramework.DataFormatting.TableFormatter.Data
-  nameWithType: TableFormatter.Data
-- uid: Benday.CommandsFramework.DataFormatting.TableFormatter.FormatTable
-  name: FormatTable()
-  href: api/Benday.CommandsFramework.DataFormatting.TableFormatter.html#Benday_CommandsFramework_DataFormatting_TableFormatter_FormatTable
-  commentId: M:Benday.CommandsFramework.DataFormatting.TableFormatter.FormatTable
-  fullName: Benday.CommandsFramework.DataFormatting.TableFormatter.FormatTable()
-  nameWithType: TableFormatter.FormatTable()
-- uid: Benday.CommandsFramework.DataFormatting.TableFormatter.FormatTable*
-  name: FormatTable
-  href: api/Benday.CommandsFramework.DataFormatting.TableFormatter.html#Benday_CommandsFramework_DataFormatting_TableFormatter_FormatTable_
-  commentId: Overload:Benday.CommandsFramework.DataFormatting.TableFormatter.FormatTable
-  isSpec: "True"
-  fullName: Benday.CommandsFramework.DataFormatting.TableFormatter.FormatTable
-  nameWithType: TableFormatter.FormatTable
 - uid: Benday.CommandsFramework.DateTimeArgument
   name: DateTimeArgument
   href: api/Benday.CommandsFramework.DateTimeArgument.html
@@ -1837,19 +1616,6 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.DefaultProgramOptions.OutputProvider
   nameWithType: DefaultProgramOptions.OutputProvider
-- uid: Benday.CommandsFramework.DefaultProgramOptions.ServiceCollection
-  name: ServiceCollection
-  href: api/Benday.CommandsFramework.DefaultProgramOptions.html#Benday_CommandsFramework_DefaultProgramOptions_ServiceCollection
-  commentId: P:Benday.CommandsFramework.DefaultProgramOptions.ServiceCollection
-  fullName: Benday.CommandsFramework.DefaultProgramOptions.ServiceCollection
-  nameWithType: DefaultProgramOptions.ServiceCollection
-- uid: Benday.CommandsFramework.DefaultProgramOptions.ServiceCollection*
-  name: ServiceCollection
-  href: api/Benday.CommandsFramework.DefaultProgramOptions.html#Benday_CommandsFramework_DefaultProgramOptions_ServiceCollection_
-  commentId: Overload:Benday.CommandsFramework.DefaultProgramOptions.ServiceCollection
-  isSpec: "True"
-  fullName: Benday.CommandsFramework.DefaultProgramOptions.ServiceCollection
-  nameWithType: DefaultProgramOptions.ServiceCollection
 - uid: Benday.CommandsFramework.DefaultProgramOptions.UsesConfiguration
   name: UsesConfiguration
   href: api/Benday.CommandsFramework.DefaultProgramOptions.html#Benday_CommandsFramework_DefaultProgramOptions_UsesConfiguration
@@ -2344,22 +2110,6 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.ExtensionMethods.GetPathToFile
   nameWithType: ExtensionMethods.GetPathToFile
-- uid: Benday.CommandsFramework.ExtensionMethods.GetRequiredConfigurationValue(Benday.CommandsFramework.CommandExecutionInfo,System.String)
-  name: GetRequiredConfigurationValue(CommandExecutionInfo, string)
-  href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_GetRequiredConfigurationValue_Benday_CommandsFramework_CommandExecutionInfo_System_String_
-  commentId: M:Benday.CommandsFramework.ExtensionMethods.GetRequiredConfigurationValue(Benday.CommandsFramework.CommandExecutionInfo,System.String)
-  name.vb: GetRequiredConfigurationValue(CommandExecutionInfo, String)
-  fullName: Benday.CommandsFramework.ExtensionMethods.GetRequiredConfigurationValue(Benday.CommandsFramework.CommandExecutionInfo, string)
-  fullName.vb: Benday.CommandsFramework.ExtensionMethods.GetRequiredConfigurationValue(Benday.CommandsFramework.CommandExecutionInfo, String)
-  nameWithType: ExtensionMethods.GetRequiredConfigurationValue(CommandExecutionInfo, string)
-  nameWithType.vb: ExtensionMethods.GetRequiredConfigurationValue(CommandExecutionInfo, String)
-- uid: Benday.CommandsFramework.ExtensionMethods.GetRequiredConfigurationValue*
-  name: GetRequiredConfigurationValue
-  href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_GetRequiredConfigurationValue_
-  commentId: Overload:Benday.CommandsFramework.ExtensionMethods.GetRequiredConfigurationValue
-  isSpec: "True"
-  fullName: Benday.CommandsFramework.ExtensionMethods.GetRequiredConfigurationValue
-  nameWithType: ExtensionMethods.GetRequiredConfigurationValue
 - uid: Benday.CommandsFramework.ExtensionMethods.GetStringValue(Benday.CommandsFramework.ArgumentCollection,System.String)
   name: GetStringValue(ArgumentCollection, string)
   href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_GetStringValue_Benday_CommandsFramework_ArgumentCollection_System_String_
@@ -3252,19 +3002,6 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.ICommandProgramOptions.OutputProvider
   nameWithType: ICommandProgramOptions.OutputProvider
-- uid: Benday.CommandsFramework.ICommandProgramOptions.ServiceCollection
-  name: ServiceCollection
-  href: api/Benday.CommandsFramework.ICommandProgramOptions.html#Benday_CommandsFramework_ICommandProgramOptions_ServiceCollection
-  commentId: P:Benday.CommandsFramework.ICommandProgramOptions.ServiceCollection
-  fullName: Benday.CommandsFramework.ICommandProgramOptions.ServiceCollection
-  nameWithType: ICommandProgramOptions.ServiceCollection
-- uid: Benday.CommandsFramework.ICommandProgramOptions.ServiceCollection*
-  name: ServiceCollection
-  href: api/Benday.CommandsFramework.ICommandProgramOptions.html#Benday_CommandsFramework_ICommandProgramOptions_ServiceCollection_
-  commentId: Overload:Benday.CommandsFramework.ICommandProgramOptions.ServiceCollection
-  isSpec: "True"
-  fullName: Benday.CommandsFramework.ICommandProgramOptions.ServiceCollection
-  nameWithType: ICommandProgramOptions.ServiceCollection
 - uid: Benday.CommandsFramework.ICommandProgramOptions.UsesConfiguration
   name: UsesConfiguration
   href: api/Benday.CommandsFramework.ICommandProgramOptions.html#Benday_CommandsFramework_ICommandProgramOptions_UsesConfiguration

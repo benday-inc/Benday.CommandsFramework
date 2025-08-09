@@ -1,5 +1,5 @@
 {
-  "source_base_path": "C:/code/benday-inc/Benday.CommandsFramework/docfx_project",
+  "source_base_path": "/Users/benday/code/benday-inc/Benday.CommandsFramework/docfx_project",
   "xrefmap": "xrefmap.yml",
   "files": [
     {
@@ -158,36 +158,6 @@
       "output": {
         ".html": {
           "relative_path": "api/Benday.CommandsFramework.ConsoleTextOutputProvider.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Benday.CommandsFramework.DataFormatting.TableColumnDefinition.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Benday.CommandsFramework.DataFormatting.TableColumnDefinition.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Benday.CommandsFramework.DataFormatting.TableFormatter.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Benday.CommandsFramework.DataFormatting.TableFormatter.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Benday.CommandsFramework.DataFormatting.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Benday.CommandsFramework.DataFormatting.html"
         }
       },
       "version": ""

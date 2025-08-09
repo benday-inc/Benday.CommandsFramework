@@ -16,7 +16,7 @@
     <AssemblyVersion>$(TheVersion).0</AssemblyVersion>
     <Version>$(TheVersion)</Version>
     <PackageReleaseNotes>
-v4.10 - Added support for .NET 9.0 and netstandard2.1;
+v4.10 - Added support for .NET 9.0; Added CsvReader utility class for parsing CSV files;
 v4.9 - Added ability to pass in an IServiceCollection to the commands framework via IProgramOptions in order to optionally allow commands to use dependency injection;
 v4.8 - Changed visibility of runtime args collection; Added utility method to pull value from args collection or config collection;
 v4.7 - Fixed bug getting --help for commands with no parameters.
