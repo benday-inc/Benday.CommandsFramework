@@ -2,10 +2,9 @@
 
 namespace Benday.CommandsFramework.Tests;
 
-[TestClass]
 public class DefaultProgramFixture
 {
-    [TestMethod]
+    [Fact]
     public void GetUsages_UsesConfigurationFile_False()
     {
         // arrange
@@ -36,15 +35,15 @@ public class DefaultProgramFixture
             CommandFrameworkConstants.CommandName_RemoveConfig
         };
 
-        Assert.IsTrue(output.Contains("defaultvaluescommand"), "Should contain 'defaultvaluescommand'");
+        Assert.Contains("defaultvaluescommand", output);
 
         foreach (var commandName in commandNames)
         {
-            Assert.IsFalse(output.Contains(commandName), $"Should not contain '{commandName}'");
+            Assert.DoesNotContain(commandName, output);
         }
     }
 
-    [TestMethod]
+    [Fact]
     public void GetUsages_UsesConfigurationFile_True()
     {
         // arrange
@@ -77,15 +76,15 @@ public class DefaultProgramFixture
             CommandFrameworkConstants.CommandName_RemoveConfig
         };
 
-        Assert.IsTrue(output.Contains("defaultvaluescommand"), "Should contain 'defaultvaluescommand'");
+        Assert.Contains("defaultvaluescommand", output);
 
         foreach (var commandName in commandNames)
         {
-            Assert.IsTrue(output.Contains(commandName), $"Did not contain '{commandName}'");
+            Assert.Contains(commandName, output);
         }
     }
 
-    [TestMethod]
+    [Fact]
     public void GetHelpStringForDefaultCommmand_UsesConfigurationFile_True()
     {
         // arrange
@@ -113,10 +112,10 @@ public class DefaultProgramFixture
 
         Console.WriteLine(output);
 
-        Assert.IsFalse(output.Contains("Invalid command name"), "Should not have error message for invalid command name");
+        Assert.DoesNotContain("Invalid command name", output);
     }
 
-    [TestMethod]
+    [Fact]
     public void GetHelpStringForDefaultCommmand_UsesConfigurationFile_False()
     {
         // arrange
@@ -144,10 +143,10 @@ public class DefaultProgramFixture
         
         Console.WriteLine(output);
 
-        Assert.IsTrue(output.Contains("Invalid command name"), "Should have error message for invalid command name");
+        Assert.Contains("Invalid command name", output);
     }
 
-    [TestMethod]
+    [Fact]
     public void GetJsonForDefaultProgram()
     {
         // arrange
@@ -174,8 +173,8 @@ public class DefaultProgramFixture
 
         Console.WriteLine(output);
 
-        Assert.IsFalse(string.IsNullOrWhiteSpace(output), "Output is empty");
+        Assert.False(string.IsNullOrWhiteSpace(output));
 
-        StringAssert.Contains(output, "\"FriendlyName\": \"Thing Date\"");
+        Assert.Contains("\"FriendlyName\": \"Thing Date\"", output);
     }
 }

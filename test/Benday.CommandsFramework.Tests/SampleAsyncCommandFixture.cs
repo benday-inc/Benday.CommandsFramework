@@ -2,11 +2,9 @@
 
 namespace Benday.CommandsFramework.Tests;
 
-[TestClass]
 public class SampleAsyncCommandFixture
 {
-    [TestInitialize]
-    public void OnTestInitialize()
+        public SampleAsyncCommandFixture()
     {
         _SystemUnderTest = null;
         _OutputProvider = null;
@@ -18,7 +16,7 @@ public class SampleAsyncCommandFixture
     {
         get
         {
-            Assert.IsNotNull(_SystemUnderTest);
+            Assert.NotNull(_SystemUnderTest);
 
             return _SystemUnderTest;
         }
@@ -40,7 +38,7 @@ public class SampleAsyncCommandFixture
     }
 
 
-    [TestMethod]
+    [Fact]
     public async Task CreateAndRun_ValidArgs_IsAwesomeFalse()
     {
         // arrange
@@ -59,11 +57,11 @@ public class SampleAsyncCommandFixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.IsTrue(output.Contains("** SUCCESS **"), "Did not contain expected string");
-        Assert.IsTrue(output.Contains("isawesome:False:"), "Did not contain expected result string");
+        Assert.Contains("** SUCCESS **", output);
+        Assert.Contains("isawesome:False:", output);
     }
 
-    [TestMethod]
+    [Fact]
     public async Task CreateAndRun_ValidArgs_IsAwesomeTrue()
     {
         // arrange
@@ -82,11 +80,11 @@ public class SampleAsyncCommandFixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.IsTrue(output.Contains("** SUCCESS **"), "Did not contain expected string");
-        Assert.IsTrue(output.Contains("isawesome:True:"), "Did not contain expected result string");
+        Assert.Contains("** SUCCESS **", output);
+        Assert.Contains("isawesome:True:", output);
     }
 
-    [TestMethod]
+    [Fact]
     public async Task GetHelp()
     {
         // arrange
@@ -105,9 +103,9 @@ public class SampleAsyncCommandFixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.IsFalse(output.Contains("** SUCCESS **"), "Should not contain expected string");
-        Assert.IsFalse(output.Contains("** INVALID ARGUMENTS **"), "Should not contain expected string");
-        Assert.IsTrue(output.Contains("** USAGE **"), "Did not contain expected string");
+        Assert.DoesNotContain("** SUCCESS **", output);
+        Assert.DoesNotContain("** INVALID ARGUMENTS **", output);
+        Assert.Contains("** USAGE **", output);
 
     }
 }

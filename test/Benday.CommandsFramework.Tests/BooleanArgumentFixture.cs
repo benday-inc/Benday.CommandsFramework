@@ -1,10 +1,8 @@
 ﻿namespace Benday.CommandsFramework.Tests;
 
-[TestClass]
 public class BooleanArgumentFixture
 {
-    [TestInitialize]
-    public void OnTestInitialize()
+        public BooleanArgumentFixture()
     {
         _SystemUnderTest = null;
     }
@@ -73,7 +71,7 @@ public class BooleanArgumentFixture
         _SystemUnderTest = temp;
     }
 
-    [TestMethod]
+    [Fact]
     public void Ctor_WithAllValues()
     {
         // arrange
@@ -82,16 +80,16 @@ public class BooleanArgumentFixture
         InitializeWithAllTheArgs_AllowEmptyValue();
 
         // assert
-        Assert.AreEqual<string>(EXPECTED_ARG_DESC, SystemUnderTest.Description, "Description was wrong");
-        Assert.AreEqual<bool>(EXPECTED_ARG_VALUE, SystemUnderTest.Value, "Value was wrong");
-        Assert.AreEqual<string>(EXPECTED_ARG_NAME, SystemUnderTest.Name, "Name was wrong");
-        Assert.AreEqual<bool>(EXPECTED_ARG_ISREQUIRED, SystemUnderTest.IsRequired, "IsRequired was wrong");
-        Assert.AreEqual<string>(EXPECTED_ARG_DESC, SystemUnderTest.Description, "Description was wrong");
-        Assert.AreEqual<ArgumentDataType>(EXPECTED_ARG_DATATYPE, SystemUnderTest.DataType, "DataType was wrong");
-        Assert.AreEqual<bool>(EXPECTED_ARG_ALLOWEMPTYVALUE, SystemUnderTest.AllowEmptyValue, "AllowEmptyValue was wrong");
+        Assert.Equal(EXPECTED_ARG_DESC, SystemUnderTest.Description);
+        Assert.Equal(EXPECTED_ARG_VALUE, SystemUnderTest.Value);
+        Assert.Equal(EXPECTED_ARG_NAME, SystemUnderTest.Name);
+        Assert.Equal(EXPECTED_ARG_ISREQUIRED, SystemUnderTest.IsRequired);
+        Assert.Equal(EXPECTED_ARG_DESC, SystemUnderTest.Description);
+        Assert.Equal(EXPECTED_ARG_DATATYPE, SystemUnderTest.DataType);
+        Assert.Equal(EXPECTED_ARG_ALLOWEMPTYVALUE, SystemUnderTest.AllowEmptyValue);
     }
 
-    [TestMethod]
+    [Fact]
     public void IsValid_Required_ValidValue_True()
     {
         // arrange
@@ -104,10 +102,10 @@ public class BooleanArgumentFixture
         var actual = SystemUnderTest.Validate();
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "Validation value is wrong");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void TrySetValue_AllowsEmptyValue_EmptyValue()
     {
         // this test verifies that TrySetValue handles setting the arg value properly
@@ -126,11 +124,11 @@ public class BooleanArgumentFixture
 
         // assert
         var actual = SystemUnderTest.ValueAsBoolean;
-        Assert.AreEqual<bool>(expected, actual, "Wrong value");
-        Assert.AreEqual<bool>(true, SystemUnderTest.HasValue, "HasValue should be true");
+        Assert.Equal(expected, actual);
+        Assert.True(SystemUnderTest.HasValue);
     }
 
-    [TestMethod]
+    [Fact]
     public void TrySetValue_AllowsEmptyValue_NoValueIsSet()
     {
         // this test verifies that TrySetValue handles setting the arg value properly
@@ -144,9 +142,9 @@ public class BooleanArgumentFixture
         // arrange
         InitializeNotRequiredAllowEmptyValue();
 
-        Assert.IsTrue(SystemUnderTest.AllowEmptyValue, "Should allow empty value");
-        Assert.IsFalse(SystemUnderTest.IsRequired, "Should not be required");
-        Assert.IsFalse(SystemUnderTest.HasValue, "HasValue should be false at start of test");
+        Assert.True(SystemUnderTest.AllowEmptyValue);
+        Assert.False(SystemUnderTest.IsRequired);
+        Assert.False(SystemUnderTest.HasValue);
 
         var expected = false;
         string input = string.Empty;
@@ -159,11 +157,11 @@ public class BooleanArgumentFixture
 
         // assert
         var actual = SystemUnderTest.ValueAsBoolean;
-        Assert.AreEqual<bool>(expected, actual, "Wrong value");
-        Assert.AreEqual<bool>(false, SystemUnderTest.HasValue, "HasValue should be true");
+        Assert.Equal(expected, actual);
+        Assert.False(SystemUnderTest.HasValue);
     }
 
-    [TestMethod]
+    [Fact]
     public void TrySetValue_AllowsEmptyValue_PassedAValueOfTrue()
     {
         // this test verifies that TrySetValue handles setting the arg value properly
@@ -184,11 +182,11 @@ public class BooleanArgumentFixture
 
         // assert
         var actual = SystemUnderTest.ValueAsBoolean;
-        Assert.AreEqual<bool>(expected, actual, "Wrong value");
-        Assert.AreEqual<bool>(true, SystemUnderTest.HasValue, "HasValue should be true");
+        Assert.Equal(expected, actual);
+        Assert.True(SystemUnderTest.HasValue);
     }
 
-    [TestMethod]
+    [Fact]
     public void TrySetValue_AllowsEmptyValue_PassedAValueOfFalse()
     {
         // this test verifies that TrySetValue handles setting the arg value properly
@@ -209,27 +207,27 @@ public class BooleanArgumentFixture
 
         // assert
         var actual = SystemUnderTest.ValueAsBoolean;
-        Assert.AreEqual<bool>(expected, actual, "Wrong value");
-        Assert.AreEqual<bool>(true, SystemUnderTest.HasValue, "HasValue should be true");
+        Assert.Equal(expected, actual);
+        Assert.True(SystemUnderTest.HasValue);
     }
 
-    [TestMethod]
+    [Fact]
     public void TrySetValue_False_NullString()
     {
         // arrange
         InitializeWithAllTheArgs_AllowEmptyValue();
         
         var expected = false;
-        string input = null;
+        string? input = null;
 
         // act
         var actual = SystemUnderTest.TrySetValue(input!);
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "Wrong try set value return value");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void TrySetValue_False_NotABool()
     {
         // arrange
@@ -242,10 +240,10 @@ public class BooleanArgumentFixture
         var actual = SystemUnderTest.TrySetValue(input!);
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "Wrong try set value return value");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void TrySetValue_True_ValidBool()
     {
         // arrange
@@ -258,7 +256,7 @@ public class BooleanArgumentFixture
         var actual = SystemUnderTest.TrySetValue(input);
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "Wrong try set value return value");
-        Assert.AreEqual<bool>(expectedValue, SystemUnderTest.Value, "Value was wrong");
+        Assert.Equal(expected, actual);
+        Assert.Equal(expectedValue, SystemUnderTest.Value);
     }    
 }

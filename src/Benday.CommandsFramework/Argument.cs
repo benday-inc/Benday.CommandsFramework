@@ -112,7 +112,7 @@ public abstract class Argument<T> : IArgument
         }
     }
 
-    string IArgument.Value { get => Value.ToString(); }
+    string IArgument.Value { get => Value?.ToString() ?? string.Empty; }
 
     /// <summary>
     /// Try to set the value for this argument

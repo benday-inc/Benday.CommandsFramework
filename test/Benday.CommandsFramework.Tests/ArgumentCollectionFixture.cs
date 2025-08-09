@@ -1,11 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-namespace Benday.CommandsFramework.Tests;
+﻿namespace Benday.CommandsFramework.Tests;
 
-[TestClass]
 public class ArgumentCollectionFixture
 {
-    [TestInitialize]
-    public void OnTestInitialize()
+        public ArgumentCollectionFixture()
     {
         _SystemUnderTest = null;
     }
@@ -25,7 +22,7 @@ public class ArgumentCollectionFixture
         }
     }
 
-    [TestMethod]
+    [Fact]
     public void StartsAsEmpty()
     {
         // arrange
@@ -35,10 +32,10 @@ public class ArgumentCollectionFixture
         var actual = SystemUnderTest.Count;
 
         // assert
-        Assert.AreEqual<int>(expected, actual, "Item count was wrong.");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void Add()
     {
         // arrange
@@ -51,10 +48,10 @@ public class ArgumentCollectionFixture
 
         // assert
         var actual = SystemUnderTest.Count; 
-        Assert.AreEqual<int>(expected, actual, "Item count was wrong.");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void Contains_ForItemThatExists_ReturnsTrue()
     {
         // arrange
@@ -67,10 +64,10 @@ public class ArgumentCollectionFixture
         var actual = SystemUnderTest.ContainsKey(key);
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "Contains return value was wrong.");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void Contains_ForItemThatDoesNotExist_ReturnsFalse()
     {
         // arrange
@@ -81,10 +78,10 @@ public class ArgumentCollectionFixture
         var actual = SystemUnderTest.ContainsKey(key);
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "Contains return value was wrong.");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void Remove_ForItemThatExists()
     {
         // arrange
@@ -98,10 +95,10 @@ public class ArgumentCollectionFixture
 
         // assert
         var actual = SystemUnderTest.ContainsKey(key);
-        Assert.AreEqual<bool>(expected, actual, "Contains return value was wrong.");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void Remove_ForItemThatDoesNotExist()
     {
         // arrange
@@ -113,10 +110,10 @@ public class ArgumentCollectionFixture
 
         // assert
         var actual = SystemUnderTest.ContainsKey(key);
-        Assert.AreEqual<bool>(expected, actual, "Contains return value was wrong.");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void Ctor_UsingExistingDictionary_CopiesItems()
     {
         // arrange
@@ -140,20 +137,19 @@ public class ArgumentCollectionFixture
         _SystemUnderTest = new ArgumentCollection(fromDictionary);
 
         // assert
-        Assert.AreEqual<int>(expectedCount, SystemUnderTest.Count, "Wrong count");
+        Assert.Equal(expectedCount, SystemUnderTest.Count);
 
         // wipe out the source dictionary
         fromDictionary.Clear();
 
-        Assert.AreEqual<int>(expectedCount, SystemUnderTest.Count, "Wrong count...values aren't being copies and there's a byref problem");
+        Assert.Equal(expectedCount, SystemUnderTest.Count);
 
-        Assert.IsTrue(SystemUnderTest.ContainsKey(key1), "Key1 should exist");
-        Assert.IsTrue(SystemUnderTest.ContainsKey(key2), "Key2 should exist");
-        Assert.IsTrue(SystemUnderTest.ContainsKey(key3), "Key3 should exist");
+        Assert.True(SystemUnderTest.ContainsKey(key1));
+        Assert.True(SystemUnderTest.ContainsKey(key2));
+        Assert.True(SystemUnderTest.ContainsKey(key3));
     }
 
-    [TestMethod]
-    [ExpectedException(typeof(InvalidOperationException))]
+    [Fact]
     public void Ctor_UsingExistingDictionary_ThrowsExceptionOnNullValueInDictionary()
     {
         // arrange
@@ -173,14 +169,13 @@ public class ArgumentCollectionFixture
 
         var expectedCount = fromDictionary.Count;
 
-        // act
-        _SystemUnderTest = new ArgumentCollection(fromDictionary);
-
-        // assert
-       
+        // act & assert
+        Assert.Throws<InvalidOperationException>(() => {
+            _SystemUnderTest = new ArgumentCollection(fromDictionary);
+        });
     }
 
-    [TestMethod]
+    [Fact]
     public void SetValues()
     {
         // arrange
@@ -216,7 +211,7 @@ public class ArgumentCollectionFixture
         AssertArgumentValue("verbose", true);
     }
 
-    [TestMethod]
+    [Fact]
     public void SetValues_PositionalArgs()
     {
         // arrange
@@ -244,7 +239,7 @@ public class ArgumentCollectionFixture
         AssertArgumentValue("arg1", "this-is-arg1");
     }
 
-    [TestMethod]
+    [Fact]
     public void ExtensionMethods_GetBooleanValue_ArgDoesNotAllowEmptyValue_True()
     {
         // arrange
@@ -268,10 +263,10 @@ public class ArgumentCollectionFixture
         var actual = SystemUnderTest.GetBooleanValue("isawesome");
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "Wrong value");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void ExtensionMethods_GetBooleanValue_ArgDoesNotAllowEmptyValue_False()
     {
         // arrange
@@ -295,10 +290,10 @@ public class ArgumentCollectionFixture
         var actual = SystemUnderTest.GetBooleanValue("isawesome");
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "Wrong value");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void ExtensionMethods_GetBooleanValue_ArgAllowsEmptyValue_True()
     {
         // arrange
@@ -323,10 +318,10 @@ public class ArgumentCollectionFixture
         var actual = SystemUnderTest.GetBooleanValue("verbose");
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "Wrong value");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void ExtensionMethods_GetBooleanValue_ArgAllowsEmptyValue_False()
     {
         // arrange
@@ -350,67 +345,67 @@ public class ArgumentCollectionFixture
         var actual = SystemUnderTest.GetBooleanValue("verbose");
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "Wrong value");
+        Assert.Equal(expected, actual);
     }
 
     private void AssertArgumentValue(string expectedKey, string expectedValue)
     {
-        Assert.IsTrue(SystemUnderTest.ContainsKey(expectedKey), $"Key named '{expectedKey}' not found");
+        Assert.True(SystemUnderTest.ContainsKey(expectedKey));
 
         var actual = SystemUnderTest[expectedKey];
 
         var actualAsTyped = actual as StringArgument;
 
-        Assert.IsNotNull(actualAsTyped, $"Could not convert '{expectedKey}' argument to StringArgument");
+        Assert.NotNull(actualAsTyped);
 
-        Assert.IsTrue(actualAsTyped.Validate(), $"Arg named '{expectedKey}' should be valid");
+        Assert.True(actualAsTyped.Validate());
 
-        Assert.AreEqual<string>(expectedValue, actualAsTyped.Value, $"Value for key named '{expectedKey}' was wrong");
+        Assert.Equal(expectedValue, actualAsTyped.Value);
     }
 
     private void AssertArgumentValue(string expectedKey, int expectedValue)
     {
-        Assert.IsTrue(SystemUnderTest.ContainsKey(expectedKey), $"Key named '{expectedKey}' not found");
+        Assert.True(SystemUnderTest.ContainsKey(expectedKey));
 
         var actual = SystemUnderTest[expectedKey];
 
         var actualAsTyped = actual as Int32Argument;
 
-        Assert.IsNotNull(actualAsTyped, $"Could not convert '{expectedKey}' argument to StringArgument");
+        Assert.NotNull(actualAsTyped);
 
-        Assert.IsTrue(actualAsTyped.Validate(), "Should be valid");
+        Assert.True(actualAsTyped.Validate());
 
-        Assert.AreEqual<int>(expectedValue, actualAsTyped.Value, $"Value for key named '{expectedKey}' was wrong");
+        Assert.Equal(expectedValue, actualAsTyped.Value);
     }
 
     private void AssertArgumentValue(string expectedKey, bool expectedValue)
     {
-        Assert.IsTrue(SystemUnderTest.ContainsKey(expectedKey), $"Key named '{expectedKey}' not found");
+        Assert.True(SystemUnderTest.ContainsKey(expectedKey));
 
         var actual = SystemUnderTest[expectedKey];
 
         var actualAsTyped = actual as BooleanArgument;
 
-        Assert.IsNotNull(actualAsTyped, $"Could not convert '{expectedKey}' argument to StringArgument");
+        Assert.NotNull(actualAsTyped);
 
-        Assert.IsTrue(actualAsTyped.Validate(), "Should be valid");
+        Assert.True(actualAsTyped.Validate());
 
-        Assert.AreEqual<bool>(expectedValue, actualAsTyped.Value, $"Value for key named '{expectedKey}' was wrong");
+        Assert.Equal(expectedValue, actualAsTyped.Value);
     }
 
     private void AssertArgumentValue(string expectedKey, DateTime expectedValue)
     {
-        Assert.IsTrue(SystemUnderTest.ContainsKey(expectedKey), $"Key named '{expectedKey}' not found");
+        Assert.True(SystemUnderTest.ContainsKey(expectedKey));
 
         var actual = SystemUnderTest[expectedKey];
 
         var actualAsTyped = actual as DateTimeArgument;
 
-        Assert.IsNotNull(actualAsTyped, $"Could not convert '{expectedKey}' argument to StringArgument");
+        Assert.NotNull(actualAsTyped);
 
-        Assert.IsTrue(actualAsTyped.Validate(), "Should be valid");
+        Assert.True(actualAsTyped.Validate());
 
-        Assert.AreEqual<DateTime>(expectedValue, actualAsTyped.Value, $"Value for key named '{expectedKey}' was wrong");
+        Assert.Equal(expectedValue, actualAsTyped.Value);
     }
 
     

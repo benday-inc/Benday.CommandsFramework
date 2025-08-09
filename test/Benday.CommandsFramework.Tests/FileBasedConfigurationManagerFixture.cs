@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 namespace Benday.CommandsFramework.Tests;
 
 
-[TestClass]
 public class FileBasedConfigurationManagerFixture
 {
-    [TestInitialize]
-    public void OnTestInitialize()
+        public FileBasedConfigurationManagerFixture()
     {
         _SystemUnderTest = null;
     }
@@ -33,7 +31,7 @@ public class FileBasedConfigurationManagerFixture
         }
     }
 
-    [TestMethod]
+    [Fact]
     public void ConfigFileExists_True()
     {
         // arrange
@@ -58,11 +56,11 @@ public class FileBasedConfigurationManagerFixture
         var configFileExists = SystemUnderTest.ConfigFileExists();
 
         // assert
-        Assert.IsTrue(configFileExists, $"Expected config file to exist at {expected}");
+        Assert.True(configFileExists);
     }
 
 
-    [TestMethod]
+    [Fact]
     public void ConfigFileExists_False()
     {
         // arrange
@@ -77,10 +75,10 @@ public class FileBasedConfigurationManagerFixture
 
         // assert
     
-        Assert.IsFalse(configFileExists, $"Expected config file to not exist at {expected}");
+        Assert.False(configFileExists);
     }
 
-    [TestMethod]
+    [Fact]
     public void SetValueCreatesConfigFile()
     {
         // arrange
@@ -92,11 +90,10 @@ public class FileBasedConfigurationManagerFixture
         SystemUnderTest.SetValue("testkey", "testvalue");
 
         // assert
-        Assert.IsTrue(SystemUnderTest.ConfigFileExists(),
-            $"config file should exist");
+        Assert.True(SystemUnderTest.ConfigFileExists());
     }
 
-    [TestMethod]
+    [Fact]
     public void SetValue_NewValue_ReadItBack()
     {
         // arrange
@@ -114,10 +111,10 @@ public class FileBasedConfigurationManagerFixture
         
         var actual = reloaded.GetValue(expectedKey);
 
-        Assert.AreEqual<string>(expectedValue, actual, $"Reloaded value was wrong.");
+        Assert.Equal(expectedValue, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void SetValue_ExistingValue_ReadItBack()
     {
         // arrange
@@ -138,10 +135,10 @@ public class FileBasedConfigurationManagerFixture
 
         var actual = reloaded.GetValue(expectedKey);
 
-        Assert.AreEqual<string>(expectedValueAfter, actual, $"Reloaded value was wrong.");
+        Assert.Equal(expectedValueAfter, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void RemoveValue_ExistingValue_DeletesIt()
     {
         // arrange
@@ -161,10 +158,10 @@ public class FileBasedConfigurationManagerFixture
 
         var actual = reloaded.HasValue(expectedKey);
 
-        Assert.IsFalse(actual, "value should not exist after remove");
+        Assert.False(actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void RemoveValue_NonExistingValue_DoesNothing()
     {
         // arrange
@@ -181,10 +178,10 @@ public class FileBasedConfigurationManagerFixture
 
         var actual = reloaded.HasValue(expectedKey);
 
-        Assert.IsFalse(actual, "value should not exist after remove");
+        Assert.False(actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void GetValue_ThatDoesNotExist_ReturnsStringEmpty()
     {
         // arrange
@@ -198,10 +195,10 @@ public class FileBasedConfigurationManagerFixture
         var actual = SystemUnderTest.GetValue(expectedKey);
 
         // assert
-        Assert.AreEqual<string>(expectedValue, actual, $"Reloaded value was wrong.");
+        Assert.Equal(expectedValue, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void GetValues_ReturnsAllValues()
     {
         // arrange
@@ -217,10 +214,10 @@ public class FileBasedConfigurationManagerFixture
         var actual = SystemUnderTest.GetValues();
 
         // assert
-        Assert.AreEqual<int>(3, actual.Count, $"Value count was wrong.");
+        Assert.Equal(3, actual.Count);
     }
 
-    [TestMethod]
+    [Fact]
     public void HasValue_ValueExists_True()
     {
         // arrange
@@ -236,10 +233,10 @@ public class FileBasedConfigurationManagerFixture
         var actual = SystemUnderTest.HasValue(expectedKey);
 
         // assert
-        Assert.IsTrue(actual, "Value should exist");
+        Assert.True(actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void HasValue_ValueDoesNotExist_False()
     {
         // arrange
@@ -252,7 +249,7 @@ public class FileBasedConfigurationManagerFixture
         var actual = SystemUnderTest.HasValue(expectedKey);
 
         // assert
-        Assert.IsFalse(actual, "Value should not exist");
+        Assert.False(actual);
     }
 
     private void DeleteDirectory()
@@ -275,7 +272,7 @@ public class FileBasedConfigurationManagerFixture
         }
     }
 
-    [TestMethod]
+    [Fact]
     public void GetConfigFilePath()
     {
         // arrange
@@ -291,10 +288,10 @@ public class FileBasedConfigurationManagerFixture
         var actual = FileBasedConfigurationManager.GetConfigurationFilePath(APPLICATION_NAME);
 
         // assert
-        Assert.AreEqual<string>(expected, actual, $"Config filename was wrong");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void GetConfigDirPath()
     {
         // arrange
@@ -309,35 +306,33 @@ public class FileBasedConfigurationManagerFixture
         var actual = FileBasedConfigurationManager.GetConfigurationDirectoryPath(APPLICATION_NAME);
 
         // assert
-        Assert.AreEqual<string>(expectedDir, actual, $"Config dir path was wrong");
+        Assert.Equal(expectedDir, actual);
     }
 
-    [TestMethod]
-    [ExpectedException(typeof(ArgumentException))]
+    [Fact]
     public void GetConfigFilePath_ThrowsOnInvalidAppName()
     {
         // arrange
         // get path to user profile dir
         var applicationName = string.Empty;
 
-        // act
-        var actual = FileBasedConfigurationManager.GetConfigurationFilePath(applicationName);
-
-        // assert
+        // act & assert
+        Assert.Throws<ArgumentException>(() => {
+            var actual = FileBasedConfigurationManager.GetConfigurationFilePath(applicationName);
+        });
     }
 
-    [TestMethod]
-    [ExpectedException(typeof(ArgumentException))]
+    [Fact]
     public void GetConfigDirPath_ThrowsOnInvalidAppName()
     {
         // arrange
         // get path to user profile dir
         var applicationName = string.Empty;
 
-        // act
-        var actual = FileBasedConfigurationManager.GetConfigurationDirectoryPath(applicationName);
-
-        // assert
+        // act & assert
+        Assert.Throws<ArgumentException>(() => {
+            var actual = FileBasedConfigurationManager.GetConfigurationDirectoryPath(applicationName);
+        });
     }
 
 

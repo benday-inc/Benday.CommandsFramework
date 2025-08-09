@@ -3,11 +3,9 @@ using System.Reflection.Metadata;
 
 namespace Benday.CommandsFramework.Tests;
 
-[TestClass]
 public class SampleCommandWithDefaultValuesFixture
 {
-    [TestInitialize]
-    public void OnTestInitialize()
+        public SampleCommandWithDefaultValuesFixture()
     {
         _SystemUnderTest = null;
         _OutputProvider = null;
@@ -19,7 +17,7 @@ public class SampleCommandWithDefaultValuesFixture
     {
         get
         {
-            Assert.IsNotNull(_SystemUnderTest);
+            Assert.NotNull(_SystemUnderTest);
 
             return _SystemUnderTest;
         }
@@ -41,7 +39,7 @@ public class SampleCommandWithDefaultValuesFixture
     }
 
 
-    [TestMethod]
+    [Fact]
     public void GetHelp()
     {
         // arrange
@@ -60,12 +58,12 @@ public class SampleCommandWithDefaultValuesFixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.IsFalse(output.Contains("** SUCCESS **"), "Should not contain expected string");
-        Assert.IsFalse(output.Contains("** INVALID ARGUMENTS **"), "Should not contain expected string");
-        Assert.IsTrue(output.Contains("** USAGE **"), "Did not contain expected string");
+        Assert.DoesNotContain("** SUCCESS **", output);
+        Assert.DoesNotContain("** INVALID ARGUMENTS **", output);
+        Assert.Contains("** USAGE **", output);
     }
 
-    [TestMethod]
+    [Fact]
     public void CreateAndRun_Valid_NoArgsSuppliedUsesDefaults()
     {
         // arrange
@@ -83,15 +81,15 @@ public class SampleCommandWithDefaultValuesFixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.IsTrue(output.Contains("** SUCCESS **"), "Did not contain expected string");
+        Assert.Contains("** SUCCESS **", output);
 
-        Assert.IsTrue(output.Contains($"thing-date: {new DateTime(2023, 06, 23)}"), "Did not contain expected string for thing-date");
-        Assert.IsTrue(output.Contains("thing-number: 123"), "Did not contain expected string for thing-number");
-        Assert.IsTrue(output.Contains("isThingy: True"), "Did not contain expected string for isThingy");
-        Assert.IsTrue(output.Contains("bingbong: wickid awesome"), "Did not contain expected string for bingbong");
+        Assert.Contains($"thing-date: {new DateTime(2023, 06, 23)}", output);
+        Assert.Contains("thing-number: 123", output);
+        Assert.Contains("isThingy: True", output);
+        Assert.Contains("bingbong: wickid awesome", output);
     }
 
-    [TestMethod]
+    [Fact]
     public void CreateAndRun_Valid_UsesSuppliedValuesRatherThanDefaults()
     {
         // arrange
@@ -113,11 +111,11 @@ public class SampleCommandWithDefaultValuesFixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.IsTrue(output.Contains("** SUCCESS **"), "Did not contain expected string");
+        Assert.Contains("** SUCCESS **", output);
 
-        Assert.IsTrue(output.Contains($"thing-date: {new DateTime(2001, 01, 01)}"), "Did not contain expected string for thing-date");
-        Assert.IsTrue(output.Contains("thing-number: 456"), "Did not contain expected string for thing-number");
-        Assert.IsTrue(output.Contains("isThingy: False"), "Did not contain expected string for isThingy");
-        Assert.IsTrue(output.Contains("bingbong: blah"), "Did not contain expected string bingbong");
+        Assert.Contains($"thing-date: {new DateTime(2001, 01, 01)}", output);
+        Assert.Contains("thing-number: 456", output);
+        Assert.Contains("isThingy: False", output);
+        Assert.Contains("bingbong: blah", output);
     }
 }

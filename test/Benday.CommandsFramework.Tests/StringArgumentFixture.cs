@@ -1,10 +1,8 @@
 ﻿namespace Benday.CommandsFramework.Tests;
 
-[TestClass]
 public class StringArgumentFixture
 {
-    [TestInitialize]
-    public void OnTestInitialize()
+        public StringArgumentFixture()
     {
         _SystemUnderTest = null;
     }
@@ -76,7 +74,7 @@ public class StringArgumentFixture
         _SystemUnderTest = temp;
     }
 
-    [TestMethod]
+    [Fact]
     public void Ctor_WithAllValues()
     {
         // arrange
@@ -85,15 +83,15 @@ public class StringArgumentFixture
         InitializeWithAllTheArgsExceptAlias();
 
         // assert
-        Assert.AreEqual<string>(EXPECTED_ARG_DESC, SystemUnderTest.Description, "Description was wrong");
-        Assert.AreEqual<string>(EXPECTED_ARG_VALUE, SystemUnderTest.Value, "Value was wrong");
-        Assert.AreEqual<string>(EXPECTED_ARG_NAME, SystemUnderTest.Name, "Name was wrong");
-        Assert.AreEqual<bool>(EXPECTED_ARG_ISREQUIRED, SystemUnderTest.IsRequired, "IsRequired was wrong");
-        Assert.AreEqual<ArgumentDataType>(EXPECTED_ARG_DATATYPE, SystemUnderTest.DataType, "DataType was wrong");
-        Assert.AreEqual<bool>(EXPECTED_ARG_ALLOWEMPTYVALUE, SystemUnderTest.AllowEmptyValue, "AllowEmptyValue was wrong");
+        Assert.Equal(EXPECTED_ARG_DESC, SystemUnderTest.Description);
+        Assert.Equal(EXPECTED_ARG_VALUE, SystemUnderTest.Value);
+        Assert.Equal(EXPECTED_ARG_NAME, SystemUnderTest.Name);
+        Assert.Equal(EXPECTED_ARG_ISREQUIRED, SystemUnderTest.IsRequired);
+        Assert.Equal(EXPECTED_ARG_DATATYPE, SystemUnderTest.DataType);
+        Assert.Equal(EXPECTED_ARG_ALLOWEMPTYVALUE, SystemUnderTest.AllowEmptyValue);
     }
 
-    [TestMethod]
+    [Fact]
     public void Ctor_WithJustName()
     {
         // arrange
@@ -102,15 +100,16 @@ public class StringArgumentFixture
         _SystemUnderTest = new StringArgument(EXPECTED_ARG_NAME);
 
         // assert
-        Assert.AreEqual<string>(EXPECTED_ARG_NAME, SystemUnderTest.Description, "Description was wrong");
-        Assert.AreEqual<string>(string.Empty, SystemUnderTest.Value, "Value was wrong");
-        Assert.AreEqual<string>(EXPECTED_ARG_NAME, SystemUnderTest.Name, "Name was wrong");
-        Assert.AreEqual<bool>(EXPECTED_ARG_ISREQUIRED, SystemUnderTest.IsRequired, "IsRequired was wrong");
-        Assert.AreEqual<ArgumentDataType>(EXPECTED_ARG_DATATYPE, SystemUnderTest.DataType, "DataType was wrong");
-        Assert.AreEqual<bool>(false, SystemUnderTest.AllowEmptyValue, "AllowEmptyValue was wrong");
-        Assert.IsFalse(SystemUnderTest.HasValue, "HasValue was wrong");
+        Assert.Equal(EXPECTED_ARG_NAME, SystemUnderTest.Description);
+        Assert.Equal(string.Empty, SystemUnderTest.Value);
+        Assert.Equal(EXPECTED_ARG_NAME, SystemUnderTest.Name);
+        Assert.Equal(EXPECTED_ARG_ISREQUIRED, SystemUnderTest.IsRequired);
+        Assert.Equal(EXPECTED_ARG_DATATYPE, SystemUnderTest.DataType);
+        Assert.False(SystemUnderTest.AllowEmptyValue);
+        Assert.False(SystemUnderTest.HasValue);
     }
 
+    [Fact]
     public void Ctor_WithNameAndValue()
     {
         // arrange
@@ -123,17 +122,17 @@ public class StringArgumentFixture
         _SystemUnderTest = arg;
 
         // assert
-        Assert.AreEqual<string>(EXPECTED_ARG_NAME, SystemUnderTest.Description, "Description was wrong");
-        Assert.AreEqual<string>(EXPECTED_ARG_VALUE, SystemUnderTest.Value, "Value was wrong");
-        Assert.AreEqual<string>(EXPECTED_ARG_NAME, SystemUnderTest.Name, "Name was wrong");
-        Assert.AreEqual<bool>(EXPECTED_ARG_ISREQUIRED, SystemUnderTest.IsRequired, "IsRequired was wrong");
-        Assert.AreEqual<ArgumentDataType>(EXPECTED_ARG_DATATYPE, SystemUnderTest.DataType, "DataType was wrong");
-        Assert.AreEqual<bool>(EXPECTED_ARG_ALLOWEMPTYVALUE, SystemUnderTest.AllowEmptyValue, "AllowEmptyValue was wrong");
-        Assert.IsTrue(SystemUnderTest.HasValue, "HasValue was wrong");
+        Assert.Equal(EXPECTED_ARG_NAME, SystemUnderTest.Description);
+        Assert.Equal(EXPECTED_ARG_VALUE, SystemUnderTest.Value);
+        Assert.Equal(EXPECTED_ARG_NAME, SystemUnderTest.Name);
+        Assert.Equal(EXPECTED_ARG_ISREQUIRED, SystemUnderTest.IsRequired);
+        Assert.Equal(EXPECTED_ARG_DATATYPE, SystemUnderTest.DataType);
+        Assert.False(SystemUnderTest.AllowEmptyValue);
+        Assert.True(SystemUnderTest.HasValue);
     }
 
 
-    [TestMethod]
+    [Fact]
     public void IsValid_Required_ValidValue_True()
     {
         // arrange
@@ -146,10 +145,10 @@ public class StringArgumentFixture
         var actual = SystemUnderTest.Validate();
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "Validation value is wrong");        
+        Assert.Equal(expected, actual);        
     }
 
-    [TestMethod]
+    [Fact]
     public void IsValid_Required_AllowEmptyValueFalse_EmptyString_False()
     {
         // arrange
@@ -162,10 +161,10 @@ public class StringArgumentFixture
         var actual = SystemUnderTest.Validate();
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "Validation value is wrong");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void IsValid_Required_AllowEmptyValueTrue_EmptyString_True()
     {
         // arrange
@@ -178,10 +177,10 @@ public class StringArgumentFixture
         var actual = SystemUnderTest.Validate();
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "Validation value is wrong");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]    
+    [Fact]    
     public void HasAlias_False_WhenAliasIsNotSet()
     {
         // arrange
@@ -192,10 +191,10 @@ public class StringArgumentFixture
         var actual = SystemUnderTest.HasAlias;
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "HasAlias value is wrong");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void HasAlias_False_WhenAliasIsWhitespaceString()
     {
         // arrange
@@ -209,10 +208,10 @@ public class StringArgumentFixture
         var actual = SystemUnderTest.HasAlias;
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "HasAlias value is wrong");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void HasAlias_False_WhenAliasIsSetToNamePropertyValue()
     {
         // arrange
@@ -226,10 +225,10 @@ public class StringArgumentFixture
         var actual = SystemUnderTest.HasAlias;
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "HasAlias value is wrong");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void HasAlias_True_WhenSetToValue()
     {
         // arrange
@@ -243,10 +242,10 @@ public class StringArgumentFixture
         var actual = SystemUnderTest.HasAlias;
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "HasAlias value is wrong");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void SetAliasViaFluentMethod_StringAlias()
     {
         // arrange
@@ -260,11 +259,11 @@ public class StringArgumentFixture
 
         // assert
         var actualHasAlias = SystemUnderTest.HasAlias;
-        Assert.AreEqual<bool>(expectedHasAlias, actualHasAlias, "HasAlias value is wrong");
-        Assert.AreEqual<string>(expectedAlias, SystemUnderTest.Alias, $"Alias value was wrong");
+        Assert.Equal(expectedHasAlias, actualHasAlias);
+        Assert.Equal(expectedAlias, SystemUnderTest.Alias);
     }
 
-    [TestMethod]
+    [Fact]
     public void SetPositionalSourceViaFluentMethod()
     {
         // arrange
@@ -280,39 +279,36 @@ public class StringArgumentFixture
         // assert
         var actualHasAlias = SystemUnderTest.HasAlias;
         
-        Assert.AreEqual<bool>(expectedHasAlias, actualHasAlias, "HasAlias value is wrong");
-        Assert.AreEqual<bool>(expectedIsPositionalSource, SystemUnderTest.IsPositionalSource,
-            "IsPositionalSource value is wrong");
-        Assert.AreEqual<string>(expectedAlias, SystemUnderTest.Alias, $"Alias value was wrong");
+        Assert.Equal(expectedHasAlias, actualHasAlias);
+        Assert.Equal(expectedIsPositionalSource, SystemUnderTest.IsPositionalSource);
+        Assert.Equal(expectedAlias, SystemUnderTest.Alias);
     }
 
-    [ExpectedException(typeof(ArgumentOutOfRangeException))]
-    [TestMethod]
+    [Fact]
     public void SetPositionalSourceViaFluentMethod_ThrowsExceptionForLessThan1()
     {
         // arrange
         InitializeWithAllTheArgsExceptAlias();
         
-        // act
-        SystemUnderTest.FromPositionalArgument(0);
-
-        // assert        
+        // act & assert
+        Assert.Throws<ArgumentOutOfRangeException>(() => {
+            SystemUnderTest.FromPositionalArgument(0);
+        });
     }
 
-    [ExpectedException(typeof(ArgumentOutOfRangeException))]
-    [TestMethod]
+    [Fact]
     public void SetPositionalSourceViaFluentMethod_ThrowsExceptionForLessThan0()
     {
         // arrange
         InitializeWithAllTheArgsExceptAlias();
 
-        // act
-        SystemUnderTest.FromPositionalArgument(-1);
-
-        // assert        
+        // act & assert
+        Assert.Throws<ArgumentOutOfRangeException>(() => {
+            SystemUnderTest.FromPositionalArgument(-1);
+        });
     }
 
-    [TestMethod]
+    [Fact]
     public void IsValid_NoValueSet_Required_AllowEmptyValueFalse_False()
     {
         // arrange
@@ -325,11 +321,11 @@ public class StringArgumentFixture
         var actual = SystemUnderTest.Validate();
 
         // assert
-        Assert.AreEqual<bool>(expectedHasValue, SystemUnderTest.HasValue, "HasValue value is wrong");
-        Assert.AreEqual<bool>(expected, actual, "Validation value is wrong");
+        Assert.Equal(expectedHasValue, SystemUnderTest.HasValue);
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void IsValid_NoValueSet_Required_AllowEmptyValueTrue_True()
     {
         // arrange
@@ -342,11 +338,11 @@ public class StringArgumentFixture
         var actual = SystemUnderTest.Validate();
 
         // assert
-        Assert.AreEqual<bool>(expectedHasValue, SystemUnderTest.HasValue, "HasValue value is wrong");
-        Assert.AreEqual<bool>(expected, actual, "Validation value is wrong");
+        Assert.Equal(expectedHasValue, SystemUnderTest.HasValue);
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void TrySetValue_False()
     {
         // arrange
@@ -358,10 +354,10 @@ public class StringArgumentFixture
         var actual = SystemUnderTest.TrySetValue(input!);
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "Wrong try set value return value");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void TrySetValue_True_EmptyString()
     {
         // arrange
@@ -373,10 +369,10 @@ public class StringArgumentFixture
         var actual = SystemUnderTest.TrySetValue(input);
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "Wrong try set value return value");
+        Assert.Equal(expected, actual);
     }
 
-    [TestMethod]
+    [Fact]
     public void TrySetValue_True_NonEmptyString()
     {
         // arrange
@@ -388,6 +384,6 @@ public class StringArgumentFixture
         var actual = SystemUnderTest.TrySetValue(input);
 
         // assert
-        Assert.AreEqual<bool>(expected, actual, "Wrong try set value return value");
+        Assert.Equal(expected, actual);
     }
 }

@@ -214,9 +214,13 @@ public class CommandAttributeUtility
         }
     }
 
-    private CommandBase? GetCommandInstance(Assembly containingAssembly, CommandExecutionInfo? execInfo,
+    private CommandBase? GetCommandInstance(
+        Assembly containingAssembly,
+        CommandExecutionInfo? execInfo,
         bool throwException = true)
     {
+        ArgumentNullException.ThrowIfNull(execInfo, nameof(execInfo));
+
         var commandNames = GetAvailableCommandNames(containingAssembly);
 
         if (commandNames.Contains(execInfo.CommandName) == false)

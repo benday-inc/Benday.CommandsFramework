@@ -267,13 +267,15 @@ public static class ExtensionMethods
         {
             throw new ArgumentNullException(nameof(arg));
         }
-        else if (defaultValue == null)
+        else if (defaultValue is null)
         {
-            throw new ArgumentNullException(nameof(arg));
+            throw new ArgumentNullException(nameof(defaultValue));
         }
         else
         {
-            arg.TrySetValue(defaultValue.ToString());
+            var defaultValueString = defaultValue.ToString() ?? string.Empty;
+
+            arg.TrySetValue(defaultValueString);
 
             return arg;
         }

@@ -1,15 +1,12 @@
 using Benday.CommandsFramework.Samples;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Reflection;
 using System.Text;
 
 namespace Benday.CommandsFramework.Tests;
 
-[TestClass]
 public class CommandAttributeUtilityFixture
 {
-    [TestInitialize]
-    public void OnTestInitialize()
+        public CommandAttributeUtilityFixture()
     {
         _SystemUnderTest = null;
     }
@@ -51,7 +48,7 @@ public class CommandAttributeUtilityFixture
         }
     }
 
-    [TestMethod]
+    [Fact]
     public void GetAvailableCommandNames_UsesConfigurationCommands_False()
     {
         // arrange
@@ -64,14 +61,14 @@ public class CommandAttributeUtilityFixture
         var actual = SystemUnderTest.GetAvailableCommandNames(sampleAssembly);
 
         // assert
-        Assert.IsNotNull(actual, "Result was null");
-        Assert.AreNotEqual<int>(0, actual.Count, "Result count was zero");
-        Assert.AreEqual<int>(expectedCount, actual.Count, "result count wrong");
+        Assert.NotNull(actual);
+        Assert.NotEmpty(actual);
+        Assert.Equal(expectedCount, actual.Count);
 
         actual.ForEach(x => { Console.WriteLine($"{x}"); });
     }
 
-    [TestMethod]
+    [Fact]
     public void GetAvailableCommandNames_UsesConfigurationCommands_True()
     {
         // arrange
@@ -86,14 +83,14 @@ public class CommandAttributeUtilityFixture
         var actual = SystemUnderTest.GetAvailableCommandNames(sampleAssembly);
 
         // assert
-        Assert.IsNotNull(actual, "Result was null");
-        Assert.AreNotEqual<int>(0, actual.Count, "Result count was zero");
-        Assert.AreEqual<int>(expectedCount, actual.Count, "result count wrong");
+        Assert.NotNull(actual);
+        Assert.NotEmpty(actual);
+        Assert.Equal(expectedCount, actual.Count);
 
         actual.ForEach(x => { Console.WriteLine($"{x}"); });
     }
 
-    [TestMethod]
+    [Fact]
     public void GetInstance_Command1()
     {
         // arrange
@@ -117,15 +114,14 @@ public class CommandAttributeUtilityFixture
         var actual = SystemUnderTest.GetCommand(args, sampleAssembly);
 
         // assert
-        Assert.IsNotNull(actual, "Result was null");
-        Assert.IsNotNull(actual.ExecutionInfo, "Execution info was null");
-        Assert.AreEqual<string>(expectedCommandName, actual.ExecutionInfo.CommandName, "Command name was wrong");
-        Assert.AreEqual<int>(3, actual.ExecutionInfo.Arguments.Count, "Arg count was wrong");
-        Assert.AreSame(CommandProgramOptionsInstance, actual.ExecutionInfo.Options, "Options was wrong");
+        Assert.NotNull(actual);
+        Assert.NotNull(actual.ExecutionInfo);
+        Assert.Equal(expectedCommandName, actual.ExecutionInfo.CommandName);
+        Assert.Equal(3, actual.ExecutionInfo.Arguments.Count);
+        Assert.Same(CommandProgramOptionsInstance, actual.ExecutionInfo.Options);
     }
 
-    [TestMethod]
-    [ExpectedException(typeof(MissingArgumentException))]
+    [Fact]
     public void GetInstanceOfConfigCommand_ReturnsNothingWhenOptionToUseDefaultConfigIsFalse()
     {
         // arrange
@@ -137,14 +133,13 @@ public class CommandAttributeUtilityFixture
 
         var sampleAssembly = typeof(Benday.CommandsFramework.Samples.SampleCommand1).Assembly;
 
-        // act
-        var actual = SystemUnderTest.GetCommand(args, sampleAssembly);
-
-        // assert
-        Assert.IsNull(actual, "Result was null");
+        // act & assert
+        Assert.Throws<MissingArgumentException>(() => {
+            var actual = SystemUnderTest.GetCommand(args, sampleAssembly);
+        });
     }
 
-    [TestMethod]
+    [Fact]
     public void GetInstanceOfConfigCommand_ReturnsCommandWhenOptionToUseDefaultConfigIsTrue()
     {
         // arrange
@@ -160,13 +155,13 @@ public class CommandAttributeUtilityFixture
         var actual = SystemUnderTest.GetCommand(args, sampleAssembly);
 
         // assert
-        Assert.IsNotNull(actual, "Result was null");
-        Assert.IsNotNull(actual.ExecutionInfo, "Execution info was null");
-        Assert.AreEqual<string>(expectedCommandName, actual.ExecutionInfo.CommandName, "Command name was wrong");
-        Assert.AreSame(CommandProgramOptionsInstance, actual.ExecutionInfo.Options, "Options was wrong");
+        Assert.NotNull(actual);
+        Assert.NotNull(actual.ExecutionInfo);
+        Assert.Equal(expectedCommandName, actual.ExecutionInfo.CommandName);
+        Assert.Same(CommandProgramOptionsInstance, actual.ExecutionInfo.Options);
     }
 
-    [TestMethod]
+    [Fact]
     public void GetInstance_Command2()
     {
         // arrange
@@ -190,14 +185,14 @@ public class CommandAttributeUtilityFixture
         var actual = SystemUnderTest.GetCommand(args, sampleAssembly);
 
         // assert
-        Assert.IsNotNull(actual, "Result was null");
-        Assert.IsNotNull(actual.ExecutionInfo, "Execution info was null");
-        Assert.AreEqual<string>(expectedCommandName, actual.ExecutionInfo.CommandName, "Command name was wrong");
-        Assert.AreEqual<int>(3, actual.ExecutionInfo.Arguments.Count, "Arg count was wrong");
-        Assert.AreSame(CommandProgramOptionsInstance, actual.ExecutionInfo.Options, "Options was wrong");
+        Assert.NotNull(actual);
+        Assert.NotNull(actual.ExecutionInfo);
+        Assert.Equal(expectedCommandName, actual.ExecutionInfo.CommandName);
+        Assert.Equal(3, actual.ExecutionInfo.Arguments.Count);
+        Assert.Same(CommandProgramOptionsInstance, actual.ExecutionInfo.Options);
     }
 
-    [TestMethod]
+    [Fact]
     public void GetInstance_Command3()
     {
         // arrange
@@ -221,15 +216,14 @@ public class CommandAttributeUtilityFixture
         var actual = SystemUnderTest.GetCommand(args, sampleAssembly);
 
         // assert
-        Assert.IsNotNull(actual, "Result was null");
-        Assert.IsNotNull(actual.ExecutionInfo, "Execution info was null");
-        Assert.AreEqual<string>(expectedCommandName, actual.ExecutionInfo.CommandName, "Command name was wrong");
-        Assert.AreEqual<int>(3, actual.ExecutionInfo.Arguments.Count, "Arg count was wrong");
-        Assert.AreSame(CommandProgramOptionsInstance, actual.ExecutionInfo.Options, "Options was wrong");
+        Assert.NotNull(actual);
+        Assert.NotNull(actual.ExecutionInfo);
+        Assert.Equal(expectedCommandName, actual.ExecutionInfo.CommandName);
+        Assert.Equal(3, actual.ExecutionInfo.Arguments.Count);
+        Assert.Same(CommandProgramOptionsInstance, actual.ExecutionInfo.Options);
     }
 
-    [TestMethod]
-    [ExpectedException(typeof(MissingArgumentException))]
+    [Fact]
     public void GetInstance_BogusCommandName_ThrowsException()
     {
         // arrange
@@ -249,14 +243,13 @@ public class CommandAttributeUtilityFixture
 
         var sampleAssembly = typeof(Benday.CommandsFramework.Samples.SampleCommand1).Assembly;
 
-        // act
-        var actual = SystemUnderTest.GetCommand(args, sampleAssembly);
-
-        // assert
-        Assert.IsNotNull(actual, "Result was null");
+        // act & assert
+        Assert.Throws<MissingArgumentException>(() => {
+            var actual = SystemUnderTest.GetCommand(args, sampleAssembly);
+        });
     }
 
-    [TestMethod]
+    [Fact]
     public void GetAllCommandUsages_UsesConfiguration_False()
     {
         // arrange
@@ -268,24 +261,24 @@ public class CommandAttributeUtilityFixture
         var actual = SystemUnderTest.GetAllCommandUsages(sampleAssembly);
 
         // assert
-        Assert.AreNotEqual<int>(0, actual.Count, "Usages collection wasn't populated");
+        Assert.NotEmpty(actual);
 
         AssertConfigCommands(actual, false);
 
         foreach (var item in actual)
         {
-            Assert.IsFalse(string.IsNullOrEmpty(item.Name), "Name wasn't populated");
-            Assert.IsNotNull(item.Description, $"Description wasn't populated for '{item.Name}'");
+            Assert.False(string.IsNullOrEmpty(item.Name));
+            Assert.NotNull(item.Description);
 
             foreach (var arg in item.Arguments)
             {
-                Assert.IsFalse(string.IsNullOrEmpty(arg.Name), "arg.Name wasn't populated");
-                Assert.IsNotNull(arg.Description, "arg.Description wasn't populated");
+                Assert.False(string.IsNullOrEmpty(arg.Name));
+                Assert.NotNull(arg.Description);
             }
         }
     }
 
-    [TestMethod]
+    [Fact]
     public void GetAllCommandUsages_UsesConfiguration_True()
     {
         // arrange
@@ -297,19 +290,19 @@ public class CommandAttributeUtilityFixture
         var actual = SystemUnderTest.GetAllCommandUsages(sampleAssembly);
 
         // assert
-        Assert.AreNotEqual<int>(0, actual.Count, "Usages collection wasn't populated");
+        Assert.NotEmpty(actual);
 
         AssertConfigCommands(actual, true);
 
         foreach (var item in actual)
         {
-            Assert.IsFalse(string.IsNullOrEmpty(item.Name), "Name wasn't populated");
-            Assert.IsNotNull(item.Description, $"Description wasn't populated for '{item.Name}'");
+            Assert.False(string.IsNullOrEmpty(item.Name));
+            Assert.NotNull(item.Description);
 
             foreach (var arg in item.Arguments)
             {
-                Assert.IsFalse(string.IsNullOrEmpty(arg.Name), "arg.Name wasn't populated");
-                Assert.IsNotNull(arg.Description, "arg.Description wasn't populated");
+                Assert.False(string.IsNullOrEmpty(arg.Name));
+                Assert.NotNull(arg.Description);
             }
         }
     }
@@ -328,11 +321,11 @@ public class CommandAttributeUtilityFixture
 
             if (shouldExist == false)
             {
-                Assert.IsFalse(match, $"Command '{item}' should not exist.");
+                Assert.False(match);
             }
             else
             {
-                Assert.IsTrue(match, $"Command '{item}' should exist.");
+                Assert.True(match);
             }
         }
     }

@@ -2,11 +2,9 @@
 
 namespace Benday.CommandsFramework.Tests;
 
-[TestClass]
 public class SampleCommand3Fixture
 {
-    [TestInitialize]
-    public void OnTestInitialize()
+        public SampleCommand3Fixture()
     {
         _SystemUnderTest = null;
         _OutputProvider = null;
@@ -18,7 +16,7 @@ public class SampleCommand3Fixture
     {
         get
         {
-            Assert.IsNotNull(_SystemUnderTest);
+            Assert.NotNull(_SystemUnderTest);
 
             return _SystemUnderTest;
         }
@@ -40,7 +38,7 @@ public class SampleCommand3Fixture
     }
 
 
-    [TestMethod]
+    [Fact]
     public void GetHelp()
     {
         // arrange
@@ -59,9 +57,9 @@ public class SampleCommand3Fixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.IsFalse(output.Contains("** SUCCESS **"), "Should not contain expected string");
-        Assert.IsFalse(output.Contains("** INVALID ARGUMENTS **"), "Should not contain expected string");
-        Assert.IsTrue(output.Contains("** USAGE **"), "Did not contain expected string");
+        Assert.DoesNotContain("** SUCCESS **", output);
+        Assert.DoesNotContain("** INVALID ARGUMENTS **", output);
+        Assert.Contains("** USAGE **", output);
 
     }
 }
