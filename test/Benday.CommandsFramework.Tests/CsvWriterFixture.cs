@@ -750,4 +750,197 @@ public class CsvWriterFixture
         // act & assert
         Assert.Equal(0, writer.ColumnCount);
     }
+
+    [Fact]
+    public void AddColumn_WithValidColumnName_AddsColumn()
+    {
+        // arrange
+        var writer = new CsvWriter();
+
+        // act
+        writer.AddColumn("Name");
+
+        // assert
+        var headers = writer.GetHeaders();
+        Assert.NotNull(headers);
+        Assert.Single(headers);
+        Assert.Equal("Name", headers[0]);
+        Assert.Equal(1, writer.ColumnCount);
+    }
+
+    [Fact]
+    public void AddColumn_WithMultipleColumns_AddsColumnsInOrder()
+    {
+        // arrange
+        var writer = new CsvWriter();
+
+        // act
+        writer.AddColumn("Name");
+        writer.AddColumn("Age");
+        writer.AddColumn("City");
+
+        // assert
+        var headers = writer.GetHeaders();
+        Assert.NotNull(headers);
+        Assert.Equal(3, headers.Length);
+        Assert.Equal("Name", headers[0]);
+        Assert.Equal("Age", headers[1]);
+        Assert.Equal("City", headers[2]);
+        Assert.Equal(3, writer.ColumnCount);
+    }
+
+    [Fact]
+    public void AddColumn_WithNullColumnName_ThrowsArgumentNullException()
+    {
+        // arrange
+        var writer = new CsvWriter();
+
+        // act & assert
+        Assert.Throws<ArgumentNullException>(() => writer.AddColumn(null!));
+    }
+
+    [Fact]
+    public void AddColumn_WithHasHeaderRowFalse_ThrowsInvalidOperationException()
+    {
+        // arrange
+        var writer = new CsvWriter(false);
+
+        // act & assert
+        Assert.Throws<InvalidOperationException>(() => writer.AddColumn("Name"));
+    }
+
+    [Fact]
+    public void AddColumn_AfterDataAdded_ThrowsInvalidOperationException()
+    {
+        // arrange
+        var writer = new CsvWriter();
+        writer.SetHeaders(new[] { "Name" });
+        writer.AddRow("John");
+
+        // act & assert
+        Assert.Throws<InvalidOperationException>(() => writer.AddColumn("Age"));
+    }
+
+    [Fact]
+    public void AddColumns_WithValidColumnNames_AddsAllColumns()
+    {
+        // arrange
+        var writer = new CsvWriter();
+
+        // act
+        writer.AddColumns("Name", "Age", "City");
+
+        // assert
+        var headers = writer.GetHeaders();
+        Assert.NotNull(headers);
+        Assert.Equal(3, headers.Length);
+        Assert.Equal("Name", headers[0]);
+        Assert.Equal("Age", headers[1]);
+        Assert.Equal("City", headers[2]);
+        Assert.Equal(3, writer.ColumnCount);
+    }
+
+    [Fact]
+    public void AddColumns_WithNullArray_ThrowsArgumentNullException()
+    {
+        // arrange
+        var writer = new CsvWriter();
+
+        // act & assert
+        Assert.Throws<ArgumentNullException>(() => writer.AddColumns(null!));
+    }
+
+    [Fact]
+    public void AddColumns_WithNullColumnName_ThrowsArgumentNullException()
+    {
+        // arrange
+        var writer = new CsvWriter();
+
+        // act & assert
+        Assert.Throws<ArgumentNullException>(() => writer.AddColumns("Name", null!, "City"));
+    }
+
+    [Fact]
+    public void AddColumns_WithHasHeaderRowFalse_ThrowsInvalidOperationException()
+    {
+        // arrange
+        var writer = new CsvWriter(false);
+
+        // act & assert
+        Assert.Throws<InvalidOperationException>(() => writer.AddColumns("Name", "Age"));
+    }
+
+    [Fact]
+    public void AddColumns_AfterDataAdded_ThrowsInvalidOperationException()
+    {
+        // arrange
+        var writer = new CsvWriter();
+        writer.SetHeaders(new[] { "Name" });
+        writer.AddRow("John");
+
+        // act & assert
+        Assert.Throws<InvalidOperationException>(() => writer.AddColumns("Age", "City"));
+    }
+
+    [Fact]
+    public void SetHeaders_AfterDataAdded_ThrowsInvalidOperationException()
+    {
+        // arrange
+        var writer = new CsvWriter();
+        writer.SetHeaders(new[] { "Name" });
+        writer.AddRow("John");
+
+        // act & assert
+        Assert.Throws<InvalidOperationException>(() => writer.SetHeaders(new[] { "Name", "Age" }));
+    }
+
+    [Fact]
+    public void RemoveRow_WithAllRowsRemoved_ResetsHasDataRows()
+    {
+        // arrange
+        var writer = new CsvWriter();
+        writer.SetHeaders(new[] { "Name", "Age" });
+        writer.AddRow("John", "30");
+        writer.AddRow("Jane", "25");
+
+        // act
+        writer.RemoveRow(0);
+        writer.RemoveRow(0); // Remove the remaining row
+
+        // assert
+        Assert.Equal(0, writer.RowCount);
+        
+        // Should be able to add columns again after all data is removed
+        writer.AddColumn("City");
+        var headers = writer.GetHeaders();
+        Assert.NotNull(headers);
+        Assert.Equal(3, headers.Length);
+        Assert.Equal("City", headers[2]);
+    }
+
+    [Fact]
+    public void CsvWriter_WorksWithCsvRowObjects()
+    {
+        // arrange
+        var writer = new CsvWriter();
+        writer.SetHeaders(new[] { "Name", "Age", "City" });
+
+        // act
+        writer.AddRow("John", "30", "New York");
+        var row = writer.GetRow(0);
+
+        // assert
+        Assert.NotNull(row);
+        Assert.Equal("John", row["Name"]);
+        Assert.Equal("30", row["Age"]);
+        Assert.Equal("New York", row["City"]);
+        Assert.Equal(3, row.ColumnCount);
+
+        // act - modify row values
+        writer.SetValue(0, "Age", "31");
+        
+        // assert
+        Assert.Equal("31", writer.GetValue(0, "Age"));
+        Assert.Equal("31", writer.GetRow(0)["Age"]);
+    }
 }

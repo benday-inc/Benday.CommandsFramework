@@ -11,15 +11,17 @@ namespace Benday.CommandsFramework.DataFormatting;
 /// </summary>
 public class CsvWriter
 {
-    private readonly List<string[]> _rows;
+    private readonly List<CsvRow> _rows;
     private string[]? _headers;
+    private bool _hasDataRows;
 
     /// <summary>
     /// Initializes a new instance of the CsvWriter class.
     /// </summary>
     public CsvWriter()
     {
-        _rows = new List<string[]>();
+        _rows = new List<CsvRow>();
+        _hasDataRows = false;
         HasHeaderRow = true;
     }
 
@@ -29,7 +31,8 @@ public class CsvWriter
     /// <param name="hasHeaderRow">Whether the CSV should include a header row.</param>
     public CsvWriter(bool hasHeaderRow)
     {
-        _rows = new List<string[]>();
+        _rows = new List<CsvRow>();
+        _hasDataRows = false;
         HasHeaderRow = hasHeaderRow;
     }
 
@@ -45,7 +48,8 @@ public class CsvWriter
             throw new ArgumentNullException(nameof(reader));
         }
 
-        _rows = new List<string[]>();
+        _rows = new List<CsvRow>();
+        _hasDataRows = false;
         HasHeaderRow = reader.HasHeaderRow;
 
         // Load headers if present
@@ -61,7 +65,8 @@ public class CsvWriter
         // Load all data rows
         foreach (var row in reader)
         {
-            _rows.Add(row.GetValues());
+            _rows.Add(row);
+            _hasDataRows = true;
         }
     }
 
@@ -90,7 +95,7 @@ public class CsvWriter
 
             if (_rows.Count > 0)
             {
-                return _rows[0].Length;
+                return _rows[0].ColumnCount;
             }
 
             return 0;
@@ -102,7 +107,7 @@ public class CsvWriter
     /// </summary>
     /// <param name="headers">The column headers.</param>
     /// <exception cref="ArgumentNullException">Thrown when headers is null.</exception>
-    /// <exception cref="InvalidOperationException">Thrown when HasHeaderRow is false.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when HasHeaderRow is false or data rows have already been added.</exception>
     public void SetHeaders(string[] headers)
     {
         if (headers == null)
@@ -115,7 +120,92 @@ public class CsvWriter
             throw new InvalidOperationException("Cannot set headers when HasHeaderRow is false.");
         }
 
+        if (_hasDataRows)
+        {
+            throw new InvalidOperationException("Cannot modify headers after data rows have been added.");
+        }
+
         _headers = (string[])headers.Clone();
+    }
+
+    /// <summary>
+    /// Adds a single column by name.
+    /// </summary>
+    /// <param name="columnName">The name of the column to add.</param>
+    /// <exception cref="ArgumentNullException">Thrown when columnName is null.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when HasHeaderRow is false or data rows have already been added.</exception>
+    public void AddColumn(string columnName)
+    {
+        if (columnName == null)
+        {
+            throw new ArgumentNullException(nameof(columnName));
+        }
+
+        if (!HasHeaderRow)
+        {
+            throw new InvalidOperationException("Cannot add columns when HasHeaderRow is false.");
+        }
+
+        if (_hasDataRows)
+        {
+            throw new InvalidOperationException("Cannot add columns after data rows have been added.");
+        }
+
+        if (_headers == null)
+        {
+            _headers = new[] { columnName };
+        }
+        else
+        {
+            var newHeaders = new string[_headers.Length + 1];
+            Array.Copy(_headers, newHeaders, _headers.Length);
+            newHeaders[_headers.Length] = columnName;
+            _headers = newHeaders;
+        }
+    }
+
+    /// <summary>
+    /// Adds multiple columns by name.
+    /// </summary>
+    /// <param name="columnNames">The names of the columns to add.</param>
+    /// <exception cref="ArgumentNullException">Thrown when columnNames is null.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when HasHeaderRow is false or data rows have already been added.</exception>
+    public void AddColumns(params string[] columnNames)
+    {
+        if (columnNames == null)
+        {
+            throw new ArgumentNullException(nameof(columnNames));
+        }
+
+        if (!HasHeaderRow)
+        {
+            throw new InvalidOperationException("Cannot add columns when HasHeaderRow is false.");
+        }
+
+        if (_hasDataRows)
+        {
+            throw new InvalidOperationException("Cannot add columns after data rows have been added.");
+        }
+
+        foreach (var columnName in columnNames)
+        {
+            if (columnName == null)
+            {
+                throw new ArgumentNullException(nameof(columnNames), "Column names cannot contain null values.");
+            }
+        }
+
+        if (_headers == null)
+        {
+            _headers = (string[])columnNames.Clone();
+        }
+        else
+        {
+            var newHeaders = new string[_headers.Length + columnNames.Length];
+            Array.Copy(_headers, newHeaders, _headers.Length);
+            Array.Copy(columnNames, 0, newHeaders, _headers.Length, columnNames.Length);
+            _headers = newHeaders;
+        }
     }
 
     /// <summary>
@@ -144,7 +234,13 @@ public class CsvWriter
             throw new ArgumentNullException(nameof(values));
         }
 
-        _rows.Add((string[])values.Clone());
+        var columnMapping = HasHeaderRow && _headers != null
+            ? CreateColumnMapping(_headers)
+            : null;
+
+        var row = new CsvRow((string[])values.Clone(), columnMapping);
+        _rows.Add(row);
+        _hasDataRows = true;
     }
 
     /// <summary>
@@ -159,7 +255,14 @@ public class CsvWriter
             throw new ArgumentNullException(nameof(row));
         }
 
-        AddRow(row.GetValues());
+        var columnMapping = HasHeaderRow && _headers != null
+            ? CreateColumnMapping(_headers)
+            : null;
+
+        // Create a new CsvRow with our column mapping
+        var newRow = new CsvRow(row.GetValues(), columnMapping);
+        _rows.Add(newRow);
+        _hasDataRows = true;
     }
 
     /// <summary>
@@ -181,7 +284,13 @@ public class CsvWriter
             throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range. Valid range is 0 to {_rows.Count}.");
         }
 
-        _rows.Insert(index, (string[])values.Clone());
+        var columnMapping = HasHeaderRow && _headers != null
+            ? CreateColumnMapping(_headers)
+            : null;
+
+        var row = new CsvRow((string[])values.Clone(), columnMapping);
+        _rows.Insert(index, row);
+        _hasDataRows = true;
     }
 
     /// <summary>
@@ -197,6 +306,12 @@ public class CsvWriter
         }
 
         _rows.RemoveAt(index);
+        
+        // Update _hasDataRows if no rows remain
+        if (_rows.Count == 0)
+        {
+            _hasDataRows = false;
+        }
     }
 
     /// <summary>
@@ -212,11 +327,7 @@ public class CsvWriter
             throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range. Valid range is 0 to {_rows.Count - 1}.");
         }
 
-        var columnMapping = HasHeaderRow && _headers != null
-            ? CreateColumnMapping(_headers)
-            : null;
-
-        return new CsvRow(_rows[index], columnMapping);
+        return _rows[index];
     }
 
     /// <summary>
@@ -238,7 +349,11 @@ public class CsvWriter
             throw new ArgumentOutOfRangeException(nameof(index), $"Index {index} is out of range. Valid range is 0 to {_rows.Count - 1}.");
         }
 
-        _rows[index] = (string[])values.Clone();
+        var columnMapping = HasHeaderRow && _headers != null
+            ? CreateColumnMapping(_headers)
+            : null;
+
+        _rows[index] = new CsvRow((string[])values.Clone(), columnMapping);
     }
 
     /// <summary>
@@ -255,13 +370,13 @@ public class CsvWriter
             throw new ArgumentOutOfRangeException(nameof(row), $"Row index {row} is out of range. Valid range is 0 to {_rows.Count - 1}.");
         }
 
-        var rowData = _rows[row];
-        if (column < 0 || column >= rowData.Length)
+        var csvRow = _rows[row];
+        if (column < 0 || column >= csvRow.ColumnCount)
         {
-            throw new ArgumentOutOfRangeException(nameof(column), $"Column index {column} is out of range. Valid range is 0 to {rowData.Length - 1}.");
+            throw new ArgumentOutOfRangeException(nameof(column), $"Column index {column} is out of range. Valid range is 0 to {csvRow.ColumnCount - 1}.");
         }
 
-        return rowData[column];
+        return csvRow[column];
     }
 
     /// <summary>
@@ -280,18 +395,25 @@ public class CsvWriter
             throw new ArgumentNullException(nameof(columnName));
         }
 
+        if (row < 0 || row >= _rows.Count)
+        {
+            throw new ArgumentOutOfRangeException(nameof(row), $"Row index {row} is out of range. Valid range is 0 to {_rows.Count - 1}.");
+        }
+
         if (!HasHeaderRow || _headers == null)
         {
             throw new InvalidOperationException("Column names are not available. The CSV writer was not configured to use header rows or headers have not been set.");
         }
 
-        var columnIndex = Array.IndexOf(_headers, columnName);
-        if (columnIndex == -1)
+        var csvRow = _rows[row];
+        try
+        {
+            return csvRow[columnName];
+        }
+        catch (InvalidOperationException)
         {
             throw new InvalidOperationException($"Column '{columnName}' was not found in the CSV headers.");
         }
-
-        return GetValue(row, columnIndex);
     }
 
     /// <summary>
@@ -308,13 +430,20 @@ public class CsvWriter
             throw new ArgumentOutOfRangeException(nameof(row), $"Row index {row} is out of range. Valid range is 0 to {_rows.Count - 1}.");
         }
 
-        var rowData = _rows[row];
-        if (column < 0 || column >= rowData.Length)
+        var csvRow = _rows[row];
+        if (column < 0 || column >= csvRow.ColumnCount)
         {
-            throw new ArgumentOutOfRangeException(nameof(column), $"Column index {column} is out of range. Valid range is 0 to {rowData.Length - 1}.");
+            throw new ArgumentOutOfRangeException(nameof(column), $"Column index {column} is out of range. Valid range is 0 to {csvRow.ColumnCount - 1}.");
         }
 
-        rowData[column] = value ?? string.Empty;
+        var values = csvRow.GetValues();
+        values[column] = value ?? string.Empty;
+        
+        var columnMapping = HasHeaderRow && _headers != null
+            ? CreateColumnMapping(_headers)
+            : null;
+        
+        _rows[row] = new CsvRow(values, columnMapping);
     }
 
     /// <summary>
@@ -364,7 +493,7 @@ public class CsvWriter
         // Add data rows
         foreach (var row in _rows)
         {
-            result.AppendLine(FormatCsvLine(row));
+            result.AppendLine(FormatCsvLine(row.GetValues()));
         }
 
         // Remove the final newline if present
