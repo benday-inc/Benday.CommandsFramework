@@ -133,41 +133,17 @@ public class CsvReader : IEnumerable<CsvRow>
             return rows;
         }
 
-        var lines = SplitIntoLines(_csvContent);
-        
-        foreach (var line in lines)
-        {
-            if (string.IsNullOrWhiteSpace(line))
-            {
-                continue; // Skip empty lines
-            }
-            
-            var fields = ParseCsvLine(line);
-            rows.Add(fields);
-        }
-
-        return rows;
-    }
-
-    private string[] SplitIntoLines(string content)
-    {
-        // Handle different line ending types (Windows, Unix, Mac)
-        return content.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-    }
-
-    private string[] ParseCsvLine(string line)
-    {
         var fields = new List<string>();
         var currentField = new StringBuilder();
         bool inQuotes = false;
         
-        for (int i = 0; i < line.Length; i++)
+        for (int i = 0; i < _csvContent.Length; i++)
         {
-            char c = line[i];
+            char c = _csvContent[i];
             
             if (c == '"')
             {
-                if (inQuotes && i + 1 < line.Length && line[i + 1] == '"')
+                if (inQuotes && i + 1 < _csvContent.Length && _csvContent[i + 1] == '"')
                 {
                     // Escaped quote (double quote)
                     currentField.Append('"');
@@ -185,16 +161,53 @@ public class CsvReader : IEnumerable<CsvRow>
                 fields.Add(currentField.ToString());
                 currentField.Clear();
             }
+            else if (IsLineEnding(c, i) && !inQuotes)
+            {
+                // Row separator - only when not inside quotes
+                fields.Add(currentField.ToString());
+                
+                // Skip empty rows (rows with only empty fields)
+                if (!IsEmptyRow(fields))
+                {
+                    rows.Add(fields.ToArray());
+                }
+                
+                fields.Clear();
+                currentField.Clear();
+                
+                // Handle multi-character line endings like \r\n
+                if (c == '\r' && i + 1 < _csvContent.Length && _csvContent[i + 1] == '\n')
+                {
+                    i++; // Skip the \n part of \r\n
+                }
+            }
             else
             {
-                // Regular character
+                // Regular character (including newlines inside quotes)
                 currentField.Append(c);
             }
         }
         
-        // Add the last field
-        fields.Add(currentField.ToString());
-        
-        return fields.ToArray();
+        // Add the last field and row if there's content
+        if (currentField.Length > 0 || fields.Count > 0)
+        {
+            fields.Add(currentField.ToString());
+            if (!IsEmptyRow(fields))
+            {
+                rows.Add(fields.ToArray());
+            }
+        }
+
+        return rows;
+    }
+
+    private bool IsLineEnding(char c, int position)
+    {
+        return c == '\n' || c == '\r';
+    }
+
+    private bool IsEmptyRow(List<string> fields)
+    {
+        return fields.Count == 0 || fields.All(field => string.IsNullOrWhiteSpace(field));
     }
 }

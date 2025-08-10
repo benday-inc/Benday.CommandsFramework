@@ -357,4 +357,112 @@ public class CsvReaderFixture
             File.Delete(tempFile);
         }
     }
+
+    [Fact]
+    public void GetEnumerator_WithNewlinesInQuotedValues_ParsesCorrectly()
+    {
+        // arrange
+        var csvContent = "Name,Description,Notes\n\"John Doe\",\"A person with\nnewline in description\",\"Simple note\"\n\"Jane Smith\",\"Another person\",\"Note with\nmultiple\nlines\"";
+        var reader = new CsvReader(csvContent);
+
+        // act
+        var rows = reader.ToList();
+
+        // assert
+        Assert.Equal(2, rows.Count);
+        
+        // First row
+        Assert.Equal("John Doe", rows[0]["Name"]);
+        Assert.Equal("A person with\nnewline in description", rows[0]["Description"]);
+        Assert.Equal("Simple note", rows[0]["Notes"]);
+        
+        // Second row
+        Assert.Equal("Jane Smith", rows[1]["Name"]);
+        Assert.Equal("Another person", rows[1]["Description"]);
+        Assert.Equal("Note with\nmultiple\nlines", rows[1]["Notes"]);
+    }
+
+    [Fact]
+    public void GetEnumerator_WithNewlinesAndCommasInQuotedValues_ParsesCorrectly()
+    {
+        // arrange
+        var csvContent = "Product,Description\n\"Widget A\",\"Description with, comma and\nnewline together\"\n\"Widget B\",\"Another description\nwith newlines, commas, and\nmore content\"";
+        var reader = new CsvReader(csvContent);
+
+        // act
+        var rows = reader.ToList();
+
+        // assert
+        Assert.Equal(2, rows.Count);
+        
+        // First row
+        Assert.Equal("Widget A", rows[0]["Product"]);
+        Assert.Equal("Description with, comma and\nnewline together", rows[0]["Description"]);
+        
+        // Second row
+        Assert.Equal("Widget B", rows[1]["Product"]);
+        Assert.Equal("Another description\nwith newlines, commas, and\nmore content", rows[1]["Description"]);
+    }
+
+    [Fact]
+    public void GetEnumerator_WithCarriageReturnAndNewlineInQuotedValues_ParsesCorrectly()
+    {
+        // arrange
+        var csvContent = "Name,Address\n\"John Doe\",\"123 Main St\r\nAnytown, ST 12345\"\n\"Jane Smith\",\"456 Oak Ave\r\nOther City, ST 67890\"";
+        var reader = new CsvReader(csvContent);
+
+        // act
+        var rows = reader.ToList();
+
+        // assert
+        Assert.Equal(2, rows.Count);
+        
+        Assert.Equal("John Doe", rows[0]["Name"]);
+        Assert.Equal("123 Main St\r\nAnytown, ST 12345", rows[0]["Address"]);
+        
+        Assert.Equal("Jane Smith", rows[1]["Name"]);
+        Assert.Equal("456 Oak Ave\r\nOther City, ST 67890", rows[1]["Address"]);
+    }
+
+    [Fact]
+    public void GetEnumerator_WithMixedLineEndingsInQuotedValues_ParsesCorrectly()
+    {
+        // arrange
+        var csvContent = "Name,Comments\n\"User A\",\"Line 1\nLine 2\rLine 3\r\nLine 4\"\n\"User B\",\"Single line comment\"";
+        var reader = new CsvReader(csvContent);
+
+        // act
+        var rows = reader.ToList();
+
+        // assert
+        Assert.Equal(2, rows.Count);
+        
+        Assert.Equal("User A", rows[0]["Name"]);
+        Assert.Equal("Line 1\nLine 2\rLine 3\r\nLine 4", rows[0]["Comments"]);
+        
+        Assert.Equal("User B", rows[1]["Name"]);
+        Assert.Equal("Single line comment", rows[1]["Comments"]);
+    }
+
+    [Fact]
+    public void GetEnumerator_WithEmptyQuotedFieldsAndNewlines_ParsesCorrectly()
+    {
+        // arrange
+        var csvContent = "Name,Description,Notes\n\"John\",\"\",\"Has empty description\"\n\"Jane\",\"Description\nwith newline\",\"\"";
+        var reader = new CsvReader(csvContent);
+
+        // act
+        var rows = reader.ToList();
+
+        // assert
+        Assert.Equal(2, rows.Count);
+        
+        Assert.Equal("John", rows[0]["Name"]);
+        Assert.Equal("", rows[0]["Description"]);
+        Assert.Equal("Has empty description", rows[0]["Notes"]);
+        
+        Assert.Equal("Jane", rows[1]["Name"]);
+        Assert.Equal("Description\nwith newline", rows[1]["Description"]);
+        Assert.Equal("", rows[1]["Notes"]);
+    }
 }
