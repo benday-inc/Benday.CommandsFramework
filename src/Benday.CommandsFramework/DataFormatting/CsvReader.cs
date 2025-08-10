@@ -8,7 +8,19 @@ namespace Benday.CommandsFramework.DataFormatting;
 
 /// <summary>
 /// A CSV file reader that provides enumerable access to rows in a CSV file.
+/// Supports parsing CSV files with values containing newlines, commas, and quotes when properly quoted.
 /// </summary>
+/// <example>
+/// <code>
+/// // CSV content with newlines in quoted values
+/// var csvContent = "Name,Description\n\"John Doe\",\"A person with\nnewline in description\"";
+/// var reader = new CsvReader(csvContent);
+/// foreach (var row in reader)
+/// {
+///     Console.WriteLine($"Name: {row["Name"]}, Description: {row["Description"]}");
+/// }
+/// </code>
+/// </example>
 public class CsvReader : IEnumerable<CsvRow>
 {
     private readonly string _csvContent;
