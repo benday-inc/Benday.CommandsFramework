@@ -562,20 +562,34 @@ public static class ExtensionMethods
 
     public static string GetPathToFile(
         this ArgumentCollection arguments,
-        string argumentName, bool mustExist = false)
+        string argumentName, bool mustExist = false, bool fullyQualifiedPath = false)
     {
         var path = arguments.GetStringValue(argumentName);
 
-        return CommandFrameworkUtilities.GetPathToSourceFile(path, mustExist);
+        var returnValue = CommandFrameworkUtilities.GetPathToSourceFile(path, mustExist);
+
+        if (fullyQualifiedPath == true)
+        {
+            returnValue = CommandFrameworkUtilities.GetFullyQualifiedPath(returnValue);
+        }
+
+        return returnValue;
     }
 
     public static string GetPathToDirectory(
         this ArgumentCollection arguments,
-        string argumentName, bool mustExist = false)
+        string argumentName, bool mustExist = false, bool fullyQualifiedPath = false)
     {
         var path = arguments.GetStringValue(argumentName);
 
-        return CommandFrameworkUtilities.GetPathToSourceDir(path, mustExist);
+        var returnValue = CommandFrameworkUtilities.GetPathToSourceDir(path, mustExist);
+
+        if (fullyQualifiedPath == true)
+        {
+            returnValue = CommandFrameworkUtilities.GetFullyQualifiedPath(returnValue);
+        }
+
+        return returnValue;
     }
 
     public static string GetRequiredConfigurationValue(this CommandExecutionInfo executionInfo, string configValueName)

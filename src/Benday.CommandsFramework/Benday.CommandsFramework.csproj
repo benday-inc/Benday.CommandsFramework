@@ -12,10 +12,11 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>bdc_mark_128_128.png</PackageIcon>
-    <TheVersion>4.10.0</TheVersion>
+    <TheVersion>4.11.0</TheVersion>
     <AssemblyVersion>$(TheVersion).0</AssemblyVersion>
     <Version>$(TheVersion)</Version>
     <PackageReleaseNotes>
+v4.11 - Added option to get file and directory arguments as fully qualified paths;
 v4.10 - Added support for .NET 9.0; Added CsvReader utility class for parsing CSV files;
 v4.9 - Added ability to pass in an IServiceCollection to the commands framework via IProgramOptions in order to optionally allow commands to use dependency injection;
 v4.8 - Changed visibility of runtime args collection; Added utility method to pull value from args collection or config collection;

@@ -1,8 +1,8 @@
 ﻿namespace Benday.CommandsFramework;
 
-public class DirectoryArgument : StringArgument
+public class FileArgument : StringArgument
 {
-    public DirectoryArgument(string name) :
+    public FileArgument(string name) :
         base(name)
     {
     }
@@ -28,7 +28,7 @@ public class DirectoryArgument : StringArgument
         }
         else if (baseIsValid == true && MustExist == true)
         {
-            if (Directory.Exists(AbsolutePath) == true)
+            if (File.Exists(AbsolutePath) == true)
             {
                 return true;
             }
