@@ -5,11 +5,11 @@
   <head>
     <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-      <title>Class AsynchronousCommand </title>
+      <title>Class DependencyInjectionCommand </title>
       <meta name="viewport" content="width=device-width">
-      <meta name="title" content="Class AsynchronousCommand ">
+      <meta name="title" content="Class DependencyInjectionCommand ">
     
-    <meta name="description" content="Base class for commands that require access to async functionality for execution.">
+    <meta name="description" content="Base class for commands that use dependency injection.">
       <link rel="shortcut icon" href="../favicon.ico">
       <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
       <link rel="stylesheet" href="../styles/docfx.css">
@@ -67,20 +67,20 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Benday.CommandsFramework.AsynchronousCommand">
+            <article class="content wrap" id="_content" data-uid="Benday.CommandsFramework.DependencyInjectionCommand">
 
 
 
-  <h1 id="Benday_CommandsFramework_AsynchronousCommand" data-uid="Benday.CommandsFramework.AsynchronousCommand" class="text-break">Class AsynchronousCommand</h1>
-  <div class="markdown level0 summary"><p>Base class for commands that require access to async functionality for execution.</p>
+  <h1 id="Benday_CommandsFramework_DependencyInjectionCommand" data-uid="Benday.CommandsFramework.DependencyInjectionCommand" class="text-break">Class DependencyInjectionCommand</h1>
+  <div class="markdown level0 summary"><p>Base class for commands that use dependency injection.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
     <div class="level1"><a class="xref" href="Benday.CommandsFramework.CommandBase.html">CommandBase</a></div>
-    <div class="level2"><span class="xref">AsynchronousCommand</span></div>
-      <div class="level3"><a class="xref" href="Benday.CommandsFramework.DependencyInjectionCommand.html">DependencyInjectionCommand</a></div>
+    <div class="level2"><a class="xref" href="Benday.CommandsFramework.AsynchronousCommand.html">AsynchronousCommand</a></div>
+    <div class="level3"><span class="xref">DependencyInjectionCommand</span></div>
   </div>
   <div class="implements">
     <h5>Implements</h5>
@@ -88,6 +88,15 @@
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Benday.CommandsFramework.AsynchronousCommand.html#Benday_CommandsFramework_AsynchronousCommand_ExecuteAsync">AsynchronousCommand.ExecuteAsync()</a>
+    </div>
+    <div>
+      <a class="xref" href="Benday.CommandsFramework.AsynchronousCommand.html#Benday_CommandsFramework_AsynchronousCommand_OnValidationFailure_System_Collections_Generic_List_Benday_CommandsFramework_IArgument__">AsynchronousCommand.OnValidationFailure(List&lt;IArgument&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Benday.CommandsFramework.AsynchronousCommand.html#Benday_CommandsFramework_AsynchronousCommand_OnExecute">AsynchronousCommand.OnExecute()</a>
+    </div>
     <div>
       <a class="xref" href="Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase__OutputProvider">CommandBase._OutputProvider</a>
     </div>
@@ -151,27 +160,26 @@
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Benday.html">Benday</a>.<a class="xref" href="Benday.CommandsFramework.html">CommandsFramework</a></h6>
   <h6><strong>Assembly</strong>: Benday.CommandsFramework.dll</h6>
-  <h5 id="Benday_CommandsFramework_AsynchronousCommand_syntax">Syntax</h5>
+  <h5 id="Benday_CommandsFramework_DependencyInjectionCommand_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class AsynchronousCommand : CommandBase, IAsyncCommand</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class DependencyInjectionCommand : AsynchronousCommand, IAsyncCommand</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_AsynchronousCommand__ctor_Benday_CommandsFramework_CommandExecutionInfo_Benday_CommandsFramework_ITextOutputProvider_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.AsynchronousCommand.%23ctor(Benday.CommandsFramework.CommandExecutionInfo%2CBenday.CommandsFramework.ITextOutputProvider)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DependencyInjectionCommand__ctor_Benday_CommandsFramework_CommandExecutionInfo_Benday_CommandsFramework_ITextOutputProvider_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DependencyInjectionCommand.%23ctor(Benday.CommandsFramework.CommandExecutionInfo%2CBenday.CommandsFramework.ITextOutputProvider)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/AsynchronousCommand.cs/#L13">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DependencyInjectionCommand.cs/#L11">View Source</a>
   </span>
-  <a id="Benday_CommandsFramework_AsynchronousCommand__ctor_" data-uid="Benday.CommandsFramework.AsynchronousCommand.#ctor*"></a>
-  <h4 id="Benday_CommandsFramework_AsynchronousCommand__ctor_Benday_CommandsFramework_CommandExecutionInfo_Benday_CommandsFramework_ITextOutputProvider_" data-uid="Benday.CommandsFramework.AsynchronousCommand.#ctor(Benday.CommandsFramework.CommandExecutionInfo,Benday.CommandsFramework.ITextOutputProvider)">AsynchronousCommand(CommandExecutionInfo, ITextOutputProvider)</h4>
-  <div class="markdown level1 summary"><p>Constructor</p>
-</div>
+  <a id="Benday_CommandsFramework_DependencyInjectionCommand__ctor_" data-uid="Benday.CommandsFramework.DependencyInjectionCommand.#ctor*"></a>
+  <h4 id="Benday_CommandsFramework_DependencyInjectionCommand__ctor_Benday_CommandsFramework_CommandExecutionInfo_Benday_CommandsFramework_ITextOutputProvider_" data-uid="Benday.CommandsFramework.DependencyInjectionCommand.#ctor(Benday.CommandsFramework.CommandExecutionInfo,Benday.CommandsFramework.ITextOutputProvider)">DependencyInjectionCommand(CommandExecutionInfo, ITextOutputProvider)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AsynchronousCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider)</code></pre>
+    <pre><code class="lang-csharp hljs">protected DependencyInjectionCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-condensed">
@@ -186,14 +194,12 @@
       <tr>
         <td><a class="xref" href="Benday.CommandsFramework.CommandExecutionInfo.html">CommandExecutionInfo</a></td>
         <td><span class="parametername">info</span></td>
-        <td><p>Command execution information</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><a class="xref" href="Benday.CommandsFramework.ITextOutputProvider.html">ITextOutputProvider</a></td>
         <td><span class="parametername">outputProvider</span></td>
-        <td><p>Output provider instance</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -201,22 +207,19 @@
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_AsynchronousCommand_ExecuteAsync.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.AsynchronousCommand.ExecuteAsync%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DependencyInjectionCommand_GetRequiredService__1.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DependencyInjectionCommand.GetRequiredService%60%601%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/AsynchronousCommand.cs/#L27">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DependencyInjectionCommand.cs/#L45">View Source</a>
   </span>
-  <a id="Benday_CommandsFramework_AsynchronousCommand_ExecuteAsync_" data-uid="Benday.CommandsFramework.AsynchronousCommand.ExecuteAsync*"></a>
-  <h4 id="Benday_CommandsFramework_AsynchronousCommand_ExecuteAsync" data-uid="Benday.CommandsFramework.AsynchronousCommand.ExecuteAsync">ExecuteAsync()</h4>
-  <div class="markdown level1 summary"><p>This is the async method that's called to run the command.
-It looks to see if the help argument string (--help) is on the command line
-and displays the usage if necessary. If the help string is not present,
-the arguments are validated. If validation succeeds, then OnExecute() is called</p>
+  <a id="Benday_CommandsFramework_DependencyInjectionCommand_GetRequiredService_" data-uid="Benday.CommandsFramework.DependencyInjectionCommand.GetRequiredService*"></a>
+  <h4 id="Benday_CommandsFramework_DependencyInjectionCommand_GetRequiredService__1" data-uid="Benday.CommandsFramework.DependencyInjectionCommand.GetRequiredService``1">GetRequiredService&lt;T&gt;()</h4>
+  <div class="markdown level1 summary"><p>Get a required service instance from the service provider.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual Task ExecuteAsync()</code></pre>
+    <pre><code class="lang-csharp hljs">protected T GetRequiredService&lt;T&gt;() where T : notnull</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-condensed">
@@ -228,73 +231,22 @@ the arguments are validated. If validation succeeds, then OnExecute() is called<
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
-        <td><p>Async task execution status</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_AsynchronousCommand_OnExecute.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.AsynchronousCommand.OnExecute%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/AsynchronousCommand.cs/#L65">View Source</a>
-  </span>
-  <a id="Benday_CommandsFramework_AsynchronousCommand_OnExecute_" data-uid="Benday.CommandsFramework.AsynchronousCommand.OnExecute*"></a>
-  <h4 id="Benday_CommandsFramework_AsynchronousCommand_OnExecute" data-uid="Benday.CommandsFramework.AsynchronousCommand.OnExecute">OnExecute()</h4>
-  <div class="markdown level1 summary"><p>Abstract method. This is where the work of the command should be added.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected abstract Task OnExecute()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td><span class="xref">T</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_AsynchronousCommand_OnValidationFailure_System_Collections_Generic_List_Benday_CommandsFramework_IArgument__.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.AsynchronousCommand.OnValidationFailure(System.Collections.Generic.List%7BBenday.CommandsFramework.IArgument%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/AsynchronousCommand.cs/#L54">View Source</a>
-  </span>
-  <a id="Benday_CommandsFramework_AsynchronousCommand_OnValidationFailure_" data-uid="Benday.CommandsFramework.AsynchronousCommand.OnValidationFailure*"></a>
-  <h4 id="Benday_CommandsFramework_AsynchronousCommand_OnValidationFailure_System_Collections_Generic_List_Benday_CommandsFramework_IArgument__" data-uid="Benday.CommandsFramework.AsynchronousCommand.OnValidationFailure(System.Collections.Generic.List{Benday.CommandsFramework.IArgument})">OnValidationFailure(List&lt;IArgument&gt;)</h4>
-  <div class="markdown level1 summary"><p>Template method for handling validation failures. The default implementation
-displays the usage info for the command and the summary of validation errors.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual void OnValidationFailure(List&lt;IArgument&gt; validationResult)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
+  <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-condensed">
     <thead>
       <tr>
-        <th>Type</th>
         <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Benday.CommandsFramework.IArgument.html">IArgument</a>&gt;</td>
-        <td><span class="parametername">validationResult</span></td>
+        <td><span class="parametername">T</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -312,10 +264,10 @@ displays the usage info for the command and the summary of validation errors.</p
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_AsynchronousCommand.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.AsynchronousCommand%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
+                    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DependencyInjectionCommand.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DependencyInjectionCommand%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
                   </li>
                   <li>
-                    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/AsynchronousCommand.cs/#L6" class="contribution-link">View Source</a>
+                    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DependencyInjectionCommand.cs/#L9" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

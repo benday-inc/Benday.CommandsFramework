@@ -1,17 +1,15 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
 
   <head>
     <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-      <title>Class CommandBase
- </title>
+      <title>Class CommandBase </title>
       <meta name="viewport" content="width=device-width">
-      <meta name="title" content="Class CommandBase
- ">
+      <meta name="title" content="Class CommandBase ">
     
-    
+    <meta name="description" content="Base class for all command implementations">
       <link rel="shortcut icon" href="../favicon.ico">
       <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
       <link rel="stylesheet" href="../styles/docfx.css">
@@ -73,8 +71,7 @@
 
 
 
-  <h1 id="Benday_CommandsFramework_CommandBase" data-uid="Benday.CommandsFramework.CommandBase" class="text-break">Class CommandBase
-</h1>
+  <h1 id="Benday_CommandsFramework_CommandBase" data-uid="Benday.CommandsFramework.CommandBase" class="text-break">Class CommandBase</h1>
   <div class="markdown level0 summary"><p>Base class for all command implementations</p>
 </div>
   <div class="markdown level0 conceptual"></div>
@@ -210,16 +207,17 @@
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_Arguments.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.Arguments%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L51">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L52">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_CommandBase_Arguments_" data-uid="Benday.CommandsFramework.CommandBase.Arguments*"></a>
   <h4 id="Benday_CommandsFramework_CommandBase_Arguments" data-uid="Benday.CommandsFramework.CommandBase.Arguments">Arguments</h4>
-  <div class="markdown level1 summary"><p>Arguments and values for the command</p>
+  <div class="markdown level1 summary"><p>Arguments and values for the command. These are the combination of the argument definitions
+with the values from the command line. The values are set when the command is executed.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected ArgumentCollection Arguments { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public ArgumentCollection Arguments { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-condensed">
@@ -241,7 +239,7 @@
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_Description.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.Description%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L71">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L89">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_CommandBase_Description_" data-uid="Benday.CommandsFramework.CommandBase.Description*"></a>
   <h4 id="Benday_CommandsFramework_CommandBase_Description" data-uid="Benday.CommandsFramework.CommandBase.Description">Description</h4>
@@ -305,7 +303,7 @@
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_DisplayUsage.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.DisplayUsage%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L109">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L127">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_CommandBase_DisplayUsage_" data-uid="Benday.CommandsFramework.CommandBase.DisplayUsage*"></a>
   <h4 id="Benday_CommandsFramework_CommandBase_DisplayUsage" data-uid="Benday.CommandsFramework.CommandBase.DisplayUsage">DisplayUsage()</h4>
@@ -321,7 +319,7 @@
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_DisplayUsage_System_Text_StringBuilder_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.DisplayUsage(System.Text.StringBuilder)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L149">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L167">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_CommandBase_DisplayUsage_" data-uid="Benday.CommandsFramework.CommandBase.DisplayUsage*"></a>
   <h4 id="Benday_CommandsFramework_CommandBase_DisplayUsage_System_Text_StringBuilder_" data-uid="Benday.CommandsFramework.CommandBase.DisplayUsage(System.Text.StringBuilder)">DisplayUsage(StringBuilder)</h4>
@@ -355,7 +353,7 @@
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_DisplayValidationSummary_System_Collections_Generic_List_Benday_CommandsFramework_IArgument__.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.DisplayValidationSummary(System.Collections.Generic.List%7BBenday.CommandsFramework.IArgument%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L247">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L273">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_CommandBase_DisplayValidationSummary_" data-uid="Benday.CommandsFramework.CommandBase.DisplayValidationSummary*"></a>
   <h4 id="Benday_CommandsFramework_CommandBase_DisplayValidationSummary_System_Collections_Generic_List_Benday_CommandsFramework_IArgument__" data-uid="Benday.CommandsFramework.CommandBase.DisplayValidationSummary(System.Collections.Generic.List{Benday.CommandsFramework.IArgument})">DisplayValidationSummary(List&lt;IArgument&gt;)</h4>
@@ -386,14 +384,67 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_GetArgValueOrRequiredConfigValue_System_String_System_String_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.GetArgValueOrRequiredConfigValue(System.String%2CSystem.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L60">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_CommandBase_GetArgValueOrRequiredConfigValue_" data-uid="Benday.CommandsFramework.CommandBase.GetArgValueOrRequiredConfigValue*"></a>
+  <h4 id="Benday_CommandsFramework_CommandBase_GetArgValueOrRequiredConfigValue_System_String_System_String_" data-uid="Benday.CommandsFramework.CommandBase.GetArgValueOrRequiredConfigValue(System.String,System.String)">GetArgValueOrRequiredConfigValue(string, string)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string GetArgValueOrRequiredConfigValue(string argumentName, string configValueName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">argumentName</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">configValueName</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_GetArguments.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.GetArguments%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L63">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L81">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_CommandBase_GetArguments_" data-uid="Benday.CommandsFramework.CommandBase.GetArguments*"></a>
   <h4 id="Benday_CommandsFramework_CommandBase_GetArguments" data-uid="Benday.CommandsFramework.CommandBase.GetArguments">GetArguments()</h4>
-  <div class="markdown level1 summary"><p>Get the arguments for the command execution</p>
+  <div class="markdown level1 summary"><p>Get the argument definitions for the command execution. These are used to validate the execution
+but do not have any actual values.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -420,7 +471,7 @@
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_SetValuesFromExecutionInfo.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.SetValuesFromExecutionInfo%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L300">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L326">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_CommandBase_SetValuesFromExecutionInfo_" data-uid="Benday.CommandsFramework.CommandBase.SetValuesFromExecutionInfo*"></a>
   <h4 id="Benday_CommandsFramework_CommandBase_SetValuesFromExecutionInfo" data-uid="Benday.CommandsFramework.CommandBase.SetValuesFromExecutionInfo">SetValuesFromExecutionInfo()</h4>
@@ -437,7 +488,7 @@ sets the values on to the argument definitions for the command.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_Validate.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.Validate%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L269">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L295">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_CommandBase_Validate_" data-uid="Benday.CommandsFramework.CommandBase.Validate*"></a>
   <h4 id="Benday_CommandsFramework_CommandBase_Validate" data-uid="Benday.CommandsFramework.CommandBase.Validate">Validate()</h4>
@@ -470,7 +521,7 @@ command.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_WriteLine.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.WriteLine%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L101">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L119">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_CommandBase_WriteLine_" data-uid="Benday.CommandsFramework.CommandBase.WriteLine*"></a>
   <h4 id="Benday_CommandsFramework_CommandBase_WriteLine" data-uid="Benday.CommandsFramework.CommandBase.WriteLine">WriteLine()</h4>
@@ -486,7 +537,7 @@ command.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_WriteLine_System_String_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.WriteLine(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L93">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L111">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_CommandBase_WriteLine_" data-uid="Benday.CommandsFramework.CommandBase.WriteLine*"></a>
   <h4 id="Benday_CommandsFramework_CommandBase_WriteLine_System_String_" data-uid="Benday.CommandsFramework.CommandBase.WriteLine(System.String)">WriteLine(string)</h4>
