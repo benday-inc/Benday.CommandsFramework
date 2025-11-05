@@ -1550,6 +1550,314 @@ references:
   fullName.vb: Benday.CommandsFramework.DataFormatting.CsvRow.this[]
   nameWithType: CsvRow.this
   nameWithType.vb: CsvRow.this[]
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter
+  name: CsvWriter
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html
+  commentId: T:Benday.CommandsFramework.DataFormatting.CsvWriter
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter
+  nameWithType: CsvWriter
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.#ctor
+  name: CsvWriter()
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter__ctor
+  commentId: M:Benday.CommandsFramework.DataFormatting.CsvWriter.#ctor
+  name.vb: New()
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.CsvWriter()
+  fullName.vb: Benday.CommandsFramework.DataFormatting.CsvWriter.New()
+  nameWithType: CsvWriter.CsvWriter()
+  nameWithType.vb: CsvWriter.New()
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.#ctor(Benday.CommandsFramework.DataFormatting.CsvReader)
+  name: CsvWriter(CsvReader)
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter__ctor_Benday_CommandsFramework_DataFormatting_CsvReader_
+  commentId: M:Benday.CommandsFramework.DataFormatting.CsvWriter.#ctor(Benday.CommandsFramework.DataFormatting.CsvReader)
+  name.vb: New(CsvReader)
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.CsvWriter(Benday.CommandsFramework.DataFormatting.CsvReader)
+  fullName.vb: Benday.CommandsFramework.DataFormatting.CsvWriter.New(Benday.CommandsFramework.DataFormatting.CsvReader)
+  nameWithType: CsvWriter.CsvWriter(CsvReader)
+  nameWithType.vb: CsvWriter.New(CsvReader)
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.#ctor(System.Boolean)
+  name: CsvWriter(bool)
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter__ctor_System_Boolean_
+  commentId: M:Benday.CommandsFramework.DataFormatting.CsvWriter.#ctor(System.Boolean)
+  name.vb: New(Boolean)
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.CsvWriter(bool)
+  fullName.vb: Benday.CommandsFramework.DataFormatting.CsvWriter.New(Boolean)
+  nameWithType: CsvWriter.CsvWriter(bool)
+  nameWithType.vb: CsvWriter.New(Boolean)
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.#ctor*
+  name: CsvWriter
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter__ctor_
+  commentId: Overload:Benday.CommandsFramework.DataFormatting.CsvWriter.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.CsvWriter
+  fullName.vb: Benday.CommandsFramework.DataFormatting.CsvWriter.New
+  nameWithType: CsvWriter.CsvWriter
+  nameWithType.vb: CsvWriter.New
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.AddColumn(System.String)
+  name: AddColumn(string)
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_AddColumn_System_String_
+  commentId: M:Benday.CommandsFramework.DataFormatting.CsvWriter.AddColumn(System.String)
+  name.vb: AddColumn(String)
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.AddColumn(string)
+  fullName.vb: Benday.CommandsFramework.DataFormatting.CsvWriter.AddColumn(String)
+  nameWithType: CsvWriter.AddColumn(string)
+  nameWithType.vb: CsvWriter.AddColumn(String)
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.AddColumn*
+  name: AddColumn
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_AddColumn_
+  commentId: Overload:Benday.CommandsFramework.DataFormatting.CsvWriter.AddColumn
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.AddColumn
+  nameWithType: CsvWriter.AddColumn
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.AddColumns(System.String[])
+  name: AddColumns(params string[])
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_AddColumns_System_String___
+  commentId: M:Benday.CommandsFramework.DataFormatting.CsvWriter.AddColumns(System.String[])
+  name.vb: AddColumns(ParamArray String())
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.AddColumns(params string[])
+  fullName.vb: Benday.CommandsFramework.DataFormatting.CsvWriter.AddColumns(ParamArray String())
+  nameWithType: CsvWriter.AddColumns(params string[])
+  nameWithType.vb: CsvWriter.AddColumns(ParamArray String())
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.AddColumns*
+  name: AddColumns
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_AddColumns_
+  commentId: Overload:Benday.CommandsFramework.DataFormatting.CsvWriter.AddColumns
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.AddColumns
+  nameWithType: CsvWriter.AddColumns
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.AddRow(Benday.CommandsFramework.DataFormatting.CsvRow)
+  name: AddRow(CsvRow)
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_AddRow_Benday_CommandsFramework_DataFormatting_CsvRow_
+  commentId: M:Benday.CommandsFramework.DataFormatting.CsvWriter.AddRow(Benday.CommandsFramework.DataFormatting.CsvRow)
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.AddRow(Benday.CommandsFramework.DataFormatting.CsvRow)
+  nameWithType: CsvWriter.AddRow(CsvRow)
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.AddRow(System.String[])
+  name: AddRow(params string[])
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_AddRow_System_String___
+  commentId: M:Benday.CommandsFramework.DataFormatting.CsvWriter.AddRow(System.String[])
+  name.vb: AddRow(ParamArray String())
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.AddRow(params string[])
+  fullName.vb: Benday.CommandsFramework.DataFormatting.CsvWriter.AddRow(ParamArray String())
+  nameWithType: CsvWriter.AddRow(params string[])
+  nameWithType.vb: CsvWriter.AddRow(ParamArray String())
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.AddRow*
+  name: AddRow
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_AddRow_
+  commentId: Overload:Benday.CommandsFramework.DataFormatting.CsvWriter.AddRow
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.AddRow
+  nameWithType: CsvWriter.AddRow
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.ColumnCount
+  name: ColumnCount
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_ColumnCount
+  commentId: P:Benday.CommandsFramework.DataFormatting.CsvWriter.ColumnCount
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.ColumnCount
+  nameWithType: CsvWriter.ColumnCount
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.ColumnCount*
+  name: ColumnCount
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_ColumnCount_
+  commentId: Overload:Benday.CommandsFramework.DataFormatting.CsvWriter.ColumnCount
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.ColumnCount
+  nameWithType: CsvWriter.ColumnCount
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.GetHeaders
+  name: GetHeaders()
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_GetHeaders
+  commentId: M:Benday.CommandsFramework.DataFormatting.CsvWriter.GetHeaders
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.GetHeaders()
+  nameWithType: CsvWriter.GetHeaders()
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.GetHeaders*
+  name: GetHeaders
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_GetHeaders_
+  commentId: Overload:Benday.CommandsFramework.DataFormatting.CsvWriter.GetHeaders
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.GetHeaders
+  nameWithType: CsvWriter.GetHeaders
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.GetRow(System.Int32)
+  name: GetRow(int)
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_GetRow_System_Int32_
+  commentId: M:Benday.CommandsFramework.DataFormatting.CsvWriter.GetRow(System.Int32)
+  name.vb: GetRow(Integer)
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.GetRow(int)
+  fullName.vb: Benday.CommandsFramework.DataFormatting.CsvWriter.GetRow(Integer)
+  nameWithType: CsvWriter.GetRow(int)
+  nameWithType.vb: CsvWriter.GetRow(Integer)
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.GetRow*
+  name: GetRow
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_GetRow_
+  commentId: Overload:Benday.CommandsFramework.DataFormatting.CsvWriter.GetRow
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.GetRow
+  nameWithType: CsvWriter.GetRow
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.GetValue(System.Int32,System.Int32)
+  name: GetValue(int, int)
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_GetValue_System_Int32_System_Int32_
+  commentId: M:Benday.CommandsFramework.DataFormatting.CsvWriter.GetValue(System.Int32,System.Int32)
+  name.vb: GetValue(Integer, Integer)
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.GetValue(int, int)
+  fullName.vb: Benday.CommandsFramework.DataFormatting.CsvWriter.GetValue(Integer, Integer)
+  nameWithType: CsvWriter.GetValue(int, int)
+  nameWithType.vb: CsvWriter.GetValue(Integer, Integer)
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.GetValue(System.Int32,System.String)
+  name: GetValue(int, string)
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_GetValue_System_Int32_System_String_
+  commentId: M:Benday.CommandsFramework.DataFormatting.CsvWriter.GetValue(System.Int32,System.String)
+  name.vb: GetValue(Integer, String)
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.GetValue(int, string)
+  fullName.vb: Benday.CommandsFramework.DataFormatting.CsvWriter.GetValue(Integer, String)
+  nameWithType: CsvWriter.GetValue(int, string)
+  nameWithType.vb: CsvWriter.GetValue(Integer, String)
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.GetValue*
+  name: GetValue
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_GetValue_
+  commentId: Overload:Benday.CommandsFramework.DataFormatting.CsvWriter.GetValue
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.GetValue
+  nameWithType: CsvWriter.GetValue
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.HasHeaderRow
+  name: HasHeaderRow
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_HasHeaderRow
+  commentId: P:Benday.CommandsFramework.DataFormatting.CsvWriter.HasHeaderRow
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.HasHeaderRow
+  nameWithType: CsvWriter.HasHeaderRow
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.HasHeaderRow*
+  name: HasHeaderRow
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_HasHeaderRow_
+  commentId: Overload:Benday.CommandsFramework.DataFormatting.CsvWriter.HasHeaderRow
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.HasHeaderRow
+  nameWithType: CsvWriter.HasHeaderRow
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.InsertRow(System.Int32,System.String[])
+  name: InsertRow(int, params string[])
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_InsertRow_System_Int32_System_String___
+  commentId: M:Benday.CommandsFramework.DataFormatting.CsvWriter.InsertRow(System.Int32,System.String[])
+  name.vb: InsertRow(Integer, ParamArray String())
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.InsertRow(int, params string[])
+  fullName.vb: Benday.CommandsFramework.DataFormatting.CsvWriter.InsertRow(Integer, ParamArray String())
+  nameWithType: CsvWriter.InsertRow(int, params string[])
+  nameWithType.vb: CsvWriter.InsertRow(Integer, ParamArray String())
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.InsertRow*
+  name: InsertRow
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_InsertRow_
+  commentId: Overload:Benday.CommandsFramework.DataFormatting.CsvWriter.InsertRow
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.InsertRow
+  nameWithType: CsvWriter.InsertRow
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.RemoveRow(System.Int32)
+  name: RemoveRow(int)
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_RemoveRow_System_Int32_
+  commentId: M:Benday.CommandsFramework.DataFormatting.CsvWriter.RemoveRow(System.Int32)
+  name.vb: RemoveRow(Integer)
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.RemoveRow(int)
+  fullName.vb: Benday.CommandsFramework.DataFormatting.CsvWriter.RemoveRow(Integer)
+  nameWithType: CsvWriter.RemoveRow(int)
+  nameWithType.vb: CsvWriter.RemoveRow(Integer)
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.RemoveRow*
+  name: RemoveRow
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_RemoveRow_
+  commentId: Overload:Benday.CommandsFramework.DataFormatting.CsvWriter.RemoveRow
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.RemoveRow
+  nameWithType: CsvWriter.RemoveRow
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.RowCount
+  name: RowCount
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_RowCount
+  commentId: P:Benday.CommandsFramework.DataFormatting.CsvWriter.RowCount
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.RowCount
+  nameWithType: CsvWriter.RowCount
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.RowCount*
+  name: RowCount
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_RowCount_
+  commentId: Overload:Benday.CommandsFramework.DataFormatting.CsvWriter.RowCount
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.RowCount
+  nameWithType: CsvWriter.RowCount
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.SaveToFile(System.String)
+  name: SaveToFile(string)
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_SaveToFile_System_String_
+  commentId: M:Benday.CommandsFramework.DataFormatting.CsvWriter.SaveToFile(System.String)
+  name.vb: SaveToFile(String)
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.SaveToFile(string)
+  fullName.vb: Benday.CommandsFramework.DataFormatting.CsvWriter.SaveToFile(String)
+  nameWithType: CsvWriter.SaveToFile(string)
+  nameWithType.vb: CsvWriter.SaveToFile(String)
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.SaveToFile*
+  name: SaveToFile
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_SaveToFile_
+  commentId: Overload:Benday.CommandsFramework.DataFormatting.CsvWriter.SaveToFile
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.SaveToFile
+  nameWithType: CsvWriter.SaveToFile
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.SetHeaders(System.String[])
+  name: SetHeaders(string[])
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_SetHeaders_System_String___
+  commentId: M:Benday.CommandsFramework.DataFormatting.CsvWriter.SetHeaders(System.String[])
+  name.vb: SetHeaders(String())
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.SetHeaders(string[])
+  fullName.vb: Benday.CommandsFramework.DataFormatting.CsvWriter.SetHeaders(String())
+  nameWithType: CsvWriter.SetHeaders(string[])
+  nameWithType.vb: CsvWriter.SetHeaders(String())
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.SetHeaders*
+  name: SetHeaders
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_SetHeaders_
+  commentId: Overload:Benday.CommandsFramework.DataFormatting.CsvWriter.SetHeaders
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.SetHeaders
+  nameWithType: CsvWriter.SetHeaders
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.SetRow(System.Int32,System.String[])
+  name: SetRow(int, params string[])
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_SetRow_System_Int32_System_String___
+  commentId: M:Benday.CommandsFramework.DataFormatting.CsvWriter.SetRow(System.Int32,System.String[])
+  name.vb: SetRow(Integer, ParamArray String())
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.SetRow(int, params string[])
+  fullName.vb: Benday.CommandsFramework.DataFormatting.CsvWriter.SetRow(Integer, ParamArray String())
+  nameWithType: CsvWriter.SetRow(int, params string[])
+  nameWithType.vb: CsvWriter.SetRow(Integer, ParamArray String())
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.SetRow*
+  name: SetRow
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_SetRow_
+  commentId: Overload:Benday.CommandsFramework.DataFormatting.CsvWriter.SetRow
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.SetRow
+  nameWithType: CsvWriter.SetRow
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.SetValue(System.Int32,System.Int32,System.String)
+  name: SetValue(int, int, string)
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_SetValue_System_Int32_System_Int32_System_String_
+  commentId: M:Benday.CommandsFramework.DataFormatting.CsvWriter.SetValue(System.Int32,System.Int32,System.String)
+  name.vb: SetValue(Integer, Integer, String)
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.SetValue(int, int, string)
+  fullName.vb: Benday.CommandsFramework.DataFormatting.CsvWriter.SetValue(Integer, Integer, String)
+  nameWithType: CsvWriter.SetValue(int, int, string)
+  nameWithType.vb: CsvWriter.SetValue(Integer, Integer, String)
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.SetValue(System.Int32,System.String,System.String)
+  name: SetValue(int, string, string)
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_SetValue_System_Int32_System_String_System_String_
+  commentId: M:Benday.CommandsFramework.DataFormatting.CsvWriter.SetValue(System.Int32,System.String,System.String)
+  name.vb: SetValue(Integer, String, String)
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.SetValue(int, string, string)
+  fullName.vb: Benday.CommandsFramework.DataFormatting.CsvWriter.SetValue(Integer, String, String)
+  nameWithType: CsvWriter.SetValue(int, string, string)
+  nameWithType.vb: CsvWriter.SetValue(Integer, String, String)
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.SetValue*
+  name: SetValue
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_SetValue_
+  commentId: Overload:Benday.CommandsFramework.DataFormatting.CsvWriter.SetValue
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.SetValue
+  nameWithType: CsvWriter.SetValue
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.ToCsvString
+  name: ToCsvString()
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_ToCsvString
+  commentId: M:Benday.CommandsFramework.DataFormatting.CsvWriter.ToCsvString
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.ToCsvString()
+  nameWithType: CsvWriter.ToCsvString()
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.ToCsvString*
+  name: ToCsvString
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_ToCsvString_
+  commentId: Overload:Benday.CommandsFramework.DataFormatting.CsvWriter.ToCsvString
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.ToCsvString
+  nameWithType: CsvWriter.ToCsvString
 - uid: Benday.CommandsFramework.DataFormatting.TableColumnDefinition
   name: TableColumnDefinition
   href: api/Benday.CommandsFramework.DataFormatting.TableColumnDefinition.html

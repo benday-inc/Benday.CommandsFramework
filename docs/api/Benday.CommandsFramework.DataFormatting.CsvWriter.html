@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class CsvWriter </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class CsvWriter ">
+    
+    <meta name="description" content="A CSV file writer that allows building and editing CSV data in memory before writing to disk or converting to string.">
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <div class="navbar-brand">
+                <a href="../">
+                  <img id="logo" src="../logo.png" alt="" alt="asdf" width="50" height="50">
+                </a>
+
+              </div>            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter">
+
+
+
+  <h1 id="Benday_CommandsFramework_DataFormatting_CsvWriter" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter" class="text-break">Class CsvWriter</h1>
+  <div class="markdown level0 summary"><p>A CSV file writer that allows building and editing CSV data in memory before writing to disk or converting to string.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><span class="xref">CsvWriter</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Benday.html">Benday</a>.<a class="xref" href="Benday.CommandsFramework.html">CommandsFramework</a>.<a class="xref" href="Benday.CommandsFramework.DataFormatting.html">DataFormatting</a></h6>
+  <h6><strong>Assembly</strong>: Benday.CommandsFramework.dll</h6>
+  <h5 id="Benday_CommandsFramework_DataFormatting_CsvWriter_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class CsvWriter</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DataFormatting_CsvWriter__ctor.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DataFormatting.CsvWriter.%23ctor%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DataFormatting/CsvWriter.cs/#L21">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_DataFormatting_CsvWriter__ctor_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.#ctor*"></a>
+  <h4 id="Benday_CommandsFramework_DataFormatting_CsvWriter__ctor" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.#ctor">CsvWriter()</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the CsvWriter class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CsvWriter()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DataFormatting_CsvWriter__ctor_Benday_CommandsFramework_DataFormatting_CsvReader_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DataFormatting.CsvWriter.%23ctor(Benday.CommandsFramework.DataFormatting.CsvReader)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DataFormatting/CsvWriter.cs/#L44">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_DataFormatting_CsvWriter__ctor_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.#ctor*"></a>
+  <h4 id="Benday_CommandsFramework_DataFormatting_CsvWriter__ctor_Benday_CommandsFramework_DataFormatting_CsvReader_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.#ctor(Benday.CommandsFramework.DataFormatting.CsvReader)">CsvWriter(CsvReader)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the CsvWriter class from an existing CsvReader for editing.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CsvWriter(CsvReader reader)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Benday.CommandsFramework.DataFormatting.CsvReader.html">CsvReader</a></td>
+        <td><span class="parametername">reader</span></td>
+        <td><p>The CsvReader to load data from.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when reader is null.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DataFormatting_CsvWriter__ctor_System_Boolean_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DataFormatting.CsvWriter.%23ctor(System.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DataFormatting/CsvWriter.cs/#L32">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_DataFormatting_CsvWriter__ctor_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.#ctor*"></a>
+  <h4 id="Benday_CommandsFramework_DataFormatting_CsvWriter__ctor_System_Boolean_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.#ctor(System.Boolean)">CsvWriter(bool)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the CsvWriter class with the specified header row setting.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CsvWriter(bool hasHeaderRow)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">hasHeaderRow</span></td>
+        <td><p>Whether the CSV should include a header row.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DataFormatting_CsvWriter_ColumnCount.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DataFormatting.CsvWriter.ColumnCount%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DataFormatting/CsvWriter.cs/#L87">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_DataFormatting_CsvWriter_ColumnCount_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.ColumnCount*"></a>
+  <h4 id="Benday_CommandsFramework_DataFormatting_CsvWriter_ColumnCount" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.ColumnCount">ColumnCount</h4>
+  <div class="markdown level1 summary"><p>Gets the number of columns in the CSV. Returns 0 if no data or headers are present.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ColumnCount { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DataFormatting_CsvWriter_HasHeaderRow.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DataFormatting.CsvWriter.HasHeaderRow%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DataFormatting/CsvWriter.cs/#L77">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_DataFormatting_CsvWriter_HasHeaderRow_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.HasHeaderRow*"></a>
+  <h4 id="Benday_CommandsFramework_DataFormatting_CsvWriter_HasHeaderRow" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.HasHeaderRow">HasHeaderRow</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the first row should be treated as column headers.
+Default is true.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HasHeaderRow { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DataFormatting_CsvWriter_RowCount.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DataFormatting.CsvWriter.RowCount%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DataFormatting/CsvWriter.cs/#L82">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_DataFormatting_CsvWriter_RowCount_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.RowCount*"></a>
+  <h4 id="Benday_CommandsFramework_DataFormatting_CsvWriter_RowCount" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.RowCount">RowCount</h4>
+  <div class="markdown level1 summary"><p>Gets the number of data rows in the CSV (excluding header row).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int RowCount { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DataFormatting_CsvWriter_AddColumn_System_String_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DataFormatting.CsvWriter.AddColumn(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DataFormatting/CsvWriter.cs/#L137">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_DataFormatting_CsvWriter_AddColumn_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.AddColumn*"></a>
+  <h4 id="Benday_CommandsFramework_DataFormatting_CsvWriter_AddColumn_System_String_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.AddColumn(System.String)">AddColumn(string)</h4>
+  <div class="markdown level1 summary"><p>Adds a single column by name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddColumn(string columnName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">columnName</span></td>
+        <td><p>The name of the column to add.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when columnName is null.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
+        <td><p>Thrown when HasHeaderRow is false or data rows have already been added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DataFormatting_CsvWriter_AddColumns_System_String___.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DataFormatting.CsvWriter.AddColumns(System.String%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DataFormatting/CsvWriter.cs/#L173">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_DataFormatting_CsvWriter_AddColumns_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.AddColumns*"></a>
+  <h4 id="Benday_CommandsFramework_DataFormatting_CsvWriter_AddColumns_System_String___" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.AddColumns(System.String[])">AddColumns(params string[])</h4>
+  <div class="markdown level1 summary"><p>Adds multiple columns by name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddColumns(params string[] columnNames)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>[]</td>
+        <td><span class="parametername">columnNames</span></td>
+        <td><p>The names of the columns to add.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when columnNames is null.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
+        <td><p>Thrown when HasHeaderRow is false or data rows have already been added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DataFormatting_CsvWriter_AddRow_Benday_CommandsFramework_DataFormatting_CsvRow_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DataFormatting.CsvWriter.AddRow(Benday.CommandsFramework.DataFormatting.CsvRow)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DataFormatting/CsvWriter.cs/#L251">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_DataFormatting_CsvWriter_AddRow_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.AddRow*"></a>
+  <h4 id="Benday_CommandsFramework_DataFormatting_CsvWriter_AddRow_Benday_CommandsFramework_DataFormatting_CsvRow_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.AddRow(Benday.CommandsFramework.DataFormatting.CsvRow)">AddRow(CsvRow)</h4>
+  <div class="markdown level1 summary"><p>Adds a new row to the end of the CSV from a CsvRow.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddRow(CsvRow row)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Benday.CommandsFramework.DataFormatting.CsvRow.html">CsvRow</a></td>
+        <td><span class="parametername">row</span></td>
+        <td><p>The CsvRow to add.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when row is null.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DataFormatting_CsvWriter_AddRow_System_String___.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DataFormatting.CsvWriter.AddRow(System.String%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DataFormatting/CsvWriter.cs/#L230">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_DataFormatting_CsvWriter_AddRow_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.AddRow*"></a>
+  <h4 id="Benday_CommandsFramework_DataFormatting_CsvWriter_AddRow_System_String___" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.AddRow(System.String[])">AddRow(params string[])</h4>
+  <div class="markdown level1 summary"><p>Adds a new row to the end of the CSV.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddRow(params string[] values)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>[]</td>
+        <td><span class="parametername">values</span></td>
+        <td><p>The values for the new row.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when values is null.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DataFormatting_CsvWriter_GetHeaders.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DataFormatting.CsvWriter.GetHeaders%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DataFormatting/CsvWriter.cs/#L215">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_DataFormatting_CsvWriter_GetHeaders_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.GetHeaders*"></a>
+  <h4 id="Benday_CommandsFramework_DataFormatting_CsvWriter_GetHeaders" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.GetHeaders">GetHeaders()</h4>
+  <div class="markdown level1 summary"><p>Gets the column headers.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string[]? GetHeaders()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>[]</td>
+        <td><p>An array of column headers, or null if HasHeaderRow is false or no headers are set.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DataFormatting_CsvWriter_GetRow_System_Int32_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DataFormatting.CsvWriter.GetRow(System.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DataFormatting/CsvWriter.cs/#L323">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_DataFormatting_CsvWriter_GetRow_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.GetRow*"></a>
+  <h4 id="Benday_CommandsFramework_DataFormatting_CsvWriter_GetRow_System_Int32_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.GetRow(System.Int32)">GetRow(int)</h4>
+  <div class="markdown level1 summary"><p>Gets the row at the specified index as a CsvRow.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CsvRow GetRow(int index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>The zero-based index of the row.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Benday.CommandsFramework.DataFormatting.CsvRow.html">CsvRow</a></td>
+        <td><p>A CsvRow representing the row at the specified index.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p>Thrown when index is out of range.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DataFormatting_CsvWriter_GetValue_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DataFormatting.CsvWriter.GetValue(System.Int32%2CSystem.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DataFormatting/CsvWriter.cs/#L366">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_DataFormatting_CsvWriter_GetValue_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.GetValue*"></a>
+  <h4 id="Benday_CommandsFramework_DataFormatting_CsvWriter_GetValue_System_Int32_System_Int32_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.GetValue(System.Int32,System.Int32)">GetValue(int, int)</h4>
+  <div class="markdown level1 summary"><p>Gets the value at the specified row and column.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string GetValue(int row, int column)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">row</span></td>
+        <td><p>The zero-based row index.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">column</span></td>
+        <td><p>The zero-based column index.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><p>The value at the specified position.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p>Thrown when row or column index is out of range.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DataFormatting_CsvWriter_GetValue_System_Int32_System_String_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DataFormatting.CsvWriter.GetValue(System.Int32%2CSystem.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DataFormatting/CsvWriter.cs/#L391">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_DataFormatting_CsvWriter_GetValue_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.GetValue*"></a>
+  <h4 id="Benday_CommandsFramework_DataFormatting_CsvWriter_GetValue_System_Int32_System_String_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.GetValue(System.Int32,System.String)">GetValue(int, string)</h4>
+  <div class="markdown level1 summary"><p>Gets the value at the specified row and column name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string GetValue(int row, string columnName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">row</span></td>
+        <td><p>The zero-based row index.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">columnName</span></td>
+        <td><p>The name of the column.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><p>The value at the specified position.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p>Thrown when row index is out of range.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when columnName is null.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
+        <td><p>Thrown when headers are not available or column name is not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DataFormatting_CsvWriter_InsertRow_System_Int32_System_String___.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DataFormatting.CsvWriter.InsertRow(System.Int32%2CSystem.String%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DataFormatting/CsvWriter.cs/#L275">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_DataFormatting_CsvWriter_InsertRow_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.InsertRow*"></a>
+  <h4 id="Benday_CommandsFramework_DataFormatting_CsvWriter_InsertRow_System_Int32_System_String___" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.InsertRow(System.Int32,System.String[])">InsertRow(int, params string[])</h4>
+  <div class="markdown level1 summary"><p>Inserts a new row at the specified index.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void InsertRow(int index, params string[] values)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>The zero-based index at which to insert the row.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>[]</td>
+        <td><span class="parametername">values</span></td>
+        <td><p>The values for the new row.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when values is null.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p>Thrown when index is out of range.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DataFormatting_CsvWriter_RemoveRow_System_Int32_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DataFormatting.CsvWriter.RemoveRow(System.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DataFormatting/CsvWriter.cs/#L301">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_DataFormatting_CsvWriter_RemoveRow_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.RemoveRow*"></a>
+  <h4 id="Benday_CommandsFramework_DataFormatting_CsvWriter_RemoveRow_System_Int32_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.RemoveRow(System.Int32)">RemoveRow(int)</h4>
+  <div class="markdown level1 summary"><p>Removes the row at the specified index.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemoveRow(int index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>The zero-based index of the row to remove.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p>Thrown when index is out of range.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DataFormatting_CsvWriter_SaveToFile_System_String_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DataFormatting.CsvWriter.SaveToFile(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DataFormatting/CsvWriter.cs/#L518">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_DataFormatting_CsvWriter_SaveToFile_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.SaveToFile*"></a>
+  <h4 id="Benday_CommandsFramework_DataFormatting_CsvWriter_SaveToFile_System_String_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.SaveToFile(System.String)">SaveToFile(string)</h4>
+  <div class="markdown level1 summary"><p>Saves the CSV data to a file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SaveToFile(string filePath)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">filePath</span></td>
+        <td><p>The path where the CSV file should be saved.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when filePath is null.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.ioexception">IOException</a></td>
+        <td><p>Thrown when there's an error writing the file.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DataFormatting_CsvWriter_SetHeaders_System_String___.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DataFormatting.CsvWriter.SetHeaders(System.String%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DataFormatting/CsvWriter.cs/#L111">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_DataFormatting_CsvWriter_SetHeaders_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.SetHeaders*"></a>
+  <h4 id="Benday_CommandsFramework_DataFormatting_CsvWriter_SetHeaders_System_String___" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.SetHeaders(System.String[])">SetHeaders(string[])</h4>
+  <div class="markdown level1 summary"><p>Sets the column headers.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetHeaders(string[] headers)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>[]</td>
+        <td><span class="parametername">headers</span></td>
+        <td><p>The column headers.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when headers is null.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
+        <td><p>Thrown when HasHeaderRow is false or data rows have already been added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DataFormatting_CsvWriter_SetRow_System_Int32_System_String___.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DataFormatting.CsvWriter.SetRow(System.Int32%2CSystem.String%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DataFormatting/CsvWriter.cs/#L340">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_DataFormatting_CsvWriter_SetRow_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.SetRow*"></a>
+  <h4 id="Benday_CommandsFramework_DataFormatting_CsvWriter_SetRow_System_Int32_System_String___" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.SetRow(System.Int32,System.String[])">SetRow(int, params string[])</h4>
+  <div class="markdown level1 summary"><p>Sets the values for the row at the specified index.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetRow(int index, params string[] values)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>The zero-based index of the row.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>[]</td>
+        <td><span class="parametername">values</span></td>
+        <td><p>The new values for the row.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when values is null.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p>Thrown when index is out of range.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DataFormatting_CsvWriter_SetValue_System_Int32_System_Int32_System_String_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DataFormatting.CsvWriter.SetValue(System.Int32%2CSystem.Int32%2CSystem.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DataFormatting/CsvWriter.cs/#L426">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_DataFormatting_CsvWriter_SetValue_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.SetValue*"></a>
+  <h4 id="Benday_CommandsFramework_DataFormatting_CsvWriter_SetValue_System_Int32_System_Int32_System_String_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.SetValue(System.Int32,System.Int32,System.String)">SetValue(int, int, string)</h4>
+  <div class="markdown level1 summary"><p>Sets the value at the specified row and column.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetValue(int row, int column, string value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">row</span></td>
+        <td><p>The zero-based row index.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">column</span></td>
+        <td><p>The zero-based column index.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The value to set.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p>Thrown when row or column index is out of range.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DataFormatting_CsvWriter_SetValue_System_Int32_System_String_System_String_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DataFormatting.CsvWriter.SetValue(System.Int32%2CSystem.String%2CSystem.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DataFormatting/CsvWriter.cs/#L458">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_DataFormatting_CsvWriter_SetValue_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.SetValue*"></a>
+  <h4 id="Benday_CommandsFramework_DataFormatting_CsvWriter_SetValue_System_Int32_System_String_System_String_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.SetValue(System.Int32,System.String,System.String)">SetValue(int, string, string)</h4>
+  <div class="markdown level1 summary"><p>Sets the value at the specified row and column name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetValue(int row, string columnName, string value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">row</span></td>
+        <td><p>The zero-based row index.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">columnName</span></td>
+        <td><p>The name of the column.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The value to set.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p>Thrown when row index is out of range.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when columnName is null.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
+        <td><p>Thrown when headers are not available or column name is not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DataFormatting_CsvWriter_ToCsvString.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DataFormatting.CsvWriter.ToCsvString%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DataFormatting/CsvWriter.cs/#L483">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_DataFormatting_CsvWriter_ToCsvString_" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.ToCsvString*"></a>
+  <h4 id="Benday_CommandsFramework_DataFormatting_CsvWriter_ToCsvString" data-uid="Benday.CommandsFramework.DataFormatting.CsvWriter.ToCsvString">ToCsvString()</h4>
+  <div class="markdown level1 summary"><p>Converts the CSV data to a string representation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string ToCsvString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><p>A string containing the CSV data.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DataFormatting_CsvWriter.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DataFormatting.CsvWriter%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DataFormatting/CsvWriter.cs/#L12" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      
+      Copyright © <a href="https://www.benday.com/">www.benday.com</a> | <a href="mailto:info@benday.com">info@benday.com</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

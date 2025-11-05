@@ -256,6 +256,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Benday.CommandsFramework.DataFormatting.CsvWriter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Benday.CommandsFramework.DataFormatting.CsvWriter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Benday.CommandsFramework.DataFormatting.CsvWriter",
+      "Summary": "<p sourcefile=\"api/Benday.CommandsFramework.DataFormatting.CsvWriter.yml\" sourcestartlinenumber=\"1\">A CSV file writer that allows building and editing CSV data in memory before writing to disk or converting to string.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Benday.CommandsFramework.DataFormatting.TableColumnDefinition.yml",
       "output": {
         ".html": {

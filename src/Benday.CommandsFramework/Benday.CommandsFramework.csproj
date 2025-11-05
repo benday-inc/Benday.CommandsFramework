@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
@@ -13,10 +13,11 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageIcon>bdc_mark_128_128.png</PackageIcon>
-        <TheVersion>4.12.0</TheVersion>
+        <TheVersion>4.13.0</TheVersion>
         <AssemblyVersion>$(TheVersion).0</AssemblyVersion>
         <Version>$(TheVersion)</Version>
         <PackageReleaseNotes>
+v4.13 - Added support for writing CSV files via CsvWriter utility class;
 v4.12 - Improved dependency injection support for commands;
 v4.11 - Added option to get file and directory arguments as fully qualified paths;
 v4.10 - Added support for .NET 9.0; Added CsvReader utility class for parsing CSV files;
