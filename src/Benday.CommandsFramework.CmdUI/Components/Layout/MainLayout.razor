@@ -1,0 +1,18 @@
+@inherits LayoutComponentBase
+@inject AppState AppState
+
+<div class="app-container">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>cmdui</h2>
+            @if (!string.IsNullOrEmpty(AppState.ToolName))
+            {
+                <span class="tool-badge">@AppState.ToolName</span>
+            }
+        </div>
+        <NavMenu />
+    </aside>
+    <main class="main-content">
+        @Body
+    </main>
+</div>

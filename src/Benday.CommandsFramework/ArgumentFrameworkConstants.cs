@@ -10,4 +10,5 @@ public static class ArgumentFrameworkConstants
     /// </summary>
     public const string ArgumentHelpString = "--help";
     public const string ArgumentJson = "--json";
+    public const string ArgumentGui = "gui";
 }

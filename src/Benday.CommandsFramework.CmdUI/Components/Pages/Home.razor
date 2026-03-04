@@ -1,0 +1,87 @@
+@page "/"
+@inject AppState AppState
+@inject ToolDiscoveryService DiscoveryService
+@inject NavigationManager Navigation
+
+@if (AppState.IsDiscoveryMode)
+{
+    <h1>Installed Tools</h1>
+
+    @if (_isLoading)
+    {
+        <p>Scanning installed dotnet tools for CommandsFramework support...</p>
+    }
+    else if (_tools != null)
+    {
+        var supported = _tools.Where(t => t.SupportsJson).ToList();
+        var unsupported = _tools.Where(t => !t.SupportsJson).ToList();
+
+        @if (supported.Count > 0)
+        {
+            <div class="tool-grid">
+                @foreach (var tool in supported)
+                {
+                    <div class="tool-card" @onclick="() => SelectTool(tool)">
+                        <h3>@tool.ToolName</h3>
+                        <span class="version">v@tool.Version</span>
+                        <span class="command-count">@tool.Commands.Count commands</span>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p>No tools with CommandsFramework support found.</p>
+        }
+
+        @if (unsupported.Count > 0)
+        {
+            <h2>Tools without --json support</h2>
+            <div class="tool-grid">
+                @foreach (var tool in unsupported)
+                {
+                    <div class="tool-card disabled">
+                        <h3>@tool.ToolName</h3>
+                        <span class="version">v@tool.Version</span>
+                    </div>
+                }
+            </div>
+        }
+    }
+}
+else
+{
+    <h1>@AppState.ToolName</h1>
+    <p>Select a command from the sidebar to get started.</p>
+}
+
+@code {
+    private List<ToolInfo>? _tools;
+    private bool _isLoading;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (AppState.IsDiscoveryMode)
+        {
+            _isLoading = true;
+            try
+            {
+                _tools = await DiscoveryService.DiscoverToolsAsync();
+            }
+            catch
+            {
+                _tools = new();
+            }
+            finally
+            {
+                _isLoading = false;
+            }
+        }
+    }
+
+    private void SelectTool(ToolInfo tool)
+    {
+        AppState.SetTool(tool.ToolName);
+        Navigation.NavigateTo("/");
+    }
+}

@@ -1,0 +1,25 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Solution Items/">
+    <File Path=".github/workflows/dotnet.yml" />
+    <File Path="copy-docfx-site-to-docs.ps1" />
+    <File Path="copy-docfx-site-to-docs.sh" />
+    <File Path="generate-docfx-docs.ps1" />
+    <File Path="generate-docfx-docs.sh" />
+    <File Path="README.md" />
+    <File Path="serve-docfx-docs.ps1" />
+    <File Path="serve-docfx-docs.sh" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Benday.CommandsFramework.CmdUI/Benday.CommandsFramework.CmdUI.csproj" />
+    <Project Path="src/Benday.CommandsFramework/Benday.CommandsFramework.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/Benday.CommandsFramework.Samples/Benday.CommandsFramework.Samples.csproj" />
+    <Project Path="test/Benday.CommandsFramework.Tests/Benday.CommandsFramework.Tests.csproj" />
+  </Folder>
+</Solution>

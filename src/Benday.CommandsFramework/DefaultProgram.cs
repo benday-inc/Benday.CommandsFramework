@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 using System.Text.Json;
 
 namespace Benday.CommandsFramework;
@@ -56,6 +57,10 @@ public class DefaultProgram : ICommandProgram
                 if (args[0] == ArgumentFrameworkConstants.ArgumentJson)
                 {
                     DumpJson(util);
+                }
+                else if (args[0] == ArgumentFrameworkConstants.ArgumentGui)
+                {
+                    LaunchGui();
                 }
                 else if (args[0] == ArgumentFrameworkConstants.ArgumentHelpString)
                 {
@@ -166,6 +171,35 @@ public class DefaultProgram : ICommandProgram
                 Environment.ExitCode = 1;
                 throw;
             }
+        }
+    }
+
+    private void LaunchGui()
+    {
+        var toolName = Process.GetCurrentProcess().ProcessName;
+
+        WriteLine($"Launching cmdui for '{toolName}'...");
+
+        var psi = new ProcessStartInfo
+        {
+            FileName = "cmdui",
+            ArgumentList = { toolName },
+            UseShellExecute = false
+        };
+
+        try
+        {
+            using var process = Process.Start(psi);
+
+            if (process != null)
+            {
+                process.WaitForExit();
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new KnownException(
+                $"Failed to launch cmdui. Is it installed? Install with: dotnet tool install -g cmdui. Error: {ex.Message}");
         }
     }
 

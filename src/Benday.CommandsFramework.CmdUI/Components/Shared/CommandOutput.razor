@@ -1,0 +1,25 @@
+@code {
+    [Parameter] public CommandExecutionResult Result { get; set; } = default!;
+}
+
+<div class="command-output @(Result.IsSuccess ? "success" : "error")">
+    <div class="output-header">
+        <span class="exit-code">Exit code: @Result.ExitCode</span>
+        <span class="timestamp">@Result.ExecutedAt.ToString("HH:mm:ss")</span>
+    </div>
+
+    <div class="command-line">
+        <code>$ @Result.CommandLine</code>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Result.StandardOutput))
+    {
+        <pre class="stdout">@Result.StandardOutput</pre>
+    }
+
+    @if (!string.IsNullOrEmpty(Result.StandardError))
+    {
+        <h4 class="stderr-header">Errors</h4>
+        <pre class="stderr">@Result.StandardError</pre>
+    }
+</div>
