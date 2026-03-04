@@ -1,11 +1,11 @@
-# This workflow will build a .NET project with both .NET 8 and .NET 9 SDKs,
+# This workflow will build a .NET project with .NET 8, 9, and 10 SDKs,
 # and publish the resulting nupkg file(s) as an artifact.
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
 name: .NET Multi-SDK Build & Publish
 
 on:
-  workflow_dispatch: 
+  workflow_dispatch:
   push:
     branches: [ "main" ]
   pull_request:
@@ -32,6 +32,11 @@ jobs:
       with:
         dotnet-version: 9.0.x
 
+    - name: Setup .NET 10 SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.x
+
     - name: Restore dependencies
       run: dotnet restore
 
@@ -45,7 +50,8 @@ jobs:
       run: |
         mkdir -p ./nupkgs
         cp src/Benday.CommandsFramework/bin/${{ env.BUILD_CONFIGURATION }}/*.nupkg ./nupkgs/
-    
+        cp src/Benday.CommandsFramework.CmdUi/bin/${{ env.BUILD_CONFIGURATION }}/*.nupkg ./nupkgs/
+
     - name: Publish nupkg artifact
       uses: actions/upload-artifact@v4
       with:

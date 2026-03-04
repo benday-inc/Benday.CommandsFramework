@@ -176,6 +176,37 @@ public class DefaultProgram : ICommandProgram
 
     private void LaunchGui()
     {
+        if (!IsCmdUiInstalled())
+        {
+            WriteLine("The 'cmdui' tool is not installed.");
+            WriteLine("cmdui provides a web-based UI for this command-line tool.");
+            WriteLine();
+            Write("Would you like to install it now? (Y/n): ");
+
+            var response = Console.ReadLine()?.Trim().ToLowerInvariant();
+
+            if (string.IsNullOrEmpty(response) || response == "y" || response == "yes")
+            {
+                WriteLine();
+                WriteLine("Installing cmdui...");
+
+                if (!InstallCmdUi())
+                {
+                    throw new KnownException(
+                        "Failed to install cmdui. You can install it manually with: dotnet tool install -g cmdui");
+                }
+
+                WriteLine("cmdui installed successfully.");
+                WriteLine();
+            }
+            else
+            {
+                WriteLine();
+                WriteLine("You can install cmdui later with: dotnet tool install -g cmdui");
+                return;
+            }
+        }
+
         var toolName = Process.GetCurrentProcess().ProcessName;
 
         WriteLine($"Launching cmdui for '{toolName}'...");
@@ -199,7 +230,79 @@ public class DefaultProgram : ICommandProgram
         catch (Exception ex)
         {
             throw new KnownException(
-                $"Failed to launch cmdui. Is it installed? Install with: dotnet tool install -g cmdui. Error: {ex.Message}");
+                $"Failed to launch cmdui. Error: {ex.Message}");
+        }
+    }
+
+    private bool IsCmdUiInstalled()
+    {
+        try
+        {
+            var psi = new ProcessStartInfo
+            {
+                FileName = "dotnet",
+                Arguments = "tool list -g",
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            using var process = Process.Start(psi);
+
+            if (process == null)
+            {
+                return false;
+            }
+
+            var output = process.StandardOutput.ReadToEnd();
+            process.WaitForExit();
+
+            // Check if cmdui appears in the tool list
+            return output.Contains("cmdui", StringComparison.OrdinalIgnoreCase);
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private bool InstallCmdUi()
+    {
+        try
+        {
+            var psi = new ProcessStartInfo
+            {
+                FileName = "dotnet",
+                Arguments = "tool install -g cmdui",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true
+            };
+
+            using var process = Process.Start(psi);
+
+            if (process == null)
+            {
+                return false;
+            }
+
+            // Show output to user
+            while (!process.StandardOutput.EndOfStream)
+            {
+                var line = process.StandardOutput.ReadLine();
+                if (!string.IsNullOrEmpty(line))
+                {
+                    WriteLine(line);
+                }
+            }
+
+            process.WaitForExit();
+
+            return process.ExitCode == 0;
+        }
+        catch
+        {
+            return false;
         }
     }
 
