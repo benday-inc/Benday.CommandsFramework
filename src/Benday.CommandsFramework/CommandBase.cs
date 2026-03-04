@@ -173,8 +173,28 @@ public abstract class CommandBase
             builder.AppendLine(Description);
         }
 
-        builder.AppendLine("** USAGE **");
-        builder.AppendLine(ExecutionInfo.CommandName);
+        // Separate arguments by type
+        var commandLineArgs = new List<IArgument>();
+        var positionalArgs = new List<IArgument>();
+        var configArgs = new List<IArgument>();
+
+        foreach (var key in Arguments.Keys)
+        {
+            var arg = Arguments[key];
+
+            if (arg.IsFromConfig)
+            {
+                configArgs.Add(arg);
+            }
+            else if (arg.IsPositionalSource)
+            {
+                positionalArgs.Add(arg);
+            }
+            else
+            {
+                commandLineArgs.Add(arg);
+            }
+        }
 
         int longestNameLength;
 
@@ -190,8 +210,8 @@ public abstract class CommandBase
                     });
         }
 
-        int consoleWidth; 
-        
+        int consoleWidth;
+
         if (Console.IsOutputRedirected == true)
         {
             consoleWidth = 60;
@@ -199,70 +219,75 @@ public abstract class CommandBase
         else
         {
             consoleWidth = Console.WindowWidth;
-        }        
-        
+        }
+
         var separator = " - ";
         int argNameColumnWidth = (longestNameLength + separator.Length);
 
-        var positionalArgs = new List<IArgument>();
-        
-        foreach (var key in Arguments.Keys)
+        // Always display USAGE section with command name
+        builder.AppendLine("** USAGE **");
+        builder.AppendLine(ExecutionInfo.CommandName);
+
+        // Display command line arguments
+        foreach (var arg in commandLineArgs)
         {
-            var arg = Arguments[key];
-            
-            if (arg.IsPositionalSource == true)
-            {
-                positionalArgs.Add(arg);
-                continue;
-            }
-            else if (arg.Name == arg.Description || string.IsNullOrEmpty(arg.Description) == true)
-            {
-                // description has an empty value or the value is the same as the arg name
-                builder.AppendWithPadding(GetKeyString(arg), longestNameLength);
-                builder.AppendLine();
-            }
-            else
-            {
-                // description has an actual value
-
-                var paddedKeyString = LineWrapUtilities.GetValueWithPadding(
-                    GetKeyString(arg), longestNameLength);
-
-                builder.Append(paddedKeyString);
-                builder.Append(separator);
-                builder.AppendWrappedValue(arg.Description,
-                    consoleWidth, argNameColumnWidth);
-
-                builder.AppendLine();
-            }
+            DisplayArgumentUsage(builder, arg, longestNameLength, separator, consoleWidth, argNameColumnWidth);
         }
 
+        // Display positional arguments
         if (positionalArgs.Count > 0)
         {
             var argsSortedByPosition = positionalArgs.OrderBy(a => a.Alias);
 
             foreach (var arg in argsSortedByPosition)
             {
-                if (arg.Name == arg.Description || string.IsNullOrEmpty(arg.Description) == true)
-                {
-                    // description has an empty value or the value is the same as the arg name
-                    builder.AppendWithPadding(GetKeyString(arg), longestNameLength);
-                }
-                else
-                {
-                    // description has an actual value
-
-                    var paddedKeyString = LineWrapUtilities.GetValueWithPadding(
-                        GetKeyString(arg), longestNameLength);
-
-                    builder.Append(paddedKeyString);
-                    builder.Append(separator);
-                    builder.AppendWrappedValue(arg.Description,
-                        consoleWidth, argNameColumnWidth);
-
-                    builder.AppendLine();
-                }
+                DisplayArgumentUsage(builder, arg, longestNameLength, separator, consoleWidth, argNameColumnWidth);
             }
+        }
+
+        // Display configuration arguments in separate section
+        if (configArgs.Count > 0)
+        {
+            builder.AppendLine();
+            builder.AppendLine("** CONFIGURATION **");
+            builder.AppendLine("(set via 'set-configuration', can override via command line)");
+
+            foreach (var arg in configArgs)
+            {
+                DisplayArgumentUsage(builder, arg, longestNameLength, separator, consoleWidth, argNameColumnWidth);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Displays a single argument's usage information
+    /// </summary>
+    private void DisplayArgumentUsage(
+        StringBuilder builder,
+        IArgument arg,
+        int longestNameLength,
+        string separator,
+        int consoleWidth,
+        int argNameColumnWidth)
+    {
+        if (arg.Name == arg.Description || string.IsNullOrEmpty(arg.Description) == true)
+        {
+            // description has an empty value or the value is the same as the arg name
+            builder.AppendWithPadding(GetKeyString(arg), longestNameLength);
+            builder.AppendLine();
+        }
+        else
+        {
+            // description has an actual value
+            var paddedKeyString = LineWrapUtilities.GetValueWithPadding(
+                GetKeyString(arg), longestNameLength);
+
+            builder.Append(paddedKeyString);
+            builder.Append(separator);
+            builder.AppendWrappedValue(arg.Description,
+                consoleWidth, argNameColumnWidth);
+
+            builder.AppendLine();
         }
     }
 
@@ -320,15 +345,49 @@ public abstract class CommandBase
     }
 
     /// <summary>
-    /// Reads the arguments from the execution info and 
+    /// Reads the arguments from the execution info and
     /// sets the values on to the argument definitions for the command.
+    /// For arguments marked with FromConfig(), values are loaded from
+    /// configuration with command line taking precedence.
     /// </summary>
     protected virtual void SetValuesFromExecutionInfo()
     {
         if (_HaveValuesBeenSet == false)
         {
+            // First, set values from config for FromConfig arguments
+            SetValuesFromConfig();
+
+            // Then set values from command line (overrides config values)
             Arguments.SetValues(_Info.Arguments);
+
             _HaveValuesBeenSet = true;
+        }
+    }
+
+    /// <summary>
+    /// Sets values from configuration for arguments marked with FromConfig().
+    /// </summary>
+    private void SetValuesFromConfig()
+    {
+        if (!_Info.HasConfiguration)
+        {
+            return;
+        }
+
+        var config = _Info.Configuration;
+
+        foreach (var key in Arguments.Keys)
+        {
+            var arg = Arguments[key];
+
+            if (arg.IsFromConfig && !arg.HasValue)
+            {
+                if (config.HasValue(arg.Name))
+                {
+                    var configValue = config.GetValue(arg.Name);
+                    arg.TrySetValue(configValue);
+                }
+            }
         }
     }
 }

@@ -18,6 +18,12 @@ public class CommandExecutionInfo
     public Dictionary<string, string> Arguments { get; set; } = new();
 
     private ICommandConfigurationManager? _Configuration;
+
+    /// <summary>
+    /// Returns true if a configuration manager has been set.
+    /// </summary>
+    public bool HasConfiguration => _Configuration != null;
+
     public ICommandConfigurationManager Configuration
     {
         get

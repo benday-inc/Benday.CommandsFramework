@@ -228,6 +228,29 @@ public static class ExtensionMethods
     }
 
     /// <summary>
+    /// Marks this argument as coming from configuration instead of command line.
+    /// The value can still be overridden via command line argument.
+    /// Precedence: Command line > Config > Default value
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="arg">Argument definition to configure</param>
+    /// <returns>The argument</returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    public static Argument<T> FromConfig<T>(
+        this Argument<T> arg)
+    {
+        if (arg == null)
+        {
+            throw new ArgumentNullException(nameof(arg));
+        }
+        else
+        {
+            arg.IsFromConfig = true;
+            return arg;
+        }
+    }
+
+    /// <summary>
     /// Gets the value from an unnamed variable based on position in the arg string.
     /// </summary>
     /// <param name="collection">Argument collection</param>

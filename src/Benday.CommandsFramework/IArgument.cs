@@ -54,10 +54,16 @@ public interface IArgument
     bool HasAlias { get; }
     
     /// <summary>
-    /// Should this value come from an unnamed argument on the command line? 
-    /// If yes, the Alias value will be the POSITION_x.  
+    /// Should this value come from an unnamed argument on the command line?
+    /// If yes, the Alias value will be the POSITION_x.
     /// </summary>
     public bool IsPositionalSource { get; set; }
+
+    /// <summary>
+    /// Should this value come from configuration instead of command line?
+    /// The value can still be overridden via command line.
+    /// </summary>
+    public bool IsFromConfig { get; set; }
 
     /// <summary>
     /// Value for the argument
