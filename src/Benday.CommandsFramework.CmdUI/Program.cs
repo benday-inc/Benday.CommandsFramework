@@ -1,13 +1,51 @@
 using System.Diagnostics;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using Benday.CommandsFramework.CmdUI;
 using Benday.CommandsFramework.CmdUI.Services;
 
-var toolName = args.Length > 0 ? args[0] : null;
+// Handle cmdui's own flags before treating args as a tool name
+if (args.Length > 0 && args[0] is "--help" or "-h" or "--version")
+{
+    Console.WriteLine("cmdui - Blazor Server web UI for CommandsFramework CLI tools");
+    Console.WriteLine();
+    Console.WriteLine("Usage:");
+    Console.WriteLine("  cmdui <toolname>    Launch UI for a specific tool");
+    Console.WriteLine("  cmdui              Discover all installed CommandsFramework tools");
+    Console.WriteLine();
+    Console.WriteLine("Examples:");
+    Console.WriteLine("  cmdui slnutil");
+    Console.WriteLine("  cmdui azdoutil");
+    return;
+}
+
+// First non-flag argument is the tool name; ignore anything starting with --
+var toolName = args.Length > 0 && !args[0].StartsWith('-') ? args[0] : null;
 var port = PortFinder.GetAvailablePort();
 var url = $"http://localhost:{port}";
 
-var builder = WebApplication.CreateBuilder(Array.Empty<string>());
+// When installed as a dotnet tool, wwwroot is next to the assembly.
+// In dev mode (dotnet run), static web assets are resolved via manifest.
+var assemblyDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
+var publishedWebRoot = Path.Combine(assemblyDir, "wwwroot");
+
+WebApplicationBuilder builder;
+
+if (Directory.Exists(publishedWebRoot))
+{
+    // Published / installed as tool — serve from the physical wwwroot
+    builder = WebApplication.CreateBuilder(new WebApplicationOptions
+    {
+        Args = Array.Empty<string>(),
+        ContentRootPath = assemblyDir,
+        WebRootPath = publishedWebRoot
+    });
+}
+else
+{
+    // Dev mode — let the SDK resolve static web assets via manifest
+    builder = WebApplication.CreateBuilder(Array.Empty<string>());
+}
 
 builder.WebHost.UseUrls(url);
 builder.Logging.SetMinimumLevel(LogLevel.Warning);

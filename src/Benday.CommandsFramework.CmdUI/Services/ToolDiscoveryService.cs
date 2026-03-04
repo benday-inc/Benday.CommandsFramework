@@ -7,6 +7,12 @@ public class ToolDiscoveryService
 {
     private readonly ToolSchemaService _schemaService;
 
+    // Skip ourselves during discovery to avoid recursion
+    private static readonly HashSet<string> SkipTools = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "cmdui"
+    };
+
     public ToolDiscoveryService(ToolSchemaService schemaService)
     {
         _schemaService = schemaService;
@@ -20,6 +26,11 @@ public class ToolDiscoveryService
 
         foreach (var (name, version) in toolNames)
         {
+            if (SkipTools.Contains(name))
+            {
+                continue;
+            }
+
             var tool = new ToolInfo
             {
                 ToolName = name,

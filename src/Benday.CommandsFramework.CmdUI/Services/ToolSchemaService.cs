@@ -8,6 +8,8 @@ public class ToolSchemaService
 {
     private readonly Dictionary<string, List<ToolCommandInfo>> _cache = new();
 
+    private static readonly TimeSpan ProbeTimeout = TimeSpan.FromSeconds(10);
+
     public async Task<List<ToolCommandInfo>> GetCommandSchemaAsync(string toolName)
     {
         if (_cache.TryGetValue(toolName, out var cached))
@@ -28,11 +30,22 @@ public class ToolSchemaService
         using var process = new Process { StartInfo = psi };
         process.Start();
 
-        var stdoutTask = process.StandardOutput.ReadToEndAsync();
-        var stderrTask = process.StandardError.ReadToEndAsync();
+        using var cts = new CancellationTokenSource(ProbeTimeout);
 
-        await Task.WhenAll(stdoutTask, stderrTask);
-        await process.WaitForExitAsync();
+        var stdoutTask = process.StandardOutput.ReadToEndAsync(cts.Token);
+        var stderrTask = process.StandardError.ReadToEndAsync(cts.Token);
+
+        try
+        {
+            await Task.WhenAll(stdoutTask, stderrTask);
+            await process.WaitForExitAsync(cts.Token);
+        }
+        catch (OperationCanceledException)
+        {
+            try { process.Kill(); } catch { }
+            throw new InvalidOperationException(
+                $"Timed out waiting for '{toolName} --json' after {ProbeTimeout.TotalSeconds}s.");
+        }
 
         var stdout = await stdoutTask;
 
