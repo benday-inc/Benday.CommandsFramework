@@ -1,7 +1,8 @@
 ﻿using Benday.CommandsFramework;
 using Benday.CommandsFramework.Samples;
-using System.Diagnostics;
-using System.Reflection;
+using Benday.CommandsFramework.Samples.Services;
+
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Benday.CommandsFramework.Samples;
 
@@ -9,20 +10,16 @@ class Program
 {
     static void Main(string[] args)
     {
-        var assembly = typeof(SampleCommand1).Assembly;
-
-        var versionInfo =
-            FileVersionInfo.GetVersionInfo(
-                Assembly.GetExecutingAssembly().Location);
-
-        var options = new DefaultProgramOptions();
-
-        options.Version = $"v{versionInfo.FileVersion}";
-        options.ApplicationName = "Sample Tool using Commands Framework";
-        options.Website = "https://www.benday.com";
-
-        var program = new DefaultProgram(options, assembly);
-
-        program.Run(args);
+        // New simplified approach with CommandsApp builder
+        CommandsApp
+            .Create<SampleCommand1>(args)
+            .WithAppInfo("Sample Tool using Commands Framework", "https://www.benday.com")
+            .WithVersionFromAssembly()
+            .ConfigureServices(services =>
+            {
+                // Register your services for dependency injection
+                services.AddSingleton<IGreetingService, GreetingService>();
+            })
+            .Run();
     }
 }

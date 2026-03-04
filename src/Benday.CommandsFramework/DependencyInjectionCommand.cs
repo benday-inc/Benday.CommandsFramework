@@ -5,16 +5,14 @@ namespace Benday.CommandsFramework;
 
 /// <summary>
 /// Base class for commands that use dependency injection.
+/// The service collection is validated lazily when services are first accessed,
+/// allowing commands to be instantiated for schema discovery without DI configuration.
 /// </summary>
 public abstract class DependencyInjectionCommand : AsynchronousCommand
 {
     protected DependencyInjectionCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider)
         : base(info, outputProvider)
     {
-        if (info.Options.ServiceCollection == null)
-        {
-            throw new InvalidOperationException("Service collection was not populated.  HINT: check Program.cs");
-        }
     }
 
     private IServiceScope? _ServiceScope;
