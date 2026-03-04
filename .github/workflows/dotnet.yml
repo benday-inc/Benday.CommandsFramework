@@ -1,59 +1,101 @@
-# This workflow will build a .NET project with .NET 8, 9, and 10 SDKs,
-# and publish the resulting nupkg file(s) as an artifact.
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
-
-name: .NET Multi-SDK Build & Publish
+name: Benday.CommandsFramework CI
 
 on:
-  workflow_dispatch:
   push:
     branches: [ "main" ]
+    paths:
+      - 'src/**'
+      - 'test/**'
+      - '.github/workflows/dotnet.yml'
   pull_request:
     branches: [ "main" ]
+    paths:
+      - 'src/**'
+      - 'test/**'
+      - '.github/workflows/dotnet.yml'
+  workflow_dispatch:
 
 env:
   BUILD_CONFIGURATION: Release
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Setup .NET 8 SDK
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
 
-    - name: Setup .NET 9 SDK
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 9.0.x
+      - name: Setup .NET 9
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
 
-    - name: Setup .NET 10 SDK
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 10.0.x
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
 
-    - name: Restore dependencies
-      run: dotnet restore
+      - name: Restore Benday.CommandsFramework
+        run: dotnet restore src/Benday.CommandsFramework/Benday.CommandsFramework.csproj
 
-    - name: Build
-      run: dotnet build -c ${{ env.BUILD_CONFIGURATION }}
+      - name: Restore Benday.CommandsFramework.CmdUi
+        run: dotnet restore src/Benday.CommandsFramework.CmdUi/Benday.CommandsFramework.CmdUi.csproj
 
-    - name: Test
-      run: dotnet test
+      - name: Restore Benday.CommandsFramework.Tests
+        run: dotnet restore test/Benday.CommandsFramework.Tests/Benday.CommandsFramework.Tests.csproj
 
-    - name: Copy NuGet package(s) to artifact staging directory
-      run: |
-        mkdir -p ./nupkgs
-        cp src/Benday.CommandsFramework/bin/${{ env.BUILD_CONFIGURATION }}/*.nupkg ./nupkgs/
-        cp src/Benday.CommandsFramework.CmdUi/bin/${{ env.BUILD_CONFIGURATION }}/*.nupkg ./nupkgs/
+      - name: Build Benday.CommandsFramework (Release)
+        run: dotnet build src/Benday.CommandsFramework/Benday.CommandsFramework.csproj --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
 
-    - name: Publish nupkg artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: nupkg
-        path: ./nupkgs/*.nupkg
+      - name: Build Benday.CommandsFramework.CmdUi (Release)
+        run: dotnet build src/Benday.CommandsFramework.CmdUi/Benday.CommandsFramework.CmdUi.csproj --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
+
+      - name: Build Benday.CommandsFramework.Tests (Release)
+        run: dotnet build test/Benday.CommandsFramework.Tests/Benday.CommandsFramework.Tests.csproj --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
+
+      - name: Test (Release)
+        run: dotnet test test/Benday.CommandsFramework.Tests/Benday.CommandsFramework.Tests.csproj --configuration ${{ env.BUILD_CONFIGURATION }} --no-build --verbosity normal
+
+      - name: Pack Benday.CommandsFramework
+        run: dotnet pack src/Benday.CommandsFramework/Benday.CommandsFramework.csproj --no-build --configuration ${{ env.BUILD_CONFIGURATION }} --output ./artifacts
+
+      - name: Pack Benday.CommandsFramework.CmdUi
+        run: dotnet pack src/Benday.CommandsFramework.CmdUi/Benday.CommandsFramework.CmdUi.csproj --no-build --configuration ${{ env.BUILD_CONFIGURATION }} --output ./artifacts
+
+      - name: Upload NuGet packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-packages-commandsframework
+          path: ./artifacts/*.nupkg
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: nuget-deploy
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: nuget-packages-commandsframework
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Push to NuGet
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          if [ -z "$NUGET_API_KEY" ]; then
+            echo "Error: NUGET_API_KEY secret is not set"
+            exit 1
+          fi
+          dotnet nuget push *.nupkg -k "$NUGET_API_KEY" -s https://api.nuget.org/v3/index.json --skip-duplicate
