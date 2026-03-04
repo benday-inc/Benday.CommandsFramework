@@ -20,7 +20,7 @@
         <AssemblyVersion>$(TheVersion).0</AssemblyVersion>
         <Version>$(TheVersion)</Version>
         <PackageReleaseNotes>
-v4.14 - Added support for .NET 10.0; Added support for 'gui' command that launches a blazor UI for the tool using the Benday.CommandsFramework.CmdUi package; Added fluent config methods and simplified DI configuration;
+v4.14 - Added support for .NET 10.0; Added support for 'gui' command that launches a blazor UI for the tool using the Benday.CommandsFramework.CmdUi package; Added fluent config methods and simplified DI configuration; Added support for defining allowed argument values; Added support for defining args that pull their values from a config value;
 v4.13 - Added support for writing CSV files via CsvWriter utility class;
 v4.12 - Improved dependency injection support for commands;
 v4.11 - Added option to get file and directory arguments as fully qualified paths;
