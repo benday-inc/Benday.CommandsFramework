@@ -349,6 +349,28 @@ public static class ExtensionMethods
     }
 
     /// <summary>
+    /// Restricts a string argument to a fixed set of valid values (case-insensitive).
+    /// When set, validation will fail if the supplied value is not in the list.
+    /// The allowed values are also included in the --json schema, enabling cmdui
+    /// to render the argument as a dropdown list.
+    /// </summary>
+    /// <param name="arg">The string argument to configure</param>
+    /// <param name="values">The allowed values</param>
+    /// <returns>The argument</returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    public static StringArgument WithAllowedValues(
+        this StringArgument arg, params string[] values)
+    {
+        if (arg == null)
+        {
+            throw new ArgumentNullException(nameof(arg));
+        }
+
+        arg.AllowedValues = values;
+        return arg;
+    }
+
+    /// <summary>
     /// Configures an argument definition as not required
     /// </summary>
     /// <typeparam name="T"></typeparam>

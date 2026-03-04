@@ -93,6 +93,8 @@ public class SampleCommand1Fixture
     public void CreateAndRun_OneInvalidArg()
     {
         // arrange
+        // /isawesome2 is an unknown arg AND causes required /isawesome to be missing,
+        // so two failures are reported -> plural header
         var commandLineArgs = Utilities.GetStringArray(
             "commandname1",
             "/arg1:Hello",
@@ -109,10 +111,12 @@ public class SampleCommand1Fixture
         // act
         _SystemUnderTest.Execute();
 
-        // assert        
+        // assert
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.Contains("** INVALID ARGUMENT **", output);
+        Assert.Contains("** INVALID ARGUMENTS **", output);
+        Assert.Contains("isawesome is not valid or missing", output);
+        Assert.Contains("Unknown argument: isawesome2", output);
     }
 
     [Fact]

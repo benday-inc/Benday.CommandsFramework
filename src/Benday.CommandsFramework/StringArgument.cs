@@ -43,6 +43,11 @@ public class StringArgument : Argument<string>
     {
         if (IsRequired == false)
         {
+            if (HasValue && AllowedValues.Length > 0)
+            {
+                return AllowedValues.Contains(Value, StringComparer.OrdinalIgnoreCase);
+            }
+
             return true;
         }
         else
@@ -59,6 +64,11 @@ public class StringArgument : Argument<string>
             }
             else
             {
+                if (AllowedValues.Length > 0)
+                {
+                    return AllowedValues.Contains(Value, StringComparer.OrdinalIgnoreCase);
+                }
+
                 return true;
             }
         }

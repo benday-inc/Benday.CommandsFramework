@@ -185,10 +185,16 @@ public abstract class Argument<T> : IArgument
     
     /// <summary>
     /// Is an empty value valid? This is more helpful for boolean arguments
-    /// when the existence of the argument on the command line call 
+    /// when the existence of the argument on the command line call
     /// indicates that something should be done.
     /// </summary>
     public bool AllowEmptyValue { get; set; }
+
+    /// <summary>
+    /// List of valid values for this argument. Empty array means any value is accepted.
+    /// When non-empty, the argument value must match one of these values (case-insensitive).
+    /// </summary>
+    public virtual string[] AllowedValues { get; set; } = [];
 
     /// <summary>
     /// Validate this argument according to the configuration.

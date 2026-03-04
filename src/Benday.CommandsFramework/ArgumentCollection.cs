@@ -3,15 +3,34 @@ using System.Diagnostics;
 
 namespace Benday.CommandsFramework;
 
+// Argument names that are handled by the framework before a command's Validate() is called.
+// These are skipped during unknown-argument detection so they don't produce false positives.
+
 /// <summary>
-/// Collection of arguments. Two common use cases: 1) create a 
+/// Collection of arguments. Two common use cases: 1) create a
 /// collection of arguments in order to describe what arguments are available
 /// for a command and 2) to represent the arguments on a command with the values
 /// populated from the command line.
 /// </summary>
 public class ArgumentCollection : IEnumerable<IArgument>
 {
+    private static readonly HashSet<string> _FrameworkReservedArgNames =
+        new(StringComparer.OrdinalIgnoreCase)
+        {
+            ArgumentFrameworkConstants.ArgumentHelpString,
+            ArgumentFrameworkConstants.ArgumentJson,
+            ArgumentFrameworkConstants.ArgumentGui,
+            CommandFrameworkConstants.CommandArgName_QuietMode
+        };
+
     private readonly Dictionary<string, IArgument> _Arguments;
+
+    /// <summary>
+    /// Argument keys supplied on the command line that were not recognized by this command's
+    /// argument definitions. Populated during SetValues(). Use this to detect typos or
+    /// unsupported arguments.
+    /// </summary>
+    public List<string> UnrecognizedKeys { get; } = new();
 
     /// <summary>
     /// Constructor. Creates an empty argument collection.
@@ -168,6 +187,10 @@ public class ArgumentCollection : IEnumerable<IArgument>
                     var targetArg = aliasedArgs[key];
 
                     targetArg.TrySetValue(fromArguments[key]);
+                }
+                else if (!_FrameworkReservedArgNames.Contains(key))
+                {
+                    UnrecognizedKeys.Add(key);
                 }
             }
         }

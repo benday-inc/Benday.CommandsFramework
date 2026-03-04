@@ -71,6 +71,12 @@ public interface IArgument
     string Value { get; }
 
     /// <summary>
+    /// List of valid values for this argument. Empty array means any value is accepted.
+    /// When non-empty, the argument value must match one of these values (case-insensitive).
+    /// </summary>
+    string[] AllowedValues { get; }
+
+    /// <summary>
     /// Validate the argument value against the argument definition information
     /// </summary>
     /// <returns>True if the value is valid</returns>

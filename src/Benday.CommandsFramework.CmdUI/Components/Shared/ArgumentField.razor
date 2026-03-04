@@ -30,39 +30,57 @@
         }
     </label>
 
-    @switch (Argument.DataType)
+    @if (Argument.AllowedValues is { Length: > 0 })
     {
-        case "Boolean":
-            <div class="checkbox-wrapper">
-                <input type="checkbox"
+        <select id="@Argument.Name"
+                value="@Value"
+                @onchange="OnInput">
+            @if (!IsRequiredField)
+            {
+                <option value="">-- select --</option>
+            }
+            @foreach (var option in Argument.AllowedValues)
+            {
+                <option value="@option" selected="@(option == Value)">@option</option>
+            }
+        </select>
+    }
+    else
+    {
+        @switch (Argument.DataType)
+        {
+            case "Boolean":
+                <div class="checkbox-wrapper">
+                    <input type="checkbox"
+                           id="@Argument.Name"
+                           checked="@(Value == "true")"
+                           @onchange="OnBooleanChange" />
+                </div>
+                break;
+
+            case "Int32":
+                <input type="number"
                        id="@Argument.Name"
-                       checked="@(Value == "true")"
-                       @onchange="OnBooleanChange" />
-            </div>
-            break;
+                       value="@Value"
+                       @oninput="OnInput"
+                       placeholder="@Argument.Description" />
+                break;
 
-        case "Int32":
-            <input type="number"
-                   id="@Argument.Name"
-                   value="@Value"
-                   @oninput="OnInput"
-                   placeholder="@Argument.Description" />
-            break;
+            case "DateTime":
+                <input type="date"
+                       id="@Argument.Name"
+                       value="@Value"
+                       @onchange="OnInput" />
+                break;
 
-        case "DateTime":
-            <input type="date"
-                   id="@Argument.Name"
-                   value="@Value"
-                   @onchange="OnInput" />
-            break;
-
-        default:
-            <input type="text"
-                   id="@Argument.Name"
-                   value="@Value"
-                   @oninput="OnInput"
-                   placeholder="@Argument.Description" />
-            break;
+            default:
+                <input type="text"
+                       id="@Argument.Name"
+                       value="@Value"
+                       @oninput="OnInput"
+                       placeholder="@Argument.Description" />
+                break;
+        }
     }
 
     @if (!string.IsNullOrEmpty(Argument.Description))

@@ -13,4 +13,5 @@ public class ToolArgumentInfo
     public bool HasAlias { get; set; }
     public bool IsPositionalSource { get; set; }
     public string Value { get; set; } = string.Empty;
+    public string[] AllowedValues { get; set; } = [];
 }

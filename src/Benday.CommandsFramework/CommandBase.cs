@@ -308,7 +308,14 @@ public abstract class CommandBase
 
         foreach (var item in invalidArguments)
         {
-            _OutputProvider.WriteLine($"{item.Name} is not valid or missing");
+            if (item is UnknownArgument)
+            {
+                _OutputProvider.WriteLine($"Unknown argument: {item.Name}");
+            }
+            else
+            {
+                _OutputProvider.WriteLine($"{item.Name} is not valid or missing");
+            }
         }
     }
 
@@ -334,6 +341,11 @@ public abstract class CommandBase
                 if (result == false)
                     returnValue.Add(temp);
             }
+        }
+
+        foreach (var unknownKey in Arguments.UnrecognizedKeys)
+        {
+            returnValue.Add(new UnknownArgument(unknownKey));
         }
 
         if (returnValue.Count > 0)
