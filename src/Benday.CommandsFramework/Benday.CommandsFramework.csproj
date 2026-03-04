@@ -4,15 +4,18 @@
         <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <Title>Command line argument framework for .NET Core</Title>
+        <Title>Command line argument framework for .NET</Title>
+        <Description>A framework for building command-line interface (CLI) utilities in .NET. Features include command line argument parsing, named commands, argument validation, and support for string, boolean, int, datetime, file, and directory arguments.</Description>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <Authors>benday</Authors>
-        <PackageProjectUrl>https://github.com/benday-inc/Benday.CommandsFramework.git</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/benday-inc/Benday.CommandsFramework</PackageProjectUrl>
         <Copyright>2026</Copyright>
         <RepositoryUrl>https://github.com/benday-inc/Benday.CommandsFramework.git</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageIcon>bdc_mark_128_128.png</PackageIcon>
+        <PackageTags>dotnet;cli;command-line;arguments;parsing;commands;framework</PackageTags>
         <TheVersion>4.14.0</TheVersion>
         <AssemblyVersion>$(TheVersion).0</AssemblyVersion>
         <Version>$(TheVersion)</Version>
