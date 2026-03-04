@@ -82,6 +82,6 @@ else
     private void SelectTool(ToolInfo tool)
     {
         AppState.SetTool(tool.ToolName);
-        Navigation.NavigateTo("/");
+        StateHasChanged();
     }
 }

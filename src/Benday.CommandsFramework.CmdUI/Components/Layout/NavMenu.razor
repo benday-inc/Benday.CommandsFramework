@@ -67,10 +67,14 @@
         }
     }
 
-    private async void OnToolChanged()
+    private void OnToolChanged()
     {
-        await LoadCommands();
-        await InvokeAsync(StateHasChanged);
+        _commands = null;
+        InvokeAsync(async () =>
+        {
+            await LoadCommands();
+            StateHasChanged();
+        });
     }
 
     private async Task LoadCommands()
