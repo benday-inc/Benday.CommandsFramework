@@ -1,0 +1,107 @@
+@inherits LayoutComponentBase
+@inject AppState AppState
+@using Benday.CommandsFramework.CmdUi.Components.Layout
+@implements IDisposable
+
+<div class="app-container">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>cmdui</h2>
+            @if (!string.IsNullOrEmpty(AppState.ToolName))
+            {
+                <span class="tool-badge">@AppState.ToolName</span>
+            }
+        </div>
+        <NavMenu />
+        <div class="sidebar-footer">
+            <div class="working-dir">
+                <span class="working-dir-label">Working Directory:</span>
+                <span class="working-dir-path" title="@AppState.WorkingDirectory">@GetDisplayPath()</span>
+                <button class="btn-change-dir" @onclick="ChangeWorkingDirectory">Change</button>
+            </div>
+        </div>
+    </aside>
+    <main class="main-content">
+        @Body
+    </main>
+</div>
+
+@if (_showDirectoryPicker)
+{
+    <div class="modal-overlay" @onclick="CloseDirectoryPicker">
+        <div class="modal-content" @onclick:stopPropagation>
+            <h3>Change Working Directory</h3>
+            <input type="text" @bind="_newDirectory" @bind:event="oninput"
+                   placeholder="Enter directory path" class="dir-input" />
+            <div class="modal-buttons">
+                <button class="btn-cancel" @onclick="CloseDirectoryPicker">Cancel</button>
+                <button class="btn-apply" @onclick="ApplyNewDirectory">Apply</button>
+            </div>
+            @if (!string.IsNullOrEmpty(_directoryError))
+            {
+                <p class="dir-error">@_directoryError</p>
+            }
+        </div>
+    </div>
+}
+
+@code {
+    private bool _showDirectoryPicker;
+    private string _newDirectory = string.Empty;
+    private string? _directoryError;
+
+    protected override void OnInitialized()
+    {
+        AppState.OnWorkingDirectoryChanged += OnWorkingDirectoryChanged;
+    }
+
+    private void OnWorkingDirectoryChanged()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    private string GetDisplayPath()
+    {
+        var path = AppState.WorkingDirectory;
+        if (path.Length > 40)
+        {
+            return "..." + path.Substring(path.Length - 37);
+        }
+        return path;
+    }
+
+    private void ChangeWorkingDirectory()
+    {
+        _newDirectory = AppState.WorkingDirectory;
+        _directoryError = null;
+        _showDirectoryPicker = true;
+    }
+
+    private void CloseDirectoryPicker()
+    {
+        _showDirectoryPicker = false;
+    }
+
+    private void ApplyNewDirectory()
+    {
+        if (string.IsNullOrWhiteSpace(_newDirectory))
+        {
+            _directoryError = "Directory path cannot be empty.";
+            return;
+        }
+
+        if (!Directory.Exists(_newDirectory))
+        {
+            _directoryError = "Directory does not exist.";
+            return;
+        }
+
+        AppState.SetWorkingDirectory(_newDirectory);
+        _showDirectoryPicker = false;
+    }
+
+    public void Dispose()
+    {
+        AppState.OnWorkingDirectoryChanged -= OnWorkingDirectoryChanged;
+    }
+}
