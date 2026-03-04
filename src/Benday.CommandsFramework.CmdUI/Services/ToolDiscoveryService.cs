@@ -1,7 +1,7 @@
 using System.Diagnostics;
-using Benday.CommandsFramework.CmdUI.Models;
+using Benday.CommandsFramework.CmdUi.Models;
 
-namespace Benday.CommandsFramework.CmdUI.Services;
+namespace Benday.CommandsFramework.CmdUi.Services;
 
 public class ToolDiscoveryService
 {

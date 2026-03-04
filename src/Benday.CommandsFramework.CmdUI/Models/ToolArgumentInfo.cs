@@ -1,4 +1,4 @@
-namespace Benday.CommandsFramework.CmdUI.Models;
+namespace Benday.CommandsFramework.CmdUi.Models;
 
 public class ToolArgumentInfo
 {

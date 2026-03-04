@@ -1,4 +1,4 @@
-namespace Benday.CommandsFramework.CmdUI;
+namespace Benday.CommandsFramework.CmdUi;
 
 public class AppState
 {
@@ -10,6 +10,12 @@ public class AppState
     public void SetTool(string toolName)
     {
         ToolName = toolName;
+        OnToolChanged?.Invoke();
+    }
+
+    public void ClearTool()
+    {
+        ToolName = null;
         OnToolChanged?.Invoke();
     }
 }

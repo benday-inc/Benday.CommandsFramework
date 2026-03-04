@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Sockets;
 
-namespace Benday.CommandsFramework.CmdUI.Services;
+namespace Benday.CommandsFramework.CmdUi.Services;
 
 public static class PortFinder
 {

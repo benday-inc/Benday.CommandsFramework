@@ -15,7 +15,7 @@
     <File Path="serve-docfx-docs.sh" />
   </Folder>
   <Folder Name="/src/">
-    <Project Path="src/Benday.CommandsFramework.CmdUI/Benday.CommandsFramework.CmdUI.csproj" />
+    <Project Path="src/Benday.CommandsFramework.CmdUi/Benday.CommandsFramework.CmdUi.csproj" />
     <Project Path="src/Benday.CommandsFramework/Benday.CommandsFramework.csproj" />
   </Folder>
   <Folder Name="/test/">

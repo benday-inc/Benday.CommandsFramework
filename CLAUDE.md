@@ -5,7 +5,7 @@ A .NET CLI framework for building command-line tools. Provides structured comman
 
 ## Solution Structure
 - `src/Benday.CommandsFramework/` - Core framework library (NuGet package, targets net8.0;net9.0)
-- `src/Benday.CommandsFramework.CmdUI/` - Blazor Server web UI shell for any framework-based tool (dotnet global tool `cmdui`, targets net10.0)
+- `src/Benday.CommandsFramework.CmdUi/` - Blazor Server web UI shell for any framework-based tool (dotnet global tool `cmdui`, targets net10.0)
 - `test/Benday.CommandsFramework.Tests/` - Unit tests (xUnit)
 - `test/Benday.CommandsFramework.Samples/` - Sample commands demonstrating framework features
 
@@ -48,7 +48,7 @@ Commands use `WriteLine()` which goes through `ITextOutputProvider`. `ConsoleTex
 ```bash
 dotnet build                    # build entire solution
 dotnet test                     # run tests
-dotnet run --project src/Benday.CommandsFramework.CmdUI -- slnutil   # test cmdui locally
+dotnet run --project src/Benday.CommandsFramework.CmdUi -- slnutil   # test cmdui locally
 ```
 
 ## Packaging

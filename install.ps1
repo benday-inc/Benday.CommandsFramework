@@ -12,4 +12,4 @@ if ($reinstall -eq $true)
 
 dotnet build
 
-dotnet tool install --global --add-source ./src/Benday.CommandsFramework.CmdUI/bin/Debug cmdui
+dotnet tool install --global --add-source ./src/Benday.CommandsFramework.CmdUi/bin/Debug cmdui

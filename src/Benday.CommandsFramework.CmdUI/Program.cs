@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using Benday.CommandsFramework.CmdUI;
-using Benday.CommandsFramework.CmdUI.Services;
+using Benday.CommandsFramework.CmdUi;
+using Benday.CommandsFramework.CmdUi.Services;
 
 // Handle cmdui's own flags before treating args as a tool name
 if (args.Length > 0 && args[0] is "--help" or "-h" or "--version")
@@ -63,7 +63,7 @@ var app = builder.Build();
 app.UseStaticFiles();
 app.UseAntiforgery();
 
-app.MapRazorComponents<Benday.CommandsFramework.CmdUI.Components.App>()
+app.MapRazorComponents<Benday.CommandsFramework.CmdUi.Components.App>()
     .AddInteractiveServerRenderMode();
 
 _ = Task.Run(async () =>

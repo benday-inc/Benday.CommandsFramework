@@ -1,11 +1,16 @@
 @inject AppState AppState
 @inject ToolSchemaService SchemaService
+@inject NavigationManager Navigation
 @implements IDisposable
 
 <nav class="nav-menu">
     @if (AppState.IsDiscoveryMode)
     {
         <a href="/" class="nav-link nav-link-home">All Tools</a>
+    }
+    else
+    {
+        <a href="/" class="nav-link nav-link-home" @onclick="GoBackToAllTools" @onclick:preventDefault>All Tools</a>
     }
 
     @if (!string.IsNullOrEmpty(_filterText) || (_commands != null && _commands.Count > 10))
@@ -98,6 +103,12 @@
             .Where(c => c.Name.Contains(_filterText, StringComparison.OrdinalIgnoreCase)
                       || c.Description.Contains(_filterText, StringComparison.OrdinalIgnoreCase))
             .ToList();
+    }
+
+    private void GoBackToAllTools()
+    {
+        AppState.ClearTool();
+        Navigation.NavigateTo("/");
     }
 
     public void Dispose()

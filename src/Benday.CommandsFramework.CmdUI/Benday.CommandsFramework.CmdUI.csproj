@@ -4,7 +4,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RootNamespace>Benday.CommandsFramework.CmdUI</RootNamespace>
+    <RootNamespace>Benday.CommandsFramework.CmdUi</RootNamespace>
 
     <PackAsTool>True</PackAsTool>
     <ToolCommandName>cmdui</ToolCommandName>

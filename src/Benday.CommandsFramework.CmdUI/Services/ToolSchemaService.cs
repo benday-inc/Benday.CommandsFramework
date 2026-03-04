@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using System.Text.Json;
-using Benday.CommandsFramework.CmdUI.Models;
+using Benday.CommandsFramework.CmdUi.Models;
 
-namespace Benday.CommandsFramework.CmdUI.Services;
+namespace Benday.CommandsFramework.CmdUi.Services;
 
 public class ToolSchemaService
 {
