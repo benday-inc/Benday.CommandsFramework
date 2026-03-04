@@ -5,6 +5,13 @@ namespace Benday.CommandsFramework.CmdUi.Services;
 
 public class CommandExecutionService
 {
+    private readonly AppState _appState;
+
+    public CommandExecutionService(AppState appState)
+    {
+        _appState = appState;
+    }
+
     public async Task<CommandExecutionResult> ExecuteCommandAsync(
         string toolName,
         string commandName,
@@ -17,6 +24,7 @@ public class CommandExecutionService
         var psi = new ProcessStartInfo
         {
             FileName = toolName,
+            WorkingDirectory = _appState.WorkingDirectory,
             RedirectStandardOutput = true,
             RedirectStandardError = true,
             UseShellExecute = false,

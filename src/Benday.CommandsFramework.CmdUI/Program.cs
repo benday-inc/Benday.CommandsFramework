@@ -19,6 +19,9 @@ if (args.Length > 0 && args[0] is "--help" or "-h" or "--version")
     return;
 }
 
+// Capture user's working directory before the web host changes it
+var userWorkingDirectory = Environment.CurrentDirectory;
+
 // First non-flag argument is the tool name; ignore anything starting with --
 var toolName = args.Length > 0 && !args[0].StartsWith('-') ? args[0] : null;
 var port = PortFinder.GetAvailablePort();
@@ -56,7 +59,7 @@ builder.Services.AddRazorComponents()
 builder.Services.AddSingleton<ToolSchemaService>();
 builder.Services.AddSingleton<CommandExecutionService>();
 builder.Services.AddSingleton<ToolDiscoveryService>();
-builder.Services.AddSingleton(new AppState { ToolName = toolName });
+builder.Services.AddSingleton(new AppState { ToolName = toolName, WorkingDirectory = userWorkingDirectory });
 
 var app = builder.Build();
 

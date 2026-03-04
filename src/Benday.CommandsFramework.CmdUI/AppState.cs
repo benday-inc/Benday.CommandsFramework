@@ -3,9 +3,11 @@ namespace Benday.CommandsFramework.CmdUi;
 public class AppState
 {
     public string? ToolName { get; set; }
+    public string WorkingDirectory { get; set; } = Environment.CurrentDirectory;
     public bool IsDiscoveryMode => ToolName == null;
 
     public event Action? OnToolChanged;
+    public event Action? OnWorkingDirectoryChanged;
 
     public void SetTool(string toolName)
     {
@@ -17,5 +19,11 @@ public class AppState
     {
         ToolName = null;
         OnToolChanged?.Invoke();
+    }
+
+    public void SetWorkingDirectory(string path)
+    {
+        WorkingDirectory = path;
+        OnWorkingDirectoryChanged?.Invoke();
     }
 }

@@ -412,3 +412,133 @@ fieldset {
     border: none;
     padding: 0;
 }
+
+/* Sidebar footer / working directory */
+.sidebar-footer {
+    margin-top: auto;
+    padding: 0.75rem;
+    border-top: 1px solid #313244;
+}
+
+.working-dir {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.working-dir-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6c7086;
+}
+
+.working-dir-path {
+    font-size: 0.8rem;
+    color: #a6adc8;
+    word-break: break-all;
+    font-family: 'Cascadia Code', 'Fira Code', monospace;
+}
+
+.btn-change-dir {
+    background: #313244;
+    color: #cdd6f4;
+    border: 1px solid #45475a;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    margin-top: 0.25rem;
+    align-self: flex-start;
+    transition: background 0.15s;
+}
+
+.btn-change-dir:hover {
+    background: #45475a;
+}
+
+/* Modal for directory picker */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    min-width: 400px;
+    max-width: 600px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.modal-content h3 {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    color: #1e1e2e;
+}
+
+.dir-input {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #ccd0da;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-family: 'Cascadia Code', 'Fira Code', monospace;
+    margin-bottom: 1rem;
+}
+
+.dir-input:focus {
+    outline: none;
+    border-color: #89b4fa;
+    box-shadow: 0 0 0 3px rgba(137, 180, 250, 0.2);
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.btn-cancel {
+    background: #e6e9ef;
+    color: #4c4f69;
+    border: 1px solid #ccd0da;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.btn-cancel:hover {
+    background: #dce0e8;
+}
+
+.btn-apply {
+    background: #89b4fa;
+    color: #1e1e2e;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-apply:hover {
+    background: #74a7f8;
+}
+
+.dir-error {
+    color: #e64553;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
