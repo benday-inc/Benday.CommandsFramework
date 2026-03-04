@@ -9,6 +9,7 @@
     <PackAsTool>True</PackAsTool>
     <ToolCommandName>cmdui</ToolCommandName>
     <AssemblyName>cmdui</AssemblyName>
+    <PackageId>Benday.CommandsFramework.CmdUi</PackageId>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <IsPackable>True</IsPackable>
 
