@@ -176,10 +176,14 @@ public class DefaultProgram : ICommandProgram
 
     private void LaunchGui()
     {
+        // https://www.nuget.org/packages/Benday.CommandsFramework.CmdUi
+
         if (!IsCmdUiInstalled())
         {
             WriteLine("The 'cmdui' tool is not installed.");
             WriteLine("cmdui provides a web-based UI for this command-line tool.");
+            WriteLine();
+            WriteLine("Here's the NuGet package URL: https://www.nuget.org/packages/Benday.CommandsFramework.CmdUi");
             WriteLine();
             Write("Would you like to install it now? (Y/n): ");
 
@@ -193,7 +197,7 @@ public class DefaultProgram : ICommandProgram
                 if (!InstallCmdUi())
                 {
                     throw new KnownException(
-                        "Failed to install cmdui. You can install it manually with: dotnet tool install -g cmdui");
+                        "Failed to install cmdui. You can install it manually with: dotnet tool install -g Benday.CommandsFramework.CmdUi");
                 }
 
                 WriteLine("cmdui installed successfully.");
@@ -202,7 +206,7 @@ public class DefaultProgram : ICommandProgram
             else
             {
                 WriteLine();
-                WriteLine("You can install cmdui later with: dotnet tool install -g cmdui");
+                WriteLine("You can install cmdui later with: dotnet tool install -g Benday.CommandsFramework.CmdUi");
                 return;
             }
         }
@@ -273,7 +277,7 @@ public class DefaultProgram : ICommandProgram
             var psi = new ProcessStartInfo
             {
                 FileName = "dotnet",
-                Arguments = "tool install -g cmdui",
+                Arguments = "tool install -g Benday.CommandsFramework.CmdUi",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true

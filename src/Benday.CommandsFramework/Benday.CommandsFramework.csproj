@@ -16,7 +16,7 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageIcon>bdc_mark_128_128.png</PackageIcon>
         <PackageTags>dotnet;cli;command-line;arguments;parsing;commands;framework</PackageTags>
-        <TheVersion>4.14.0</TheVersion>
+        <TheVersion>4.14.1</TheVersion>
         <AssemblyVersion>$(TheVersion).0</AssemblyVersion>
         <Version>$(TheVersion)</Version>
         <PackageReleaseNotes>
