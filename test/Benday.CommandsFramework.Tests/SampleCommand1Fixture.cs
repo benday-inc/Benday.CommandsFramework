@@ -105,6 +105,7 @@ public class SampleCommand1Fixture
             );
 
         var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
+        executionInfo.Options.StrictArgumentValidation = true;
 
         _SystemUnderTest = new SampleCommand1(executionInfo, OutputProvider);
 

@@ -12,4 +12,10 @@ public interface ICommandProgramOptions
     bool UsesConfiguration { get; set; }
     ITextOutputProvider OutputProvider { get; set; }
     IServiceCollection? ServiceCollection { get; set; }
+
+    /// <summary>
+    /// When true, unknown/unrecognized command arguments will cause validation to fail.
+    /// When false (default), unknown arguments are silently ignored.
+    /// </summary>
+    bool StrictArgumentValidation { get; set; }
 }

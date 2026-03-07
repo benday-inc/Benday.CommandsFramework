@@ -343,9 +343,13 @@ public abstract class CommandBase
             }
         }
 
-        foreach (var unknownKey in Arguments.UnrecognizedKeys)
+        // Only validate unknown arguments if strict validation is enabled
+        if (ExecutionInfo.Options.StrictArgumentValidation)
         {
-            returnValue.Add(new UnknownArgument(unknownKey));
+            foreach (var unknownKey in Arguments.UnrecognizedKeys)
+            {
+                returnValue.Add(new UnknownArgument(unknownKey));
+            }
         }
 
         if (returnValue.Count > 0)

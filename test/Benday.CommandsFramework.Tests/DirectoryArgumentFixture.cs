@@ -303,7 +303,45 @@ public class DirectoryArgumentFixture
 
         if (Directory.Exists(unitTestTestDataDir) == true)
         {
-            Directory.Delete(unitTestTestDataDir, true);
+            try
+            {
+                Directory.Delete(unitTestTestDataDir, true);
+            }
+            catch (IOException)
+            {
+                // Directory might be locked, wait briefly and retry
+                System.Threading.Thread.Sleep(100);
+                try
+                {
+                    Directory.Delete(unitTestTestDataDir, true);
+                }
+                catch (IOException)
+                {
+                    // If still failing, just clear the contents instead
+                    var di = new DirectoryInfo(unitTestTestDataDir);
+                    foreach (var file in di.GetFiles())
+                    {
+                        file.Delete();
+                    }
+                    foreach (var dir in di.GetDirectories())
+                    {
+                        dir.Delete(true);
+                    }
+                }
+            }
+            catch (UnauthorizedAccessException)
+            {
+                // Permission issue - clear contents instead
+                var di = new DirectoryInfo(unitTestTestDataDir);
+                foreach (var file in di.GetFiles())
+                {
+                    try { file.Delete(); } catch { }
+                }
+                foreach (var dir in di.GetDirectories())
+                {
+                    try { dir.Delete(true); } catch { }
+                }
+            }
         }
 
         if (Directory.Exists(unitTestTestDataDir) == false)

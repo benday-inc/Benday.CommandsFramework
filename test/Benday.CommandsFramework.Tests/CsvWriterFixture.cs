@@ -528,9 +528,9 @@ public class CsvWriterFixture
         // act
         var result = writer.ToCsvString();
 
-        // assert
+        // assert - normalize line endings for cross-platform compatibility
         var expected = "Name,Age,City\nJohn,30,New York\nJane,25,Boston";
-        Assert.Equal(expected, result);
+        Assert.Equal(expected, result.Replace("\r\n", "\n"));
     }
 
     [Fact]
@@ -544,9 +544,9 @@ public class CsvWriterFixture
         // act
         var result = writer.ToCsvString();
 
-        // assert
+        // assert - normalize line endings for cross-platform compatibility
         var expected = "John,30,New York\nJane,25,Boston";
-        Assert.Equal(expected, result);
+        Assert.Equal(expected, result.Replace("\r\n", "\n"));
     }
 
     [Fact]
@@ -560,9 +560,9 @@ public class CsvWriterFixture
         // act
         var result = writer.ToCsvString();
 
-        // assert
+        // assert - normalize line endings for cross-platform compatibility
         var expected = "Name,Description\nJohn Doe,\"A person with, comma in description\"";
-        Assert.Equal(expected, result);
+        Assert.Equal(expected, result.Replace("\r\n", "\n"));
     }
 
     [Fact]
@@ -576,9 +576,9 @@ public class CsvWriterFixture
         // act
         var result = writer.ToCsvString();
 
-        // assert
+        // assert - normalize line endings for cross-platform compatibility
         var expected = "Name,Address\nJohn Doe,\"123 Main St\nAnytown, USA\"";
-        Assert.Equal(expected, result);
+        Assert.Equal(expected, result.Replace("\r\n", "\n"));
     }
 
     [Fact]
@@ -592,9 +592,9 @@ public class CsvWriterFixture
         // act
         var result = writer.ToCsvString();
 
-        // assert
+        // assert - normalize line endings for cross-platform compatibility
         var expected = "Name,Quote\nJohn,\"He said \"\"Hello World\"\"\"";
-        Assert.Equal(expected, result);
+        Assert.Equal(expected, result.Replace("\r\n", "\n"));
     }
 
     [Fact]
@@ -609,9 +609,9 @@ public class CsvWriterFixture
         // act
         var result = writer.ToCsvString();
 
-        // assert
+        // assert - normalize line endings for cross-platform compatibility
         var expected = "Name,Middle,Last\nJohn,,Doe\n,Middle,";
-        Assert.Equal(expected, result);
+        Assert.Equal(expected, result.Replace("\r\n", "\n"));
     }
 
     [Fact]
@@ -647,7 +647,8 @@ public class CsvWriterFixture
             Assert.True(File.Exists(tempFile));
             var content = File.ReadAllText(tempFile);
             var expected = "Name,Age\nJohn,30\nJane,25";
-            Assert.Equal(expected, content);
+            // Normalize line endings for cross-platform compatibility
+            Assert.Equal(expected, content.Replace("\r\n", "\n"));
         }
         finally
         {
@@ -713,9 +714,9 @@ public class CsvWriterFixture
 
         var result = writer.ToCsvString();
 
-        // assert
+        // assert - normalize line endings for cross-platform compatibility
         var expected = "Name,Age,City\nJohn,31,New York\nJane,25,Chicago\nBob,35,Seattle";
-        Assert.Equal(expected, result);
+        Assert.Equal(expected, result.Replace("\r\n", "\n"));
     }
 
     [Fact]

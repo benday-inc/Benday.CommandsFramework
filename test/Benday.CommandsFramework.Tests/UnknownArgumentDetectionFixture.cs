@@ -139,6 +139,7 @@ public class UnknownArgumentDetectionFixture
         );
 
         var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
+        executionInfo.Options.StrictArgumentValidation = true;
         var command = new SampleCommand1(executionInfo, OutputProvider);
 
         // act
@@ -191,6 +192,7 @@ public class UnknownArgumentDetectionFixture
         );
 
         var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
+        executionInfo.Options.StrictArgumentValidation = true;
         var command = new SampleCommand1(executionInfo, OutputProvider);
 
         // act

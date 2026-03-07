@@ -29,10 +29,15 @@ public class DefaultProgramOptions : ICommandProgramOptions
     public bool UsesConfiguration { get; set; } = true;
     public ITextOutputProvider OutputProvider { get; set; } = new ConsoleTextOutputProvider();
 
-
     /// <summary>
     /// Provides access to the service provider for dependency injection.
     /// This is entirely optional.
     /// </summary>
     public IServiceCollection? ServiceCollection { get; set; } = null;
+
+    /// <summary>
+    /// When true, unknown/unrecognized command arguments will cause validation to fail.
+    /// When false (default), unknown arguments are silently ignored.
+    /// </summary>
+    public bool StrictArgumentValidation { get; set; } = false;
 }
