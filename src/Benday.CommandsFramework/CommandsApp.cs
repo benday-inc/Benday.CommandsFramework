@@ -139,6 +139,28 @@ public class CommandsApp
     }
 
     /// <summary>
+    /// Configures the configuration builder directly, allowing you to add
+    /// custom configuration sources such as in-memory collections,
+    /// additional JSON files, or any other IConfigurationSource.
+    /// Call WithAppSettings() or WithConfigFile() before this method to
+    /// initialize the configuration builder, or this method will create one.
+    /// </summary>
+    public CommandsApp ConfigureConfiguration(Action<IConfigurationBuilder> configure)
+    {
+        if (_configBuilder == null)
+        {
+            var assembly = Assembly.GetEntryAssembly() ?? _commandsAssembly;
+            var baseDirectory = Path.GetDirectoryName(assembly.Location)
+                ?? throw new InvalidOperationException("Could not determine base directory.");
+
+            _configBuilder = new ConfigurationBuilder().SetBasePath(baseDirectory);
+        }
+
+        configure(_configBuilder);
+        return this;
+    }
+
+    /// <summary>
     /// Configures the service collection for dependency injection.
     /// </summary>
     public CommandsApp ConfigureServices(Action<IServiceCollection> configure)

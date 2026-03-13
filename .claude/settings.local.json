@@ -7,7 +7,8 @@
       "WebFetch(domain:www.nuget.org)",
       "Bash(dotnet run:*)",
       "Bash(grep -n \"class.*Usage\\\\|struct.*Usage\" /Users/benday/code/benday-inc/Benday.CommandsFramework/src/Benday.CommandsFramework/*.cs)",
-      "Bash(grep -n \"GetAllCommandUsages\\\\|class CommandAttributeUtility\" /Users/benday/code/benday-inc/Benday.CommandsFramework/src/Benday.CommandsFramework/*.cs)"
+      "Bash(grep -n \"GetAllCommandUsages\\\\|class CommandAttributeUtility\" /Users/benday/code/benday-inc/Benday.CommandsFramework/src/Benday.CommandsFramework/*.cs)",
+      "Bash(grep -r \"FromConfig\" /Users/benday/code/benday-inc/Benday.CommandsFramework/src/Benday.CommandsFramework/*.cs)"
     ]
   }
 }

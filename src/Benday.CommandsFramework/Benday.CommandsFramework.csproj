@@ -16,10 +16,11 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageIcon>bdc_mark_128_128.png</PackageIcon>
         <PackageTags>dotnet;cli;command-line;arguments;parsing;commands;framework</PackageTags>
-        <TheVersion>4.15.0</TheVersion>
+        <TheVersion>4.16.0</TheVersion>
         <AssemblyVersion>$(TheVersion).0</AssemblyVersion>
         <Version>$(TheVersion)</Version>
         <PackageReleaseNotes>
+v4.16 - Added ConfigureConfiguration() method to CommandsApp builder for adding custom configuration sources (in-memory collections, additional JSON files, environment variables, etc.);
 v4.15 - Added StrictArgumentValidation option to control whether unknown arguments cause validation failures (defaults to false for backward compatibility);
 v4.14 - Added support for .NET 10.0; Added support for 'gui' command that launches a blazor UI for the tool using the Benday.CommandsFramework.CmdUi package; Added fluent config methods and simplified DI configuration; Added support for defining allowed argument values; Added support for defining args that pull their values from a config value;
 v4.13 - Added support for writing CSV files via CsvWriter utility class;
