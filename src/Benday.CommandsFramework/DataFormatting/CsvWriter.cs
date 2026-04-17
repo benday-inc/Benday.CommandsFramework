@@ -513,9 +513,10 @@ public class CsvWriter
     /// Saves the CSV data to a file.
     /// </summary>
     /// <param name="filePath">The path where the CSV file should be saved.</param>
+    /// <param name="writeByteOrderMark">Whether to write a UTF-8 byte order mark (BOM). Defaults to true so that Excel and other tools correctly detect the file as UTF-8.</param>
     /// <exception cref="ArgumentNullException">Thrown when filePath is null.</exception>
     /// <exception cref="IOException">Thrown when there's an error writing the file.</exception>
-    public void SaveToFile(string filePath)
+    public void SaveToFile(string filePath, bool writeByteOrderMark = true)
     {
         if (filePath == null)
         {
@@ -523,7 +524,8 @@ public class CsvWriter
         }
 
         var csvContent = ToCsvString();
-        File.WriteAllText(filePath, csvContent);
+        var encoding = new UTF8Encoding(encoderShouldEmitUTF8Identifier: writeByteOrderMark);
+        File.WriteAllText(filePath, csvContent, encoding);
     }
 
     private Dictionary<string, int> CreateColumnMapping(string[] headers)
