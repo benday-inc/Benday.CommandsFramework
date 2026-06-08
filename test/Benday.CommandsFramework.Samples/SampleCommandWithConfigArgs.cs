@@ -16,8 +16,9 @@ public class SampleCommandWithConfigArgs : SynchronousCommand
 
         // Regular command line argument
         args.AddString("endpoint-path")
-            .AsRequired()
-            .WithDescription("API endpoint path to call (e.g., /users)");
+            .AsNotRequired()
+            .WithDescription("API endpoint path to call (e.g., /users)")
+            .WithDefaultValue("blah");
 
         // Config-backed arguments
         args.AddString("api-key")
@@ -27,13 +28,8 @@ public class SampleCommandWithConfigArgs : SynchronousCommand
 
         args.AddString("base-url")
             .FromConfig()
-            .AsNotRequired()
-            .WithDefaultValue("https://api.example.com")
+            .AsRequired()
             .WithDescription("API base URL");
-
-        args.AddBoolean("verbose")
-            .AsNotRequired()
-            .WithDescription("Enable verbose output");
 
         return args;
     }

@@ -4,7 +4,7 @@ namespace Benday.CommandsFramework.Tests;
 
 public class SampleCommandThatUsesConfigFixture
 {
-        public SampleCommandThatUsesConfigFixture()
+    public SampleCommandThatUsesConfigFixture()
     {
         _SystemUnderTest = null;
         _OutputProvider = null;
@@ -57,7 +57,7 @@ public class SampleCommandThatUsesConfigFixture
         // assert        
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
-        Assert.Contains("** SUCCESS **", output);        
+        Assert.Contains("** SUCCESS **", output);
     }
 
 }
