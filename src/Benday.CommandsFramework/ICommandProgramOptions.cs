@@ -14,6 +14,13 @@ public interface ICommandProgramOptions
     IServiceCollection? ServiceCollection { get; set; }
 
     /// <summary>
+    /// The service provider built from ServiceCollection. This is populated the first
+    /// time a command needs it and is then shared by every command in the process so
+    /// that singleton services really are singletons and the container is only built once.
+    /// </summary>
+    IServiceProvider? ServiceProvider { get; set; }
+
+    /// <summary>
     /// When true, unknown/unrecognized command arguments will cause validation to fail.
     /// When false (default), unknown arguments are silently ignored.
     /// </summary>

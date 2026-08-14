@@ -8,7 +8,7 @@ namespace Benday.CommandsFramework;
 /// The service collection is validated lazily when services are first accessed,
 /// allowing commands to be instantiated for schema discovery without DI configuration.
 /// </summary>
-public abstract class DependencyInjectionCommand : AsynchronousCommand
+public abstract class DependencyInjectionCommand : AsynchronousCommand, IDisposable
 {
     protected DependencyInjectionCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider)
         : base(info, outputProvider)
@@ -16,6 +16,7 @@ public abstract class DependencyInjectionCommand : AsynchronousCommand
     }
 
     private IServiceScope? _ServiceScope;
+    private bool _IsDisposed;
 
     private IServiceScope Scope
     {
@@ -23,10 +24,23 @@ public abstract class DependencyInjectionCommand : AsynchronousCommand
         {
             if (_ServiceScope == null)
             {
-                var services = ExecutionInfo.Options.ServiceCollection ??
-                    throw new InvalidOperationException("Service collection was not populated.  HINT: check Program.cs");
+                var options = ExecutionInfo.Options;
 
-                var serviceProvider = services.BuildServiceProvider();
+                // the service provider is built once and then shared by every command in
+                // the process. Building it per command would give each command its own
+                // set of singletons and would rebuild the container every time one
+                // command called another.
+                var serviceProvider = options.ServiceProvider;
+
+                if (serviceProvider == null)
+                {
+                    var services = options.ServiceCollection ??
+                        throw new InvalidOperationException("Service collection was not populated.  HINT: check Program.cs");
+
+                    serviceProvider = services.BuildServiceProvider();
+
+                    options.ServiceProvider = serviceProvider;
+                }
 
                 _ServiceScope = serviceProvider.CreateScope();
             }
@@ -45,5 +59,31 @@ public abstract class DependencyInjectionCommand : AsynchronousCommand
         var returnValue = Scope.ServiceProvider.GetRequiredService<T>();
 
         return returnValue;
+    }
+
+    /// <summary>
+    /// Disposes the service scope for this command. The shared service provider is not
+    /// disposed because it belongs to the program rather than to any one command.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (_IsDisposed == true)
+        {
+            return;
+        }
+
+        if (disposing == true)
+        {
+            _ServiceScope?.Dispose();
+            _ServiceScope = null;
+        }
+
+        _IsDisposed = true;
     }
 }

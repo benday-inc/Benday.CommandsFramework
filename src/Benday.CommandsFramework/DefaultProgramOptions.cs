@@ -36,6 +36,12 @@ public class DefaultProgramOptions : ICommandProgramOptions
     public IServiceCollection? ServiceCollection { get; set; } = null;
 
     /// <summary>
+    /// The service provider built from ServiceCollection. Populated on first use and
+    /// then shared by every command in the process.
+    /// </summary>
+    public IServiceProvider? ServiceProvider { get; set; } = null;
+
+    /// <summary>
     /// When true, unknown/unrecognized command arguments will cause validation to fail.
     /// When false (default), unknown arguments are silently ignored.
     /// </summary>

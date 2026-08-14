@@ -105,20 +105,229 @@ public abstract class CommandBase
     }
 
     /// <summary>
-    /// Write a message to the output provider
+    /// Is this command running in quiet mode? Quiet mode suppresses the output written
+    /// by WriteLine(). It is set by the reserved 'quiet' argument and is applied
+    /// automatically to commands that are run by another command.
+    /// </summary>
+    public bool IsQuietMode
+    {
+        get
+        {
+            if (ExecutionInfo.Arguments.TryGetValue(
+                CommandFrameworkConstants.CommandArgName_QuietMode, out var value) == false)
+            {
+                return false;
+            }
+
+            // '/quiet' on its own means quiet, as does '/quiet:true'
+            if (string.IsNullOrEmpty(value) == true)
+            {
+                return true;
+            }
+
+            return bool.TryParse(value, out var parsed) == false || parsed;
+        }
+    }
+
+    /// <summary>
+    /// Write a message to the output provider. Does nothing in quiet mode.
     /// </summary>
     /// <param name="text">Message to write</param>
     protected virtual void WriteLine(string text)
     {
+        if (IsQuietMode == true)
+        {
+            return;
+        }
+
         _OutputProvider.WriteLine(text);
     }
 
     /// <summary>
-    /// Write a new line to the output provider
-    /// </summary>    
+    /// Write a new line to the output provider. Does nothing in quiet mode.
+    /// </summary>
     protected virtual void WriteLine()
     {
+        if (IsQuietMode == true)
+        {
+            return;
+        }
+
         _OutputProvider.WriteLine();
+    }
+
+    /// <summary>
+    /// Creates another command so that its logic can be reused from inside this command.
+    /// The new command shares this command's program options, configuration and output
+    /// provider, and runs in quiet mode by default so that it does not write over the
+    /// calling command's output.
+    /// The command is created but not run -- use ExecuteCommand() or ExecuteCommandAsync()
+    /// to create and run it in one step.
+    /// </summary>
+    /// <typeparam name="T">Type of the command to create</typeparam>
+    /// <param name="configureArguments">Callback for populating the arguments for the command</param>
+    /// <param name="quiet">Run the command in quiet mode. Defaults to true.</param>
+    /// <returns>The new command instance</returns>
+    /// <exception cref="KnownException">Thrown when the command type cannot be used</exception>
+    protected T CreateCommand<T>(
+        Action<Dictionary<string, string>>? configureArguments = null,
+        bool quiet = true) where T : CommandBase
+    {
+        var commandType = typeof(T);
+
+        if (ExecutionInfo.NestingDepth >= CommandFrameworkConstants.MaxCommandNestingDepth)
+        {
+            throw new KnownException(
+                $"Commands are nested more than {CommandFrameworkConstants.MaxCommandNestingDepth} " +
+                $"levels deep while trying to create '{commandType.Name}'. " +
+                "This usually means two commands are calling each other in a loop.");
+        }
+
+        var attribute =
+            Attribute.GetCustomAttribute(commandType, typeof(CommandAttribute)) as CommandAttribute;
+
+        if (attribute is null)
+        {
+            throw new KnownException(
+                $"Type '{commandType.Name}' does not have a CommandAttribute so it cannot be run as a command.");
+        }
+
+        var arguments = new Dictionary<string, string>();
+
+        configureArguments?.Invoke(arguments);
+
+        if (quiet == true)
+        {
+            arguments.TryAdd(CommandFrameworkConstants.CommandArgName_QuietMode, "true");
+        }
+
+        var info = new CommandExecutionInfo
+        {
+            CommandName = attribute.Name,
+            Arguments = arguments,
+            Options = ExecutionInfo.Options,
+            NestingDepth = ExecutionInfo.NestingDepth + 1
+        };
+
+        if (ExecutionInfo.HasConfiguration == true)
+        {
+            info.Configuration = ExecutionInfo.Configuration;
+        }
+
+        var ctor = commandType.GetConstructor(
+            new Type[] { typeof(CommandExecutionInfo), typeof(ITextOutputProvider) });
+
+        if (ctor is null)
+        {
+            throw new KnownException(
+                $"Could not locate a constructor on command type '{commandType.Name}' that takes " +
+                $"{nameof(CommandExecutionInfo)} and {nameof(ITextOutputProvider)}.");
+        }
+
+        // the calling command's output provider is passed along rather than the one from
+        // the program options so that output from the command that gets run lands
+        // wherever the calling command's output is going
+        var instance = ctor.Invoke(new object[] { info, _OutputProvider });
+
+        if (instance is not T returnValue)
+        {
+            throw new KnownException($"Could not create an instance of command type '{commandType.Name}'.");
+        }
+
+        return returnValue;
+    }
+
+    /// <summary>
+    /// Creates another command, validates it, and runs it. The command instance is
+    /// returned so that results can be read back off it.
+    /// Unlike running a command from the command line, a validation failure here throws
+    /// rather than printing the usage information, because the calling command needs to
+    /// know that the command did not run.
+    /// </summary>
+    /// <typeparam name="T">Type of the command to run</typeparam>
+    /// <param name="configureArguments">Callback for populating the arguments for the command</param>
+    /// <param name="quiet">Run the command in quiet mode. Defaults to true.</param>
+    /// <returns>The command instance after it has run</returns>
+    /// <exception cref="KnownException">Thrown when the arguments for the command are not valid</exception>
+    protected T ExecuteCommand<T>(
+        Action<Dictionary<string, string>>? configureArguments = null,
+        bool quiet = true) where T : SynchronousCommand
+    {
+        var command = CreateCommand<T>(configureArguments, quiet);
+
+        RunWithoutChangingExitCode(command, () => command.Execute());
+
+        return command;
+    }
+
+    /// <summary>
+    /// Creates another command, validates it, and runs it asynchronously. The command
+    /// instance is returned so that results can be read back off it.
+    /// Unlike running a command from the command line, a validation failure here throws
+    /// rather than printing the usage information, because the calling command needs to
+    /// know that the command did not run.
+    /// </summary>
+    /// <typeparam name="T">Type of the command to run</typeparam>
+    /// <param name="configureArguments">Callback for populating the arguments for the command</param>
+    /// <param name="quiet">Run the command in quiet mode. Defaults to true.</param>
+    /// <returns>The command instance after it has run</returns>
+    /// <exception cref="KnownException">Thrown when the arguments for the command are not valid</exception>
+    protected async Task<T> ExecuteCommandAsync<T>(
+        Action<Dictionary<string, string>>? configureArguments = null,
+        bool quiet = true) where T : AsynchronousCommand
+    {
+        var command = CreateCommand<T>(configureArguments, quiet);
+
+        var exitCode = Environment.ExitCode;
+
+        try
+        {
+            ThrowOnValidationFailure(command);
+
+            await command.ExecuteAsync();
+        }
+        finally
+        {
+            // a command that is run by another command must not decide the exit code for
+            // the process. That belongs to the command that was actually asked for.
+            Environment.ExitCode = exitCode;
+        }
+
+        return command;
+    }
+
+    private void RunWithoutChangingExitCode(CommandBase command, Action run)
+    {
+        var exitCode = Environment.ExitCode;
+
+        try
+        {
+            ThrowOnValidationFailure(command);
+
+            run();
+        }
+        finally
+        {
+            // a command that is run by another command must not decide the exit code for
+            // the process. That belongs to the command that was actually asked for.
+            Environment.ExitCode = exitCode;
+        }
+    }
+
+    private static void ThrowOnValidationFailure(CommandBase command)
+    {
+        var invalidArguments = command.Validate();
+
+        if (invalidArguments.Count == 0)
+        {
+            return;
+        }
+
+        var names = invalidArguments.Select(x => x.Name).Order();
+
+        throw new KnownException(
+            $"Could not run command '{command.ExecutionInfo.CommandName}'. " +
+            $"These arguments are not valid or missing: {string.Join(", ", names)}.");
     }
 
     /// <summary>

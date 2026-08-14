@@ -17,6 +17,12 @@ public class CommandExecutionInfo
     /// </summary>
     public Dictionary<string, string> Arguments { get; set; } = new();
 
+    /// <summary>
+    /// How many levels deep this command execution is when commands call other commands.
+    /// Zero for a command invoked from the command line.
+    /// </summary>
+    public int NestingDepth { get; set; }
+
     private ICommandConfigurationManager? _Configuration;
 
     /// <summary>

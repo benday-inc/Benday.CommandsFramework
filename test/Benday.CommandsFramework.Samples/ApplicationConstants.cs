@@ -14,4 +14,11 @@ public static class ApplicationConstants
     public const string CommandName_CommandWithAllowedValues = "allowedvaluescommand";
     public const string CommandName_CommandWithDefaultsAndRequiredArg = "defaultsandrequired";
     public const string CommandName_CommandWithCommandNameAliases = "command-with-a-long-name";
+    public const string CommandName_Greeting = "greeting";
+    public const string CommandName_CallsOtherCommands = "greet-everybody";
+    public const string CommandName_SelfCalling = "selfcalling";
+    public const string CommandName_AsyncGreeting = "async-greeting";
+    public const string CommandName_AsyncCallsOtherCommands = "async-greet-everybody";
+    public const string CommandName_CallsOtherCommandsWithBadArgs = "greet-badly";
+    public const string CommandName_CallsATypeWithNoAttribute = "not-a-command-caller";
 }
