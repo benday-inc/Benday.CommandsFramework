@@ -8,7 +8,12 @@ public class CommandInfo
 {
     public string Name { get; internal set; } = string.Empty;
     public string Description { get; internal set; } = string.Empty;
-    public string Category { get; internal set; } = string.Empty;    
+    public string Category { get; internal set; } = string.Empty;
     public bool IsAsync { get; internal set; }
+
+    /// <summary>
+    /// Alternate names that can be used on the command line in place of Name.
+    /// </summary>
+    public string[] Aliases { get; internal set; } = [];
     public ArgumentCollection Arguments { get; internal set; } = new ArgumentCollection();
 }

@@ -69,12 +69,20 @@ public class DefaultProgram : ICommandProgram
                 }
                 else
                 {
-                    var names = util.GetAvailableCommandNames(ImplementationAssembly);
+                    // resolve command aliases to the real command name before anything
+                    // else looks at args[0]
+                    var resolvedCommandName = util.ResolveCommandName(ImplementationAssembly, args[0]);
 
-                    if (names.Contains(args[0]) == false)
+                    if (resolvedCommandName == null)
                     {
                         throw new KnownException(
                                 $"Invalid command name '{args[0]}'.");
+                    }
+
+                    if (resolvedCommandName != args[0])
+                    {
+                        args = (string[])args.Clone();
+                        args[0] = resolvedCommandName;
                     }
 
                     CommandBase? command;
@@ -382,7 +390,7 @@ public class DefaultProgram : ICommandProgram
     /// <param name="commands">List of commands</param>
     public virtual void DisplayCommandsWithoutCategories(List<CommandAttribute> commands)
     {
-        var longestName = commands.Max(x => x.Name.Length);
+        var longestName = commands.Max(x => GetCommandDisplayName(x).Length);
 
         var consoleWidth = GetConsoleWidth();
         var separator = " - ";
@@ -390,13 +398,29 @@ public class DefaultProgram : ICommandProgram
 
         foreach (var command in commands.OrderBy(x => x.Name))
         {
-            Write(LineWrapUtilities.GetValueWithPadding(command.Name, longestName));
+            Write(LineWrapUtilities.GetValueWithPadding(GetCommandDisplayName(command), longestName));
             Write(separator);
 
             WriteLine(
                 LineWrapUtilities.WrapValue(commandNameColumnWidth,
                 consoleWidth, command.Description));
         }
+    }
+
+    /// <summary>
+    /// Gets the name to show for a command in the list of available commands. Commands
+    /// that have aliases are shown as 'name (alias1, alias2)'.
+    /// </summary>
+    /// <param name="command">Command attribute</param>
+    /// <returns>Display name for the command</returns>
+    protected static string GetCommandDisplayName(CommandAttribute command)
+    {
+        if (command.Aliases.Length == 0)
+        {
+            return command.Name;
+        }
+
+        return $"{command.Name} ({string.Join(", ", command.Aliases)})";
     }
 
     private int GetConsoleWidth()
@@ -419,7 +443,7 @@ public class DefaultProgram : ICommandProgram
     {
         var categories = commands.Select(x => x.Category).Distinct().Order();
 
-        var longestName = commands.Max(x => x.Name.Length);
+        var longestName = commands.Max(x => GetCommandDisplayName(x).Length);
 
         var consoleWidth = GetConsoleWidth();
         var separator = " - ";
@@ -432,7 +456,7 @@ public class DefaultProgram : ICommandProgram
 
             foreach (var command in commands.Where(x => x.Category == category).OrderBy(x => x.Name))
             {
-                Write(LineWrapUtilities.GetValueWithPadding(command.Name, longestName));
+                Write(LineWrapUtilities.GetValueWithPadding(GetCommandDisplayName(command), longestName));
                 Write(separator);
 
                 WriteLine(

@@ -29,4 +29,14 @@ public class CommandAttribute : Attribute
     /// Category for the command. This is used to group commands together in the help output.
     /// </summary>
     public string Category { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Alternate names that can be used on the command line in place of Name. This is
+    /// useful for providing a short form of a long command name, for example 'mc' as an
+    /// alias for 'my-super-long-command-name'.
+    /// Aliases are resolved to the real command name before the command runs, so the rest
+    /// of the framework only ever sees Name. Real command names always take precedence
+    /// over aliases.
+    /// </summary>
+    public string[] Aliases { get; set; } = [];
 }
