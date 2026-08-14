@@ -69,20 +69,16 @@ public class DefaultProgram : ICommandProgram
                 }
                 else
                 {
-                    // resolve command aliases to the real command name before anything
-                    // else looks at args[0]
+                    // resolve command aliases so that the assembly routing below works off
+                    // the real command name. args is deliberately left alone so that
+                    // GetCommand() can still see the alias that was typed and apply any
+                    // argument values that come with it.
                     var resolvedCommandName = util.ResolveCommandName(ImplementationAssembly, args[0]);
 
                     if (resolvedCommandName == null)
                     {
                         throw new KnownException(
                                 $"Invalid command name '{args[0]}'.");
-                    }
-
-                    if (resolvedCommandName != args[0])
-                    {
-                        args = (string[])args.Clone();
-                        args[0] = resolvedCommandName;
                     }
 
                     CommandBase? command;
@@ -93,7 +89,7 @@ public class DefaultProgram : ICommandProgram
                     }
                     else
                     {
-                        if (IsDefaultCommandName(args[0]) == true)
+                        if (IsDefaultCommandName(resolvedCommandName) == true)
                         {
                             command = util.GetCommand(args, this.GetType().Assembly);
                         }
@@ -381,7 +377,50 @@ public class DefaultProgram : ICommandProgram
             DisplayCommandsWithoutCategories(commands);
         }
 
+        DisplayCommandAliases(util.GetCommandAliases(ImplementationAssembly));
+
         Environment.ExitCode = CommandFrameworkConstants.ExitCode_Failure;
+    }
+
+    /// <summary>
+    /// Displays the aliases that supply argument values. Plain aliases are not listed here
+    /// because they are already shown next to the command name they belong to.
+    /// </summary>
+    /// <param name="aliases">All of the aliases for the available commands</param>
+    public virtual void DisplayCommandAliases(List<CommandAliasInfo> aliases)
+    {
+        var aliasesWithArguments = aliases.Where(x => x.HasArguments).OrderBy(x => x.Alias).ToList();
+
+        if (aliasesWithArguments.Count == 0)
+        {
+            return;
+        }
+
+        WriteLine();
+        WriteLine("Command aliases:");
+
+        var longestName = aliasesWithArguments.Max(x => x.Alias.Length);
+
+        var consoleWidth = GetConsoleWidth();
+        var separator = " - ";
+        int aliasNameColumnWidth = (longestName + separator.Length);
+
+        foreach (var alias in aliasesWithArguments)
+        {
+            Write(LineWrapUtilities.GetValueWithPadding(alias.Alias, longestName));
+            Write(separator);
+
+            var argumentSummary = string.Join(" ",
+                alias.Arguments.Select(x =>
+                    string.IsNullOrEmpty(x.Value) ? $"/{x.Key}" : $"/{x.Key}:{x.Value}"));
+
+            var description = string.IsNullOrWhiteSpace(alias.Description)
+                ? $"{alias.CommandName} {argumentSummary}"
+                : $"{alias.Description} ({alias.CommandName} {argumentSummary})";
+
+            WriteLine(
+                LineWrapUtilities.WrapValue(aliasNameColumnWidth, consoleWidth, description));
+        }
     }
 
     /// <summary>

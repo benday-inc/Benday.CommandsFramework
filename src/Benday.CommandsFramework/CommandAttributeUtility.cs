@@ -32,25 +32,7 @@ public class CommandAttributeUtility
 
         var returnValue = new List<string>();
 
-        var matchingTypes =
-            (from type in containingAssembly.GetTypes()
-            where type.GetCustomAttributes<CommandAttribute>().Any()
-            select type).ToList();
-
-        if (_ProgramOptions.UsesConfiguration == true)
-        {
-            var thisAssembly = this.GetType().Assembly;
-
-            // don't add the built-in commands twice when the caller is already asking
-            // about this assembly
-            if (thisAssembly != containingAssembly)
-            {
-                matchingTypes.AddRange(
-                    (from type in thisAssembly.GetTypes()
-                     where type.GetCustomAttributes<CommandAttribute>().Any()
-                     select type).ToList());
-            }
-        }
+        var matchingTypes = GetCommandTypes(containingAssembly);
 
         foreach (var type in matchingTypes)
         {
@@ -80,6 +62,27 @@ public class CommandAttributeUtility
 
         var returnValue = new List<CommandAttribute>();
 
+        var matchingTypes = GetCommandTypes(containingAssembly);
+
+        foreach (var type in matchingTypes)
+        {
+            var attr = type.GetCustomAttribute<CommandAttribute>();
+
+            if (attr != null)
+            {
+                returnValue.Add(attr);
+            }
+        }
+
+        return returnValue;
+    }
+
+    /// <summary>
+    /// Gets the types in an assembly that are marked with a CommandAttribute, including
+    /// the built-in configuration commands when the program uses configuration.
+    /// </summary>
+    private List<Type> GetCommandTypes(Assembly containingAssembly)
+    {
         var matchingTypes =
             (from type in containingAssembly.GetTypes()
              where type.GetCustomAttributes<CommandAttribute>().Any()
@@ -95,18 +98,61 @@ public class CommandAttributeUtility
             {
                 matchingTypes.AddRange(
                     (from type in thisAssembly.GetTypes()
-                    where type.GetCustomAttributes<CommandAttribute>().Any()
-                    select type).ToList());
+                     where type.GetCustomAttributes<CommandAttribute>().Any()
+                     select type).ToList());
             }
         }
 
-        foreach (var type in matchingTypes)
-        {
-            var attr = type.GetCustomAttribute<CommandAttribute>();
+        return matchingTypes;
+    }
 
-            if (attr != null)
+    /// <summary>
+    /// Gets every alternate name for the commands in an assembly. This covers the plain
+    /// aliases declared by CommandAttribute.Aliases as well as the aliases declared by
+    /// CommandAliasAttribute, which also supply argument values.
+    /// </summary>
+    /// <param name="containingAssembly">Assembly containing the commands</param>
+    /// <returns>List of aliases</returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    public List<CommandAliasInfo> GetCommandAliases(Assembly containingAssembly)
+    {
+        if (containingAssembly is null)
+        {
+            throw new ArgumentNullException(nameof(containingAssembly));
+        }
+
+        var returnValue = new List<CommandAliasInfo>();
+
+        foreach (var type in GetCommandTypes(containingAssembly))
+        {
+            var commandAttribute = type.GetCustomAttribute<CommandAttribute>();
+
+            if (commandAttribute is null)
             {
-                returnValue.Add(attr);
+                continue;
+            }
+
+            foreach (var alias in commandAttribute.Aliases)
+            {
+                returnValue.Add(new CommandAliasInfo
+                {
+                    Alias = alias,
+                    CommandName = commandAttribute.Name,
+                    Description = commandAttribute.Description
+                });
+            }
+
+            foreach (var aliasAttribute in type.GetCustomAttributes<CommandAliasAttribute>())
+            {
+                returnValue.Add(new CommandAliasInfo
+                {
+                    Alias = aliasAttribute.Name,
+                    CommandName = commandAttribute.Name,
+                    Description = string.IsNullOrWhiteSpace(aliasAttribute.Description)
+                        ? commandAttribute.Description
+                        : aliasAttribute.Description,
+                    Arguments = aliasAttribute.GetArgumentValues()
+                });
             }
         }
 
@@ -130,9 +176,66 @@ public class CommandAttributeUtility
             throw new ArgumentNullException(nameof(containingAssembly));
         }
 
+        if (string.IsNullOrEmpty(nameOrAlias) == true)
+        {
+            return null;
+        }
+
         var attributes = GetAvailableCommandAttributes(containingAssembly);
 
-        return ResolveCommandName(attributes, nameOrAlias);
+        // a real command name always wins over any kind of alias
+        var nameMatch = attributes.FirstOrDefault(x => x.Name == nameOrAlias);
+
+        if (nameMatch != null)
+        {
+            return nameMatch.Name;
+        }
+
+        var aliasMatches = GetCommandAliases(containingAssembly)
+            .Where(x => x.Alias == nameOrAlias)
+            .Select(x => x.CommandName)
+            .Distinct()
+            .ToList();
+
+        if (aliasMatches.Count > 1)
+        {
+            throw new KnownException(
+                $"The alias '{nameOrAlias}' is ambiguous. It is claimed by these commands: " +
+                $"{string.Join(", ", aliasMatches.Order())}.");
+        }
+
+        return aliasMatches.FirstOrDefault();
+    }
+
+    /// <summary>
+    /// Gets the alias that matches a name, if there is one. Use this to find the argument
+    /// values that an alias supplies.
+    /// </summary>
+    /// <param name="containingAssembly">Assembly containing the commands</param>
+    /// <param name="alias">Alias to look for</param>
+    /// <returns>The matching alias or null when nothing matches</returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    public CommandAliasInfo? GetCommandAlias(Assembly containingAssembly, string alias)
+    {
+        if (containingAssembly is null)
+        {
+            throw new ArgumentNullException(nameof(containingAssembly));
+        }
+
+        if (string.IsNullOrEmpty(alias) == true)
+        {
+            return null;
+        }
+
+        // a real command name always wins, so an alias that shadows one never applies
+        var attributes = GetAvailableCommandAttributes(containingAssembly);
+
+        if (attributes.Any(x => x.Name == alias) == true)
+        {
+            return null;
+        }
+
+        return GetCommandAliases(containingAssembly).FirstOrDefault(x => x.Alias == alias);
     }
 
     /// <summary>
@@ -198,8 +301,9 @@ public class CommandAttributeUtility
         }
 
         var attributes = GetAvailableCommandAttributes(containingAssembly);
+        var aliases = GetCommandAliases(containingAssembly);
 
-        return GetCommandNameProblems(attributes);
+        return GetCommandNameProblems(attributes, aliases);
     }
 
     /// <summary>
@@ -209,14 +313,25 @@ public class CommandAttributeUtility
     /// showing up as a command that mysteriously cannot be run.
     /// </summary>
     /// <param name="attributes">Command attributes to check</param>
+    /// <param name="aliases">Aliases to check. When null, the aliases declared by
+    /// CommandAttribute.Aliases are used.</param>
     /// <returns>Human readable descriptions of any problems found. Empty when everything is fine.</returns>
     /// <exception cref="ArgumentNullException"></exception>
-    public List<string> GetCommandNameProblems(List<CommandAttribute> attributes)
+    public List<string> GetCommandNameProblems(
+        List<CommandAttribute> attributes, List<CommandAliasInfo>? aliases = null)
     {
         if (attributes is null)
         {
             throw new ArgumentNullException(nameof(attributes));
         }
+
+        aliases ??= attributes
+            .SelectMany(x => x.Aliases.Select(alias => new CommandAliasInfo
+            {
+                Alias = alias,
+                CommandName = x.Name
+            }))
+            .ToList();
 
         var problems = new List<string>();
 
@@ -239,38 +354,34 @@ public class CommandAttributeUtility
 
         var commandNames = attributes.Select(x => x.Name).ToHashSet();
 
-        foreach (var attribute in attributes)
+        foreach (var alias in aliases)
         {
-            foreach (var alias in attribute.Aliases)
+            if (string.IsNullOrWhiteSpace(alias.Alias) == true)
             {
-                if (string.IsNullOrWhiteSpace(alias) == true)
-                {
-                    problems.Add($"Command '{attribute.Name}' has an empty alias.");
-                }
-                else if (commandNames.Contains(alias) == true)
-                {
-                    problems.Add(
-                        $"Alias '{alias}' on command '{attribute.Name}' is also the name of a command. " +
-                        "The real command name wins, so this alias can never be used.");
-                }
-                else if (reservedNames.Contains(alias) == true)
-                {
-                    problems.Add(
-                        $"Alias '{alias}' on command '{attribute.Name}' is a reserved framework keyword. " +
-                        "The keyword wins, so this alias can never be used.");
-                }
+                problems.Add($"Command '{alias.CommandName}' has an empty alias.");
+            }
+            else if (commandNames.Contains(alias.Alias) == true)
+            {
+                problems.Add(
+                    $"Alias '{alias.Alias}' on command '{alias.CommandName}' is also the name of a command. " +
+                    "The real command name wins, so this alias can never be used.");
+            }
+            else if (reservedNames.Contains(alias.Alias) == true)
+            {
+                problems.Add(
+                    $"Alias '{alias.Alias}' on command '{alias.CommandName}' is a reserved framework keyword. " +
+                    "The keyword wins, so this alias can never be used.");
             }
         }
 
-        var duplicateAliases = attributes
-            .SelectMany(x => x.Aliases.Select(alias => new { Alias = alias, x.Name }))
+        var duplicateAliases = aliases
             .Where(x => string.IsNullOrWhiteSpace(x.Alias) == false)
             .GroupBy(x => x.Alias)
-            .Where(x => x.Select(y => y.Name).Distinct().Count() > 1);
+            .Where(x => x.Select(y => y.CommandName).Distinct().Count() > 1);
 
         foreach (var group in duplicateAliases)
         {
-            var owners = string.Join(", ", group.Select(x => x.Name).Distinct().Order());
+            var owners = string.Join(", ", group.Select(x => x.CommandName).Distinct().Order());
 
             problems.Add($"Alias '{group.Key}' is claimed by more than one command: {owners}.");
         }
@@ -364,11 +475,24 @@ public class CommandAttributeUtility
         {
             // resolve aliases to the real command name up front so that everything
             // downstream only ever deals with real command names
+            var alias = GetCommandAlias(containingAssembly, execInfo.CommandName);
+
             var resolvedCommandName = ResolveCommandName(containingAssembly, execInfo.CommandName);
 
             if (resolvedCommandName != null)
             {
                 execInfo.CommandName = resolvedCommandName;
+            }
+
+            if (alias != null)
+            {
+                // argument values from an alias are added as though they had been typed
+                // on the command line, so anything actually typed wins and the existing
+                // command line over config over default order is unchanged
+                foreach (var argument in alias.Arguments)
+                {
+                    execInfo.Arguments.TryAdd(argument.Key, argument.Value);
+                }
             }
 
             execInfo.Options = _ProgramOptions;

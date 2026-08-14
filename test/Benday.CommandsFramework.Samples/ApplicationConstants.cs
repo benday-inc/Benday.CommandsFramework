@@ -21,4 +21,7 @@ public static class ApplicationConstants
     public const string CommandName_AsyncCallsOtherCommands = "async-greet-everybody";
     public const string CommandName_CallsOtherCommandsWithBadArgs = "greet-badly";
     public const string CommandName_CallsATypeWithNoAttribute = "not-a-command-caller";
+    public const string CommandName_Deploy = "deploy";
+    public const string CommandAlias_DeployProd = "deploy-prod";
+    public const string CommandAlias_DeployDev = "deploy-dev";
 }
