@@ -34,18 +34,47 @@ Fluent configuration methods live in `ExtensionMethods.cs`:
 `WithAllowedValues()` (string only — renders as a dropdown in cmdui), `FromPositionalArgument(n)`,
 `FromConfig()`.
 
-Note: `WithDefaultValue()` does not store a separate "default" — it calls `TrySetValue()`, which sets
-`Value` and flips `HasValue` to true. There is no `DefaultValue` property on `IArgument`.
+`WithDefaultValue()` applies the value via `TrySetValue()` *and* records it on
+`IArgument.DefaultValue` / `HasDefaultValue` (through `Argument<T>.TrySetDefaultValue()`). The recorded
+default is never overwritten by command-line or config values, which is what lets usage output report
+the real default even on the validation-failure path. The implicit type default (`""`, `false`, `0`,
+`DateTime.MinValue`) does not count — `HasDefaultValue` is false unless `WithDefaultValue()` was called.
 
 ### CLI Argument Format
 Arguments use `/name:value` syntax. Boolean flags with `AllowEmptyValue` use `/name` (presence = true). Positional args are bare values mapped to `POSITION_1`, `POSITION_2`, etc.
 
-Value precedence: command line > configuration (`FromConfig()`) > default value.
+Value precedence: command line > command alias presets > configuration (`FromConfig()`) > default value.
 
 ### Built-in Keywords
 - `--help` — display usage
 - `--json` — dump full command schema as JSON (used by cmdui for auto-generating UI)
 - `gui` — launch `cmdui` for the current tool
+- `quiet` — reserved argument; suppresses `CommandBase.WriteLine()` output
+
+### Command Aliases
+Two kinds, both resolved to the real command name at a single chokepoint before anything else reads
+the command name (`CommandAttributeUtility.ResolveCommandName`, called from `GetCommand()` and
+`DefaultProgram.Run()`). Real command names always beat aliases.
+- `[Command(Name = "long-name", Aliases = new[] { "ln" })]` — plain rename. Shown inline in the
+  command list as `long-name (ln)`.
+- `[CommandAlias("deploy-prod", "environment=production", "verbose")]` — alias that also supplies
+  argument values. Values are injected into the parsed command-line dictionary via `TryAdd`, so
+  explicit command-line args win and no new precedence logic exists. Listed in a separate
+  `Command aliases:` section.
+
+`CommandAttributeUtility.GetCommandNameProblems()` reports duplicate names, aliases colliding with
+command names or reserved keywords, aliases claimed by two commands, and empty aliases. Nothing calls
+it automatically — call it from a unit test.
+
+### Calling Commands From Commands
+`CommandBase.CreateCommand<T>()`, `ExecuteCommand<T>()` (sync) and `ExecuteCommandAsync<T>()` (async)
+instantiate and run another command in process and return the instance so results can be read off it.
+Expose results as public properties set in `OnExecute()`.
+- The child shares the caller's `Options`, `Configuration` and `_OutputProvider`, and runs quiet by default.
+- Validation failure **throws** `KnownException` rather than printing usage — an in-process caller
+  needs to know the command didn't run.
+- `Environment.ExitCode` is saved/restored around the call so a child can't set the process exit code.
+- `CommandExecutionInfo.NestingDepth` guards against A→B→A loops (`MaxCommandNestingDepth`).
 
 ### Configuration
 `FromConfig()` arguments read from a stored config file, managed by built-in commands
@@ -62,7 +91,11 @@ command-line arguments fail validation via `ArgumentCollection.UnrecognizedKeys`
 `CommandBase.DisplayUsage(StringBuilder)` builds the per-command usage text. Argument names are
 padded to a shared column width and descriptions are line-wrapped against `Console.WindowWidth`
 (60 when output is redirected) via `LineWrapUtilities`. It is called from two places: the `--help`
-path (before values are set) and `OnValidationFailure` (after values are set).
+path (before values are set) and `OnValidationFailure` (after values are set) — which is exactly why
+defaults must be recorded separately rather than read off `Value`.
+
+Arguments with a configured default get a `(default: value)` line of their own, indented to align
+with the description column. Whitespace-only defaults are suppressed.
 
 ### Output
 Commands use `WriteLine()` which goes through `ITextOutputProvider`. `ConsoleTextOutputProvider` for console, `StringBuilderTextOutputProvider` for testing/capturing.
@@ -73,7 +106,10 @@ Commands use `WriteLine()` which goes through `ITextOutputProvider`. `ConsoleTex
 
 ### Dependency Injection
 `DependencyInjectionCommand` base class plus `CommandsApp` fluent setup for registering services into
-the command's `IServiceProvider`.
+the command's `IServiceProvider`. The provider is built once on first use and cached on
+`ICommandProgramOptions.ServiceProvider`, so all commands in a process share it (singletons really are
+singletons). Each command creates its own `IServiceScope`; `DependencyInjectionCommand` implements
+`IDisposable` to release it.
 
 ## CmdUI Project
 `cmdui` is a schema-driven Blazor Server app that auto-generates a web UI for any CommandsFramework tool:
