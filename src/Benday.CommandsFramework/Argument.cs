@@ -115,11 +115,43 @@ public abstract class Argument<T> : IArgument
     string IArgument.Value { get => Value?.ToString() ?? string.Empty; }
 
     /// <summary>
+    /// The explicit default value for this argument as configured by WithDefaultValue().
+    /// Never changed by values supplied on the command line or from configuration.
+    /// </summary>
+    public string DefaultValue { get; private set; } = string.Empty;
+
+    /// <summary>
+    /// Returns true when an explicit default value has been configured. This is false
+    /// for the implicit type default that every argument starts with.
+    /// </summary>
+    public bool HasDefaultValue { get; private set; }
+
+    /// <summary>
     /// Try to set the value for this argument
     /// </summary>
     /// <param name="input">String representation of the argument value</param>
     /// <returns>True if the value could be converted to the argument's data type and the value was set</returns>
     public abstract bool TrySetValue(string input);
+
+    /// <summary>
+    /// Records an explicit default value for this argument and applies it as the current
+    /// value. If the value cannot be converted to the argument's data type then nothing
+    /// is recorded and the argument is left untouched.
+    /// </summary>
+    /// <param name="input">String representation of the default value</param>
+    /// <returns>True if the default value was valid and was recorded</returns>
+    public bool TrySetDefaultValue(string input)
+    {
+        if (TrySetValue(input) == false)
+        {
+            return false;
+        }
+
+        DefaultValue = input;
+        HasDefaultValue = true;
+
+        return true;
+    }
 
     /// <summary>
     /// Does this argument have a value?

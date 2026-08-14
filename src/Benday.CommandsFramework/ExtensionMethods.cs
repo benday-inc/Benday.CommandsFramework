@@ -276,7 +276,9 @@ public static class ExtensionMethods
     }
 
     /// <summary>
-    /// Adds a default value for the argument definition
+    /// Adds a default value for the argument definition. The default is applied as the
+    /// argument's value and is also recorded so that it can be shown in the usage output
+    /// and reported in the --json schema.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="arg">Argument definition to configure</param>
@@ -298,7 +300,7 @@ public static class ExtensionMethods
         {
             var defaultValueString = defaultValue.ToString() ?? string.Empty;
 
-            arg.TrySetValue(defaultValueString);
+            arg.TrySetDefaultValue(defaultValueString);
 
             return arg;
         }

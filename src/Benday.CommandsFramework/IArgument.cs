@@ -71,6 +71,21 @@ public interface IArgument
     string Value { get; }
 
     /// <summary>
+    /// The explicit default value for this argument as configured by WithDefaultValue().
+    /// This is the string form of the configured default and is never changed by values
+    /// supplied on the command line or from configuration. Empty string when no explicit
+    /// default has been configured.
+    /// </summary>
+    string DefaultValue { get; }
+
+    /// <summary>
+    /// Returns true when an explicit default value has been configured via
+    /// WithDefaultValue(). This is false for the implicit type default
+    /// (empty string, false, 0, DateTime.MinValue) that every argument starts with.
+    /// </summary>
+    bool HasDefaultValue { get; }
+
+    /// <summary>
     /// List of valid values for this argument. Empty array means any value is accepted.
     /// When non-empty, the argument value must match one of these values (case-insensitive).
     /// </summary>

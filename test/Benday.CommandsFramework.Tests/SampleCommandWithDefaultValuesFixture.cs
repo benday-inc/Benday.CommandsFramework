@@ -55,12 +55,74 @@ public class SampleCommandWithDefaultValuesFixture
         // act
         _SystemUnderTest.Execute();
 
-        // assert        
+        // assert
         var output = OutputProvider.GetOutput();
         Console.WriteLine(output);
         Assert.DoesNotContain("** SUCCESS **", output);
         Assert.DoesNotContain("** INVALID ARGUMENTS **", output);
         Assert.Contains("** USAGE **", output);
+    }
+
+    [Fact]
+    public void GetHelp_ShowsDefaultValues()
+    {
+        // arrange
+        var commandLineArgs = Utilities.GetStringArray(
+            ApplicationConstants.CommandName_CommandWithDefaultValues,
+            ArgumentFrameworkConstants.ArgumentHelpString
+            );
+
+        var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
+
+        _SystemUnderTest = new SampleCommandWithDefaultValues(executionInfo, OutputProvider);
+
+        // act
+        _SystemUnderTest.Execute();
+
+        // assert
+        var output = OutputProvider.GetOutput();
+        Console.WriteLine(output);
+
+        Assert.Contains($"(default: {new DateTime(2023, 6, 23)})", output);
+        Assert.Contains("(default: 123)", output);
+        Assert.Contains("(default: True)", output);
+        Assert.Contains("(default: wickid awesome)", output);
+    }
+
+    [Fact]
+    public void GetHelp_DefaultValueIsOnItsOwnLineAlignedToDescriptionColumn()
+    {
+        // arrange
+        var commandLineArgs = Utilities.GetStringArray(
+            ApplicationConstants.CommandName_CommandWithDefaultValues,
+            ArgumentFrameworkConstants.ArgumentHelpString
+            );
+
+        var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
+
+        _SystemUnderTest = new SampleCommandWithDefaultValues(executionInfo, OutputProvider);
+
+        // act
+        _SystemUnderTest.Execute();
+
+        // assert
+        var output = OutputProvider.GetOutput();
+        Console.WriteLine(output);
+
+        var lines = output.Split(Environment.NewLine);
+
+        var descriptionLine = Assert.Single(lines, l => l.Contains("thingy number"));
+
+        var defaultLine = Assert.Single(lines, l => l.Contains("(default: 123)"));
+
+        // the default is on its own line, not appended to the description
+        Assert.DoesNotContain("(default:", descriptionLine);
+
+        // ...and it starts in the same column as the description text
+        var descriptionColumn = descriptionLine.IndexOf("thingy number", StringComparison.Ordinal);
+        var defaultColumn = defaultLine.IndexOf("(default:", StringComparison.Ordinal);
+
+        Assert.Equal(descriptionColumn, defaultColumn);
     }
 
     [Fact]

@@ -24,6 +24,8 @@ internal class UnknownArgument : IArgument
     public bool IsPositionalSource { get; set; }
     public bool IsFromConfig { get; set; }
     public string Value => string.Empty;
+    public string DefaultValue => string.Empty;
+    public bool HasDefaultValue => false;
     public string[] AllowedValues => [];
     public bool Validate() => false;
     public bool TrySetValue(string input) => false;

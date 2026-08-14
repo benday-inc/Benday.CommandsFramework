@@ -289,6 +289,36 @@ public abstract class CommandBase
 
             builder.AppendLine();
         }
+
+        DisplayArgumentDefaultValue(builder, arg, consoleWidth, argNameColumnWidth);
+    }
+
+    /// <summary>
+    /// Adds the '(default: value)' line for an argument that has an explicitly configured
+    /// default value. The line is indented to align with the description column.
+    /// </summary>
+    private void DisplayArgumentDefaultValue(
+        StringBuilder builder,
+        IArgument arg,
+        int consoleWidth,
+        int argNameColumnWidth)
+    {
+        if (arg.HasDefaultValue == false)
+        {
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(arg.DefaultValue) == true)
+        {
+            // nothing worth showing for an empty default
+            return;
+        }
+
+        builder.Append(' ', argNameColumnWidth);
+        builder.AppendWrappedValue($"(default: {arg.DefaultValue})",
+            consoleWidth, argNameColumnWidth);
+
+        builder.AppendLine();
     }
 
     /// <summary>
