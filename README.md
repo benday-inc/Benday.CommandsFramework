@@ -23,7 +23,9 @@ Let us know by submitting an [issue](https://github.com/benday-inc/Benday.Comman
 - Typed arguments: `String`, `Boolean`, `Int32`, `DateTime`, `File`, `Directory`
 - Fluent argument definition API with required/optional, default values, and allowed values
 - Automatic argument parsing and validation
-- Built-in `--help` usage display
+- Built-in `--help` usage display that reports each argument's default value
+- Command name aliases, including aliases that supply preset argument values
+- Reuse command logic by running one command from inside another
 - Dependency injection support
 - Configuration from JSON files, environment variables, and custom sources
 - Arguments that pull values from configuration via `FromConfig()`
@@ -39,6 +41,11 @@ Let us know by submitting an [issue](https://github.com/benday-inc/Benday.Comman
   - [2. Set Up Program.cs](#2-set-up-programcs)
   - [3. Run It](#3-run-it)
 - [Argument Types](#argument-types)
+- [Default Values](#default-values)
+- [Command Aliases](#command-aliases)
+  - [Short Names](#short-names)
+  - [Aliases That Supply Argument Values](#aliases-that-supply-argument-values)
+- [Reusing Command Logic](#reusing-command-logic)
 - [Configuration](#configuration)
   - [JSON Files and Environment Variables](#json-files-and-environment-variables)
   - [Custom Configuration Sources](#custom-configuration-sources)
@@ -151,6 +158,162 @@ public override ArgumentCollection GetArguments()
 ```
 
 Arguments are passed on the command line using `/name:value` syntax. Boolean flags with `AllowEmptyValue()` can be passed as just `/name` (presence means `true`).
+
+## Default Values
+
+`WithDefaultValue()` sets the value an argument falls back to when nothing is supplied. The default is reported in the `--help` output on a line of its own, so users can see what a command will do before they run it:
+
+```csharp
+args.AddString("thing").AsNotRequired()
+    .WithDescription("thing to deploy")
+    .WithDefaultValue("the-usual-thing");
+```
+
+```
+deploy --help
+
+** USAGE **
+deploy
+/environment:String - environment to deploy to
+[/thing:String]     - thing to deploy
+                      (default: the-usual-thing)
+```
+
+The default is also reported when a command fails validation, and it always shows the configured default rather than whatever was typed on the command line. Defaults are exposed on `IArgument.DefaultValue` and `IArgument.HasDefaultValue`, and are included in the `--json` schema output.
+
+## Command Aliases
+
+### Short Names
+
+Use `Aliases` on the `[Command]` attribute to give a command extra names. This is handy for offering a short form of a long command name:
+
+```csharp
+[Command(Name = "generate-project-scaffolding",
+    Aliases = new[] { "gps", "scaffold" },
+    Description = "Generates project scaffolding")]
+public class GenerateScaffoldingCommand : SynchronousCommand
+```
+
+```bash
+mytool gps            # same as: mytool generate-project-scaffolding
+```
+
+Aliases are resolved to the real command name before the command runs, so `ExecutionInfo.CommandName` is always the real name. A real command name always wins over an alias, so an alias can never shadow an actual command. Aliases appear next to the command in the available commands list:
+
+```
+generate-project-scaffolding (gps, scaffold) - Generates project scaffolding
+```
+
+### Aliases That Supply Argument Values
+
+Use `[CommandAlias]` to create a shortcut for a command that is usually run with the same set of arguments. Each entry is in `name=value` form; an entry with no `=` is treated as a flag style argument:
+
+```csharp
+[Command(Name = "deploy", Description = "Deploys a thing to an environment")]
+[CommandAlias("deploy-prod", "environment=production", "verbose",
+    Description = "Deploy to production with verbose output")]
+[CommandAlias("deploy-dev", "environment=development",
+    Description = "Deploy to development")]
+public class DeployCommand : SynchronousCommand
+```
+
+```bash
+mytool deploy-prod                          # environment=production, verbose=true
+mytool deploy-prod /environment:staging     # environment=staging, verbose=true
+```
+
+The values are applied as though they had been typed on the command line, so anything actually supplied on the command line wins over them. The full order of precedence is:
+
+**command line → alias → configuration (`FromConfig()`) → default value**
+
+A command can have as many `[CommandAlias]` attributes as you like. They are listed in their own section of the usage output:
+
+```
+Command aliases:
+deploy-dev  - Deploy to development (deploy /environment:development)
+deploy-prod - Deploy to production with verbose output (deploy
+              /environment:production /verbose)
+```
+
+Nothing validates aliases automatically. Call `CommandAttributeUtility.GetCommandNameProblems()` from a unit test to catch duplicate command names, aliases that collide with a command name or with a reserved keyword, aliases claimed by two commands, and empty aliases:
+
+```csharp
+[Fact]
+public void NoCommandNameProblems()
+{
+    var util = new CommandAttributeUtility(new DefaultProgramOptions());
+
+    Assert.Empty(util.GetCommandNameProblems(typeof(MyCommand).Assembly));
+}
+```
+
+## Reusing Command Logic
+
+A command can run another command in process rather than shelling out to the command line. Use `ExecuteCommand<T>()` for synchronous commands and `ExecuteCommandAsync<T>()` for async ones. Both return the command instance so you can read results back off it.
+
+Expose whatever the caller needs as public properties set in `OnExecute()`:
+
+```csharp
+[Command(Name = "greeting", Description = "Builds a greeting for a person")]
+public class GreetingCommand : SynchronousCommand
+{
+    public GreetingCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider)
+        : base(info, outputProvider) { }
+
+    public string Greeting { get; private set; } = string.Empty;
+
+    public override ArgumentCollection GetArguments()
+    {
+        var args = new ArgumentCollection();
+        args.AddString("name").AsRequired().WithDescription("Name of the person to greet");
+        return args;
+    }
+
+    protected override void OnExecute()
+    {
+        Greeting = $"Hello, {Arguments.GetStringValue("name")}!";
+        WriteLine(Greeting);
+    }
+}
+```
+
+```csharp
+[Command(Name = "greet-everybody", Description = "Greets several people")]
+public class GreetEverybodyCommand : SynchronousCommand
+{
+    public GreetEverybodyCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider)
+        : base(info, outputProvider) { }
+
+    public override ArgumentCollection GetArguments()
+    {
+        var args = new ArgumentCollection();
+        args.AddString("names").AsRequired().WithDescription("Comma separated list of names");
+        return args;
+    }
+
+    protected override void OnExecute()
+    {
+        var names = Arguments.GetStringValue("names")
+            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+        foreach (var name in names)
+        {
+            var command = ExecuteCommand<GreetingCommand>(args => args["name"] = name);
+
+            WriteLine(command.Greeting);
+        }
+    }
+}
+```
+
+Things worth knowing:
+
+- The command that gets run shares the calling command's program options, configuration, and output provider.
+- It runs in **quiet mode** by default, which suppresses its `WriteLine()` output so it does not write over the calling command's output. Pass `quiet: false` to let it write.
+- A validation failure **throws** a `KnownException` instead of printing usage information. Running a command from the command line prints usage and returns, which would leave the calling command with no way of knowing that the command never ran.
+- The process exit code is left alone. A command that gets run this way cannot decide the exit code for the process.
+- `CreateCommand<T>()` builds the command without running it, if you need to inspect or configure it first.
+- Commands nested more than `CommandFrameworkConstants.MaxCommandNestingDepth` levels deep throw, so an accidental "A calls B calls A" loop produces a clear error rather than a stack overflow.
 
 ## Configuration
 
@@ -415,5 +578,6 @@ writer.SaveToFile("/path/to/updated.csv");
 - `--help` — Display usage information for a command
 - `--json` — Output the full command schema as JSON (used by tooling)
 - `gui` — Launch the CmdUi web interface for this tool
+- `quiet` — Suppress a command's `WriteLine()` output. Applied automatically to commands that are run by another command.
 
 
