@@ -50,12 +50,14 @@ everything after it is parsed.
 
 Value precedence: command line > command alias presets > configuration (`FromConfig()`) > default value.
 
-**Case handling is inconsistent — known bug.** `/name:value` args keep their case; flag-style `/name`
-args are force-lowercased (`CleanArgWithoutColonAndAddToDictionary` calls `.ToLower()`), but
-`ArgumentCollection`'s dictionary is case-sensitive. So a flag argument whose *definition* has
-uppercase letters can never be set from the command line — `/isThingy` parses to `isthingy`, misses
-`isThingy`, and lands in `UnrecognizedKeys` (which fails validation under `StrictArgumentValidation`).
-The `isThingy` sample arg masks this because it also has `WithDefaultValue(true)`.
+**Argument names are matched case-insensitively** via `ArgumentCollection.ArgumentNameComparer`
+(`OrdinalIgnoreCase`), which backs the argument dictionary, the alias lookup in `SetValues()`, the
+parsed dictionary from `ArgumentCollectionFactory`, and `CommandExecutionInfo.Arguments`. So
+`/verbose`, `/Verbose` and `/VERBOSE` all reach the same argument, for both the `/name:value` and
+flag-style forms. Argument *values* keep their case; only names are case-insensitive.
+
+Use `ArgumentCollection.ArgumentNameComparer` whenever you build a dictionary that will hold argument
+names, so a name can't get in twice under different casing.
 
 ### Positional Arguments
 `FromPositionalArgument(n)` sets `Alias = "POSITION_n"` and `IsPositionalSource = true`; binding then

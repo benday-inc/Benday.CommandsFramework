@@ -192,7 +192,7 @@ public abstract class CommandBase
                 $"Type '{commandType.Name}' does not have a CommandAttribute so it cannot be run as a command.");
         }
 
-        var arguments = new Dictionary<string, string>();
+        var arguments = new Dictionary<string, string>(ArgumentCollection.ArgumentNameComparer);
 
         configureArguments?.Invoke(arguments);
 

@@ -49,10 +49,12 @@ public class ArgumentCollectionFactory
         return count;
     }
 
-    private Dictionary<string, string> GetArgsAsDictionary(string[] args, 
+    private Dictionary<string, string> GetArgsAsDictionary(string[] args,
         bool processPositionalArguments)
     {
-        var returnValue = new Dictionary<string, string>();
+        // case-insensitive so that '/Name:a /name:b' is recognized as the same argument
+        // supplied twice rather than as two different arguments
+        var returnValue = new Dictionary<string, string>(ArgumentCollection.ArgumentNameComparer);
 
         foreach (var arg in args)
         {
@@ -131,7 +133,11 @@ public class ArgumentCollectionFactory
 
     private static void CleanArgWithoutColonAndAddToDictionary(string arg, Dictionary<string, string> args)
     {
-        var argWithoutSlash = arg[1..].ToLower();
+        // the name is kept exactly as it was typed. Matching against the argument
+        // definitions is case-insensitive, so lowercasing here is unnecessary, and doing it
+        // used to make a flag argument whose definition had uppercase letters impossible to
+        // set from the command line.
+        var argWithoutSlash = arg[1..];
 
         if (args.ContainsKey(argWithoutSlash) == false)
         {

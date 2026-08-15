@@ -593,7 +593,8 @@ public static class ExtensionMethods
             throw new ArgumentNullException(nameof(execInfo));
         }
 
-        var argsClone = execInfo.Arguments.ToDictionary(entry => entry.Key, entry => entry.Value);
+        var argsClone = execInfo.Arguments.ToDictionary(
+            entry => entry.Key, entry => entry.Value, ArgumentCollection.ArgumentNameComparer);
 
         if (quietMode == true)
         {

@@ -13,9 +13,11 @@ public class CommandExecutionInfo
     public string CommandName { get; set; } = string.Empty;
 
     /// <summary>
-    /// The requested command line arguments parsed into key/value pairs
+    /// The requested command line arguments parsed into key/value pairs.
+    /// Argument names are matched without regard to case.
     /// </summary>
-    public Dictionary<string, string> Arguments { get; set; } = new();
+    public Dictionary<string, string> Arguments { get; set; } =
+        new(ArgumentCollection.ArgumentNameComparer);
 
     /// <summary>
     /// How many levels deep this command execution is when commands call other commands.

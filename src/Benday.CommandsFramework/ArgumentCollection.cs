@@ -23,6 +23,13 @@ public class ArgumentCollection : IEnumerable<IArgument>
             CommandFrameworkConstants.CommandArgName_QuietMode
         };
 
+    /// <summary>
+    /// Comparer used to match argument names and aliases supplied on the command line
+    /// against the argument definitions for a command. Argument names are matched without
+    /// regard to case, so '/Verbose', '/verbose' and '/VERBOSE' all reach the same argument.
+    /// </summary>
+    public static readonly StringComparer ArgumentNameComparer = StringComparer.OrdinalIgnoreCase;
+
     private readonly Dictionary<string, IArgument> _Arguments;
 
     /// <summary>
@@ -37,7 +44,7 @@ public class ArgumentCollection : IEnumerable<IArgument>
     /// </summary>
     public ArgumentCollection()
     {
-        _Arguments = new();
+        _Arguments = new(ArgumentNameComparer);
     }
 
     /// <summary>
@@ -54,7 +61,7 @@ public class ArgumentCollection : IEnumerable<IArgument>
             throw new ArgumentNullException(nameof(fromDictionary));
         }
 
-        _Arguments = new();
+        _Arguments = new(ArgumentNameComparer);
 
         foreach (var key in fromDictionary.Keys)
         {
@@ -79,7 +86,7 @@ public class ArgumentCollection : IEnumerable<IArgument>
     /// <exception cref="InvalidOperationException"></exception>
     public ArgumentCollection(Dictionary<string, IArgument> fromDictionary)
     {
-        _Arguments = new();
+        _Arguments = new(ArgumentNameComparer);
 
         foreach (var key in fromDictionary.Keys)
         {
@@ -172,7 +179,7 @@ public class ArgumentCollection : IEnumerable<IArgument>
         {
             var aliasedArgs = _Arguments.Values.
                 Where(a => a.HasAlias == true).
-                ToDictionary(a => a.Alias, a => a);
+                ToDictionary(a => a.Alias, a => a, ArgumentNameComparer);
 
             foreach (var key in fromArguments.Keys)
             {
