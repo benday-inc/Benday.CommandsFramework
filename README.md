@@ -163,7 +163,7 @@ public override ArgumentCollection GetArguments()
 
 Arguments are passed on the command line using `/name:value` syntax. Boolean flags with `AllowEmptyValue()` can be passed as just `/name` (presence means `true`).
 
-Argument names are matched case-sensitively. Flag style arguments — the `/name` form with no value — are currently lowercased during parsing, so give flag arguments all-lowercase names.
+Argument names are matched without regard to case, so `/verbose`, `/Verbose`, and `/VERBOSE` all reach the same argument. Argument *values* keep their case — only names are case-insensitive.
 
 ### Positional Arguments
 
