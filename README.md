@@ -41,6 +41,10 @@ Let us know by submitting an [issue](https://github.com/benday-inc/Benday.Comman
   - [2. Set Up Program.cs](#2-set-up-programcs)
   - [3. Run It](#3-run-it)
 - [Argument Types](#argument-types)
+  - [Positional Arguments](#positional-arguments)
+  - [Argument Aliases](#argument-aliases)
+  - [Friendly Names](#friendly-names)
+  - [File and Directory Existence](#file-and-directory-existence)
 - [Default Values](#default-values)
 - [Command Aliases](#command-aliases)
   - [Short Names](#short-names)
@@ -158,6 +162,104 @@ public override ArgumentCollection GetArguments()
 ```
 
 Arguments are passed on the command line using `/name:value` syntax. Boolean flags with `AllowEmptyValue()` can be passed as just `/name` (presence means `true`).
+
+Argument names are matched case-sensitively. Flag style arguments — the `/name` form with no value — are currently lowercased during parsing, so give flag arguments all-lowercase names.
+
+### Positional Arguments
+
+Use `FromPositionalArgument(n)` to read a value from its position on the command line instead of making the user type the argument name. Positions start at 1 and count the bare values that follow the command name:
+
+```csharp
+public override ArgumentCollection GetArguments()
+{
+    var args = new ArgumentCollection();
+
+    args.AddString("source").AsRequired()
+        .WithDescription("Source file")
+        .FromPositionalArgument(1);
+
+    args.AddString("destination").AsNotRequired()
+        .WithDescription("Destination file")
+        .FromPositionalArgument(2);
+
+    args.AddBoolean("overwrite").AsNotRequired().AllowEmptyValue()
+        .WithDescription("Overwrite the destination");
+
+    return args;
+}
+```
+
+```bash
+mytool copy input.txt output.txt
+mytool copy input.txt output.txt /overwrite
+```
+
+Named arguments do not consume positions, so they can appear anywhere in the command line without shifting the positional values:
+
+```bash
+mytool copy /overwrite input.txt output.txt   # source=input.txt, destination=output.txt
+```
+
+Unix style paths are handled correctly. A value like `/home/user/data.txt` contains more than one slash and no colon, so it is treated as a positional value rather than as an argument name.
+
+Positional arguments show up in usage output wrapped in braces rather than with a leading slash:
+
+```
+{source:String}         - Source file
+[{destination:String}]  - Destination file
+```
+
+### Argument Aliases
+
+Use `WithAlias()` to give an argument a second name, which is handy for offering a short form:
+
+```csharp
+args.AddString("environment").AsRequired()
+    .WithAlias("env")
+    .WithDescription("Target environment");
+```
+
+```bash
+mytool deploy /environment:production
+mytool deploy /env:production            # same thing
+```
+
+The real argument name is matched first, so an alias can never shadow another argument's name.
+
+`WithAlias()` and `FromPositionalArgument()` both write to the same underlying alias slot — `FromPositionalArgument(n)` works by setting the alias to `POSITION_n`. Use one or the other on any given argument, not both, since the second call overwrites the first.
+
+### Friendly Names
+
+Use `WithFriendlyName()` to give an argument a human readable label. This does not change the console usage output — it is carried in the `--json` schema and is used as the field label when the command is rendered in [cmdui](https://www.nuget.org/packages/Benday.CommandsFramework.CmdUi/):
+
+```csharp
+args.AddString("api-key").AsRequired()
+    .WithFriendlyName("API Key")
+    .WithDescription("Your API key");
+```
+
+### File and Directory Existence
+
+`MustExist()` and `ExistenceOptional()` apply to `AddFile()` and `AddDirectory()` arguments only. Calling either one on any other argument type throws an `InvalidOperationException`.
+
+Existence is optional by default, so `MustExist()` is the one you normally reach for. When set, validation fails if the file or directory is not there:
+
+```csharp
+args.AddFile("input").AsRequired()
+    .MustExist()
+    .WithDescription("Input file, must already exist");
+
+args.AddDirectory("output-dir").AsNotRequired()
+    .ExistenceOptional()
+    .WithDescription("Output directory, created if missing");
+```
+
+Relative paths are resolved against the current working directory before the existence check. Read the resolved path back with the argument's `AbsolutePath` property, or with the `GetPathToFile()` / `GetPathToDirectory()` helpers:
+
+```csharp
+var inputPath = Arguments.GetPathToFile("input", mustExist: true, fullyQualifiedPath: true);
+var outputPath = Arguments.GetPathToDirectory("output-dir");
+```
 
 ## Default Values
 

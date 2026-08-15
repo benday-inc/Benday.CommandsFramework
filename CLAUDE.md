@@ -6,7 +6,7 @@ A .NET CLI framework for building command-line tools. Provides structured comman
 ## Solution Structure
 - `src/Benday.CommandsFramework/` - Core framework library (NuGet package, targets net8.0;net9.0;net10.0)
 - `src/Benday.CommandsFramework.CmdUi/` - Blazor Server web UI shell for any framework-based tool (dotnet global tool `cmdui`, targets net10.0)
-- `test/Benday.CommandsFramework.Tests/` - Unit tests (xUnit)
+- `test/Benday.CommandsFramework.Tests/` - Unit tests (xunit.v3, via Microsoft.Testing.Platform)
 - `test/Benday.CommandsFramework.Samples/` - Sample commands demonstrating framework features
 
 Solution file is `Benday.CommandsFramework.slnx` (XML-based slnx format, not .sln).
@@ -34,6 +34,9 @@ Fluent configuration methods live in `ExtensionMethods.cs`:
 `WithAllowedValues()` (string only — renders as a dropdown in cmdui), `FromPositionalArgument(n)`,
 `FromConfig()`.
 
+Ordering gotcha: methods declared on `Argument<T>` return `Argument<T>`, so type-specific methods like
+`WithAllowedValues()` (needs `StringArgument`) must come **first** in the chain, right after `AddString()`.
+
 `WithDefaultValue()` applies the value via `TrySetValue()` *and* records it on
 `IArgument.DefaultValue` / `HasDefaultValue` (through `Argument<T>.TrySetDefaultValue()`). The recorded
 default is never overwritten by command-line or config values, which is what lets usage output report
@@ -41,9 +44,45 @@ the real default even on the validation-failure path. The implicit type default 
 `DateTime.MinValue`) does not count — `HasDefaultValue` is false unless `WithDefaultValue()` was called.
 
 ### CLI Argument Format
-Arguments use `/name:value` syntax. Boolean flags with `AllowEmptyValue` use `/name` (presence = true). Positional args are bare values mapped to `POSITION_1`, `POSITION_2`, etc.
+Arguments use `/name:value` syntax. Boolean flags with `AllowEmptyValue` use `/name` (presence = true).
+Parsing lives in `ArgumentCollectionFactory.GetArgsAsDictionary()`; `input[0]` is the command name and
+everything after it is parsed.
 
 Value precedence: command line > command alias presets > configuration (`FromConfig()`) > default value.
+
+**Case handling is inconsistent — known bug.** `/name:value` args keep their case; flag-style `/name`
+args are force-lowercased (`CleanArgWithoutColonAndAddToDictionary` calls `.ToLower()`), but
+`ArgumentCollection`'s dictionary is case-sensitive. So a flag argument whose *definition* has
+uppercase letters can never be set from the command line — `/isThingy` parses to `isthingy`, misses
+`isThingy`, and lands in `UnrecognizedKeys` (which fails validation under `StrictArgumentValidation`).
+The `isThingy` sample arg masks this because it also has `WithDefaultValue(true)`.
+
+### Positional Arguments
+`FromPositionalArgument(n)` sets `Alias = "POSITION_n"` and `IsPositionalSource = true`; binding then
+happens through the normal alias path in `ArgumentCollection.SetValues()`. Position must be >= 1.
+- Counting covers only bare positional values, so named args interleave freely without shifting positions.
+- A `/`-prefixed token with **more than one slash** and no colon is treated as a Unix path and becomes
+  positional; one slash and no colon is treated as a flag name.
+- `WithAlias()` and `FromPositionalArgument()` share the `Alias` slot — using both on one argument
+  breaks whichever was set first.
+- Usage output renders these as `{name:Type}` (required) / `[{name:Type}]` (optional) via `GetKeyString()`.
+
+### Argument Aliases vs Command Aliases
+Different mechanisms, easy to confuse. `WithAlias()` is an *argument* alias (a second name for a
+`/switch`), matched in `SetValues()` after real names. Command aliases are `CommandAttribute.Aliases`
+and `[CommandAlias]` — see below.
+
+### FriendlyName
+`WithFriendlyName()` is **not** used by console usage output (`GetKeyString()` uses `Name`). It only
+travels in the `--json` schema and becomes the form field label in cmdui
+(`ArgumentField.razor`, `CommandRunner.razor`).
+
+### File and Directory Arguments
+`FileArgument` / `DirectoryArgument` both derive from `StringArgument` and add `MustExist`
+(default `false`) plus an `AbsolutePath` property that fully-qualifies the value. `MustExist()` /
+`ExistenceOptional()` throw `InvalidOperationException` on any other argument type. Validation checks
+`File.Exists`/`Directory.Exists` against `AbsolutePath`. `GetPathToFile()` / `GetPathToDirectory()`
+extension methods do the same resolution off the collection.
 
 ### Built-in Keywords
 - `--help` — display usage
@@ -124,6 +163,13 @@ singletons). Each command creates its own `IServiceScope`; `DependencyInjectionC
 dotnet build                    # build entire solution
 dotnet test                     # run tests
 dotnet run --project src/Benday.CommandsFramework.CmdUi -- slnutil   # test cmdui locally
+```
+
+Tests are xunit.v3, which builds the test project as an executable running on Microsoft.Testing
+Platform. The test binary can also be run directly, which is the fallback if `dotnet test` reports
+"No test is available" (that happens when an older SDK routes the run through VSTest):
+```bash
+./test/Benday.CommandsFramework.Tests/bin/Debug/net10.0/Benday.CommandsFramework.Tests
 ```
 
 ## Packaging
