@@ -7,14 +7,18 @@ A Blazor Server web UI shell for any CLI tool built with [Benday.CommandsFramewo
 - Auto-generates a web-based UI from any CommandsFramework CLI tool
 - Discovers all installed CommandsFramework tools when run without arguments
 - Form-based command execution with validation
+- Shows each argument's default value, and flags arguments that read from the tool's saved configuration
+- Shows command aliases, including the aliases that supply preset argument values
 - Real-time output display
 - Working directory selection
 
 ## Installation
 
 ```bash
-dotnet tool install -g cmdui
+dotnet tool install -g Benday.CommandsFramework.CmdUi
 ```
+
+The package id is `Benday.CommandsFramework.CmdUi`; the command it installs is `cmdui`.
 
 ## Usage
 
