@@ -240,7 +240,7 @@
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DefaultProgramOptions_ServiceCollection.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DefaultProgramOptions.ServiceCollection%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DefaultProgramOptions.cs/#L37">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DefaultProgramOptions.cs/#L36">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_DefaultProgramOptions_ServiceCollection_" data-uid="Benday.CommandsFramework.DefaultProgramOptions.ServiceCollection*"></a>
   <h4 id="Benday_CommandsFramework_DefaultProgramOptions_ServiceCollection" data-uid="Benday.CommandsFramework.DefaultProgramOptions.ServiceCollection">ServiceCollection</h4>
@@ -263,6 +263,70 @@ This is entirely optional.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection">IServiceCollection</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DefaultProgramOptions_ServiceProvider.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DefaultProgramOptions.ServiceProvider%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DefaultProgramOptions.cs/#L42">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_DefaultProgramOptions_ServiceProvider_" data-uid="Benday.CommandsFramework.DefaultProgramOptions.ServiceProvider*"></a>
+  <h4 id="Benday_CommandsFramework_DefaultProgramOptions_ServiceProvider" data-uid="Benday.CommandsFramework.DefaultProgramOptions.ServiceProvider">ServiceProvider</h4>
+  <div class="markdown level1 summary"><p>The service provider built from ServiceCollection. Populated on first use and
+then shared by every command in the process.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IServiceProvider? ServiceProvider { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DefaultProgramOptions_StrictArgumentValidation.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DefaultProgramOptions.StrictArgumentValidation%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DefaultProgramOptions.cs/#L48">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_DefaultProgramOptions_StrictArgumentValidation_" data-uid="Benday.CommandsFramework.DefaultProgramOptions.StrictArgumentValidation*"></a>
+  <h4 id="Benday_CommandsFramework_DefaultProgramOptions_StrictArgumentValidation" data-uid="Benday.CommandsFramework.DefaultProgramOptions.StrictArgumentValidation">StrictArgumentValidation</h4>
+  <div class="markdown level1 summary"><p>When true, unknown/unrecognized command arguments will cause validation to fail.
+When false (default), unknown arguments are silently ignored.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool StrictArgumentValidation { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
         <td></td>
       </tr>
     </tbody>

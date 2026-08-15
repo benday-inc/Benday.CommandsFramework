@@ -75,6 +75,12 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.ArgumentCollection.Add
   nameWithType: ArgumentCollection.Add
+- uid: Benday.CommandsFramework.ArgumentCollection.ArgumentNameComparer
+  name: ArgumentNameComparer
+  href: api/Benday.CommandsFramework.ArgumentCollection.html#Benday_CommandsFramework_ArgumentCollection_ArgumentNameComparer
+  commentId: F:Benday.CommandsFramework.ArgumentCollection.ArgumentNameComparer
+  fullName: Benday.CommandsFramework.ArgumentCollection.ArgumentNameComparer
+  nameWithType: ArgumentCollection.ArgumentNameComparer
 - uid: Benday.CommandsFramework.ArgumentCollection.ContainsKey(System.String)
   name: ContainsKey(string)
   href: api/Benday.CommandsFramework.ArgumentCollection.html#Benday_CommandsFramework_ArgumentCollection_ContainsKey_System_String_
@@ -181,6 +187,19 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.ArgumentCollection.SetValues
   nameWithType: ArgumentCollection.SetValues
+- uid: Benday.CommandsFramework.ArgumentCollection.UnrecognizedKeys
+  name: UnrecognizedKeys
+  href: api/Benday.CommandsFramework.ArgumentCollection.html#Benday_CommandsFramework_ArgumentCollection_UnrecognizedKeys
+  commentId: P:Benday.CommandsFramework.ArgumentCollection.UnrecognizedKeys
+  fullName: Benday.CommandsFramework.ArgumentCollection.UnrecognizedKeys
+  nameWithType: ArgumentCollection.UnrecognizedKeys
+- uid: Benday.CommandsFramework.ArgumentCollection.UnrecognizedKeys*
+  name: UnrecognizedKeys
+  href: api/Benday.CommandsFramework.ArgumentCollection.html#Benday_CommandsFramework_ArgumentCollection_UnrecognizedKeys_
+  commentId: Overload:Benday.CommandsFramework.ArgumentCollection.UnrecognizedKeys
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.ArgumentCollection.UnrecognizedKeys
+  nameWithType: ArgumentCollection.UnrecognizedKeys
 - uid: Benday.CommandsFramework.ArgumentCollectionFactory
   name: ArgumentCollectionFactory
   href: api/Benday.CommandsFramework.ArgumentCollectionFactory.html
@@ -255,6 +274,12 @@ references:
   commentId: T:Benday.CommandsFramework.ArgumentFrameworkConstants
   fullName: Benday.CommandsFramework.ArgumentFrameworkConstants
   nameWithType: ArgumentFrameworkConstants
+- uid: Benday.CommandsFramework.ArgumentFrameworkConstants.ArgumentGui
+  name: ArgumentGui
+  href: api/Benday.CommandsFramework.ArgumentFrameworkConstants.html#Benday_CommandsFramework_ArgumentFrameworkConstants_ArgumentGui
+  commentId: F:Benday.CommandsFramework.ArgumentFrameworkConstants.ArgumentGui
+  fullName: Benday.CommandsFramework.ArgumentFrameworkConstants.ArgumentGui
+  nameWithType: ArgumentFrameworkConstants.ArgumentGui
 - uid: Benday.CommandsFramework.ArgumentFrameworkConstants.ArgumentHelpString
   name: ArgumentHelpString
   href: api/Benday.CommandsFramework.ArgumentFrameworkConstants.html#Benday_CommandsFramework_ArgumentFrameworkConstants_ArgumentHelpString
@@ -329,6 +354,23 @@ references:
   fullName.vb: Benday.CommandsFramework.Argument(Of T).AllowEmptyValue
   nameWithType: Argument<T>.AllowEmptyValue
   nameWithType.vb: Argument(Of T).AllowEmptyValue
+- uid: Benday.CommandsFramework.Argument`1.AllowedValues
+  name: AllowedValues
+  href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_AllowedValues
+  commentId: P:Benday.CommandsFramework.Argument`1.AllowedValues
+  fullName: Benday.CommandsFramework.Argument<T>.AllowedValues
+  fullName.vb: Benday.CommandsFramework.Argument(Of T).AllowedValues
+  nameWithType: Argument<T>.AllowedValues
+  nameWithType.vb: Argument(Of T).AllowedValues
+- uid: Benday.CommandsFramework.Argument`1.AllowedValues*
+  name: AllowedValues
+  href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_AllowedValues_
+  commentId: Overload:Benday.CommandsFramework.Argument`1.AllowedValues
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.Argument<T>.AllowedValues
+  fullName.vb: Benday.CommandsFramework.Argument(Of T).AllowedValues
+  nameWithType: Argument<T>.AllowedValues
+  nameWithType.vb: Argument(Of T).AllowedValues
 - uid: Benday.CommandsFramework.Argument`1.DataType
   name: DataType
   href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_DataType
@@ -346,6 +388,23 @@ references:
   fullName.vb: Benday.CommandsFramework.Argument(Of T).DataType
   nameWithType: Argument<T>.DataType
   nameWithType.vb: Argument(Of T).DataType
+- uid: Benday.CommandsFramework.Argument`1.DefaultValue
+  name: DefaultValue
+  href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_DefaultValue
+  commentId: P:Benday.CommandsFramework.Argument`1.DefaultValue
+  fullName: Benday.CommandsFramework.Argument<T>.DefaultValue
+  fullName.vb: Benday.CommandsFramework.Argument(Of T).DefaultValue
+  nameWithType: Argument<T>.DefaultValue
+  nameWithType.vb: Argument(Of T).DefaultValue
+- uid: Benday.CommandsFramework.Argument`1.DefaultValue*
+  name: DefaultValue
+  href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_DefaultValue_
+  commentId: Overload:Benday.CommandsFramework.Argument`1.DefaultValue
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.Argument<T>.DefaultValue
+  fullName.vb: Benday.CommandsFramework.Argument(Of T).DefaultValue
+  nameWithType: Argument<T>.DefaultValue
+  nameWithType.vb: Argument(Of T).DefaultValue
 - uid: Benday.CommandsFramework.Argument`1.Description
   name: Description
   href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_Description
@@ -414,6 +473,23 @@ references:
   fullName.vb: Benday.CommandsFramework.Argument(Of T).HasAlias
   nameWithType: Argument<T>.HasAlias
   nameWithType.vb: Argument(Of T).HasAlias
+- uid: Benday.CommandsFramework.Argument`1.HasDefaultValue
+  name: HasDefaultValue
+  href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_HasDefaultValue
+  commentId: P:Benday.CommandsFramework.Argument`1.HasDefaultValue
+  fullName: Benday.CommandsFramework.Argument<T>.HasDefaultValue
+  fullName.vb: Benday.CommandsFramework.Argument(Of T).HasDefaultValue
+  nameWithType: Argument<T>.HasDefaultValue
+  nameWithType.vb: Argument(Of T).HasDefaultValue
+- uid: Benday.CommandsFramework.Argument`1.HasDefaultValue*
+  name: HasDefaultValue
+  href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_HasDefaultValue_
+  commentId: Overload:Benday.CommandsFramework.Argument`1.HasDefaultValue
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.Argument<T>.HasDefaultValue
+  fullName.vb: Benday.CommandsFramework.Argument(Of T).HasDefaultValue
+  nameWithType: Argument<T>.HasDefaultValue
+  nameWithType.vb: Argument(Of T).HasDefaultValue
 - uid: Benday.CommandsFramework.Argument`1.HasValue
   name: HasValue
   href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_HasValue
@@ -431,6 +507,23 @@ references:
   fullName.vb: Benday.CommandsFramework.Argument(Of T).HasValue
   nameWithType: Argument<T>.HasValue
   nameWithType.vb: Argument(Of T).HasValue
+- uid: Benday.CommandsFramework.Argument`1.IsFromConfig
+  name: IsFromConfig
+  href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_IsFromConfig
+  commentId: P:Benday.CommandsFramework.Argument`1.IsFromConfig
+  fullName: Benday.CommandsFramework.Argument<T>.IsFromConfig
+  fullName.vb: Benday.CommandsFramework.Argument(Of T).IsFromConfig
+  nameWithType: Argument<T>.IsFromConfig
+  nameWithType.vb: Argument(Of T).IsFromConfig
+- uid: Benday.CommandsFramework.Argument`1.IsFromConfig*
+  name: IsFromConfig
+  href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_IsFromConfig_
+  commentId: Overload:Benday.CommandsFramework.Argument`1.IsFromConfig
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.Argument<T>.IsFromConfig
+  fullName.vb: Benday.CommandsFramework.Argument(Of T).IsFromConfig
+  nameWithType: Argument<T>.IsFromConfig
+  nameWithType.vb: Argument(Of T).IsFromConfig
 - uid: Benday.CommandsFramework.Argument`1.IsPositionalSource
   name: IsPositionalSource
   href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_IsPositionalSource
@@ -499,6 +592,24 @@ references:
   fullName.vb: Benday.CommandsFramework.Argument(Of T).OnInitialize
   nameWithType: Argument<T>.OnInitialize
   nameWithType.vb: Argument(Of T).OnInitialize
+- uid: Benday.CommandsFramework.Argument`1.TrySetDefaultValue(System.String)
+  name: TrySetDefaultValue(string)
+  href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_TrySetDefaultValue_System_String_
+  commentId: M:Benday.CommandsFramework.Argument`1.TrySetDefaultValue(System.String)
+  name.vb: TrySetDefaultValue(String)
+  fullName: Benday.CommandsFramework.Argument<T>.TrySetDefaultValue(string)
+  fullName.vb: Benday.CommandsFramework.Argument(Of T).TrySetDefaultValue(String)
+  nameWithType: Argument<T>.TrySetDefaultValue(string)
+  nameWithType.vb: Argument(Of T).TrySetDefaultValue(String)
+- uid: Benday.CommandsFramework.Argument`1.TrySetDefaultValue*
+  name: TrySetDefaultValue
+  href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_TrySetDefaultValue_
+  commentId: Overload:Benday.CommandsFramework.Argument`1.TrySetDefaultValue
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.Argument<T>.TrySetDefaultValue
+  fullName.vb: Benday.CommandsFramework.Argument(Of T).TrySetDefaultValue
+  nameWithType: Argument<T>.TrySetDefaultValue
+  nameWithType.vb: Argument(Of T).TrySetDefaultValue
 - uid: Benday.CommandsFramework.Argument`1.TrySetValue(System.String)
   name: TrySetValue(string)
   href: api/Benday.CommandsFramework.Argument-1.html#Benday_CommandsFramework_Argument_1_TrySetValue_System_String_
@@ -698,12 +809,173 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.BooleanArgument.ValueAsBoolean
   nameWithType: BooleanArgument.ValueAsBoolean
+- uid: Benday.CommandsFramework.CommandAliasAttribute
+  name: CommandAliasAttribute
+  href: api/Benday.CommandsFramework.CommandAliasAttribute.html
+  commentId: T:Benday.CommandsFramework.CommandAliasAttribute
+  fullName: Benday.CommandsFramework.CommandAliasAttribute
+  nameWithType: CommandAliasAttribute
+- uid: Benday.CommandsFramework.CommandAliasAttribute.#ctor(System.String,System.String[])
+  name: CommandAliasAttribute(string, params string[])
+  href: api/Benday.CommandsFramework.CommandAliasAttribute.html#Benday_CommandsFramework_CommandAliasAttribute__ctor_System_String_System_String___
+  commentId: M:Benday.CommandsFramework.CommandAliasAttribute.#ctor(System.String,System.String[])
+  name.vb: New(String, ParamArray String())
+  fullName: Benday.CommandsFramework.CommandAliasAttribute.CommandAliasAttribute(string, params string[])
+  fullName.vb: Benday.CommandsFramework.CommandAliasAttribute.New(String, ParamArray String())
+  nameWithType: CommandAliasAttribute.CommandAliasAttribute(string, params string[])
+  nameWithType.vb: CommandAliasAttribute.New(String, ParamArray String())
+- uid: Benday.CommandsFramework.CommandAliasAttribute.#ctor*
+  name: CommandAliasAttribute
+  href: api/Benday.CommandsFramework.CommandAliasAttribute.html#Benday_CommandsFramework_CommandAliasAttribute__ctor_
+  commentId: Overload:Benday.CommandsFramework.CommandAliasAttribute.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Benday.CommandsFramework.CommandAliasAttribute.CommandAliasAttribute
+  fullName.vb: Benday.CommandsFramework.CommandAliasAttribute.New
+  nameWithType: CommandAliasAttribute.CommandAliasAttribute
+  nameWithType.vb: CommandAliasAttribute.New
+- uid: Benday.CommandsFramework.CommandAliasAttribute.Arguments
+  name: Arguments
+  href: api/Benday.CommandsFramework.CommandAliasAttribute.html#Benday_CommandsFramework_CommandAliasAttribute_Arguments
+  commentId: P:Benday.CommandsFramework.CommandAliasAttribute.Arguments
+  fullName: Benday.CommandsFramework.CommandAliasAttribute.Arguments
+  nameWithType: CommandAliasAttribute.Arguments
+- uid: Benday.CommandsFramework.CommandAliasAttribute.Arguments*
+  name: Arguments
+  href: api/Benday.CommandsFramework.CommandAliasAttribute.html#Benday_CommandsFramework_CommandAliasAttribute_Arguments_
+  commentId: Overload:Benday.CommandsFramework.CommandAliasAttribute.Arguments
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandAliasAttribute.Arguments
+  nameWithType: CommandAliasAttribute.Arguments
+- uid: Benday.CommandsFramework.CommandAliasAttribute.Description
+  name: Description
+  href: api/Benday.CommandsFramework.CommandAliasAttribute.html#Benday_CommandsFramework_CommandAliasAttribute_Description
+  commentId: P:Benday.CommandsFramework.CommandAliasAttribute.Description
+  fullName: Benday.CommandsFramework.CommandAliasAttribute.Description
+  nameWithType: CommandAliasAttribute.Description
+- uid: Benday.CommandsFramework.CommandAliasAttribute.Description*
+  name: Description
+  href: api/Benday.CommandsFramework.CommandAliasAttribute.html#Benday_CommandsFramework_CommandAliasAttribute_Description_
+  commentId: Overload:Benday.CommandsFramework.CommandAliasAttribute.Description
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandAliasAttribute.Description
+  nameWithType: CommandAliasAttribute.Description
+- uid: Benday.CommandsFramework.CommandAliasAttribute.GetArgumentValues
+  name: GetArgumentValues()
+  href: api/Benday.CommandsFramework.CommandAliasAttribute.html#Benday_CommandsFramework_CommandAliasAttribute_GetArgumentValues
+  commentId: M:Benday.CommandsFramework.CommandAliasAttribute.GetArgumentValues
+  fullName: Benday.CommandsFramework.CommandAliasAttribute.GetArgumentValues()
+  nameWithType: CommandAliasAttribute.GetArgumentValues()
+- uid: Benday.CommandsFramework.CommandAliasAttribute.GetArgumentValues*
+  name: GetArgumentValues
+  href: api/Benday.CommandsFramework.CommandAliasAttribute.html#Benday_CommandsFramework_CommandAliasAttribute_GetArgumentValues_
+  commentId: Overload:Benday.CommandsFramework.CommandAliasAttribute.GetArgumentValues
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandAliasAttribute.GetArgumentValues
+  nameWithType: CommandAliasAttribute.GetArgumentValues
+- uid: Benday.CommandsFramework.CommandAliasAttribute.Name
+  name: Name
+  href: api/Benday.CommandsFramework.CommandAliasAttribute.html#Benday_CommandsFramework_CommandAliasAttribute_Name
+  commentId: P:Benday.CommandsFramework.CommandAliasAttribute.Name
+  fullName: Benday.CommandsFramework.CommandAliasAttribute.Name
+  nameWithType: CommandAliasAttribute.Name
+- uid: Benday.CommandsFramework.CommandAliasAttribute.Name*
+  name: Name
+  href: api/Benday.CommandsFramework.CommandAliasAttribute.html#Benday_CommandsFramework_CommandAliasAttribute_Name_
+  commentId: Overload:Benday.CommandsFramework.CommandAliasAttribute.Name
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandAliasAttribute.Name
+  nameWithType: CommandAliasAttribute.Name
+- uid: Benday.CommandsFramework.CommandAliasInfo
+  name: CommandAliasInfo
+  href: api/Benday.CommandsFramework.CommandAliasInfo.html
+  commentId: T:Benday.CommandsFramework.CommandAliasInfo
+  fullName: Benday.CommandsFramework.CommandAliasInfo
+  nameWithType: CommandAliasInfo
+- uid: Benday.CommandsFramework.CommandAliasInfo.Alias
+  name: Alias
+  href: api/Benday.CommandsFramework.CommandAliasInfo.html#Benday_CommandsFramework_CommandAliasInfo_Alias
+  commentId: P:Benday.CommandsFramework.CommandAliasInfo.Alias
+  fullName: Benday.CommandsFramework.CommandAliasInfo.Alias
+  nameWithType: CommandAliasInfo.Alias
+- uid: Benday.CommandsFramework.CommandAliasInfo.Alias*
+  name: Alias
+  href: api/Benday.CommandsFramework.CommandAliasInfo.html#Benday_CommandsFramework_CommandAliasInfo_Alias_
+  commentId: Overload:Benday.CommandsFramework.CommandAliasInfo.Alias
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandAliasInfo.Alias
+  nameWithType: CommandAliasInfo.Alias
+- uid: Benday.CommandsFramework.CommandAliasInfo.Arguments
+  name: Arguments
+  href: api/Benday.CommandsFramework.CommandAliasInfo.html#Benday_CommandsFramework_CommandAliasInfo_Arguments
+  commentId: P:Benday.CommandsFramework.CommandAliasInfo.Arguments
+  fullName: Benday.CommandsFramework.CommandAliasInfo.Arguments
+  nameWithType: CommandAliasInfo.Arguments
+- uid: Benday.CommandsFramework.CommandAliasInfo.Arguments*
+  name: Arguments
+  href: api/Benday.CommandsFramework.CommandAliasInfo.html#Benday_CommandsFramework_CommandAliasInfo_Arguments_
+  commentId: Overload:Benday.CommandsFramework.CommandAliasInfo.Arguments
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandAliasInfo.Arguments
+  nameWithType: CommandAliasInfo.Arguments
+- uid: Benday.CommandsFramework.CommandAliasInfo.CommandName
+  name: CommandName
+  href: api/Benday.CommandsFramework.CommandAliasInfo.html#Benday_CommandsFramework_CommandAliasInfo_CommandName
+  commentId: P:Benday.CommandsFramework.CommandAliasInfo.CommandName
+  fullName: Benday.CommandsFramework.CommandAliasInfo.CommandName
+  nameWithType: CommandAliasInfo.CommandName
+- uid: Benday.CommandsFramework.CommandAliasInfo.CommandName*
+  name: CommandName
+  href: api/Benday.CommandsFramework.CommandAliasInfo.html#Benday_CommandsFramework_CommandAliasInfo_CommandName_
+  commentId: Overload:Benday.CommandsFramework.CommandAliasInfo.CommandName
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandAliasInfo.CommandName
+  nameWithType: CommandAliasInfo.CommandName
+- uid: Benday.CommandsFramework.CommandAliasInfo.Description
+  name: Description
+  href: api/Benday.CommandsFramework.CommandAliasInfo.html#Benday_CommandsFramework_CommandAliasInfo_Description
+  commentId: P:Benday.CommandsFramework.CommandAliasInfo.Description
+  fullName: Benday.CommandsFramework.CommandAliasInfo.Description
+  nameWithType: CommandAliasInfo.Description
+- uid: Benday.CommandsFramework.CommandAliasInfo.Description*
+  name: Description
+  href: api/Benday.CommandsFramework.CommandAliasInfo.html#Benday_CommandsFramework_CommandAliasInfo_Description_
+  commentId: Overload:Benday.CommandsFramework.CommandAliasInfo.Description
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandAliasInfo.Description
+  nameWithType: CommandAliasInfo.Description
+- uid: Benday.CommandsFramework.CommandAliasInfo.HasArguments
+  name: HasArguments
+  href: api/Benday.CommandsFramework.CommandAliasInfo.html#Benday_CommandsFramework_CommandAliasInfo_HasArguments
+  commentId: P:Benday.CommandsFramework.CommandAliasInfo.HasArguments
+  fullName: Benday.CommandsFramework.CommandAliasInfo.HasArguments
+  nameWithType: CommandAliasInfo.HasArguments
+- uid: Benday.CommandsFramework.CommandAliasInfo.HasArguments*
+  name: HasArguments
+  href: api/Benday.CommandsFramework.CommandAliasInfo.html#Benday_CommandsFramework_CommandAliasInfo_HasArguments_
+  commentId: Overload:Benday.CommandsFramework.CommandAliasInfo.HasArguments
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandAliasInfo.HasArguments
+  nameWithType: CommandAliasInfo.HasArguments
 - uid: Benday.CommandsFramework.CommandAttribute
   name: CommandAttribute
   href: api/Benday.CommandsFramework.CommandAttribute.html
   commentId: T:Benday.CommandsFramework.CommandAttribute
   fullName: Benday.CommandsFramework.CommandAttribute
   nameWithType: CommandAttribute
+- uid: Benday.CommandsFramework.CommandAttribute.Aliases
+  name: Aliases
+  href: api/Benday.CommandsFramework.CommandAttribute.html#Benday_CommandsFramework_CommandAttribute_Aliases
+  commentId: P:Benday.CommandsFramework.CommandAttribute.Aliases
+  fullName: Benday.CommandsFramework.CommandAttribute.Aliases
+  nameWithType: CommandAttribute.Aliases
+- uid: Benday.CommandsFramework.CommandAttribute.Aliases*
+  name: Aliases
+  href: api/Benday.CommandsFramework.CommandAttribute.html#Benday_CommandsFramework_CommandAttribute_Aliases_
+  commentId: Overload:Benday.CommandsFramework.CommandAttribute.Aliases
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandAttribute.Aliases
+  nameWithType: CommandAttribute.Aliases
 - uid: Benday.CommandsFramework.CommandAttribute.Category
   name: Category
   href: api/Benday.CommandsFramework.CommandAttribute.html#Benday_CommandsFramework_CommandAttribute_Category
@@ -852,6 +1124,35 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.CommandAttributeUtility.GetCommand
   nameWithType: CommandAttributeUtility.GetCommand
+- uid: Benday.CommandsFramework.CommandAttributeUtility.GetCommandAlias(System.Reflection.Assembly,System.String)
+  name: GetCommandAlias(Assembly, string)
+  href: api/Benday.CommandsFramework.CommandAttributeUtility.html#Benday_CommandsFramework_CommandAttributeUtility_GetCommandAlias_System_Reflection_Assembly_System_String_
+  commentId: M:Benday.CommandsFramework.CommandAttributeUtility.GetCommandAlias(System.Reflection.Assembly,System.String)
+  name.vb: GetCommandAlias(Assembly, String)
+  fullName: Benday.CommandsFramework.CommandAttributeUtility.GetCommandAlias(System.Reflection.Assembly, string)
+  fullName.vb: Benday.CommandsFramework.CommandAttributeUtility.GetCommandAlias(System.Reflection.Assembly, String)
+  nameWithType: CommandAttributeUtility.GetCommandAlias(Assembly, string)
+  nameWithType.vb: CommandAttributeUtility.GetCommandAlias(Assembly, String)
+- uid: Benday.CommandsFramework.CommandAttributeUtility.GetCommandAlias*
+  name: GetCommandAlias
+  href: api/Benday.CommandsFramework.CommandAttributeUtility.html#Benday_CommandsFramework_CommandAttributeUtility_GetCommandAlias_
+  commentId: Overload:Benday.CommandsFramework.CommandAttributeUtility.GetCommandAlias
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandAttributeUtility.GetCommandAlias
+  nameWithType: CommandAttributeUtility.GetCommandAlias
+- uid: Benday.CommandsFramework.CommandAttributeUtility.GetCommandAliases(System.Reflection.Assembly)
+  name: GetCommandAliases(Assembly)
+  href: api/Benday.CommandsFramework.CommandAttributeUtility.html#Benday_CommandsFramework_CommandAttributeUtility_GetCommandAliases_System_Reflection_Assembly_
+  commentId: M:Benday.CommandsFramework.CommandAttributeUtility.GetCommandAliases(System.Reflection.Assembly)
+  fullName: Benday.CommandsFramework.CommandAttributeUtility.GetCommandAliases(System.Reflection.Assembly)
+  nameWithType: CommandAttributeUtility.GetCommandAliases(Assembly)
+- uid: Benday.CommandsFramework.CommandAttributeUtility.GetCommandAliases*
+  name: GetCommandAliases
+  href: api/Benday.CommandsFramework.CommandAttributeUtility.html#Benday_CommandsFramework_CommandAttributeUtility_GetCommandAliases_
+  commentId: Overload:Benday.CommandsFramework.CommandAttributeUtility.GetCommandAliases
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandAttributeUtility.GetCommandAliases
+  nameWithType: CommandAttributeUtility.GetCommandAliases
 - uid: Benday.CommandsFramework.CommandAttributeUtility.GetCommandAttributeForCommandName(System.Reflection.Assembly,System.String)
   name: GetCommandAttributeForCommandName(Assembly, string)
   href: api/Benday.CommandsFramework.CommandAttributeUtility.html#Benday_CommandsFramework_CommandAttributeUtility_GetCommandAttributeForCommandName_System_Reflection_Assembly_System_String_
@@ -868,6 +1169,53 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.CommandAttributeUtility.GetCommandAttributeForCommandName
   nameWithType: CommandAttributeUtility.GetCommandAttributeForCommandName
+- uid: Benday.CommandsFramework.CommandAttributeUtility.GetCommandNameProblems(System.Collections.Generic.List{Benday.CommandsFramework.CommandAttribute},System.Collections.Generic.List{Benday.CommandsFramework.CommandAliasInfo})
+  name: GetCommandNameProblems(List<CommandAttribute>, List<CommandAliasInfo>?)
+  href: api/Benday.CommandsFramework.CommandAttributeUtility.html#Benday_CommandsFramework_CommandAttributeUtility_GetCommandNameProblems_System_Collections_Generic_List_Benday_CommandsFramework_CommandAttribute__System_Collections_Generic_List_Benday_CommandsFramework_CommandAliasInfo__
+  commentId: M:Benday.CommandsFramework.CommandAttributeUtility.GetCommandNameProblems(System.Collections.Generic.List{Benday.CommandsFramework.CommandAttribute},System.Collections.Generic.List{Benday.CommandsFramework.CommandAliasInfo})
+  name.vb: GetCommandNameProblems(List(Of CommandAttribute), List(Of CommandAliasInfo))
+  fullName: Benday.CommandsFramework.CommandAttributeUtility.GetCommandNameProblems(System.Collections.Generic.List<Benday.CommandsFramework.CommandAttribute>, System.Collections.Generic.List<Benday.CommandsFramework.CommandAliasInfo>?)
+  fullName.vb: Benday.CommandsFramework.CommandAttributeUtility.GetCommandNameProblems(System.Collections.Generic.List(Of Benday.CommandsFramework.CommandAttribute), System.Collections.Generic.List(Of Benday.CommandsFramework.CommandAliasInfo))
+  nameWithType: CommandAttributeUtility.GetCommandNameProblems(List<CommandAttribute>, List<CommandAliasInfo>?)
+  nameWithType.vb: CommandAttributeUtility.GetCommandNameProblems(List(Of CommandAttribute), List(Of CommandAliasInfo))
+- uid: Benday.CommandsFramework.CommandAttributeUtility.GetCommandNameProblems(System.Reflection.Assembly)
+  name: GetCommandNameProblems(Assembly)
+  href: api/Benday.CommandsFramework.CommandAttributeUtility.html#Benday_CommandsFramework_CommandAttributeUtility_GetCommandNameProblems_System_Reflection_Assembly_
+  commentId: M:Benday.CommandsFramework.CommandAttributeUtility.GetCommandNameProblems(System.Reflection.Assembly)
+  fullName: Benday.CommandsFramework.CommandAttributeUtility.GetCommandNameProblems(System.Reflection.Assembly)
+  nameWithType: CommandAttributeUtility.GetCommandNameProblems(Assembly)
+- uid: Benday.CommandsFramework.CommandAttributeUtility.GetCommandNameProblems*
+  name: GetCommandNameProblems
+  href: api/Benday.CommandsFramework.CommandAttributeUtility.html#Benday_CommandsFramework_CommandAttributeUtility_GetCommandNameProblems_
+  commentId: Overload:Benday.CommandsFramework.CommandAttributeUtility.GetCommandNameProblems
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandAttributeUtility.GetCommandNameProblems
+  nameWithType: CommandAttributeUtility.GetCommandNameProblems
+- uid: Benday.CommandsFramework.CommandAttributeUtility.ResolveCommandName(System.Collections.Generic.List{Benday.CommandsFramework.CommandAttribute},System.String)
+  name: ResolveCommandName(List<CommandAttribute>, string)
+  href: api/Benday.CommandsFramework.CommandAttributeUtility.html#Benday_CommandsFramework_CommandAttributeUtility_ResolveCommandName_System_Collections_Generic_List_Benday_CommandsFramework_CommandAttribute__System_String_
+  commentId: M:Benday.CommandsFramework.CommandAttributeUtility.ResolveCommandName(System.Collections.Generic.List{Benday.CommandsFramework.CommandAttribute},System.String)
+  name.vb: ResolveCommandName(List(Of CommandAttribute), String)
+  fullName: Benday.CommandsFramework.CommandAttributeUtility.ResolveCommandName(System.Collections.Generic.List<Benday.CommandsFramework.CommandAttribute>, string)
+  fullName.vb: Benday.CommandsFramework.CommandAttributeUtility.ResolveCommandName(System.Collections.Generic.List(Of Benday.CommandsFramework.CommandAttribute), String)
+  nameWithType: CommandAttributeUtility.ResolveCommandName(List<CommandAttribute>, string)
+  nameWithType.vb: CommandAttributeUtility.ResolveCommandName(List(Of CommandAttribute), String)
+- uid: Benday.CommandsFramework.CommandAttributeUtility.ResolveCommandName(System.Reflection.Assembly,System.String)
+  name: ResolveCommandName(Assembly, string)
+  href: api/Benday.CommandsFramework.CommandAttributeUtility.html#Benday_CommandsFramework_CommandAttributeUtility_ResolveCommandName_System_Reflection_Assembly_System_String_
+  commentId: M:Benday.CommandsFramework.CommandAttributeUtility.ResolveCommandName(System.Reflection.Assembly,System.String)
+  name.vb: ResolveCommandName(Assembly, String)
+  fullName: Benday.CommandsFramework.CommandAttributeUtility.ResolveCommandName(System.Reflection.Assembly, string)
+  fullName.vb: Benday.CommandsFramework.CommandAttributeUtility.ResolveCommandName(System.Reflection.Assembly, String)
+  nameWithType: CommandAttributeUtility.ResolveCommandName(Assembly, string)
+  nameWithType.vb: CommandAttributeUtility.ResolveCommandName(Assembly, String)
+- uid: Benday.CommandsFramework.CommandAttributeUtility.ResolveCommandName*
+  name: ResolveCommandName
+  href: api/Benday.CommandsFramework.CommandAttributeUtility.html#Benday_CommandsFramework_CommandAttributeUtility_ResolveCommandName_
+  commentId: Overload:Benday.CommandsFramework.CommandAttributeUtility.ResolveCommandName
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandAttributeUtility.ResolveCommandName
+  nameWithType: CommandAttributeUtility.ResolveCommandName
 - uid: Benday.CommandsFramework.CommandBase
   name: CommandBase
   href: api/Benday.CommandsFramework.CommandBase.html
@@ -906,6 +1254,22 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.CommandBase.Arguments
   nameWithType: CommandBase.Arguments
+- uid: Benday.CommandsFramework.CommandBase.CreateCommand*
+  name: CreateCommand
+  href: api/Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_CreateCommand_
+  commentId: Overload:Benday.CommandsFramework.CommandBase.CreateCommand
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandBase.CreateCommand
+  nameWithType: CommandBase.CreateCommand
+- uid: Benday.CommandsFramework.CommandBase.CreateCommand``1(System.Action{System.Collections.Generic.Dictionary{System.String,System.String}},System.Boolean)
+  name: CreateCommand<T>(Action<Dictionary<string, string>>?, bool)
+  href: api/Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_CreateCommand__1_System_Action_System_Collections_Generic_Dictionary_System_String_System_String___System_Boolean_
+  commentId: M:Benday.CommandsFramework.CommandBase.CreateCommand``1(System.Action{System.Collections.Generic.Dictionary{System.String,System.String}},System.Boolean)
+  name.vb: CreateCommand(Of T)(Action(Of Dictionary(Of String, String)), Boolean)
+  fullName: Benday.CommandsFramework.CommandBase.CreateCommand<T>(System.Action<System.Collections.Generic.Dictionary<string, string>>?, bool)
+  fullName.vb: Benday.CommandsFramework.CommandBase.CreateCommand(Of T)(System.Action(Of System.Collections.Generic.Dictionary(Of String, String)), Boolean)
+  nameWithType: CommandBase.CreateCommand<T>(Action<Dictionary<string, string>>?, bool)
+  nameWithType.vb: CommandBase.CreateCommand(Of T)(Action(Of Dictionary(Of String, String)), Boolean)
 - uid: Benday.CommandsFramework.CommandBase.Description
   name: Description
   href: api/Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_Description
@@ -954,6 +1318,38 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.CommandBase.DisplayValidationSummary
   nameWithType: CommandBase.DisplayValidationSummary
+- uid: Benday.CommandsFramework.CommandBase.ExecuteCommand*
+  name: ExecuteCommand
+  href: api/Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_ExecuteCommand_
+  commentId: Overload:Benday.CommandsFramework.CommandBase.ExecuteCommand
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandBase.ExecuteCommand
+  nameWithType: CommandBase.ExecuteCommand
+- uid: Benday.CommandsFramework.CommandBase.ExecuteCommandAsync*
+  name: ExecuteCommandAsync
+  href: api/Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_ExecuteCommandAsync_
+  commentId: Overload:Benday.CommandsFramework.CommandBase.ExecuteCommandAsync
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandBase.ExecuteCommandAsync
+  nameWithType: CommandBase.ExecuteCommandAsync
+- uid: Benday.CommandsFramework.CommandBase.ExecuteCommandAsync``1(System.Action{System.Collections.Generic.Dictionary{System.String,System.String}},System.Boolean)
+  name: ExecuteCommandAsync<T>(Action<Dictionary<string, string>>?, bool)
+  href: api/Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_ExecuteCommandAsync__1_System_Action_System_Collections_Generic_Dictionary_System_String_System_String___System_Boolean_
+  commentId: M:Benday.CommandsFramework.CommandBase.ExecuteCommandAsync``1(System.Action{System.Collections.Generic.Dictionary{System.String,System.String}},System.Boolean)
+  name.vb: ExecuteCommandAsync(Of T)(Action(Of Dictionary(Of String, String)), Boolean)
+  fullName: Benday.CommandsFramework.CommandBase.ExecuteCommandAsync<T>(System.Action<System.Collections.Generic.Dictionary<string, string>>?, bool)
+  fullName.vb: Benday.CommandsFramework.CommandBase.ExecuteCommandAsync(Of T)(System.Action(Of System.Collections.Generic.Dictionary(Of String, String)), Boolean)
+  nameWithType: CommandBase.ExecuteCommandAsync<T>(Action<Dictionary<string, string>>?, bool)
+  nameWithType.vb: CommandBase.ExecuteCommandAsync(Of T)(Action(Of Dictionary(Of String, String)), Boolean)
+- uid: Benday.CommandsFramework.CommandBase.ExecuteCommand``1(System.Action{System.Collections.Generic.Dictionary{System.String,System.String}},System.Boolean)
+  name: ExecuteCommand<T>(Action<Dictionary<string, string>>?, bool)
+  href: api/Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_ExecuteCommand__1_System_Action_System_Collections_Generic_Dictionary_System_String_System_String___System_Boolean_
+  commentId: M:Benday.CommandsFramework.CommandBase.ExecuteCommand``1(System.Action{System.Collections.Generic.Dictionary{System.String,System.String}},System.Boolean)
+  name.vb: ExecuteCommand(Of T)(Action(Of Dictionary(Of String, String)), Boolean)
+  fullName: Benday.CommandsFramework.CommandBase.ExecuteCommand<T>(System.Action<System.Collections.Generic.Dictionary<string, string>>?, bool)
+  fullName.vb: Benday.CommandsFramework.CommandBase.ExecuteCommand(Of T)(System.Action(Of System.Collections.Generic.Dictionary(Of String, String)), Boolean)
+  nameWithType: CommandBase.ExecuteCommand<T>(Action<Dictionary<string, string>>?, bool)
+  nameWithType.vb: CommandBase.ExecuteCommand(Of T)(Action(Of Dictionary(Of String, String)), Boolean)
 - uid: Benday.CommandsFramework.CommandBase.ExecutionInfo
   name: ExecutionInfo
   href: api/Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_ExecutionInfo
@@ -996,6 +1392,19 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.CommandBase.GetArguments
   nameWithType: CommandBase.GetArguments
+- uid: Benday.CommandsFramework.CommandBase.IsQuietMode
+  name: IsQuietMode
+  href: api/Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_IsQuietMode
+  commentId: P:Benday.CommandsFramework.CommandBase.IsQuietMode
+  fullName: Benday.CommandsFramework.CommandBase.IsQuietMode
+  nameWithType: CommandBase.IsQuietMode
+- uid: Benday.CommandsFramework.CommandBase.IsQuietMode*
+  name: IsQuietMode
+  href: api/Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_IsQuietMode_
+  commentId: Overload:Benday.CommandsFramework.CommandBase.IsQuietMode
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandBase.IsQuietMode
+  nameWithType: CommandBase.IsQuietMode
 - uid: Benday.CommandsFramework.CommandBase.SetValuesFromExecutionInfo
   name: SetValuesFromExecutionInfo()
   href: api/Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_SetValuesFromExecutionInfo
@@ -1095,6 +1504,32 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.CommandExecutionInfo.Configuration
   nameWithType: CommandExecutionInfo.Configuration
+- uid: Benday.CommandsFramework.CommandExecutionInfo.HasConfiguration
+  name: HasConfiguration
+  href: api/Benday.CommandsFramework.CommandExecutionInfo.html#Benday_CommandsFramework_CommandExecutionInfo_HasConfiguration
+  commentId: P:Benday.CommandsFramework.CommandExecutionInfo.HasConfiguration
+  fullName: Benday.CommandsFramework.CommandExecutionInfo.HasConfiguration
+  nameWithType: CommandExecutionInfo.HasConfiguration
+- uid: Benday.CommandsFramework.CommandExecutionInfo.HasConfiguration*
+  name: HasConfiguration
+  href: api/Benday.CommandsFramework.CommandExecutionInfo.html#Benday_CommandsFramework_CommandExecutionInfo_HasConfiguration_
+  commentId: Overload:Benday.CommandsFramework.CommandExecutionInfo.HasConfiguration
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandExecutionInfo.HasConfiguration
+  nameWithType: CommandExecutionInfo.HasConfiguration
+- uid: Benday.CommandsFramework.CommandExecutionInfo.NestingDepth
+  name: NestingDepth
+  href: api/Benday.CommandsFramework.CommandExecutionInfo.html#Benday_CommandsFramework_CommandExecutionInfo_NestingDepth
+  commentId: P:Benday.CommandsFramework.CommandExecutionInfo.NestingDepth
+  fullName: Benday.CommandsFramework.CommandExecutionInfo.NestingDepth
+  nameWithType: CommandExecutionInfo.NestingDepth
+- uid: Benday.CommandsFramework.CommandExecutionInfo.NestingDepth*
+  name: NestingDepth
+  href: api/Benday.CommandsFramework.CommandExecutionInfo.html#Benday_CommandsFramework_CommandExecutionInfo_NestingDepth_
+  commentId: Overload:Benday.CommandsFramework.CommandExecutionInfo.NestingDepth
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandExecutionInfo.NestingDepth
+  nameWithType: CommandExecutionInfo.NestingDepth
 - uid: Benday.CommandsFramework.CommandExecutionInfo.Options
   name: Options
   href: api/Benday.CommandsFramework.CommandExecutionInfo.html#Benday_CommandsFramework_CommandExecutionInfo_Options
@@ -1168,6 +1603,12 @@ references:
   commentId: F:Benday.CommandsFramework.CommandFrameworkConstants.ExitCode_Success
   fullName: Benday.CommandsFramework.CommandFrameworkConstants.ExitCode_Success
   nameWithType: CommandFrameworkConstants.ExitCode_Success
+- uid: Benday.CommandsFramework.CommandFrameworkConstants.MaxCommandNestingDepth
+  name: MaxCommandNestingDepth
+  href: api/Benday.CommandsFramework.CommandFrameworkConstants.html#Benday_CommandsFramework_CommandFrameworkConstants_MaxCommandNestingDepth
+  commentId: F:Benday.CommandsFramework.CommandFrameworkConstants.MaxCommandNestingDepth
+  fullName: Benday.CommandsFramework.CommandFrameworkConstants.MaxCommandNestingDepth
+  nameWithType: CommandFrameworkConstants.MaxCommandNestingDepth
 - uid: Benday.CommandsFramework.CommandFrameworkUtilities
   name: CommandFrameworkUtilities
   href: api/Benday.CommandsFramework.CommandFrameworkUtilities.html
@@ -1228,6 +1669,19 @@ references:
   commentId: T:Benday.CommandsFramework.CommandInfo
   fullName: Benday.CommandsFramework.CommandInfo
   nameWithType: CommandInfo
+- uid: Benday.CommandsFramework.CommandInfo.Aliases
+  name: Aliases
+  href: api/Benday.CommandsFramework.CommandInfo.html#Benday_CommandsFramework_CommandInfo_Aliases
+  commentId: P:Benday.CommandsFramework.CommandInfo.Aliases
+  fullName: Benday.CommandsFramework.CommandInfo.Aliases
+  nameWithType: CommandInfo.Aliases
+- uid: Benday.CommandsFramework.CommandInfo.Aliases*
+  name: Aliases
+  href: api/Benday.CommandsFramework.CommandInfo.html#Benday_CommandsFramework_CommandInfo_Aliases_
+  commentId: Overload:Benday.CommandsFramework.CommandInfo.Aliases
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandInfo.Aliases
+  nameWithType: CommandInfo.Aliases
 - uid: Benday.CommandsFramework.CommandInfo.Arguments
   name: Arguments
   href: api/Benday.CommandsFramework.CommandInfo.html#Benday_CommandsFramework_CommandInfo_Arguments
@@ -1254,6 +1708,19 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.CommandInfo.Category
   nameWithType: CommandInfo.Category
+- uid: Benday.CommandsFramework.CommandInfo.CommandAliases
+  name: CommandAliases
+  href: api/Benday.CommandsFramework.CommandInfo.html#Benday_CommandsFramework_CommandInfo_CommandAliases
+  commentId: P:Benday.CommandsFramework.CommandInfo.CommandAliases
+  fullName: Benday.CommandsFramework.CommandInfo.CommandAliases
+  nameWithType: CommandInfo.CommandAliases
+- uid: Benday.CommandsFramework.CommandInfo.CommandAliases*
+  name: CommandAliases
+  href: api/Benday.CommandsFramework.CommandInfo.html#Benday_CommandsFramework_CommandInfo_CommandAliases_
+  commentId: Overload:Benday.CommandsFramework.CommandInfo.CommandAliases
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandInfo.CommandAliases
+  nameWithType: CommandInfo.CommandAliases
 - uid: Benday.CommandsFramework.CommandInfo.Description
   name: Description
   href: api/Benday.CommandsFramework.CommandInfo.html#Benday_CommandsFramework_CommandInfo_Description
@@ -1293,6 +1760,251 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.CommandInfo.Name
   nameWithType: CommandInfo.Name
+- uid: Benday.CommandsFramework.CommandsApp
+  name: CommandsApp
+  href: api/Benday.CommandsFramework.CommandsApp.html
+  commentId: T:Benday.CommandsFramework.CommandsApp
+  fullName: Benday.CommandsFramework.CommandsApp
+  nameWithType: CommandsApp
+- uid: Benday.CommandsFramework.CommandsApp.ConfigureConfiguration(System.Action{Microsoft.Extensions.Configuration.IConfigurationBuilder})
+  name: ConfigureConfiguration(Action<IConfigurationBuilder>)
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_ConfigureConfiguration_System_Action_Microsoft_Extensions_Configuration_IConfigurationBuilder__
+  commentId: M:Benday.CommandsFramework.CommandsApp.ConfigureConfiguration(System.Action{Microsoft.Extensions.Configuration.IConfigurationBuilder})
+  name.vb: ConfigureConfiguration(Action(Of IConfigurationBuilder))
+  fullName: Benday.CommandsFramework.CommandsApp.ConfigureConfiguration(System.Action<Microsoft.Extensions.Configuration.IConfigurationBuilder>)
+  fullName.vb: Benday.CommandsFramework.CommandsApp.ConfigureConfiguration(System.Action(Of Microsoft.Extensions.Configuration.IConfigurationBuilder))
+  nameWithType: CommandsApp.ConfigureConfiguration(Action<IConfigurationBuilder>)
+  nameWithType.vb: CommandsApp.ConfigureConfiguration(Action(Of IConfigurationBuilder))
+- uid: Benday.CommandsFramework.CommandsApp.ConfigureConfiguration*
+  name: ConfigureConfiguration
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_ConfigureConfiguration_
+  commentId: Overload:Benday.CommandsFramework.CommandsApp.ConfigureConfiguration
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandsApp.ConfigureConfiguration
+  nameWithType: CommandsApp.ConfigureConfiguration
+- uid: Benday.CommandsFramework.CommandsApp.ConfigureOptions(System.Action{Benday.CommandsFramework.DefaultProgramOptions})
+  name: ConfigureOptions(Action<DefaultProgramOptions>)
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_ConfigureOptions_System_Action_Benday_CommandsFramework_DefaultProgramOptions__
+  commentId: M:Benday.CommandsFramework.CommandsApp.ConfigureOptions(System.Action{Benday.CommandsFramework.DefaultProgramOptions})
+  name.vb: ConfigureOptions(Action(Of DefaultProgramOptions))
+  fullName: Benday.CommandsFramework.CommandsApp.ConfigureOptions(System.Action<Benday.CommandsFramework.DefaultProgramOptions>)
+  fullName.vb: Benday.CommandsFramework.CommandsApp.ConfigureOptions(System.Action(Of Benday.CommandsFramework.DefaultProgramOptions))
+  nameWithType: CommandsApp.ConfigureOptions(Action<DefaultProgramOptions>)
+  nameWithType.vb: CommandsApp.ConfigureOptions(Action(Of DefaultProgramOptions))
+- uid: Benday.CommandsFramework.CommandsApp.ConfigureOptions*
+  name: ConfigureOptions
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_ConfigureOptions_
+  commentId: Overload:Benday.CommandsFramework.CommandsApp.ConfigureOptions
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandsApp.ConfigureOptions
+  nameWithType: CommandsApp.ConfigureOptions
+- uid: Benday.CommandsFramework.CommandsApp.ConfigureServices(System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration})
+  name: ConfigureServices(Action<IServiceCollection, IConfiguration>)
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_ConfigureServices_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection_Microsoft_Extensions_Configuration_IConfiguration__
+  commentId: M:Benday.CommandsFramework.CommandsApp.ConfigureServices(System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration})
+  name.vb: ConfigureServices(Action(Of IServiceCollection, IConfiguration))
+  fullName: Benday.CommandsFramework.CommandsApp.ConfigureServices(System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection, Microsoft.Extensions.Configuration.IConfiguration>)
+  fullName.vb: Benday.CommandsFramework.CommandsApp.ConfigureServices(System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection, Microsoft.Extensions.Configuration.IConfiguration))
+  nameWithType: CommandsApp.ConfigureServices(Action<IServiceCollection, IConfiguration>)
+  nameWithType.vb: CommandsApp.ConfigureServices(Action(Of IServiceCollection, IConfiguration))
+- uid: Benday.CommandsFramework.CommandsApp.ConfigureServices(System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection})
+  name: ConfigureServices(Action<IServiceCollection>)
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_ConfigureServices_System_Action_Microsoft_Extensions_DependencyInjection_IServiceCollection__
+  commentId: M:Benday.CommandsFramework.CommandsApp.ConfigureServices(System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection})
+  name.vb: ConfigureServices(Action(Of IServiceCollection))
+  fullName: Benday.CommandsFramework.CommandsApp.ConfigureServices(System.Action<Microsoft.Extensions.DependencyInjection.IServiceCollection>)
+  fullName.vb: Benday.CommandsFramework.CommandsApp.ConfigureServices(System.Action(Of Microsoft.Extensions.DependencyInjection.IServiceCollection))
+  nameWithType: CommandsApp.ConfigureServices(Action<IServiceCollection>)
+  nameWithType.vb: CommandsApp.ConfigureServices(Action(Of IServiceCollection))
+- uid: Benday.CommandsFramework.CommandsApp.ConfigureServices*
+  name: ConfigureServices
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_ConfigureServices_
+  commentId: Overload:Benday.CommandsFramework.CommandsApp.ConfigureServices
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandsApp.ConfigureServices
+  nameWithType: CommandsApp.ConfigureServices
+- uid: Benday.CommandsFramework.CommandsApp.ConfigureUsageDisplay(System.Action{Benday.CommandsFramework.DisplayUsageOptions})
+  name: ConfigureUsageDisplay(Action<DisplayUsageOptions>)
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_ConfigureUsageDisplay_System_Action_Benday_CommandsFramework_DisplayUsageOptions__
+  commentId: M:Benday.CommandsFramework.CommandsApp.ConfigureUsageDisplay(System.Action{Benday.CommandsFramework.DisplayUsageOptions})
+  name.vb: ConfigureUsageDisplay(Action(Of DisplayUsageOptions))
+  fullName: Benday.CommandsFramework.CommandsApp.ConfigureUsageDisplay(System.Action<Benday.CommandsFramework.DisplayUsageOptions>)
+  fullName.vb: Benday.CommandsFramework.CommandsApp.ConfigureUsageDisplay(System.Action(Of Benday.CommandsFramework.DisplayUsageOptions))
+  nameWithType: CommandsApp.ConfigureUsageDisplay(Action<DisplayUsageOptions>)
+  nameWithType.vb: CommandsApp.ConfigureUsageDisplay(Action(Of DisplayUsageOptions))
+- uid: Benday.CommandsFramework.CommandsApp.ConfigureUsageDisplay*
+  name: ConfigureUsageDisplay
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_ConfigureUsageDisplay_
+  commentId: Overload:Benday.CommandsFramework.CommandsApp.ConfigureUsageDisplay
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandsApp.ConfigureUsageDisplay
+  nameWithType: CommandsApp.ConfigureUsageDisplay
+- uid: Benday.CommandsFramework.CommandsApp.Create(System.String[],System.Reflection.Assembly)
+  name: Create(string[], Assembly)
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_Create_System_String___System_Reflection_Assembly_
+  commentId: M:Benday.CommandsFramework.CommandsApp.Create(System.String[],System.Reflection.Assembly)
+  name.vb: Create(String(), Assembly)
+  fullName: Benday.CommandsFramework.CommandsApp.Create(string[], System.Reflection.Assembly)
+  fullName.vb: Benday.CommandsFramework.CommandsApp.Create(String(), System.Reflection.Assembly)
+  nameWithType: CommandsApp.Create(string[], Assembly)
+  nameWithType.vb: CommandsApp.Create(String(), Assembly)
+- uid: Benday.CommandsFramework.CommandsApp.Create*
+  name: Create
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_Create_
+  commentId: Overload:Benday.CommandsFramework.CommandsApp.Create
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandsApp.Create
+  nameWithType: CommandsApp.Create
+- uid: Benday.CommandsFramework.CommandsApp.Create``1(System.String[])
+  name: Create<TCommand>(string[])
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_Create__1_System_String___
+  commentId: M:Benday.CommandsFramework.CommandsApp.Create``1(System.String[])
+  name.vb: Create(Of TCommand)(String())
+  fullName: Benday.CommandsFramework.CommandsApp.Create<TCommand>(string[])
+  fullName.vb: Benday.CommandsFramework.CommandsApp.Create(Of TCommand)(String())
+  nameWithType: CommandsApp.Create<TCommand>(string[])
+  nameWithType.vb: CommandsApp.Create(Of TCommand)(String())
+- uid: Benday.CommandsFramework.CommandsApp.Run
+  name: Run()
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_Run
+  commentId: M:Benday.CommandsFramework.CommandsApp.Run
+  fullName: Benday.CommandsFramework.CommandsApp.Run()
+  nameWithType: CommandsApp.Run()
+- uid: Benday.CommandsFramework.CommandsApp.Run*
+  name: Run
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_Run_
+  commentId: Overload:Benday.CommandsFramework.CommandsApp.Run
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandsApp.Run
+  nameWithType: CommandsApp.Run
+- uid: Benday.CommandsFramework.CommandsApp.RunAsync
+  name: RunAsync()
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_RunAsync
+  commentId: M:Benday.CommandsFramework.CommandsApp.RunAsync
+  fullName: Benday.CommandsFramework.CommandsApp.RunAsync()
+  nameWithType: CommandsApp.RunAsync()
+- uid: Benday.CommandsFramework.CommandsApp.RunAsync*
+  name: RunAsync
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_RunAsync_
+  commentId: Overload:Benday.CommandsFramework.CommandsApp.RunAsync
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandsApp.RunAsync
+  nameWithType: CommandsApp.RunAsync
+- uid: Benday.CommandsFramework.CommandsApp.UsesConfiguration(System.Boolean)
+  name: UsesConfiguration(bool)
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_UsesConfiguration_System_Boolean_
+  commentId: M:Benday.CommandsFramework.CommandsApp.UsesConfiguration(System.Boolean)
+  name.vb: UsesConfiguration(Boolean)
+  fullName: Benday.CommandsFramework.CommandsApp.UsesConfiguration(bool)
+  fullName.vb: Benday.CommandsFramework.CommandsApp.UsesConfiguration(Boolean)
+  nameWithType: CommandsApp.UsesConfiguration(bool)
+  nameWithType.vb: CommandsApp.UsesConfiguration(Boolean)
+- uid: Benday.CommandsFramework.CommandsApp.UsesConfiguration*
+  name: UsesConfiguration
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_UsesConfiguration_
+  commentId: Overload:Benday.CommandsFramework.CommandsApp.UsesConfiguration
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandsApp.UsesConfiguration
+  nameWithType: CommandsApp.UsesConfiguration
+- uid: Benday.CommandsFramework.CommandsApp.WithAppInfo(System.String,System.String)
+  name: WithAppInfo(string, string)
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_WithAppInfo_System_String_System_String_
+  commentId: M:Benday.CommandsFramework.CommandsApp.WithAppInfo(System.String,System.String)
+  name.vb: WithAppInfo(String, String)
+  fullName: Benday.CommandsFramework.CommandsApp.WithAppInfo(string, string)
+  fullName.vb: Benday.CommandsFramework.CommandsApp.WithAppInfo(String, String)
+  nameWithType: CommandsApp.WithAppInfo(string, string)
+  nameWithType.vb: CommandsApp.WithAppInfo(String, String)
+- uid: Benday.CommandsFramework.CommandsApp.WithAppInfo(System.String,System.String,System.String)
+  name: WithAppInfo(string, string, string)
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_WithAppInfo_System_String_System_String_System_String_
+  commentId: M:Benday.CommandsFramework.CommandsApp.WithAppInfo(System.String,System.String,System.String)
+  name.vb: WithAppInfo(String, String, String)
+  fullName: Benday.CommandsFramework.CommandsApp.WithAppInfo(string, string, string)
+  fullName.vb: Benday.CommandsFramework.CommandsApp.WithAppInfo(String, String, String)
+  nameWithType: CommandsApp.WithAppInfo(string, string, string)
+  nameWithType.vb: CommandsApp.WithAppInfo(String, String, String)
+- uid: Benday.CommandsFramework.CommandsApp.WithAppInfo*
+  name: WithAppInfo
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_WithAppInfo_
+  commentId: Overload:Benday.CommandsFramework.CommandsApp.WithAppInfo
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandsApp.WithAppInfo
+  nameWithType: CommandsApp.WithAppInfo
+- uid: Benday.CommandsFramework.CommandsApp.WithAppSettings(System.Boolean)
+  name: WithAppSettings(bool)
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_WithAppSettings_System_Boolean_
+  commentId: M:Benday.CommandsFramework.CommandsApp.WithAppSettings(System.Boolean)
+  name.vb: WithAppSettings(Boolean)
+  fullName: Benday.CommandsFramework.CommandsApp.WithAppSettings(bool)
+  fullName.vb: Benday.CommandsFramework.CommandsApp.WithAppSettings(Boolean)
+  nameWithType: CommandsApp.WithAppSettings(bool)
+  nameWithType.vb: CommandsApp.WithAppSettings(Boolean)
+- uid: Benday.CommandsFramework.CommandsApp.WithAppSettings*
+  name: WithAppSettings
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_WithAppSettings_
+  commentId: Overload:Benday.CommandsFramework.CommandsApp.WithAppSettings
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandsApp.WithAppSettings
+  nameWithType: CommandsApp.WithAppSettings
+- uid: Benday.CommandsFramework.CommandsApp.WithConfigFile(System.String,System.Boolean)
+  name: WithConfigFile(string, bool)
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_WithConfigFile_System_String_System_Boolean_
+  commentId: M:Benday.CommandsFramework.CommandsApp.WithConfigFile(System.String,System.Boolean)
+  name.vb: WithConfigFile(String, Boolean)
+  fullName: Benday.CommandsFramework.CommandsApp.WithConfigFile(string, bool)
+  fullName.vb: Benday.CommandsFramework.CommandsApp.WithConfigFile(String, Boolean)
+  nameWithType: CommandsApp.WithConfigFile(string, bool)
+  nameWithType.vb: CommandsApp.WithConfigFile(String, Boolean)
+- uid: Benday.CommandsFramework.CommandsApp.WithConfigFile*
+  name: WithConfigFile
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_WithConfigFile_
+  commentId: Overload:Benday.CommandsFramework.CommandsApp.WithConfigFile
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandsApp.WithConfigFile
+  nameWithType: CommandsApp.WithConfigFile
+- uid: Benday.CommandsFramework.CommandsApp.WithEnvironmentVariables
+  name: WithEnvironmentVariables()
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_WithEnvironmentVariables
+  commentId: M:Benday.CommandsFramework.CommandsApp.WithEnvironmentVariables
+  fullName: Benday.CommandsFramework.CommandsApp.WithEnvironmentVariables()
+  nameWithType: CommandsApp.WithEnvironmentVariables()
+- uid: Benday.CommandsFramework.CommandsApp.WithEnvironmentVariables*
+  name: WithEnvironmentVariables
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_WithEnvironmentVariables_
+  commentId: Overload:Benday.CommandsFramework.CommandsApp.WithEnvironmentVariables
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandsApp.WithEnvironmentVariables
+  nameWithType: CommandsApp.WithEnvironmentVariables
+- uid: Benday.CommandsFramework.CommandsApp.WithVersion(System.String)
+  name: WithVersion(string)
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_WithVersion_System_String_
+  commentId: M:Benday.CommandsFramework.CommandsApp.WithVersion(System.String)
+  name.vb: WithVersion(String)
+  fullName: Benday.CommandsFramework.CommandsApp.WithVersion(string)
+  fullName.vb: Benday.CommandsFramework.CommandsApp.WithVersion(String)
+  nameWithType: CommandsApp.WithVersion(string)
+  nameWithType.vb: CommandsApp.WithVersion(String)
+- uid: Benday.CommandsFramework.CommandsApp.WithVersion*
+  name: WithVersion
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_WithVersion_
+  commentId: Overload:Benday.CommandsFramework.CommandsApp.WithVersion
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandsApp.WithVersion
+  nameWithType: CommandsApp.WithVersion
+- uid: Benday.CommandsFramework.CommandsApp.WithVersionFromAssembly
+  name: WithVersionFromAssembly()
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_WithVersionFromAssembly
+  commentId: M:Benday.CommandsFramework.CommandsApp.WithVersionFromAssembly
+  fullName: Benday.CommandsFramework.CommandsApp.WithVersionFromAssembly()
+  nameWithType: CommandsApp.WithVersionFromAssembly()
+- uid: Benday.CommandsFramework.CommandsApp.WithVersionFromAssembly*
+  name: WithVersionFromAssembly
+  href: api/Benday.CommandsFramework.CommandsApp.html#Benday_CommandsFramework_CommandsApp_WithVersionFromAssembly_
+  commentId: Overload:Benday.CommandsFramework.CommandsApp.WithVersionFromAssembly
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.CommandsApp.WithVersionFromAssembly
+  nameWithType: CommandsApp.WithVersionFromAssembly
 - uid: Benday.CommandsFramework.ConfigurationData
   name: ConfigurationData
   href: api/Benday.CommandsFramework.ConfigurationData.html
@@ -1772,15 +2484,15 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.RowCount
   nameWithType: CsvWriter.RowCount
-- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.SaveToFile(System.String)
-  name: SaveToFile(string)
-  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_SaveToFile_System_String_
-  commentId: M:Benday.CommandsFramework.DataFormatting.CsvWriter.SaveToFile(System.String)
-  name.vb: SaveToFile(String)
-  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.SaveToFile(string)
-  fullName.vb: Benday.CommandsFramework.DataFormatting.CsvWriter.SaveToFile(String)
-  nameWithType: CsvWriter.SaveToFile(string)
-  nameWithType.vb: CsvWriter.SaveToFile(String)
+- uid: Benday.CommandsFramework.DataFormatting.CsvWriter.SaveToFile(System.String,System.Boolean)
+  name: SaveToFile(string, bool)
+  href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_SaveToFile_System_String_System_Boolean_
+  commentId: M:Benday.CommandsFramework.DataFormatting.CsvWriter.SaveToFile(System.String,System.Boolean)
+  name.vb: SaveToFile(String, Boolean)
+  fullName: Benday.CommandsFramework.DataFormatting.CsvWriter.SaveToFile(string, bool)
+  fullName.vb: Benday.CommandsFramework.DataFormatting.CsvWriter.SaveToFile(String, Boolean)
+  nameWithType: CsvWriter.SaveToFile(string, bool)
+  nameWithType.vb: CsvWriter.SaveToFile(String, Boolean)
 - uid: Benday.CommandsFramework.DataFormatting.CsvWriter.SaveToFile*
   name: SaveToFile
   href: api/Benday.CommandsFramework.DataFormatting.CsvWriter.html#Benday_CommandsFramework_DataFormatting_CsvWriter_SaveToFile_
@@ -2175,6 +2887,22 @@ references:
   fullName.vb: Benday.CommandsFramework.DefaultProgram.New
   nameWithType: DefaultProgram.DefaultProgram
   nameWithType.vb: DefaultProgram.New
+- uid: Benday.CommandsFramework.DefaultProgram.DisplayCommandAliases(System.Collections.Generic.List{Benday.CommandsFramework.CommandAliasInfo})
+  name: DisplayCommandAliases(List<CommandAliasInfo>)
+  href: api/Benday.CommandsFramework.DefaultProgram.html#Benday_CommandsFramework_DefaultProgram_DisplayCommandAliases_System_Collections_Generic_List_Benday_CommandsFramework_CommandAliasInfo__
+  commentId: M:Benday.CommandsFramework.DefaultProgram.DisplayCommandAliases(System.Collections.Generic.List{Benday.CommandsFramework.CommandAliasInfo})
+  name.vb: DisplayCommandAliases(List(Of CommandAliasInfo))
+  fullName: Benday.CommandsFramework.DefaultProgram.DisplayCommandAliases(System.Collections.Generic.List<Benday.CommandsFramework.CommandAliasInfo>)
+  fullName.vb: Benday.CommandsFramework.DefaultProgram.DisplayCommandAliases(System.Collections.Generic.List(Of Benday.CommandsFramework.CommandAliasInfo))
+  nameWithType: DefaultProgram.DisplayCommandAliases(List<CommandAliasInfo>)
+  nameWithType.vb: DefaultProgram.DisplayCommandAliases(List(Of CommandAliasInfo))
+- uid: Benday.CommandsFramework.DefaultProgram.DisplayCommandAliases*
+  name: DisplayCommandAliases
+  href: api/Benday.CommandsFramework.DefaultProgram.html#Benday_CommandsFramework_DefaultProgram_DisplayCommandAliases_
+  commentId: Overload:Benday.CommandsFramework.DefaultProgram.DisplayCommandAliases
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DefaultProgram.DisplayCommandAliases
+  nameWithType: DefaultProgram.DisplayCommandAliases
 - uid: Benday.CommandsFramework.DefaultProgram.DisplayCommandsWithCategories(System.Collections.Generic.List{Benday.CommandsFramework.CommandAttribute})
   name: DisplayCommandsWithCategories(List<CommandAttribute>)
   href: api/Benday.CommandsFramework.DefaultProgram.html#Benday_CommandsFramework_DefaultProgram_DisplayCommandsWithCategories_System_Collections_Generic_List_Benday_CommandsFramework_CommandAttribute__
@@ -2220,6 +2948,19 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.DefaultProgram.DisplayUsage
   nameWithType: DefaultProgram.DisplayUsage
+- uid: Benday.CommandsFramework.DefaultProgram.GetCommandDisplayName(Benday.CommandsFramework.CommandAttribute)
+  name: GetCommandDisplayName(CommandAttribute)
+  href: api/Benday.CommandsFramework.DefaultProgram.html#Benday_CommandsFramework_DefaultProgram_GetCommandDisplayName_Benday_CommandsFramework_CommandAttribute_
+  commentId: M:Benday.CommandsFramework.DefaultProgram.GetCommandDisplayName(Benday.CommandsFramework.CommandAttribute)
+  fullName: Benday.CommandsFramework.DefaultProgram.GetCommandDisplayName(Benday.CommandsFramework.CommandAttribute)
+  nameWithType: DefaultProgram.GetCommandDisplayName(CommandAttribute)
+- uid: Benday.CommandsFramework.DefaultProgram.GetCommandDisplayName*
+  name: GetCommandDisplayName
+  href: api/Benday.CommandsFramework.DefaultProgram.html#Benday_CommandsFramework_DefaultProgram_GetCommandDisplayName_
+  commentId: Overload:Benday.CommandsFramework.DefaultProgram.GetCommandDisplayName
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DefaultProgram.GetCommandDisplayName
+  nameWithType: DefaultProgram.GetCommandDisplayName
 - uid: Benday.CommandsFramework.DefaultProgram.ImplementationAssembly
   name: ImplementationAssembly
   href: api/Benday.CommandsFramework.DefaultProgram.html#Benday_CommandsFramework_DefaultProgram_ImplementationAssembly
@@ -2346,6 +3087,32 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.DefaultProgramOptions.ServiceCollection
   nameWithType: DefaultProgramOptions.ServiceCollection
+- uid: Benday.CommandsFramework.DefaultProgramOptions.ServiceProvider
+  name: ServiceProvider
+  href: api/Benday.CommandsFramework.DefaultProgramOptions.html#Benday_CommandsFramework_DefaultProgramOptions_ServiceProvider
+  commentId: P:Benday.CommandsFramework.DefaultProgramOptions.ServiceProvider
+  fullName: Benday.CommandsFramework.DefaultProgramOptions.ServiceProvider
+  nameWithType: DefaultProgramOptions.ServiceProvider
+- uid: Benday.CommandsFramework.DefaultProgramOptions.ServiceProvider*
+  name: ServiceProvider
+  href: api/Benday.CommandsFramework.DefaultProgramOptions.html#Benday_CommandsFramework_DefaultProgramOptions_ServiceProvider_
+  commentId: Overload:Benday.CommandsFramework.DefaultProgramOptions.ServiceProvider
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DefaultProgramOptions.ServiceProvider
+  nameWithType: DefaultProgramOptions.ServiceProvider
+- uid: Benday.CommandsFramework.DefaultProgramOptions.StrictArgumentValidation
+  name: StrictArgumentValidation
+  href: api/Benday.CommandsFramework.DefaultProgramOptions.html#Benday_CommandsFramework_DefaultProgramOptions_StrictArgumentValidation
+  commentId: P:Benday.CommandsFramework.DefaultProgramOptions.StrictArgumentValidation
+  fullName: Benday.CommandsFramework.DefaultProgramOptions.StrictArgumentValidation
+  nameWithType: DefaultProgramOptions.StrictArgumentValidation
+- uid: Benday.CommandsFramework.DefaultProgramOptions.StrictArgumentValidation*
+  name: StrictArgumentValidation
+  href: api/Benday.CommandsFramework.DefaultProgramOptions.html#Benday_CommandsFramework_DefaultProgramOptions_StrictArgumentValidation_
+  commentId: Overload:Benday.CommandsFramework.DefaultProgramOptions.StrictArgumentValidation
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DefaultProgramOptions.StrictArgumentValidation
+  nameWithType: DefaultProgramOptions.StrictArgumentValidation
 - uid: Benday.CommandsFramework.DefaultProgramOptions.UsesConfiguration
   name: UsesConfiguration
   href: api/Benday.CommandsFramework.DefaultProgramOptions.html#Benday_CommandsFramework_DefaultProgramOptions_UsesConfiguration
@@ -2410,6 +3177,28 @@ references:
   fullName.vb: Benday.CommandsFramework.DependencyInjectionCommand.New
   nameWithType: DependencyInjectionCommand.DependencyInjectionCommand
   nameWithType.vb: DependencyInjectionCommand.New
+- uid: Benday.CommandsFramework.DependencyInjectionCommand.Dispose
+  name: Dispose()
+  href: api/Benday.CommandsFramework.DependencyInjectionCommand.html#Benday_CommandsFramework_DependencyInjectionCommand_Dispose
+  commentId: M:Benday.CommandsFramework.DependencyInjectionCommand.Dispose
+  fullName: Benday.CommandsFramework.DependencyInjectionCommand.Dispose()
+  nameWithType: DependencyInjectionCommand.Dispose()
+- uid: Benday.CommandsFramework.DependencyInjectionCommand.Dispose(System.Boolean)
+  name: Dispose(bool)
+  href: api/Benday.CommandsFramework.DependencyInjectionCommand.html#Benday_CommandsFramework_DependencyInjectionCommand_Dispose_System_Boolean_
+  commentId: M:Benday.CommandsFramework.DependencyInjectionCommand.Dispose(System.Boolean)
+  name.vb: Dispose(Boolean)
+  fullName: Benday.CommandsFramework.DependencyInjectionCommand.Dispose(bool)
+  fullName.vb: Benday.CommandsFramework.DependencyInjectionCommand.Dispose(Boolean)
+  nameWithType: DependencyInjectionCommand.Dispose(bool)
+  nameWithType.vb: DependencyInjectionCommand.Dispose(Boolean)
+- uid: Benday.CommandsFramework.DependencyInjectionCommand.Dispose*
+  name: Dispose
+  href: api/Benday.CommandsFramework.DependencyInjectionCommand.html#Benday_CommandsFramework_DependencyInjectionCommand_Dispose_
+  commentId: Overload:Benday.CommandsFramework.DependencyInjectionCommand.Dispose
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.DependencyInjectionCommand.Dispose
+  nameWithType: DependencyInjectionCommand.Dispose
 - uid: Benday.CommandsFramework.DependencyInjectionCommand.GetRequiredService*
   name: GetRequiredService
   href: api/Benday.CommandsFramework.DependencyInjectionCommand.html#Benday_CommandsFramework_DependencyInjectionCommand_GetRequiredService_
@@ -2769,6 +3558,22 @@ references:
   fullName.vb: Benday.CommandsFramework.ExtensionMethods.ExistenceOptional(Of T)(Benday.CommandsFramework.Argument(Of T))
   nameWithType: ExtensionMethods.ExistenceOptional<T>(Argument<T>)
   nameWithType.vb: ExtensionMethods.ExistenceOptional(Of T)(Argument(Of T))
+- uid: Benday.CommandsFramework.ExtensionMethods.FromConfig*
+  name: FromConfig
+  href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_FromConfig_
+  commentId: Overload:Benday.CommandsFramework.ExtensionMethods.FromConfig
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.ExtensionMethods.FromConfig
+  nameWithType: ExtensionMethods.FromConfig
+- uid: Benday.CommandsFramework.ExtensionMethods.FromConfig``1(Benday.CommandsFramework.Argument{``0})
+  name: FromConfig<T>(Argument<T>)
+  href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_FromConfig__1_Benday_CommandsFramework_Argument___0__
+  commentId: M:Benday.CommandsFramework.ExtensionMethods.FromConfig``1(Benday.CommandsFramework.Argument{``0})
+  name.vb: FromConfig(Of T)(Argument(Of T))
+  fullName: Benday.CommandsFramework.ExtensionMethods.FromConfig<T>(Benday.CommandsFramework.Argument<T>)
+  fullName.vb: Benday.CommandsFramework.ExtensionMethods.FromConfig(Of T)(Benday.CommandsFramework.Argument(Of T))
+  nameWithType: ExtensionMethods.FromConfig<T>(Argument<T>)
+  nameWithType.vb: ExtensionMethods.FromConfig(Of T)(Argument(Of T))
 - uid: Benday.CommandsFramework.ExtensionMethods.FromPositionalArgument*
   name: FromPositionalArgument
   href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_FromPositionalArgument_
@@ -2977,6 +3782,22 @@ references:
   fullName.vb: Benday.CommandsFramework.ExtensionMethods.WithAlias(Of T)(Benday.CommandsFramework.Argument(Of T), String)
   nameWithType: ExtensionMethods.WithAlias<T>(Argument<T>, string)
   nameWithType.vb: ExtensionMethods.WithAlias(Of T)(Argument(Of T), String)
+- uid: Benday.CommandsFramework.ExtensionMethods.WithAllowedValues(Benday.CommandsFramework.StringArgument,System.String[])
+  name: WithAllowedValues(StringArgument, params string[])
+  href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_WithAllowedValues_Benday_CommandsFramework_StringArgument_System_String___
+  commentId: M:Benday.CommandsFramework.ExtensionMethods.WithAllowedValues(Benday.CommandsFramework.StringArgument,System.String[])
+  name.vb: WithAllowedValues(StringArgument, ParamArray String())
+  fullName: Benday.CommandsFramework.ExtensionMethods.WithAllowedValues(Benday.CommandsFramework.StringArgument, params string[])
+  fullName.vb: Benday.CommandsFramework.ExtensionMethods.WithAllowedValues(Benday.CommandsFramework.StringArgument, ParamArray String())
+  nameWithType: ExtensionMethods.WithAllowedValues(StringArgument, params string[])
+  nameWithType.vb: ExtensionMethods.WithAllowedValues(StringArgument, ParamArray String())
+- uid: Benday.CommandsFramework.ExtensionMethods.WithAllowedValues*
+  name: WithAllowedValues
+  href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_WithAllowedValues_
+  commentId: Overload:Benday.CommandsFramework.ExtensionMethods.WithAllowedValues
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.ExtensionMethods.WithAllowedValues
+  nameWithType: ExtensionMethods.WithAllowedValues
 - uid: Benday.CommandsFramework.ExtensionMethods.WithDefaultValue*
   name: WithDefaultValue
   href: api/Benday.CommandsFramework.ExtensionMethods.html#Benday_CommandsFramework_ExtensionMethods_WithDefaultValue_
@@ -3358,6 +4179,19 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.IArgument.AllowEmptyValue
   nameWithType: IArgument.AllowEmptyValue
+- uid: Benday.CommandsFramework.IArgument.AllowedValues
+  name: AllowedValues
+  href: api/Benday.CommandsFramework.IArgument.html#Benday_CommandsFramework_IArgument_AllowedValues
+  commentId: P:Benday.CommandsFramework.IArgument.AllowedValues
+  fullName: Benday.CommandsFramework.IArgument.AllowedValues
+  nameWithType: IArgument.AllowedValues
+- uid: Benday.CommandsFramework.IArgument.AllowedValues*
+  name: AllowedValues
+  href: api/Benday.CommandsFramework.IArgument.html#Benday_CommandsFramework_IArgument_AllowedValues_
+  commentId: Overload:Benday.CommandsFramework.IArgument.AllowedValues
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.IArgument.AllowedValues
+  nameWithType: IArgument.AllowedValues
 - uid: Benday.CommandsFramework.IArgument.DataType
   name: DataType
   href: api/Benday.CommandsFramework.IArgument.html#Benday_CommandsFramework_IArgument_DataType
@@ -3371,6 +4205,19 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.IArgument.DataType
   nameWithType: IArgument.DataType
+- uid: Benday.CommandsFramework.IArgument.DefaultValue
+  name: DefaultValue
+  href: api/Benday.CommandsFramework.IArgument.html#Benday_CommandsFramework_IArgument_DefaultValue
+  commentId: P:Benday.CommandsFramework.IArgument.DefaultValue
+  fullName: Benday.CommandsFramework.IArgument.DefaultValue
+  nameWithType: IArgument.DefaultValue
+- uid: Benday.CommandsFramework.IArgument.DefaultValue*
+  name: DefaultValue
+  href: api/Benday.CommandsFramework.IArgument.html#Benday_CommandsFramework_IArgument_DefaultValue_
+  commentId: Overload:Benday.CommandsFramework.IArgument.DefaultValue
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.IArgument.DefaultValue
+  nameWithType: IArgument.DefaultValue
 - uid: Benday.CommandsFramework.IArgument.Description
   name: Description
   href: api/Benday.CommandsFramework.IArgument.html#Benday_CommandsFramework_IArgument_Description
@@ -3410,6 +4257,19 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.IArgument.HasAlias
   nameWithType: IArgument.HasAlias
+- uid: Benday.CommandsFramework.IArgument.HasDefaultValue
+  name: HasDefaultValue
+  href: api/Benday.CommandsFramework.IArgument.html#Benday_CommandsFramework_IArgument_HasDefaultValue
+  commentId: P:Benday.CommandsFramework.IArgument.HasDefaultValue
+  fullName: Benday.CommandsFramework.IArgument.HasDefaultValue
+  nameWithType: IArgument.HasDefaultValue
+- uid: Benday.CommandsFramework.IArgument.HasDefaultValue*
+  name: HasDefaultValue
+  href: api/Benday.CommandsFramework.IArgument.html#Benday_CommandsFramework_IArgument_HasDefaultValue_
+  commentId: Overload:Benday.CommandsFramework.IArgument.HasDefaultValue
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.IArgument.HasDefaultValue
+  nameWithType: IArgument.HasDefaultValue
 - uid: Benday.CommandsFramework.IArgument.HasValue
   name: HasValue
   href: api/Benday.CommandsFramework.IArgument.html#Benday_CommandsFramework_IArgument_HasValue
@@ -3423,6 +4283,19 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.IArgument.HasValue
   nameWithType: IArgument.HasValue
+- uid: Benday.CommandsFramework.IArgument.IsFromConfig
+  name: IsFromConfig
+  href: api/Benday.CommandsFramework.IArgument.html#Benday_CommandsFramework_IArgument_IsFromConfig
+  commentId: P:Benday.CommandsFramework.IArgument.IsFromConfig
+  fullName: Benday.CommandsFramework.IArgument.IsFromConfig
+  nameWithType: IArgument.IsFromConfig
+- uid: Benday.CommandsFramework.IArgument.IsFromConfig*
+  name: IsFromConfig
+  href: api/Benday.CommandsFramework.IArgument.html#Benday_CommandsFramework_IArgument_IsFromConfig_
+  commentId: Overload:Benday.CommandsFramework.IArgument.IsFromConfig
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.IArgument.IsFromConfig
+  nameWithType: IArgument.IsFromConfig
 - uid: Benday.CommandsFramework.IArgument.IsPositionalSource
   name: IsPositionalSource
   href: api/Benday.CommandsFramework.IArgument.html#Benday_CommandsFramework_IArgument_IsPositionalSource
@@ -3802,6 +4675,32 @@ references:
   isSpec: "True"
   fullName: Benday.CommandsFramework.ICommandProgramOptions.ServiceCollection
   nameWithType: ICommandProgramOptions.ServiceCollection
+- uid: Benday.CommandsFramework.ICommandProgramOptions.ServiceProvider
+  name: ServiceProvider
+  href: api/Benday.CommandsFramework.ICommandProgramOptions.html#Benday_CommandsFramework_ICommandProgramOptions_ServiceProvider
+  commentId: P:Benday.CommandsFramework.ICommandProgramOptions.ServiceProvider
+  fullName: Benday.CommandsFramework.ICommandProgramOptions.ServiceProvider
+  nameWithType: ICommandProgramOptions.ServiceProvider
+- uid: Benday.CommandsFramework.ICommandProgramOptions.ServiceProvider*
+  name: ServiceProvider
+  href: api/Benday.CommandsFramework.ICommandProgramOptions.html#Benday_CommandsFramework_ICommandProgramOptions_ServiceProvider_
+  commentId: Overload:Benday.CommandsFramework.ICommandProgramOptions.ServiceProvider
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.ICommandProgramOptions.ServiceProvider
+  nameWithType: ICommandProgramOptions.ServiceProvider
+- uid: Benday.CommandsFramework.ICommandProgramOptions.StrictArgumentValidation
+  name: StrictArgumentValidation
+  href: api/Benday.CommandsFramework.ICommandProgramOptions.html#Benday_CommandsFramework_ICommandProgramOptions_StrictArgumentValidation
+  commentId: P:Benday.CommandsFramework.ICommandProgramOptions.StrictArgumentValidation
+  fullName: Benday.CommandsFramework.ICommandProgramOptions.StrictArgumentValidation
+  nameWithType: ICommandProgramOptions.StrictArgumentValidation
+- uid: Benday.CommandsFramework.ICommandProgramOptions.StrictArgumentValidation*
+  name: StrictArgumentValidation
+  href: api/Benday.CommandsFramework.ICommandProgramOptions.html#Benday_CommandsFramework_ICommandProgramOptions_StrictArgumentValidation_
+  commentId: Overload:Benday.CommandsFramework.ICommandProgramOptions.StrictArgumentValidation
+  isSpec: "True"
+  fullName: Benday.CommandsFramework.ICommandProgramOptions.StrictArgumentValidation
+  nameWithType: ICommandProgramOptions.StrictArgumentValidation
 - uid: Benday.CommandsFramework.ICommandProgramOptions.UsesConfiguration
   name: UsesConfiguration
   href: api/Benday.CommandsFramework.ICommandProgramOptions.html#Benday_CommandsFramework_ICommandProgramOptions_UsesConfiguration

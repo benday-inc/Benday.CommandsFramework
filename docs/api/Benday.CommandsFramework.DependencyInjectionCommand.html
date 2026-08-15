@@ -9,7 +9,7 @@
       <meta name="viewport" content="width=device-width">
       <meta name="title" content="Class DependencyInjectionCommand ">
     
-    <meta name="description" content="Base class for commands that use dependency injection.">
+    <meta name="description" content="Base class for commands that use dependency injection. The service collection is validated lazily when services are first accessed, allowing commands to be instantiated for schema discovery without DI configuration.">
       <link rel="shortcut icon" href="../favicon.ico">
       <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
       <link rel="stylesheet" href="../styles/docfx.css">
@@ -72,7 +72,9 @@
 
 
   <h1 id="Benday_CommandsFramework_DependencyInjectionCommand" data-uid="Benday.CommandsFramework.DependencyInjectionCommand" class="text-break">Class DependencyInjectionCommand</h1>
-  <div class="markdown level0 summary"><p>Base class for commands that use dependency injection.</p>
+  <div class="markdown level0 summary"><p>Base class for commands that use dependency injection.
+The service collection is validated lazily when services are first accessed,
+allowing commands to be instantiated for schema discovery without DI configuration.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -85,6 +87,7 @@
   <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Benday.CommandsFramework.IAsyncCommand.html">IAsyncCommand</a></div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -116,10 +119,22 @@
       <a class="xref" href="Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_Description">CommandBase.Description</a>
     </div>
     <div>
+      <a class="xref" href="Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_IsQuietMode">CommandBase.IsQuietMode</a>
+    </div>
+    <div>
       <a class="xref" href="Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_WriteLine_System_String_">CommandBase.WriteLine(string)</a>
     </div>
     <div>
       <a class="xref" href="Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_WriteLine">CommandBase.WriteLine()</a>
+    </div>
+    <div>
+      <a class="xref" href="Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_CreateCommand__1_System_Action_System_Collections_Generic_Dictionary_System_String_System_String___System_Boolean_">CommandBase.CreateCommand&lt;T&gt;(Action&lt;Dictionary&lt;string, string&gt;&gt;, bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_ExecuteCommand__1_System_Action_System_Collections_Generic_Dictionary_System_String_System_String___System_Boolean_">CommandBase.ExecuteCommand&lt;T&gt;(Action&lt;Dictionary&lt;string, string&gt;&gt;, bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_ExecuteCommandAsync__1_System_Action_System_Collections_Generic_Dictionary_System_String_System_String___System_Boolean_">CommandBase.ExecuteCommandAsync&lt;T&gt;(Action&lt;Dictionary&lt;string, string&gt;&gt;, bool)</a>
     </div>
     <div>
       <a class="xref" href="Benday.CommandsFramework.CommandBase.html#Benday_CommandsFramework_CommandBase_DisplayUsage">CommandBase.DisplayUsage()</a>
@@ -162,7 +177,7 @@
   <h6><strong>Assembly</strong>: Benday.CommandsFramework.dll</h6>
   <h5 id="Benday_CommandsFramework_DependencyInjectionCommand_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class DependencyInjectionCommand : AsynchronousCommand, IAsyncCommand</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class DependencyInjectionCommand : AsynchronousCommand, IAsyncCommand, IDisposable</code></pre>
   </div>
   <h3 id="constructors">Constructors
 </h3>
@@ -171,7 +186,7 @@
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DependencyInjectionCommand__ctor_Benday_CommandsFramework_CommandExecutionInfo_Benday_CommandsFramework_ITextOutputProvider_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DependencyInjectionCommand.%23ctor(Benday.CommandsFramework.CommandExecutionInfo%2CBenday.CommandsFramework.ITextOutputProvider)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DependencyInjectionCommand.cs/#L11">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DependencyInjectionCommand.cs/#L13">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_DependencyInjectionCommand__ctor_" data-uid="Benday.CommandsFramework.DependencyInjectionCommand.#ctor*"></a>
   <h4 id="Benday_CommandsFramework_DependencyInjectionCommand__ctor_Benday_CommandsFramework_CommandExecutionInfo_Benday_CommandsFramework_ITextOutputProvider_" data-uid="Benday.CommandsFramework.DependencyInjectionCommand.#ctor(Benday.CommandsFramework.CommandExecutionInfo,Benday.CommandsFramework.ITextOutputProvider)">DependencyInjectionCommand(CommandExecutionInfo, ITextOutputProvider)</h4>
@@ -207,10 +222,59 @@
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DependencyInjectionCommand_Dispose.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DependencyInjectionCommand.Dispose%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DependencyInjectionCommand.cs/#L68">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_DependencyInjectionCommand_Dispose_" data-uid="Benday.CommandsFramework.DependencyInjectionCommand.Dispose*"></a>
+  <h4 id="Benday_CommandsFramework_DependencyInjectionCommand_Dispose" data-uid="Benday.CommandsFramework.DependencyInjectionCommand.Dispose">Dispose()</h4>
+  <div class="markdown level1 summary"><p>Disposes the service scope for this command. The shared service provider is not
+disposed because it belongs to the program rather than to any one command.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DependencyInjectionCommand_Dispose_System_Boolean_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DependencyInjectionCommand.Dispose(System.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DependencyInjectionCommand.cs/#L74">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_DependencyInjectionCommand_Dispose_" data-uid="Benday.CommandsFramework.DependencyInjectionCommand.Dispose*"></a>
+  <h4 id="Benday_CommandsFramework_DependencyInjectionCommand_Dispose_System_Boolean_" data-uid="Benday.CommandsFramework.DependencyInjectionCommand.Dispose(System.Boolean)">Dispose(bool)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Dispose(bool disposing)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">disposing</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DependencyInjectionCommand_GetRequiredService__1.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DependencyInjectionCommand.GetRequiredService%60%601%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DependencyInjectionCommand.cs/#L45">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DependencyInjectionCommand.cs/#L57">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_DependencyInjectionCommand_GetRequiredService_" data-uid="Benday.CommandsFramework.DependencyInjectionCommand.GetRequiredService*"></a>
   <h4 id="Benday_CommandsFramework_DependencyInjectionCommand_GetRequiredService__1" data-uid="Benday.CommandsFramework.DependencyInjectionCommand.GetRequiredService``1">GetRequiredService&lt;T&gt;()</h4>
@@ -255,6 +319,9 @@
   <div>
       <a class="xref" href="Benday.CommandsFramework.IAsyncCommand.html">IAsyncCommand</a>
   </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a>
+  </div>
 
 </article>
           </div>
@@ -267,7 +334,7 @@
                     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_DependencyInjectionCommand.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.DependencyInjectionCommand%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
                   </li>
                   <li>
-                    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DependencyInjectionCommand.cs/#L9" class="contribution-link">View Source</a>
+                    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/DependencyInjectionCommand.cs/#L11" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

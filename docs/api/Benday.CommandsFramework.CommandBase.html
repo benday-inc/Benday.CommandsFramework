@@ -296,14 +296,140 @@ with the values from the command line. The values are set when the command is ex
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_IsQuietMode.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.IsQuietMode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L112">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_CommandBase_IsQuietMode_" data-uid="Benday.CommandsFramework.CommandBase.IsQuietMode*"></a>
+  <h4 id="Benday_CommandsFramework_CommandBase_IsQuietMode" data-uid="Benday.CommandsFramework.CommandBase.IsQuietMode">IsQuietMode</h4>
+  <div class="markdown level1 summary"><p>Is this command running in quiet mode? Quiet mode suppresses the output written
+by WriteLine(). It is set by the reserved 'quiet' argument and is applied
+automatically to commands that are run by another command.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsQuietMode { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
 </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_CreateCommand__1_System_Action_System_Collections_Generic_Dictionary_System_String_System_String___System_Boolean_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.CreateCommand%60%601(System.Action%7BSystem.Collections.Generic.Dictionary%7BSystem.String%2CSystem.String%7D%7D%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L172">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_CommandBase_CreateCommand_" data-uid="Benday.CommandsFramework.CommandBase.CreateCommand*"></a>
+  <h4 id="Benday_CommandsFramework_CommandBase_CreateCommand__1_System_Action_System_Collections_Generic_Dictionary_System_String_System_String___System_Boolean_" data-uid="Benday.CommandsFramework.CommandBase.CreateCommand``1(System.Action{System.Collections.Generic.Dictionary{System.String,System.String}},System.Boolean)">CreateCommand&lt;T&gt;(Action&lt;Dictionary&lt;string, string&gt;&gt;?, bool)</h4>
+  <div class="markdown level1 summary"><p>Creates another command so that its logic can be reused from inside this command.
+The new command shares this command's program options, configuration and output
+provider, and runs in quiet mode by default so that it does not write over the
+calling command's output.
+The command is created but not run -- use ExecuteCommand() or ExecuteCommandAsync()
+to create and run it in one step.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected T CreateCommand&lt;T&gt;(Action&lt;Dictionary&lt;string, string&gt;&gt;? configureArguments = null, bool quiet = true) where T : CommandBase</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;&gt;</td>
+        <td><span class="parametername">configureArguments</span></td>
+        <td><p>Callback for populating the arguments for the command</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">quiet</span></td>
+        <td><p>Run the command in quiet mode. Defaults to true.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>The new command instance</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Type of the command to create</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Benday.CommandsFramework.KnownException.html">KnownException</a></td>
+        <td><p>Thrown when the command type cannot be used</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_DisplayUsage.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.DisplayUsage%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L127">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L336">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_CommandBase_DisplayUsage_" data-uid="Benday.CommandsFramework.CommandBase.DisplayUsage*"></a>
   <h4 id="Benday_CommandsFramework_CommandBase_DisplayUsage" data-uid="Benday.CommandsFramework.CommandBase.DisplayUsage">DisplayUsage()</h4>
@@ -319,7 +445,7 @@ with the values from the command line. The values are set when the command is ex
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_DisplayUsage_System_Text_StringBuilder_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.DisplayUsage(System.Text.StringBuilder)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L167">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L376">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_CommandBase_DisplayUsage_" data-uid="Benday.CommandsFramework.CommandBase.DisplayUsage*"></a>
   <h4 id="Benday_CommandsFramework_CommandBase_DisplayUsage_System_Text_StringBuilder_" data-uid="Benday.CommandsFramework.CommandBase.DisplayUsage(System.Text.StringBuilder)">DisplayUsage(StringBuilder)</h4>
@@ -353,7 +479,7 @@ with the values from the command line. The values are set when the command is ex
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_DisplayValidationSummary_System_Collections_Generic_List_Benday_CommandsFramework_IArgument__.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.DisplayValidationSummary(System.Collections.Generic.List%7BBenday.CommandsFramework.IArgument%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L273">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L537">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_CommandBase_DisplayValidationSummary_" data-uid="Benday.CommandsFramework.CommandBase.DisplayValidationSummary*"></a>
   <h4 id="Benday_CommandsFramework_CommandBase_DisplayValidationSummary_System_Collections_Generic_List_Benday_CommandsFramework_IArgument__" data-uid="Benday.CommandsFramework.CommandBase.DisplayValidationSummary(System.Collections.Generic.List{Benday.CommandsFramework.IArgument})">DisplayValidationSummary(List&lt;IArgument&gt;)</h4>
@@ -378,6 +504,190 @@ with the values from the command line. The values are set when the command is ex
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Benday.CommandsFramework.IArgument.html">IArgument</a>&gt;</td>
         <td><span class="parametername">invalidArguments</span></td>
         <td><p>Collection of invalid arguments</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_ExecuteCommandAsync__1_System_Action_System_Collections_Generic_Dictionary_System_String_System_String___System_Boolean_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.ExecuteCommandAsync%60%601(System.Action%7BSystem.Collections.Generic.Dictionary%7BSystem.String%2CSystem.String%7D%7D%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L275">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_CommandBase_ExecuteCommandAsync_" data-uid="Benday.CommandsFramework.CommandBase.ExecuteCommandAsync*"></a>
+  <h4 id="Benday_CommandsFramework_CommandBase_ExecuteCommandAsync__1_System_Action_System_Collections_Generic_Dictionary_System_String_System_String___System_Boolean_" data-uid="Benday.CommandsFramework.CommandBase.ExecuteCommandAsync``1(System.Action{System.Collections.Generic.Dictionary{System.String,System.String}},System.Boolean)">ExecuteCommandAsync&lt;T&gt;(Action&lt;Dictionary&lt;string, string&gt;&gt;?, bool)</h4>
+  <div class="markdown level1 summary"><p>Creates another command, validates it, and runs it asynchronously. The command
+instance is returned so that results can be read back off it.
+Unlike running a command from the command line, a validation failure here throws
+rather than printing the usage information, because the calling command needs to
+know that the command did not run.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Task&lt;T&gt; ExecuteCommandAsync&lt;T&gt;(Action&lt;Dictionary&lt;string, string&gt;&gt;? configureArguments = null, bool quiet = true) where T : AsynchronousCommand</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;&gt;</td>
+        <td><span class="parametername">configureArguments</span></td>
+        <td><p>Callback for populating the arguments for the command</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">quiet</span></td>
+        <td><p>Run the command in quiet mode. Defaults to true.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;T&gt;</td>
+        <td><p>The command instance after it has run</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Type of the command to run</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Benday.CommandsFramework.KnownException.html">KnownException</a></td>
+        <td><p>Thrown when the arguments for the command are not valid</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_ExecuteCommand__1_System_Action_System_Collections_Generic_Dictionary_System_String_System_String___System_Boolean_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.ExecuteCommand%60%601(System.Action%7BSystem.Collections.Generic.Dictionary%7BSystem.String%2CSystem.String%7D%7D%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L252">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_CommandBase_ExecuteCommand_" data-uid="Benday.CommandsFramework.CommandBase.ExecuteCommand*"></a>
+  <h4 id="Benday_CommandsFramework_CommandBase_ExecuteCommand__1_System_Action_System_Collections_Generic_Dictionary_System_String_System_String___System_Boolean_" data-uid="Benday.CommandsFramework.CommandBase.ExecuteCommand``1(System.Action{System.Collections.Generic.Dictionary{System.String,System.String}},System.Boolean)">ExecuteCommand&lt;T&gt;(Action&lt;Dictionary&lt;string, string&gt;&gt;?, bool)</h4>
+  <div class="markdown level1 summary"><p>Creates another command, validates it, and runs it. The command instance is
+returned so that results can be read back off it.
+Unlike running a command from the command line, a validation failure here throws
+rather than printing the usage information, because the calling command needs to
+know that the command did not run.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected T ExecuteCommand&lt;T&gt;(Action&lt;Dictionary&lt;string, string&gt;&gt;? configureArguments = null, bool quiet = true) where T : SynchronousCommand</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;&gt;</td>
+        <td><span class="parametername">configureArguments</span></td>
+        <td><p>Callback for populating the arguments for the command</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">quiet</span></td>
+        <td><p>Run the command in quiet mode. Defaults to true.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>The command instance after it has run</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Type of the command to run</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Benday.CommandsFramework.KnownException.html">KnownException</a></td>
+        <td><p>Thrown when the arguments for the command are not valid</p>
 </td>
       </tr>
     </tbody>
@@ -471,12 +781,14 @@ but do not have any actual values.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_SetValuesFromExecutionInfo.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.SetValuesFromExecutionInfo%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L326">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L608">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_CommandBase_SetValuesFromExecutionInfo_" data-uid="Benday.CommandsFramework.CommandBase.SetValuesFromExecutionInfo*"></a>
   <h4 id="Benday_CommandsFramework_CommandBase_SetValuesFromExecutionInfo" data-uid="Benday.CommandsFramework.CommandBase.SetValuesFromExecutionInfo">SetValuesFromExecutionInfo()</h4>
   <div class="markdown level1 summary"><p>Reads the arguments from the execution info and
-sets the values on to the argument definitions for the command.</p>
+sets the values on to the argument definitions for the command.
+For arguments marked with FromConfig(), values are loaded from
+configuration with command line taking precedence.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -488,7 +800,7 @@ sets the values on to the argument definitions for the command.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_Validate.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.Validate%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L295">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L566">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_CommandBase_Validate_" data-uid="Benday.CommandsFramework.CommandBase.Validate*"></a>
   <h4 id="Benday_CommandsFramework_CommandBase_Validate" data-uid="Benday.CommandsFramework.CommandBase.Validate">Validate()</h4>
@@ -521,11 +833,11 @@ command.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_WriteLine.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.WriteLine%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L119">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L149">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_CommandBase_WriteLine_" data-uid="Benday.CommandsFramework.CommandBase.WriteLine*"></a>
   <h4 id="Benday_CommandsFramework_CommandBase_WriteLine" data-uid="Benday.CommandsFramework.CommandBase.WriteLine">WriteLine()</h4>
-  <div class="markdown level1 summary"><p>Write a new line to the output provider</p>
+  <div class="markdown level1 summary"><p>Write a new line to the output provider. Does nothing in quiet mode.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -537,11 +849,11 @@ command.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandBase_WriteLine_System_String_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandBase.WriteLine(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L111">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandBase.cs/#L136">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_CommandBase_WriteLine_" data-uid="Benday.CommandsFramework.CommandBase.WriteLine*"></a>
   <h4 id="Benday_CommandsFramework_CommandBase_WriteLine_System_String_" data-uid="Benday.CommandsFramework.CommandBase.WriteLine(System.String)">WriteLine(string)</h4>
-  <div class="markdown level1 summary"><p>Write a message to the output provider</p>
+  <div class="markdown level1 summary"><p>Write a message to the output provider. Does nothing in quiet mode.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>

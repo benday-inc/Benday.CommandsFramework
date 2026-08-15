@@ -98,6 +98,24 @@ This class <em>should</em> be named CommandExecutionInfoFactory and will be rena
       <h4><a class="xref" href="Benday.CommandsFramework.BooleanArgument.html">BooleanArgument</a></h4>
       <section><p>Argument implementation for working with boolean values</p>
 </section>
+      <h4><a class="xref" href="Benday.CommandsFramework.CommandAliasAttribute.html">CommandAliasAttribute</a></h4>
+      <section><p>Add this attribute to a command class to create an alternate name for the command
+that also supplies argument values. This is useful for creating a shortcut for a
+command that is usually run with the same set of arguments.</p>
+<pre><code class="lang-csharp">[Command(Name = "deploy")]
+[CommandAlias("deploy-prod", "environment=production", "verbose=true",
+    Description = "Deploy to production")]
+public class DeployCommand : SynchronousCommand</code></pre>
+<p>The argument values are applied as though they had been typed on the command line,
+so anything actually supplied on the command line wins over them. The resulting
+order of precedence is: command line, then alias, then configuration, then the
+argument's default value.</p>
+</section>
+      <h4><a class="xref" href="Benday.CommandsFramework.CommandAliasInfo.html">CommandAliasInfo</a></h4>
+      <section><p>A single alternate name for a command. This covers both the plain aliases declared
+by CommandAttribute.Aliases and the aliases declared by CommandAliasAttribute, which
+also supply argument values.</p>
+</section>
       <h4><a class="xref" href="Benday.CommandsFramework.CommandAttribute.html">CommandAttribute</a></h4>
       <section><p>Add this attribute to a class to indicate that the class contains a command that
 is runnable through the commands framework. This attribute provides information
@@ -122,6 +140,9 @@ types in an assembly.</p>
       <section><p>Information about a command including name, description, and
 required/optional arguments.</p>
 </section>
+      <h4><a class="xref" href="Benday.CommandsFramework.CommandsApp.html">CommandsApp</a></h4>
+      <section><p>Builder for creating and running a CommandsFramework application with simplified DI setup.</p>
+</section>
       <h4><a class="xref" href="Benday.CommandsFramework.ConfigurationData.html">ConfigurationData</a></h4>
       <section></section>
       <h4><a class="xref" href="Benday.CommandsFramework.ConsoleTextOutputProvider.html">ConsoleTextOutputProvider</a></h4>
@@ -138,7 +159,9 @@ the list of available commands and usage information is displayed.</p>
       <h4><a class="xref" href="Benday.CommandsFramework.DefaultProgramOptions.html">DefaultProgramOptions</a></h4>
       <section></section>
       <h4><a class="xref" href="Benday.CommandsFramework.DependencyInjectionCommand.html">DependencyInjectionCommand</a></h4>
-      <section><p>Base class for commands that use dependency injection.</p>
+      <section><p>Base class for commands that use dependency injection.
+The service collection is validated lazily when services are first accessed,
+allowing commands to be instantiated for schema discovery without DI configuration.</p>
 </section>
       <h4><a class="xref" href="Benday.CommandsFramework.DirectoryArgument.html">DirectoryArgument</a></h4>
       <section></section>

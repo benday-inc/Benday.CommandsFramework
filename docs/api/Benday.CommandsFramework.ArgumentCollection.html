@@ -125,7 +125,7 @@ populated from the command line.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_ArgumentCollection__ctor.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.ArgumentCollection.%23ctor%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L19">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L45">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_ArgumentCollection__ctor_" data-uid="Benday.CommandsFramework.ArgumentCollection.#ctor*"></a>
   <h4 id="Benday_CommandsFramework_ArgumentCollection__ctor" data-uid="Benday.CommandsFramework.ArgumentCollection.#ctor">ArgumentCollection()</h4>
@@ -141,7 +141,7 @@ populated from the command line.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_ArgumentCollection__ctor_System_Collections_Generic_Dictionary_System_String_Benday_CommandsFramework_IArgument__.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.ArgumentCollection.%23ctor(System.Collections.Generic.Dictionary%7BSystem.String%2CBenday.CommandsFramework.IArgument%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L61">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L87">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_ArgumentCollection__ctor_" data-uid="Benday.CommandsFramework.ArgumentCollection.#ctor*"></a>
   <h4 id="Benday_CommandsFramework_ArgumentCollection__ctor_System_Collections_Generic_Dictionary_System_String_Benday_CommandsFramework_IArgument__" data-uid="Benday.CommandsFramework.ArgumentCollection.#ctor(System.Collections.Generic.Dictionary{System.String,Benday.CommandsFramework.IArgument})">ArgumentCollection(Dictionary&lt;string, IArgument&gt;)</h4>
@@ -191,7 +191,7 @@ arguments in the supplied dictionary.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_ArgumentCollection__ctor_System_Collections_Generic_Dictionary_System_String_System_String__.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.ArgumentCollection.%23ctor(System.Collections.Generic.Dictionary%7BSystem.String%2CSystem.String%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L31">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L57">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_ArgumentCollection__ctor_" data-uid="Benday.CommandsFramework.ArgumentCollection.#ctor*"></a>
   <h4 id="Benday_CommandsFramework_ArgumentCollection__ctor_System_Collections_Generic_Dictionary_System_String_System_String__" data-uid="Benday.CommandsFramework.ArgumentCollection.#ctor(System.Collections.Generic.Dictionary{System.String,System.String})">ArgumentCollection(Dictionary&lt;string, string&gt;)</h4>
@@ -240,6 +240,40 @@ string arguments and values from the supplied dictionary.</p>
       </tr>
     </tbody>
   </table>
+  <h3 id="fields">Fields
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_ArgumentCollection_ArgumentNameComparer.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.ArgumentCollection.ArgumentNameComparer%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L31">View Source</a>
+  </span>
+  <h4 id="Benday_CommandsFramework_ArgumentCollection_ArgumentNameComparer" data-uid="Benday.CommandsFramework.ArgumentCollection.ArgumentNameComparer">ArgumentNameComparer</h4>
+  <div class="markdown level1 summary"><p>Comparer used to match argument names and aliases supplied on the command line
+against the argument definitions for a command. Argument names are matched without
+regard to case, so '/Verbose', '/verbose' and '/VERBOSE' all reach the same argument.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly StringComparer ArgumentNameComparer</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.stringcomparer">StringComparer</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="properties">Properties
 </h3>
   <span class="small pull-right mobile-hide">
@@ -247,7 +281,7 @@ string arguments and values from the supplied dictionary.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_ArgumentCollection_Count.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.ArgumentCollection.Count%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L207">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L237">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_ArgumentCollection_Count_" data-uid="Benday.CommandsFramework.ArgumentCollection.Count*"></a>
   <h4 id="Benday_CommandsFramework_ArgumentCollection_Count" data-uid="Benday.CommandsFramework.ArgumentCollection.Count">Count</h4>
@@ -278,7 +312,7 @@ string arguments and values from the supplied dictionary.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_ArgumentCollection_Item_System_String_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.ArgumentCollection.Item(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L199">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L229">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_ArgumentCollection_Item_" data-uid="Benday.CommandsFramework.ArgumentCollection.Item*"></a>
   <h4 id="Benday_CommandsFramework_ArgumentCollection_Item_System_String_" data-uid="Benday.CommandsFramework.ArgumentCollection.Item(System.String)">this[string]</h4>
@@ -328,7 +362,7 @@ string arguments and values from the supplied dictionary.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_ArgumentCollection_Keys.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.ArgumentCollection.Keys%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L119">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L145">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_ArgumentCollection_Keys_" data-uid="Benday.CommandsFramework.ArgumentCollection.Keys*"></a>
   <h4 id="Benday_CommandsFramework_ArgumentCollection_Keys" data-uid="Benday.CommandsFramework.ArgumentCollection.Keys">Keys</h4>
@@ -354,6 +388,39 @@ string arguments and values from the supplied dictionary.</p>
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_ArgumentCollection_UnrecognizedKeys.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.ArgumentCollection.UnrecognizedKeys%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L40">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_ArgumentCollection_UnrecognizedKeys_" data-uid="Benday.CommandsFramework.ArgumentCollection.UnrecognizedKeys*"></a>
+  <h4 id="Benday_CommandsFramework_ArgumentCollection_UnrecognizedKeys" data-uid="Benday.CommandsFramework.ArgumentCollection.UnrecognizedKeys">UnrecognizedKeys</h4>
+  <div class="markdown level1 summary"><p>Argument keys supplied on the command line that were not recognized by this command's
+argument definitions. Populated during SetValues(). Use this to detect typos or
+unsupported arguments.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;string&gt; UnrecognizedKeys { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
 </h3>
   <span class="small pull-right mobile-hide">
@@ -361,7 +428,7 @@ string arguments and values from the supplied dictionary.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_ArgumentCollection_Add_System_String_Benday_CommandsFramework_IArgument_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.ArgumentCollection.Add(System.String%2CBenday.CommandsFramework.IArgument)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L97">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L123">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_ArgumentCollection_Add_" data-uid="Benday.CommandsFramework.ArgumentCollection.Add*"></a>
   <h4 id="Benday_CommandsFramework_ArgumentCollection_Add_System_String_Benday_CommandsFramework_IArgument_" data-uid="Benday.CommandsFramework.ArgumentCollection.Add(System.String,Benday.CommandsFramework.IArgument)">Add(string, IArgument)</h4>
@@ -401,7 +468,7 @@ string arguments and values from the supplied dictionary.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_ArgumentCollection_Add_System_String_System_String_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.ArgumentCollection.Add(System.String%2CSystem.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L85">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L111">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_ArgumentCollection_Add_" data-uid="Benday.CommandsFramework.ArgumentCollection.Add*"></a>
   <h4 id="Benday_CommandsFramework_ArgumentCollection_Add_System_String_System_String_" data-uid="Benday.CommandsFramework.ArgumentCollection.Add(System.String,System.String)">Add(string, string)</h4>
@@ -441,7 +508,7 @@ string arguments and values from the supplied dictionary.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_ArgumentCollection_ContainsKey_System_String_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.ArgumentCollection.ContainsKey(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L129">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L155">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_ArgumentCollection_ContainsKey_" data-uid="Benday.CommandsFramework.ArgumentCollection.ContainsKey*"></a>
   <h4 id="Benday_CommandsFramework_ArgumentCollection_ContainsKey_System_String_" data-uid="Benday.CommandsFramework.ArgumentCollection.ContainsKey(System.String)">ContainsKey(string)</h4>
@@ -491,7 +558,7 @@ string arguments and values from the supplied dictionary.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_ArgumentCollection_GetEnumerator.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.ArgumentCollection.GetEnumerator%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L180">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L210">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_ArgumentCollection_GetEnumerator_" data-uid="Benday.CommandsFramework.ArgumentCollection.GetEnumerator*"></a>
   <h4 id="Benday_CommandsFramework_ArgumentCollection_GetEnumerator" data-uid="Benday.CommandsFramework.ArgumentCollection.GetEnumerator">GetEnumerator()</h4>
@@ -523,7 +590,7 @@ string arguments and values from the supplied dictionary.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_ArgumentCollection_Remove_System_String_.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.ArgumentCollection.Remove(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L111">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L137">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_ArgumentCollection_Remove_" data-uid="Benday.CommandsFramework.ArgumentCollection.Remove*"></a>
   <h4 id="Benday_CommandsFramework_ArgumentCollection_Remove_System_String_" data-uid="Benday.CommandsFramework.ArgumentCollection.Remove(System.String)">Remove(string)</h4>
@@ -557,7 +624,7 @@ string arguments and values from the supplied dictionary.</p>
     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_ArgumentCollection_SetValues_System_Collections_Generic_Dictionary_System_String_System_String__.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.ArgumentCollection.SetValues(System.Collections.Generic.Dictionary%7BSystem.String%2CSystem.String%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L141">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L167">View Source</a>
   </span>
   <a id="Benday_CommandsFramework_ArgumentCollection_SetValues_" data-uid="Benday.CommandsFramework.ArgumentCollection.SetValues*"></a>
   <h4 id="Benday_CommandsFramework_ArgumentCollection_SetValues_System_Collections_Generic_Dictionary_System_String_System_String__" data-uid="Benday.CommandsFramework.ArgumentCollection.SetValues(System.Collections.Generic.Dictionary{System.String,System.String})">SetValues(Dictionary&lt;string, string&gt;)</h4>
@@ -662,7 +729,7 @@ the arguments from the command line.</p>
                     <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_ArgumentCollection.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.ArgumentCollection%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
                   </li>
                   <li>
-                    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L12" class="contribution-link">View Source</a>
+                    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/ArgumentCollection.cs/#L15" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

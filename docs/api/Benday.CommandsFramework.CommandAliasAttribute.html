@@ -5,11 +5,11 @@
   <head>
     <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-      <title>Class CommandAttribute </title>
+      <title>Class CommandAliasAttribute </title>
       <meta name="viewport" content="width=device-width">
-      <meta name="title" content="Class CommandAttribute ">
+      <meta name="title" content="Class CommandAliasAttribute ">
     
-    <meta name="description" content="Add this attribute to a class to indicate that the class contains a command that is runnable through the commands framework. This attribute provides information about the command name, whether it uses async execution, and optionally the human readable description.">
+    <meta name="description" content="Add this attribute to a command class to create an alternate name for the command that also supplies argument values. This is useful for creating a shortcut for a command that is usually run with the same set of arguments. [Command(Name = &quot;deploy&quot;)] [CommandAlias(&quot;deploy-prod&quot;, &quot;environment=production&quot;, &quot;verbose=true&quot;,     Description = &quot;Deploy to production&quot;)] public class DeployCommand : SynchronousCommand The argument values are applied as though they had been typed on the command line, so anything actually supplied on the command line wins over them. The resulting order of precedence is: command line, then alias, then configuration, then the argument&#39;s default value.">
       <link rel="shortcut icon" href="../favicon.ico">
       <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
       <link rel="stylesheet" href="../styles/docfx.css">
@@ -67,22 +67,29 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Benday.CommandsFramework.CommandAttribute">
+            <article class="content wrap" id="_content" data-uid="Benday.CommandsFramework.CommandAliasAttribute">
 
 
 
-  <h1 id="Benday_CommandsFramework_CommandAttribute" data-uid="Benday.CommandsFramework.CommandAttribute" class="text-break">Class CommandAttribute</h1>
-  <div class="markdown level0 summary"><p>Add this attribute to a class to indicate that the class contains a command that
-is runnable through the commands framework. This attribute provides information
-about the command name, whether it uses async execution, and optionally the human
-readable description.</p>
+  <h1 id="Benday_CommandsFramework_CommandAliasAttribute" data-uid="Benday.CommandsFramework.CommandAliasAttribute" class="text-break">Class CommandAliasAttribute</h1>
+  <div class="markdown level0 summary"><p>Add this attribute to a command class to create an alternate name for the command
+that also supplies argument values. This is useful for creating a shortcut for a
+command that is usually run with the same set of arguments.</p>
+<pre><code class="lang-csharp">[Command(Name = "deploy")]
+[CommandAlias("deploy-prod", "environment=production", "verbose=true",
+    Description = "Deploy to production")]
+public class DeployCommand : SynchronousCommand</code></pre>
+<p>The argument values are applied as though they had been typed on the command line,
+so anything actually supplied on the command line wins over them. The resulting
+order of precedence is: command line, then alias, then configuration, then the
+argument's default value.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
     <div class="level1"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.attribute">Attribute</a></div>
-    <div class="level2"><span class="xref">CommandAttribute</span></div>
+    <div class="level2"><span class="xref">CommandAliasAttribute</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -215,33 +222,72 @@ readable description.</p>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Benday.html">Benday</a>.<a class="xref" href="Benday.CommandsFramework.html">CommandsFramework</a></h6>
   <h6><strong>Assembly</strong>: Benday.CommandsFramework.dll</h6>
-  <h5 id="Benday_CommandsFramework_CommandAttribute_syntax">Syntax</h5>
+  <h5 id="Benday_CommandsFramework_CommandAliasAttribute_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[AttributeUsage(AttributeTargets.Class)]
-public class CommandAttribute : Attribute</code></pre>
+    <pre><code class="lang-csharp hljs">[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+public class CommandAliasAttribute : Attribute</code></pre>
   </div>
-  <h3 id="properties">Properties
+  <h3 id="constructors">Constructors
 </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandAttribute_Aliases.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandAttribute.Aliases%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandAliasAttribute__ctor_System_String_System_String___.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandAliasAttribute.%23ctor(System.String%2CSystem.String%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandAttribute.cs/#L41">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandAliasAttribute.cs/#L28">View Source</a>
   </span>
-  <a id="Benday_CommandsFramework_CommandAttribute_Aliases_" data-uid="Benday.CommandsFramework.CommandAttribute.Aliases*"></a>
-  <h4 id="Benday_CommandsFramework_CommandAttribute_Aliases" data-uid="Benday.CommandsFramework.CommandAttribute.Aliases">Aliases</h4>
-  <div class="markdown level1 summary"><p>Alternate names that can be used on the command line in place of Name. This is
-useful for providing a short form of a long command name, for example 'mc' as an
-alias for 'my-super-long-command-name'.
-Aliases are resolved to the real command name before the command runs, so the rest
-of the framework only ever sees Name. Real command names always take precedence
-over aliases.</p>
+  <a id="Benday_CommandsFramework_CommandAliasAttribute__ctor_" data-uid="Benday.CommandsFramework.CommandAliasAttribute.#ctor*"></a>
+  <h4 id="Benday_CommandsFramework_CommandAliasAttribute__ctor_System_String_System_String___" data-uid="Benday.CommandsFramework.CommandAliasAttribute.#ctor(System.String,System.String[])">CommandAliasAttribute(string, params string[])</h4>
+  <div class="markdown level1 summary"><p>Constructor</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string[] Aliases { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public CommandAliasAttribute(string name, params string[] arguments)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The alias that gets typed on the command line</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>[]</td>
+        <td><span class="parametername">arguments</span></td>
+        <td><p>Argument values supplied by this alias, each in
+'name=value' form. An entry with no '=' is treated as an argument with an empty
+value, which is how flag style boolean arguments are supplied.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandAliasAttribute_Arguments.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandAliasAttribute.Arguments%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandAliasAttribute.cs/#L42">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_CommandAliasAttribute_Arguments_" data-uid="Benday.CommandsFramework.CommandAliasAttribute.Arguments*"></a>
+  <h4 id="Benday_CommandsFramework_CommandAliasAttribute_Arguments" data-uid="Benday.CommandsFramework.CommandAliasAttribute.Arguments">Arguments</h4>
+  <div class="markdown level1 summary"><p>Argument values supplied by this alias, each in 'name=value' form.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string[] Arguments { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-condensed">
@@ -260,45 +306,15 @@ over aliases.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandAttribute_Category.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandAttribute.Category%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandAliasAttribute_Description.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandAliasAttribute.Description%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandAttribute.cs/#L31">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandAliasAttribute.cs/#L48">View Source</a>
   </span>
-  <a id="Benday_CommandsFramework_CommandAttribute_Category_" data-uid="Benday.CommandsFramework.CommandAttribute.Category*"></a>
-  <h4 id="Benday_CommandsFramework_CommandAttribute_Category" data-uid="Benday.CommandsFramework.CommandAttribute.Category">Category</h4>
-  <div class="markdown level1 summary"><p>Category for the command. This is used to group commands together in the help output.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string Category { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandAttribute_Description.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandAttribute.Description%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandAttribute.cs/#L26">View Source</a>
-  </span>
-  <a id="Benday_CommandsFramework_CommandAttribute_Description_" data-uid="Benday.CommandsFramework.CommandAttribute.Description*"></a>
-  <h4 id="Benday_CommandsFramework_CommandAttribute_Description" data-uid="Benday.CommandsFramework.CommandAttribute.Description">Description</h4>
-  <div class="markdown level1 summary"><p>Human readable description of the command.</p>
+  <a id="Benday_CommandsFramework_CommandAliasAttribute_Description_" data-uid="Benday.CommandsFramework.CommandAliasAttribute.Description*"></a>
+  <h4 id="Benday_CommandsFramework_CommandAliasAttribute_Description" data-uid="Benday.CommandsFramework.CommandAliasAttribute.Description">Description</h4>
+  <div class="markdown level1 summary"><p>Human readable description of what this alias does. Shown in the list of
+available command aliases.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
@@ -322,51 +338,19 @@ over aliases.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandAttribute_IsAsync.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandAttribute.IsAsync%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandAliasAttribute_Name.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandAliasAttribute.Name%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandAttribute.cs/#L21">View Source</a>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandAliasAttribute.cs/#L37">View Source</a>
   </span>
-  <a id="Benday_CommandsFramework_CommandAttribute_IsAsync_" data-uid="Benday.CommandsFramework.CommandAttribute.IsAsync*"></a>
-  <h4 id="Benday_CommandsFramework_CommandAttribute_IsAsync" data-uid="Benday.CommandsFramework.CommandAttribute.IsAsync">IsAsync</h4>
-  <div class="markdown level1 summary"><p>True if this command should be run in async mode</p>
+  <a id="Benday_CommandsFramework_CommandAliasAttribute_Name_" data-uid="Benday.CommandsFramework.CommandAliasAttribute.Name*"></a>
+  <h4 id="Benday_CommandsFramework_CommandAliasAttribute_Name" data-uid="Benday.CommandsFramework.CommandAliasAttribute.Name">Name</h4>
+  <div class="markdown level1 summary"><p>The alias that gets typed on the command line in place of the command name.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="declaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsAsync { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandAttribute_Name.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandAttribute.Name%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandAttribute.cs/#L16">View Source</a>
-  </span>
-  <a id="Benday_CommandsFramework_CommandAttribute_Name_" data-uid="Benday.CommandsFramework.CommandAttribute.Name*"></a>
-  <h4 id="Benday_CommandsFramework_CommandAttribute_Name" data-uid="Benday.CommandsFramework.CommandAttribute.Name">Name</h4>
-  <div class="markdown level1 summary"><p>Name of command. This is the command argument (arg[0]) from the command line.
-This value is used to locate the command to be instantiated and run.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string Name { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string Name { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-condensed">
@@ -383,6 +367,40 @@ This value is used to locate the command to be instantiated and run.</p>
       </tr>
     </tbody>
   </table>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandAliasAttribute_GetArgumentValues.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandAliasAttribute.GetArgumentValues%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandAliasAttribute.cs/#L54">View Source</a>
+  </span>
+  <a id="Benday_CommandsFramework_CommandAliasAttribute_GetArgumentValues_" data-uid="Benday.CommandsFramework.CommandAliasAttribute.GetArgumentValues*"></a>
+  <h4 id="Benday_CommandsFramework_CommandAliasAttribute_GetArgumentValues" data-uid="Benday.CommandsFramework.CommandAliasAttribute.GetArgumentValues">GetArgumentValues()</h4>
+  <div class="markdown level1 summary"><p>Parses the 'name=value' entries in Arguments into argument names and values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Dictionary&lt;string, string&gt; GetArgumentValues()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</td>
+        <td><p>Argument names and values supplied by this alias</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
 
 </article>
           </div>
@@ -392,10 +410,10 @@ This value is used to locate the command to be instantiated and run.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandAttribute.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandAttribute%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
+                    <a href="https://github.com/benday-inc/Benday.CommandsFramework/new/main/apiSpec/new?filename=Benday_CommandsFramework_CommandAliasAttribute.md&amp;value=---%0Auid%3A%20Benday.CommandsFramework.CommandAliasAttribute%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
                   </li>
                   <li>
-                    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandAttribute.cs/#L9" class="contribution-link">View Source</a>
+                    <a href="https://github.com/benday-inc/Benday.CommandsFramework/blob/main/src/Benday.CommandsFramework/CommandAliasAttribute.cs/#L18" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
