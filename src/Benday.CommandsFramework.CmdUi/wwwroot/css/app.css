@@ -207,6 +207,50 @@ form {
     margin-top: 0.2rem;
 }
 
+.field-default {
+    font-style: italic;
+    opacity: 0.85;
+}
+
+.command-aliases {
+    margin: 0 0 1rem 0;
+    padding: 0.6rem 0.8rem;
+    border-left: 3px solid #b8bcd0;
+    background: #f5f6fa;
+    font-size: 0.85rem;
+}
+
+.command-aliases-title {
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+}
+
+.command-aliases ul {
+    margin: 0;
+    padding-left: 1.1rem;
+}
+
+.command-alias-name {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-weight: 600;
+}
+
+.command-alias-args {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    color: #7c7f93;
+}
+
+.alias-chip {
+    display: inline-block;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.75rem;
+    background: #eceef6;
+    color: #55596e;
+    border-radius: 3px;
+    padding: 0.05rem 0.35rem;
+    margin-left: 0.3rem;
+}
+
 .form-actions {
     margin-top: 1.5rem;
     display: flex;

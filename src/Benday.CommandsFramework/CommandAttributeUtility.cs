@@ -591,6 +591,8 @@ public class CommandAttributeUtility
 
     private void PopulateUsages(Assembly asm, List<CommandAttribute> attributes, List<CommandInfo> returnValues)
     {
+        var aliases = GetCommandAliases(asm);
+
         foreach (var item in attributes)
         {
             var info = new CommandInfo();
@@ -600,6 +602,12 @@ public class CommandAttributeUtility
             info.IsAsync = item.IsAsync;
             info.Category = item.Category;
             info.Aliases = item.Aliases;
+
+            // aliases that also supply argument values are reported separately so that
+            // tooling can tell a plain rename apart from a preset
+            info.CommandAliases = aliases
+                .Where(x => x.CommandName == item.Name && x.HasArguments)
+                .ToList();
 
             var command = GetCommand(
                 new[] { item.Name, ArgumentFrameworkConstants.ArgumentHelpString },

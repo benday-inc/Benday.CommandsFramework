@@ -87,4 +87,14 @@
     {
         <small class="field-help">@Argument.Description</small>
     }
+
+    @if (Argument.HasDefaultValue && !string.IsNullOrWhiteSpace(Argument.DefaultValue))
+    {
+        <small class="field-help field-default">Default: @Argument.DefaultValue</small>
+    }
+
+    @if (Argument.IsFromConfig)
+    {
+        <small class="field-help field-default">Comes from this tool's saved configuration. Anything entered here overrides it.</small>
+    }
 </div>

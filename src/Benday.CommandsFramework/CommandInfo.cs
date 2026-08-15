@@ -13,7 +13,14 @@ public class CommandInfo
 
     /// <summary>
     /// Alternate names that can be used on the command line in place of Name.
+    /// These come from CommandAttribute.Aliases and are plain renames.
     /// </summary>
     public string[] Aliases { get; internal set; } = [];
+
+    /// <summary>
+    /// Aliases that supply argument values in addition to renaming the command.
+    /// These come from CommandAliasAttribute.
+    /// </summary>
+    public List<CommandAliasInfo> CommandAliases { get; internal set; } = new();
     public ArgumentCollection Arguments { get; internal set; } = new ArgumentCollection();
 }

@@ -3,10 +3,39 @@
 @inject ToolSchemaService SchemaService
 @inject CommandExecutionService ExecutionService
 
-<h1>@_command?.Name</h1>
+<h1>
+    @_command?.Name
+    @if (_command?.Aliases is { Length: > 0 })
+    {
+        @foreach (var alias in _command.Aliases)
+        {
+            <span class="alias-chip" title="Alternate name for this command">@alias</span>
+        }
+    }
+</h1>
 @if (_command != null)
 {
     <p class="command-description">@_command.Description</p>
+
+    @if (_command.CommandAliases.Count > 0)
+    {
+        <div class="command-aliases">
+            <div class="command-aliases-title">Shortcuts that preset arguments</div>
+            <ul>
+                @foreach (var alias in _command.CommandAliases.OrderBy(x => x.Alias))
+                {
+                    <li>
+                        <span class="command-alias-name">@alias.Alias</span>
+                        @if (!string.IsNullOrWhiteSpace(alias.Description))
+                        {
+                            <text> — @alias.Description</text>
+                        }
+                        <span class="command-alias-args"> (@FormatAliasArguments(alias))</span>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
 
     <form @onsubmit="ExecuteCommand">
         <fieldset disabled="@_isExecuting">
@@ -102,6 +131,10 @@ else if (_error != null)
             _isLoading = false;
         }
     }
+
+    private static string FormatAliasArguments(ToolCommandAliasInfo alias) =>
+        string.Join(" ", alias.Arguments.Select(
+            x => string.IsNullOrEmpty(x.Value) ? $"/{x.Key}" : $"/{x.Key}:{x.Value}"));
 
     private string GetValue(string name) =>
         _values.TryGetValue(name, out var val) ? val : string.Empty;

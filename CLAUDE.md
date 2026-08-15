@@ -159,6 +159,19 @@ singletons). Each command creates its own `IServiceScope`; `DependencyInjectionC
 - Skips itself during discovery to avoid recursion
 - 10-second timeout on schema probing
 - Static files served from assembly directory when installed as tool; via manifest in dev mode
+- `ToolSchemaService` sets `FileName = toolName`, so an **absolute path to a built binary works**
+  for local testing without installing a global tool:
+  `dotnet run --project src/Benday.CommandsFramework.CmdUi -- /abs/path/to/Tool`
+
+**Keeping cmdui in sync with the schema.** `Models/ToolCommandInfo.cs` and `Models/ToolArgumentInfo.cs`
+are hand-maintained mirrors of `CommandInfo` / `IArgument`. Deserialization ignores unknown JSON
+properties, so adding a property to the framework schema does **not** break cmdui — it silently goes
+missing in the UI. When adding anything to `IArgument` or `CommandInfo`, add the matching property here
+too.
+
+`CommandInfo` exposes the two alias kinds separately: `Aliases` (plain renames from
+`CommandAttribute.Aliases`) and `CommandAliases` (a `List<CommandAliasInfo>` for `[CommandAlias]`
+presets, populated in `PopulateUsages` by filtering `GetCommandAliases(asm)`).
 
 ## Build & Test
 ```bash

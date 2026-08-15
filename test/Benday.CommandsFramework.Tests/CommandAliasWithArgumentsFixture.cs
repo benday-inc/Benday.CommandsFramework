@@ -194,6 +194,43 @@ public class CommandAliasWithArgumentsFixture
     }
 
     [Fact]
+    public void GetAllCommandUsages_ReportsAliasesThatSupplyArguments()
+    {
+        // the --json schema is what cmdui and other tooling read, so aliases that supply
+        // argument values have to show up there and stay distinguishable from plain renames
+
+        // act
+        var usages = SystemUnderTest.GetAllCommandUsages(SampleAssembly);
+
+        // assert
+        var deploy = Assert.Single(usages, x => x.Name == ApplicationConstants.CommandName_Deploy);
+
+        Assert.Empty(deploy.Aliases);
+        Assert.Equal(2, deploy.CommandAliases.Count);
+
+        var prod = Assert.Single(deploy.CommandAliases,
+            x => x.Alias == ApplicationConstants.CommandAlias_DeployProd);
+
+        Assert.Equal("production", prod.Arguments["environment"]);
+        Assert.Equal(string.Empty, prod.Arguments["verbose"]);
+        Assert.Equal("Deploy to production with verbose output", prod.Description);
+    }
+
+    [Fact]
+    public void GetAllCommandUsages_PlainAliasesAreNotReportedAsArgumentSupplyingAliases()
+    {
+        // act
+        var usages = SystemUnderTest.GetAllCommandUsages(SampleAssembly);
+
+        // assert
+        var withPlainAliases = Assert.Single(usages,
+            x => x.Name == ApplicationConstants.CommandName_CommandWithCommandNameAliases);
+
+        Assert.Equal(new[] { "mc", "mycmd" }, withPlainAliases.Aliases);
+        Assert.Empty(withPlainAliases.CommandAliases);
+    }
+
+    [Fact]
     public void GetCommandAlias_ReturnsNullForARealCommandName()
     {
         // act
