@@ -166,8 +166,19 @@ dotnet run --project src/Benday.CommandsFramework.CmdUi -- slnutil   # test cmdu
 ```
 
 Tests are xunit.v3, which builds the test project as an executable running on Microsoft.Testing
-Platform. The test binary can also be run directly, which is the fallback if `dotnet test` reports
-"No test is available" (that happens when an older SDK routes the run through VSTest):
+Platform (MTP) rather than VSTest.
+
+**`global.json` is required for `dotnet test` to find any tests.** It sets
+`test.runner = "Microsoft.Testing.Platform"`, which is the .NET 10 SDK opt-in to the MTP-based
+`dotnet test`. Without it the run falls back to VSTest, which discovers zero tests in an MTP project
+**and still exits 0** — a green build that ran nothing. Don't delete that file. (It deliberately has
+no `sdk` section, so it does not pin the SDK version.)
+
+Gotcha: in MTP mode, non-build flags are forwarded to the test app, which rejects unknown ones.
+`--nologo` fails with `Unknown option '--nologo'`; `--configuration`, `--no-build`, `--verbosity`,
+`--framework` are fine. Exit codes: 0 pass, 2 test failure, 5 zero tests ran.
+
+The test binary can also be run directly:
 ```bash
 ./test/Benday.CommandsFramework.Tests/bin/Debug/net10.0/Benday.CommandsFramework.Tests
 ```
