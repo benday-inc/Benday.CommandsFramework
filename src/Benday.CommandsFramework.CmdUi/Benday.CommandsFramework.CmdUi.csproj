@@ -25,12 +25,13 @@
     <PackageIcon>bdc_mark_128_128.png</PackageIcon>
     <PackageTags>dotnet;cli;tool;blazor;ui;web;commands;commandsframework</PackageTags>
     <PackageReleaseNotes>
+v2.0.0 - Reads both the v4 schema (a bare array) and the v5 schema (an object with SchemaVersion), telling them apart from the root JSON token, so one copy of cmdui works with whatever mix of tools is installed. Says so and points at 'dotnet tool update' when a tool reports a schema version it does not understand, rather than guessing. Commands now carry their group.
 v1.2.0 - Added support for the Benday.CommandsFramework v4.19 schema. File and directory arguments now say so on the form, including whether the path has to already exist.
 v1.1.0 - Added support for the Benday.CommandsFramework v4.18 schema. Arguments now show their configured default value and indicate when they read from the tool's saved configuration. Commands now show their aliases, including the aliases that supply preset argument values.
 v1.0.0 - Initial release. Auto-generates web UI for CommandsFramework CLI tools with tool discovery, form-based command execution, and working directory selection.
     </PackageReleaseNotes>
 
-    <TheVersion>1.2.0</TheVersion>
+    <TheVersion>2.0.0</TheVersion>
     <AssemblyVersion>$(TheVersion).0</AssemblyVersion>
     <Version>$(TheVersion)</Version>
   </PropertyGroup>

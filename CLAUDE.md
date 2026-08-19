@@ -104,11 +104,48 @@ two name `IArgument` again in their base list. Without that, the interface mappi
 `Argument<T>` wins and a file argument still reports `None`. Nothing switches on `DataType`
 differently as a result; anything that wants to know a path from a string reads `PathType`.
 
+### Schema Envelope
+`--json` writes a `CommandSchema` object: `SchemaVersion`, `ApplicationName`, `ApplicationVersion`,
+`Commands`. v4 wrote a bare array, so consumers discriminate on the **root JSON token alone** — no
+negotiation. `CommandFrameworkConstants.CurrentSchemaVersion` is the version;
+`ToolSchemaService.ParseSchema` in cmdui is the reference reader and refuses a version newer than it
+understands rather than guessing.
+
+The schema types **serialize but do not deserialize** — `CommandInfo`'s setters are internal and
+`Arguments` is a collection of an interface, so `JsonSerializer.Deserialize<CommandSchema>` hands
+back blank objects instead of throwing. Read a schema through mirror types, the way cmdui does.
+
 ### Built-in Keywords
 - `--help` — display usage
 - `--json` — dump full command schema as JSON (used by cmdui for auto-generating UI)
 - `gui` — launch `cmdui` for the current tool
 - `quiet` — reserved argument; suppresses `CommandBase.WriteLine()` output
+
+### Command Registry
+`CommandRegistry` is the single place commands are discovered. `CommandAttributeUtility.GetRegistry()`
+builds it once and caches it on `ICommandProgramOptions.CommandRegistry`; a cached registry is only
+reused when `WasBuiltFor(assembly, usesConfiguration)` agrees, since flipping `UsesConfiguration`
+changes whether the built-ins are registered.
+
+- Built-in configuration commands are **ordinary registrations**, marked `IsBuiltIn`. The
+  `UsesConfiguration` / `IsDefaultCommandName` routing that used to be decided three separate times
+  (twice in `DefaultProgram.Run()`, once in `GetCommand()`) is gone.
+- Keyed with `ArgumentCollection.ArgumentNameComparer`, so **command names and aliases are
+  case-insensitive** — the rule argument names have followed since v4.18.
+- `Resolve(tokens)` matches greedy longest-first and returns a `CommandResolution` carrying the
+  registration, the leftover tokens for the parser, the `PresetArguments` from a `[CommandAlias]`,
+  and `MatchedAs` (what was actually typed). Resolution no longer overwrites the typed name in place.
+- `CommandRegistration.Path` is a list so a `Group` can become the first segment
+  (`CommandAttribute.Group`, distinct from `Category` which is only a display heading). Multi-level
+  *dispatch* is not wired into `DefaultProgram` yet — that is FEAT-2.
+- `BuildFromTypes()` builds from an explicit type list; useful for tests that need a registry
+  without whatever else is in the assembly.
+
+**Two commands claiming the same name, or the same alias, throws `KnownException` when the registry
+is built.** Everything else that makes a command unreachable — an alias shadowed by a real name, a
+reserved-keyword collision, an empty alias, `[Command]` on a class that isn't a runnable
+`CommandBase` — lands on `CommandRegistry.Problems`, because one bad alias shouldn't stop the other
+63 commands running. Assert `Problems` is empty from a unit test.
 
 ### Command Aliases
 Two kinds, both resolved to the real command name at a single chokepoint before anything else reads

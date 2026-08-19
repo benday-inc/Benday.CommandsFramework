@@ -102,16 +102,28 @@ public class CommandNameAliasFixture
     }
 
     [Fact]
-    public void ResolveCommandName_IsCaseSensitive()
+    public void ResolveCommandName_IsNotCaseSensitive()
     {
-        // the rest of the framework matches command names with ordinal comparison, so
-        // alias resolution matches that behavior
+        // v5: the registry is keyed with ArgumentCollection.ArgumentNameComparer, so command
+        // names and aliases follow the same rule argument names have followed since v4.18.
+        // In v4 this returned null and 'MC' simply did not work.
 
         // act
         var actual = SystemUnderTest.ResolveCommandName(SampleAssembly, "MC");
 
         // assert
-        Assert.Null(actual);
+        Assert.Equal(ApplicationConstants.CommandName_CommandWithCommandNameAliases, actual);
+    }
+
+    [Fact]
+    public void ResolveCommandName_MatchesARealNameWithoutRegardToCase()
+    {
+        // act
+        var actual = SystemUnderTest.ResolveCommandName(
+            SampleAssembly, ApplicationConstants.CommandName_Command1.ToUpperInvariant());
+
+        // assert
+        Assert.Equal(ApplicationConstants.CommandName_Command1, actual);
     }
 
     [Fact]

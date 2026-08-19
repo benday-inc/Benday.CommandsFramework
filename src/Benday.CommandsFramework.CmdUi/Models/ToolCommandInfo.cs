@@ -5,7 +5,21 @@ public class ToolCommandInfo
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string Category { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Group this command belongs to, which is part of how the command is typed -- unlike
+    /// Category, which is only a display heading. Empty for a flat command name and for any
+    /// tool built against a framework version that predates it.
+    /// </summary>
+    public string Group { get; set; } = string.Empty;
+
     public bool IsAsync { get; set; }
+
+    /// <summary>
+    /// The command as it is typed, group included.
+    /// </summary>
+    public string PathAsString =>
+        string.IsNullOrWhiteSpace(Group) ? Name : $"{Group} {Name}";
 
     /// <summary>
     /// Alternate names that can be typed in place of Name. These are plain renames.

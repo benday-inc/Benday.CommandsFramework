@@ -88,99 +88,49 @@ public class DefaultProgram : ICommandProgram
                 }
                 else
                 {
-                    // resolve command aliases so that the assembly routing below works off
-                    // the real command name. args is deliberately left alone so that
-                    // GetCommand() can still see the alias that was typed and apply any
-                    // argument values that come with it.
-                    var resolvedCommandName = util.ResolveCommandName(ImplementationAssembly, args[0]);
+                    // one lookup. The built-in configuration commands are ordinary
+                    // registrations in the registry, so there is no assembly to route to and
+                    // no UsesConfiguration branch here -- that used to be decided three
+                    // separate times, once here, once again below, and once inside
+                    // GetCommand().
+                    var registration = util.GetRegistry(ImplementationAssembly).Find(args[0]);
 
-                    if (resolvedCommandName == null)
+                    if (registration is null)
                     {
-                        throw new KnownException(
-                                $"Invalid command name '{args[0]}'.");
+                        throw new KnownException($"Invalid command name '{args[0]}'.");
                     }
 
-                    CommandBase? command;
-
-                    if (Options.UsesConfiguration == false)
-                    {
-                        command = util.GetCommand(args, ImplementationAssembly);
-                    }
-                    else
-                    {
-                        if (IsDefaultCommandName(resolvedCommandName) == true)
-                        {
-                            command = util.GetCommand(args, this.GetType().Assembly);
-                        }
-                        else
-                        {
-                            command = util.GetCommand(args, ImplementationAssembly);
-                        }
-                    }
+                    var command = util.GetCommand(args, ImplementationAssembly);
 
                     if (command == null)
                     {
                         DisplayUsage(util);
                     }
+                    else if (registration.IsAsync == false)
+                    {
+                        var runThis = command as ISynchronousCommand;
+
+                        if (runThis == null)
+                        {
+                            throw new InvalidOperationException(
+                                $"Could not convert type to {typeof(ISynchronousCommand)}.");
+                        }
+
+                        runThis.Execute();
+                    }
                     else
                     {
-                        CommandAttribute? attr;
+                        var runThis = command as IAsyncCommand;
 
-                        if (Options.UsesConfiguration == false)
+                        if (runThis == null)
                         {
-                            attr = util.GetCommandAttributeForCommandName(ImplementationAssembly,
-                                                    command.ExecutionInfo.CommandName);
-                        }
-                        else
-                        {
-                            if (IsDefaultCommandName(command.ExecutionInfo.CommandName) == true)
-                            {
-                                attr = util.GetCommandAttributeForCommandName(this.GetType().Assembly,
-                                                    command.ExecutionInfo.CommandName);
-                            }
-                            else
-                            {
-                                attr = util.GetCommandAttributeForCommandName(ImplementationAssembly,
-                                                    command.ExecutionInfo.CommandName);
-                            }
+                            throw new InvalidOperationException(
+                                $"Could not convert type to {typeof(IAsyncCommand)}.");
                         }
 
-                        if (attr == null)
-                        {
-                            throw new KnownException(
-                                $"Invalid command name '{command.ExecutionInfo.CommandName}'.");
-                        }
-                        else
-                        {
-                            if (attr.IsAsync == false)
-                            {
-                                var runThis = command as ISynchronousCommand;
+                        var temp = runThis.ExecuteAsync().GetAwaiter();
 
-                                if (runThis == null)
-                                {
-                                    throw new InvalidOperationException($"Could not convert type to {typeof(ISynchronousCommand)}.");
-                                }
-                                else
-                                {
-                                    runThis.Execute();
-                                }
-                            }
-                            else
-                            {
-                                var runThis = command as IAsyncCommand;
-
-                                if (runThis == null)
-                                {
-                                    throw new InvalidOperationException($"Could not convert type to {typeof(IAsyncCommand)}.");
-                                }
-                                else
-                                {
-                                    var temp = runThis.ExecuteAsync().GetAwaiter();
-
-                                    temp.GetResult();
-                                }
-                            }
-                        }
+                        temp.GetResult();
                     }
                 }
             }
@@ -348,18 +298,6 @@ public class DefaultProgram : ICommandProgram
         });
 
         WriteLine(json);
-    }
-
-    private bool IsDefaultCommandName(string commandName)
-    {
-        var commandNames = new string[]
-        {
-            CommandFrameworkConstants.CommandName_GetConfig,
-            CommandFrameworkConstants.CommandName_SetConfig,
-            CommandFrameworkConstants.CommandName_RemoveConfig
-        };
-
-        return commandNames.Contains(commandName);
     }
 
     /// <summary>

@@ -15,13 +15,13 @@ public interface ICommandProgramOptions
     /// <summary>
     /// Where commands read text input from. The counterpart to OutputProvider.
     /// </summary>
-    /// <remarks>
-    /// This is a default interface member so that adding it does not break anything that
-    /// already implements ICommandProgramOptions. That also means it is read only here --
-    /// DefaultProgramOptions declares it as a settable property, which is what test code
-    /// and CommandsApp.ConfigureOptions() work with.
-    /// </remarks>
-    ITextInputProvider InputProvider { get => new ConsoleTextInputProvider(); }
+    ITextInputProvider InputProvider { get; set; }
+
+    /// <summary>
+    /// The set of commands this program can run. Built the first time it is needed and then
+    /// shared, the same way ServiceProvider is, so the assemblies are only scanned once.
+    /// </summary>
+    CommandRegistry? CommandRegistry { get; set; }
     IServiceCollection? ServiceCollection { get; set; }
 
     /// <summary>

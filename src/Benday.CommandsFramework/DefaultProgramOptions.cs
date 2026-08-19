@@ -36,6 +36,12 @@ public class DefaultProgramOptions : ICommandProgramOptions
     public ITextInputProvider InputProvider { get; set; } = new ConsoleTextInputProvider();
 
     /// <summary>
+    /// The set of commands this program can run. Populated the first time it is needed and
+    /// then shared by everything in the process, so the assemblies are only scanned once.
+    /// </summary>
+    public CommandRegistry? CommandRegistry { get; set; } = null;
+
+    /// <summary>
     /// Provides access to the service provider for dependency injection.
     /// This is entirely optional.
     /// </summary>

@@ -9,6 +9,12 @@ public class CommandInfo
     public string Name { get; internal set; } = string.Empty;
     public string Description { get; internal set; } = string.Empty;
     public string Category { get; internal set; } = string.Empty;
+
+    /// <summary>
+    /// Group this command belongs to, which is part of how the command is typed. Empty for
+    /// a flat command name. Unlike Category, which is only a display heading.
+    /// </summary>
+    public string Group { get; internal set; } = string.Empty;
     public bool IsAsync { get; internal set; }
 
     /// <summary>
