@@ -444,16 +444,21 @@ public class CommandAttributeUtility
                 $"Could not locate a command named '{execInfo.CommandName}'.");
         }
 
-        // everything downstream only ever deals with the real command name
-        execInfo.CommandName = resolution.Registration.Name;
-
         // argument values from an alias are added as though they had been typed on the
         // command line, so anything actually typed wins and the existing command line over
         // config over default order is unchanged
+        var arguments = new Dictionary<string, string>(
+            execInfo.Arguments, ArgumentCollection.ArgumentNameComparer);
+
         foreach (var argument in resolution.PresetArguments)
         {
-            execInfo.Arguments.TryAdd(argument.Key, argument.Value);
+            arguments.TryAdd(argument.Key, argument.Value);
         }
+
+        // everything downstream deals only in real command names, and what was actually
+        // typed survives on the request rather than being overwritten
+        execInfo.Request = new CommandCallRequest(
+            resolution.Registration.Name, arguments, resolution.MatchedAs);
 
         execInfo.Options = _ProgramOptions;
         execInfo.Configuration = new FileBasedConfigurationManager(
@@ -600,7 +605,7 @@ public class CommandAttributeUtility
 
         var execInfo = new CommandExecutionInfo
         {
-            CommandName = registration.Name,
+            Request = new CommandCallRequest(registration.Name),
             Options = _ProgramOptions,
             Configuration = new FileBasedConfigurationManager(
                 _ProgramOptions.ConfigurationFolderName)

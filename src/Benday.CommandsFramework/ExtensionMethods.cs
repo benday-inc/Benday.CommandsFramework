@@ -601,11 +601,10 @@ public static class ExtensionMethods
             argsClone.TryAdd(CommandFrameworkConstants.CommandArgName_QuietMode, "true");
         }
 
-        var returnValue = new CommandExecutionInfo();
-        returnValue.Arguments = argsClone;
-        returnValue.CommandName = commandName;
-
-        return returnValue;
+        return new CommandExecutionInfo
+        {
+            Request = new CommandCallRequest(commandName, argsClone)
+        };
     }
 
     public static string GetPathToFile(

@@ -376,7 +376,7 @@ public abstract class CommandBase : IDisposable
     /// <returns>The new command instance</returns>
     /// <exception cref="KnownException">Thrown when the command type cannot be used</exception>
     protected T CreateCommand<T>(
-        Action<Dictionary<string, string>>? configureArguments = null,
+        Action<CommandArgumentValues>? configureArguments = null,
         bool quiet = true) where T : CommandBase
     {
         var commandType = typeof(T);
@@ -398,9 +398,11 @@ public abstract class CommandBase : IDisposable
                 $"Type '{commandType.Name}' does not have a CommandAttribute so it cannot be run as a command.");
         }
 
-        var arguments = new Dictionary<string, string>(ArgumentCollection.ArgumentNameComparer);
+        var values = new CommandArgumentValues();
 
-        configureArguments?.Invoke(arguments);
+        configureArguments?.Invoke(values);
+
+        var arguments = values.Values;
 
         if (quiet == true)
         {
@@ -409,8 +411,7 @@ public abstract class CommandBase : IDisposable
 
         var info = new CommandExecutionInfo
         {
-            CommandName = attribute.Name,
-            Arguments = arguments,
+            Request = new CommandCallRequest(attribute.Name, arguments),
             Options = ExecutionInfo.Options,
             NestingDepth = ExecutionInfo.NestingDepth + 1
         };
@@ -459,7 +460,7 @@ public abstract class CommandBase : IDisposable
     /// <returns>The command instance after it has run</returns>
     /// <exception cref="KnownException">Thrown when the arguments for the command are not valid</exception>
     protected async Task<T> ExecuteCommandAsync<T>(
-        Action<Dictionary<string, string>>? configureArguments = null,
+        Action<CommandArgumentValues>? configureArguments = null,
         bool quiet = true,
         CancellationToken cancellationToken = default) where T : Command
     {

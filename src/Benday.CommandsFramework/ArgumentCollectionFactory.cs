@@ -19,17 +19,14 @@ public class ArgumentCollectionFactory
         if (input == null) throw new ArgumentNullException("input");
         if (input.Length == 0) throw new ArgumentOutOfRangeException("input");
 
-        var returnValue = new CommandExecutionInfo();
+        var arguments = input.Length > 1
+            ? GetArgsAsDictionary(input[1..], true)
+            : null;
 
-        returnValue.CommandName = input[0];
-
-        if (input.Length > 1)
+        return new CommandExecutionInfo
         {
-            returnValue.Arguments = GetArgsAsDictionary(input[1..], 
-                true);
-        }
-
-        return returnValue;
+            Request = new CommandCallRequest(input[0], arguments)
+        };
     }
 
     private int _PositionalArgCount = 0;

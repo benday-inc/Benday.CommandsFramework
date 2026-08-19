@@ -72,11 +72,11 @@ public class SharedServiceProviderFixture
         var options = GetOptions(outputProvider);
 
         var first = new CountingCommand(
-            new CommandExecutionInfo { CommandName = "counting-command", Options = options },
+            new CommandExecutionInfo { Request = new CommandCallRequest("counting-command"), Options = options },
             outputProvider);
 
         var second = new CountingCommand(
-            new CommandExecutionInfo { CommandName = "counting-command", Options = options },
+            new CommandExecutionInfo { Request = new CommandCallRequest("counting-command"), Options = options },
             outputProvider);
 
         // act
@@ -99,7 +99,7 @@ public class SharedServiceProviderFixture
         Assert.Null(options.ServiceProvider);
 
         var command = new CountingCommand(
-            new CommandExecutionInfo { CommandName = "counting-command", Options = options },
+            new CommandExecutionInfo { Request = new CommandCallRequest("counting-command"), Options = options },
             outputProvider);
 
         // act
@@ -117,14 +117,14 @@ public class SharedServiceProviderFixture
         var options = GetOptions(outputProvider);
 
         var first = new CountingCommand(
-            new CommandExecutionInfo { CommandName = "counting-command", Options = options },
+            new CommandExecutionInfo { Request = new CommandCallRequest("counting-command"), Options = options },
             outputProvider);
 
         await first.ExecuteAsync(TestContext.Current.CancellationToken);
         first.Dispose();
 
         var second = new CountingCommand(
-            new CommandExecutionInfo { CommandName = "counting-command", Options = options },
+            new CommandExecutionInfo { Request = new CommandCallRequest("counting-command"), Options = options },
             outputProvider);
 
         // act
@@ -150,7 +150,7 @@ public class SharedServiceProviderFixture
         };
 
         var command = new CountingCommand(
-            new CommandExecutionInfo { CommandName = "counting-command", Options = options },
+            new CommandExecutionInfo { Request = new CommandCallRequest("counting-command"), Options = options },
             outputProvider);
 
         // act

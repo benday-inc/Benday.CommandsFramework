@@ -185,6 +185,17 @@ between units of work. `ExecuteAsync` converts an `OperationCanceledException` i
 `CommandResult.Cancelled()` when the token was the cause, so cancelling *this command* does not have
 to mean stopping the process.
 
+### Request vs Context
+`CommandExecutionInfo` is the *context* — ambient `Options`, `Configuration`, and the framework's
+`NestingDepth`. What was asked for lives on `CommandExecutionInfo.Request`, a **`CommandCallRequest`**
+holding `CommandName` (the real name), `RequestedName` (what was typed — the alias, if one was used),
+`WasMatchedByAlias`, and `Arguments`.
+
+The request is built, never mutated: alias resolution used to assign `CommandName` in place, which
+destroyed the only record of what the user wrote. `ExecutionInfo.CommandName` and
+`ExecutionInfo.Arguments` still read, forwarding to the request, so command code doesn't have to
+change all at once — but they are **get-only**, so anything that assigned them fails to compile.
+
 ### Calling Commands From Commands
 `CommandBase.CreateCommand<T>()` and `ExecuteCommandAsync<T>()` instantiate and run another command
 in process and return the instance so results can be read off it.
@@ -194,6 +205,9 @@ Expose results as public properties set in `OnExecute()`.
   needs to know the command didn't run.
 - `CommandExecutionInfo.NestingDepth` guards against A→B→A loops (`MaxCommandNestingDepth`).
 - There is no `ExecuteCommand<T>` any more — one base class means one method, `ExecuteCommandAsync<T>`.
+- Arguments are supplied through **`CommandArgumentValues`** (`Set(name, value)` overloads for
+  string/int/bool/DateTime, `SetFlag(name)`), not a raw `Dictionary<string, string>` — every caller
+  used to format its own values and got dates and booleans subtly wrong.
 
 ### Configuration
 `FromConfig()` arguments read from a stored config file, managed by built-in commands

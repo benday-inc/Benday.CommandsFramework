@@ -62,10 +62,9 @@ public class SampleAsyncCallerCommand : Command
 
     protected override async Task OnExecute(CancellationToken cancellationToken)
     {
-        var command = await ExecuteCommandAsync<SampleAsyncGreetingCommand>(args =>
-        {
-            args["name"] = Arguments.GetStringValue("name");
-        });
+        var command = await ExecuteCommandAsync<SampleAsyncGreetingCommand>(
+            args => args.Set("name", Arguments.GetStringValue("name")),
+            cancellationToken: cancellationToken);
 
         Greeting = command.Greeting;
 

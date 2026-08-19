@@ -39,6 +39,7 @@ are the definition of what applies.
 9. [9. `Program.cs` returns the exit code](#9-programcs-returns-the-exit-code)
 10. [10. `ExecuteCommand<T>` is now `ExecuteCommandAsync<T>`](#10-executecommandt-is-now-executecommandasynct)
 11. [11. Commands are created through `ActivatorUtilities`](#11-commands-are-created-through-activatorutilities)
+12. [12. The request is split out of `CommandExecutionInfo`](#12-the-request-is-split-out-of-commandexecutioninfo)
 
 ---
 
@@ -551,11 +552,81 @@ is enough.
 
 ---
 
+## 12. The request is split out of `CommandExecutionInfo`
+
+**Mechanical**, and the compiler finds every site that matters.
+
+`CommandExecutionInfo` conflated three things: what was asked for (name, arguments), the ambient
+services a command runs against (options, configuration), and the framework's own bookkeeping
+(`NestingDepth`). What was asked for is now a `CommandCallRequest` on
+`CommandExecutionInfo.Request`.
+
+`ExecutionInfo.CommandName` and `ExecutionInfo.Arguments` still **read**, forwarding to the request,
+so command bodies do not have to change. They are get-only, so anything that **assigned** them fails
+to compile — which is the point: alias resolution used to assign `CommandName` in place and destroy
+the record of what the user typed. That record is `Request.RequestedName` now.
+
+### Detect
+
+```bash
+grep -rn 'CommandName = \|\.Arguments = ' --include=*.cs . | grep -i 'executioninfo\|execinfo'
+grep -rn 'new CommandExecutionInfo' --include=*.cs .
+```
+
+### Change
+
+```csharp
+// before
+var info = new CommandExecutionInfo
+{
+    CommandName = "greet",
+    Arguments = arguments,
+    Options = options
+};
+
+// after
+var info = new CommandExecutionInfo
+{
+    Request = new CommandCallRequest("greet", arguments),
+    Options = options
+};
+```
+
+Reading is unchanged — `ExecutionInfo.Arguments.GetStringValue(...)` and
+`ExecutionInfo.CommandName` still work.
+
+### `CommandArgumentValues` replaces the raw dictionary
+
+`CreateCommand<T>` and `ExecuteCommandAsync<T>` take a `CommandArgumentValues` builder rather than a
+`Dictionary<string, string>`. Every caller used to format its own values, and got dates and booleans
+subtly wrong, because the parser expects the same formats the command line uses.
+
+```csharp
+// before
+await ExecuteCommandAsync<OtherCommand>(args =>
+{
+    args["name"] = name;
+    args["count"] = count.ToString();
+    args["verbose"] = "true";
+});
+
+// after
+await ExecuteCommandAsync<OtherCommand>(args => args
+    .Set("name", name)
+    .Set("count", count)
+    .Set("verbose", true),
+    cancellationToken: cancellationToken);
+```
+
+`Set` has overloads for `string`, `int`, `bool` and `DateTime`; `SetFlag(name)` is the equivalent of
+typing `/name` with no value.
+
+---
+
 ## What has not landed yet
 
 These are planned for v5 and will get entries here as they land. Do not act on them yet.
 
-- `CommandCallRequest`, splitting the request from ambient services and bookkeeping.
 - Parser modes (`--arg value`, `--arg=value`, the deprecated `/arg:value`).
 - Multi-level commands (`mytool workitem list`).
 - Declarative validation rules.

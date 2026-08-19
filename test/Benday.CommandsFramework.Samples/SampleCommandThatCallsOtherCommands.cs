@@ -44,11 +44,11 @@ public class SampleCommandThatCallsOtherCommands : Command
         {
             var command = await ExecuteCommandAsync<SampleGreetingCommand>(args =>
             {
-                args["name"] = name;
+                args.Set("name", name);
 
                 if (string.IsNullOrEmpty(salutation) == false)
                 {
-                    args["salutation"] = salutation;
+                    args.Set("salutation", salutation);
                 }
             }, cancellationToken: cancellationToken);
 
