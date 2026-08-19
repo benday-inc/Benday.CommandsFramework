@@ -19,6 +19,28 @@ public interface IArgument
     ArgumentDataType DataType { get; }
 
     /// <summary>
+    /// Whether this argument's value is a path and, when it is, what kind of thing the
+    /// path points at. Defaults to None, which means the value is not a path.
+    /// </summary>
+    /// <remarks>
+    /// This is a default interface member so that adding it does not break anything that
+    /// already implements IArgument. Without it a file argument and a string argument
+    /// serialize to byte-identical JSON while validating differently on the same input,
+    /// which leaves cmdui and shell completion with no way to tell them apart.
+    /// </remarks>
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    ArgumentPathType PathType { get => ArgumentPathType.None; }
+
+    /// <summary>
+    /// For a file or directory argument, whether the path has to already exist in order
+    /// for the value to be valid. Always false when PathType is None.
+    /// </summary>
+    /// <remarks>
+    /// Default interface member, for the same reason as PathType.
+    /// </remarks>
+    bool MustExist { get => false; }
+
+    /// <summary>
     /// Human readable description for the argument
     /// </summary>
     string Description { get; }

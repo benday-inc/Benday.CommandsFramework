@@ -1,6 +1,16 @@
 ﻿namespace Benday.CommandsFramework;
 
-public class DirectoryArgument : StringArgument
+/// <summary>
+/// Argument implementation for working with paths to directorys.
+/// </summary>
+/// <remarks>
+/// IArgument is named again in the base list on purpose. PathType and MustExist are
+/// default interface members, and the interface mapping is established by Argument&lt;T&gt;,
+/// which has neither -- so without re-declaring the interface here these members would
+/// resolve to the interface defaults and the schema would still report this as a plain
+/// string argument.
+/// </remarks>
+public class DirectoryArgument : StringArgument, IArgument
 {
     public DirectoryArgument(string name) :
         base(name)
@@ -8,6 +18,12 @@ public class DirectoryArgument : StringArgument
     }
 
     public override ArgumentDataType DataType { get => ArgumentDataType.String; }
+
+    /// <summary>
+    /// This argument's value is a path to a directory.
+    /// </summary>
+    public ArgumentPathType PathType { get => ArgumentPathType.Directory; }
+
     protected override string GetDefaultValue()
     {
         return string.Empty;

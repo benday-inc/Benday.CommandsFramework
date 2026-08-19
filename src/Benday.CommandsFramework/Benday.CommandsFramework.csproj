@@ -16,10 +16,11 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageIcon>bdc_mark_128_128.png</PackageIcon>
         <PackageTags>dotnet;cli;command-line;arguments;parsing;commands;framework</PackageTags>
-        <TheVersion>4.18.0</TheVersion>
+        <TheVersion>4.19.0</TheVersion>
         <AssemblyVersion>$(TheVersion).0</AssemblyVersion>
         <Version>$(TheVersion)</Version>
         <PackageReleaseNotes>
+v4.19 - Fixed a bug where a class marked with CommandAttribute that was not a CommandBase was listed as an available command and then threw out of the --json schema dump, taking the whole dump down with it; A CommandAttribute on a class the framework cannot run is now reported by GetCommandNameProblems() instead of being silently skipped; Fixed AllowedValues being accepted on argument types that never enforced it -- allowed values are a string argument feature and setting them on any other argument type now throws instead of being silently ignored; The --json schema now includes PathType and MustExist on each argument, so a file or directory argument is finally distinguishable from a plain string argument;
 v4.18 - Argument names are now matched without regard to case, which fixes a bug where a flag style argument whose definition contained uppercase letters could never be set from the command line; Usage output now shows the configured default value for an argument, and IArgument exposes DefaultValue and HasDefaultValue; Added command name aliases via CommandAttribute.Aliases; Added CommandAliasAttribute for aliases that also supply argument values; Added CreateCommand/ExecuteCommand/ExecuteCommandAsync so commands can reuse other commands in process; The dependency injection service provider is now built once and shared by all commands instead of being rebuilt per command; The reserved 'quiet' argument now suppresses WriteLine() output; The --json schema now includes DefaultValue and HasDefaultValue on each argument plus Aliases and CommandAliases on each command; Fixed GetAvailableCommandNames() and GetAvailableCommandAttributes() returning the built-in configuration commands twice when asked about the framework assembly itself;
 v4.17 - Modified CsvWriter's SaveToFile() method to write a byte order marker by default with an option to skip the BOM;
 v4.16 - Added ConfigureConfiguration() method to CommandsApp builder for adding custom configuration sources (in-memory collections, additional JSON files, environment variables, etc.);

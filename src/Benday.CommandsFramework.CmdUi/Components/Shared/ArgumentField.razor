@@ -9,6 +9,31 @@
     private bool IsRequiredField =>
         Argument.IsRequired && !Argument.AllowEmptyValue;
 
+    // tools built against an older framework version do not report PathType at all, so
+    // this is empty for them and the field renders exactly as it did before
+    private string? PathHint
+    {
+        get
+        {
+            if (Argument.IsFile == true)
+            {
+                return Argument.MustExist == true ?
+                    "Path to a file that has to already exist." :
+                    "Path to a file. It does not have to exist yet.";
+            }
+            else if (Argument.IsDirectory == true)
+            {
+                return Argument.MustExist == true ?
+                    "Path to a directory that has to already exist." :
+                    "Path to a directory. It does not have to exist yet.";
+            }
+            else
+            {
+                return null;
+            }
+        }
+    }
+
     private async Task OnInput(ChangeEventArgs e)
     {
         await ValueChanged.InvokeAsync(e.Value?.ToString() ?? string.Empty);
@@ -86,6 +111,11 @@
     @if (!string.IsNullOrEmpty(Argument.Description))
     {
         <small class="field-help">@Argument.Description</small>
+    }
+
+    @if (PathHint is not null)
+    {
+        <small class="field-help field-default">@PathHint</small>
     }
 
     @if (Argument.HasDefaultValue && !string.IsNullOrWhiteSpace(Argument.DefaultValue))

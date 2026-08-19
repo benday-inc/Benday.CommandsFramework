@@ -14,7 +14,11 @@ Solution file is `Benday.CommandsFramework.slnx` (XML-based slnx format, not .sl
 ## Key Patterns
 
 ### Defining Commands
-Commands inherit from `SynchronousCommand`, `AsynchronousCommand`, or `DependencyInjectionCommand` and use the `[Command]` attribute:
+Commands inherit from `SynchronousCommand`, `AsynchronousCommand`, or `DependencyInjectionCommand` and use the `[Command]` attribute.
+`CommandAttributeUtility.IsCommandType()` is the single definition of what counts as a command — a
+concrete `CommandBase` subclass carrying the attribute — and every discovery path goes through it, so
+the list of commands shown to the user can never disagree with the list that can be instantiated.
+A `[Command]` class failing either half is skipped and reported by `GetCommandNameProblems()`:
 ```csharp
 [Command(Name = "mycommand", Description = "Does something", Category = "MyCategory")]
 public class MyCommand : SynchronousCommand
@@ -33,6 +37,12 @@ Fluent configuration methods live in `ExtensionMethods.cs`:
 `AsNotRequired()`, `AllowEmptyValue()`, `MustExist()` / `ExistenceOptional()` (file/dir only),
 `WithAllowedValues()` (string only — renders as a dropdown in cmdui), `FromPositionalArgument(n)`,
 `FromConfig()`.
+
+`AllowedValues` lives on `StringArgument`, which is the only argument type whose `Validate()`
+enforces it. `Argument<T>.AllowedValues` reads as empty and **throws `InvalidOperationException`
+when set**, so putting a list on an int or boolean argument fails loudly instead of shipping a
+dropdown in the schema that nothing enforces. `FileArgument` / `DirectoryArgument` derive from
+`StringArgument`, so they keep the feature.
 
 Ordering gotcha: methods declared on `Argument<T>` return `Argument<T>`, so type-specific methods like
 `WithAllowedValues()` (needs `StringArgument`) must come **first** in the chain, right after `AddString()`.
@@ -86,6 +96,14 @@ travels in the `--json` schema and becomes the form field label in cmdui
 `File.Exists`/`Directory.Exists` against `AbsolutePath`. `GetPathToFile()` / `GetPathToDirectory()`
 extension methods do the same resolution off the collection.
 
+Their `DataType` is `String` — parsing and conversion really are a string's. What sets them apart in
+the schema is `IArgument.PathType` (`ArgumentPathType.None` / `File` / `Directory`) and
+`IArgument.MustExist`. Both are **default interface members**, so adding them broke no existing
+implementor, and both are re-declared on `FileArgument` / `DirectoryArgument` — which is why those
+two name `IArgument` again in their base list. Without that, the interface mapping established by
+`Argument<T>` wins and a file argument still reports `None`. Nothing switches on `DataType`
+differently as a result; anything that wants to know a path from a string reads `PathType`.
+
 ### Built-in Keywords
 - `--help` — display usage
 - `--json` — dump full command schema as JSON (used by cmdui for auto-generating UI)
@@ -104,8 +122,9 @@ the command name (`CommandAttributeUtility.ResolveCommandName`, called from `Get
   `Command aliases:` section.
 
 `CommandAttributeUtility.GetCommandNameProblems()` reports duplicate names, aliases colliding with
-command names or reserved keywords, aliases claimed by two commands, and empty aliases. Nothing calls
-it automatically — call it from a unit test.
+command names or reserved keywords, aliases claimed by two commands, empty aliases, and classes
+carrying a `[Command]` attribute that the framework cannot run. Nothing calls it automatically —
+call it from a unit test.
 
 ### Calling Commands From Commands
 `CommandBase.CreateCommand<T>()`, `ExecuteCommand<T>()` (sync) and `ExecuteCommandAsync<T>()` (async)

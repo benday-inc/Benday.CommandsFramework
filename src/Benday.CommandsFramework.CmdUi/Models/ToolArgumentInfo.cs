@@ -32,4 +32,26 @@ public class ToolArgumentInfo
     public bool HasDefaultValue { get; set; }
 
     public string[] AllowedValues { get; set; } = [];
+
+    /// <summary>
+    /// Whether this argument's value is a path and, when it is, what kind of thing the
+    /// path points at. "None", "File" or "Directory". Empty when the tool was built
+    /// against a framework version that predates the property.
+    /// </summary>
+    public string PathType { get; set; } = string.Empty;
+
+    /// <summary>
+    /// For a file or directory argument, whether the path has to already exist.
+    /// </summary>
+    public bool MustExist { get; set; }
+
+    /// <summary>
+    /// True when this argument holds a path to a file.
+    /// </summary>
+    public bool IsFile => string.Equals(PathType, "File", StringComparison.OrdinalIgnoreCase);
+
+    /// <summary>
+    /// True when this argument holds a path to a directory.
+    /// </summary>
+    public bool IsDirectory => string.Equals(PathType, "Directory", StringComparison.OrdinalIgnoreCase);
 }
