@@ -672,6 +672,43 @@ Assert.Contains("Exported 42 rows", output.GetStatusOutput());
 If you have written your own `ITextOutputProvider`, nothing breaks — `WriteStatus()` and
 `WriteError()` fall back to `WriteLine()` until you override them.
 
+## Reporting Progress
+
+```csharp
+protected override async Task OnExecute(CancellationToken cancellationToken)
+{
+    var items = await LoadItems(cancellationToken);
+
+    for (var i = 0; i < items.Count; i++)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        ReportProgress($"Processing {items[i].Name}", i + 1, items.Count);
+    }
+
+    WriteLine($"Processed {items.Count} items.");
+}
+```
+
+Progress goes to the diagnostic channel, so it never lands inside a redirected result:
+
+```bash
+mytool process > results.txt     # progress still shows on screen; results.txt has only results
+mytool process 2>/dev/null       # progress silenced, results still produced
+```
+
+On a terminal the console provider redraws a single line in place. When stderr is redirected it
+writes plain lines instead — otherwise the carriage returns would fill the destination with
+unreadable spam. `CommandBase.Progress` is an `IProgress<CommandProgress>`, so it can be handed
+straight to any API that already takes one.
+
+In a test, assert on what was reported:
+
+```csharp
+Assert.Equal(3, output.ProgressReports.Count);
+Assert.Equal(1.0, output.ProgressReports[^1].Fraction);
+```
+
 ## Prompting for Input
 
 Commands read input through `ITextInputProvider`, the counterpart to `ITextOutputProvider`.

@@ -276,6 +276,22 @@ everything in write order (what every existing test asserts on), and `GetResultO
 Writing to stderr does not fail a build by default — GitHub Actions goes by exit code, and Azure
 DevOps `Bash@3` / `PowerShell@2` both default `failOnStderr: false`. The hazard is opt-in.
 
+### Progress
+`CommandBase.ReportProgress(message, current?, total?)` and `CommandBase.Progress` (an
+`IProgress<CommandProgress>`, so it can be handed to any API that takes one). Reports go to the
+**diagnostic channel**, which is why a progress display survives `2>/dev/null` and never lands
+inside a redirected result. Suppressed by quiet mode — progress is commentary.
+
+`ConsoleTextOutputProvider` redraws one line in place with `\r`, but **only when stderr is a
+terminal**; redirected, each report becomes an ordinary status line, or piping to a file fills it
+with carriage-return spam. It tracks an unfinished progress line and ends it before anything else is
+written. `StringBuilderTextOutputProvider.ProgressReports` records the reports so a test asserts on
+*what* was reported rather than how it was drawn.
+
+`ReportProgress` on `CommandBase` writes straight through rather than through the `Progress<T>`
+instance: `Progress<T>` posts to the synchronization context, so a command that reports and then
+immediately finishes would race its own output.
+
 ### Reserved Keywords
 `ReservedKeywords` is the single source for the names the framework claims — it backs both the
 usage output that lists them and the argument validation that skips them (`ArgumentCollection`).
