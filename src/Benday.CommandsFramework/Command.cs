@@ -75,7 +75,7 @@ public abstract class Command : CommandBase
     /// </summary>
     /// <param name="validationResult"></param>
     protected virtual void OnValidationFailure(
-        List<IArgument> validationResult)
+        List<ValidationFailure> validationResult)
     {
         DisplayUsage();
         DisplayValidationSummary(validationResult);

@@ -614,7 +614,10 @@ public class CommandAttributeUtility
 
         using var command = CreateInstanceForSchema(registration, execInfo);
 
-        info.Arguments = command.GetArguments();
+        var arguments = command.GetArguments();
+
+        info.Arguments = arguments;
+        info.Rules = [.. arguments.Rules.Select(ArgumentRuleInfo.FromRule)];
 
         return info;
     }

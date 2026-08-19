@@ -234,8 +234,38 @@ Expose results as public properties set in `OnExecute()`.
 
 ### Validation
 `CommandBase.Validate()` calls `SetValuesFromExecutionInfo()` first (config values, then command line
-on top), then validates each argument. `StrictArgumentValidation` (off by default) makes unrecognized
-command-line arguments fail validation via `ArgumentCollection.UnrecognizedKeys`.
+on top), then validates each argument, then checks the rules. It returns
+`List<ValidationFailure>` — **not** `List<IArgument>`, because not every failure is about an
+argument the command defines. (The proof that the old shape was too narrow was `UnknownArgument`, a
+fake `IArgument` invented to stand for one that wasn't; it's deleted.) `ValidationFailure.Kind` is
+`InvalidArgument` / `UnknownArgument` / `RuleViolated`.
+
+`StrictArgumentValidation` (off by default) makes unrecognized command-line arguments fail
+validation via `ArgumentCollection.UnrecognizedKeys`.
+
+### Argument Rules
+Rules are about the *combination* of values, and are **declarative** rather than a callback so the
+schema carries them and a form can apply them as it's being filled in:
+
+```csharp
+args.ExactlyOneOf("token", "windowsauth");
+args.AtLeastOneOf("name", "id");
+args.MutuallyExclusive("quiet", "verbose");
+args.RequiredTogether("username", "password");
+args.When("mode", "advanced").Require("level").Forbid("simpleflag");
+```
+
+- `When(...)` with no value means "whenever this argument is supplied at all". `Require` and
+  `Forbid` build **one** rule, not two, whichever order they're called in.
+- A boolean flag explicitly set to `false` does **not** count as supplied — `/windowsauth:false` is
+  not a choice of Windows auth.
+- Rules are checked **only when every individual argument is already valid** — a rule about a
+  combination has nothing useful to say while a value is still nonsense.
+- Zero vs. several produce different messages for `ExactlyOneOf`; that difference is most of the
+  value.
+- They print in an `** RULES **` section of usage output, and travel in the schema as
+  `CommandInfo.Rules` (`ArgumentRuleInfo`: flat, switch on `RuleType`). cmdui mirrors them as
+  `ToolArgumentRuleInfo`.
 
 ### Usage Output
 `CommandBase.DisplayUsage(StringBuilder)` builds the per-command usage text. Argument names are

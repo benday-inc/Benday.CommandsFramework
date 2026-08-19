@@ -522,18 +522,16 @@ public abstract class CommandBase : IDisposable
 
     private static void ThrowOnValidationFailure(CommandBase command)
     {
-        var invalidArguments = command.Validate();
+        var failures = command.Validate();
 
-        if (invalidArguments.Count == 0)
+        if (failures.Count == 0)
         {
             return;
         }
 
-        var names = invalidArguments.Select(x => x.Name).Order();
-
         throw new KnownException(
             $"Could not run command '{command.ExecutionInfo.CommandName}'. " +
-            $"These arguments are not valid or missing: {string.Join(", ", names)}.");
+            $"{string.Join(" ", failures.Select(x => x.Message))}");
     }
 
     /// <summary>
@@ -666,7 +664,31 @@ public abstract class CommandBase : IDisposable
             }
         }
 
+        DisplayRules(builder, consoleWidth);
+
         DisplayReservedKeywords(builder, consoleWidth);
+    }
+
+    /// <summary>
+    /// Adds the rules about combinations of arguments to the usage output. They are not
+    /// visible on any single argument, so without this the only way to discover them is to
+    /// get one wrong.
+    /// </summary>
+    private void DisplayRules(StringBuilder builder, int consoleWidth)
+    {
+        if (Arguments.Rules.Count == 0)
+        {
+            return;
+        }
+
+        builder.AppendLine();
+        builder.AppendLine("** RULES **");
+
+        foreach (var rule in Arguments.Rules)
+        {
+            builder.AppendWrappedValue(rule.Describe(), consoleWidth, 0);
+            builder.AppendLine();
+        }
     }
 
     /// <summary>
@@ -765,27 +787,20 @@ public abstract class CommandBase : IDisposable
     /// Creates and displays the validation summary when there are failed argument validations
     /// </summary>
     /// <param name="invalidArguments">Collection of invalid arguments</param>
-    protected virtual void DisplayValidationSummary(List<IArgument> invalidArguments)
+    protected virtual void DisplayValidationSummary(List<ValidationFailure> failures)
     {
-        if (invalidArguments.Count == 1)
+        if (failures.Count == 1)
         {
             _OutputProvider.WriteLine("** INVALID ARGUMENT **");
         }
-        else if (invalidArguments.Count > 1)
+        else if (failures.Count > 1)
         {
             _OutputProvider.WriteLine("** INVALID ARGUMENTS **");
         }
 
-        foreach (var item in invalidArguments)
+        foreach (var failure in failures)
         {
-            if (item is UnknownArgument)
-            {
-                _OutputProvider.WriteLine($"Unknown argument: {item.Name}");
-            }
-            else
-            {
-                _OutputProvider.WriteLine($"{item.Name} is not valid or missing");
-            }
+            _OutputProvider.WriteLine(failure.Message);
         }
     }
 
@@ -794,9 +809,9 @@ public abstract class CommandBase : IDisposable
     /// command.
     /// </summary>
     /// <returns>List of invalid arguments</returns>
-    protected virtual List<IArgument> Validate()
+    protected virtual List<ValidationFailure> Validate()
     {
-        var returnValue = new List<IArgument>();
+        var returnValue = new List<ValidationFailure>();
 
         SetValuesFromExecutionInfo();
 
@@ -804,12 +819,9 @@ public abstract class CommandBase : IDisposable
         {
             var temp = Arguments[key];
 
-            if (temp != null)
+            if (temp != null && temp.Validate() == false)
             {
-                var result = temp.Validate();
-
-                if (result == false)
-                    returnValue.Add(temp);
+                returnValue.Add(ValidationFailure.ForArgument(temp));
             }
         }
 
@@ -818,7 +830,22 @@ public abstract class CommandBase : IDisposable
         {
             foreach (var unknownKey in Arguments.UnrecognizedKeys)
             {
-                returnValue.Add(new UnknownArgument(unknownKey));
+                returnValue.Add(ValidationFailure.ForUnknownArgument(unknownKey));
+            }
+        }
+
+        // rules are checked last: a rule about the combination of values has nothing useful
+        // to say while individual values are still invalid
+        if (returnValue.Count == 0)
+        {
+            foreach (var rule in Arguments.Rules)
+            {
+                var problem = rule.Check(Arguments);
+
+                if (problem is not null)
+                {
+                    returnValue.Add(ValidationFailure.ForRule(rule, problem));
+                }
             }
         }
 

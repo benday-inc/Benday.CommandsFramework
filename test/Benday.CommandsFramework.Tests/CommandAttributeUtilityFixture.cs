@@ -54,7 +54,7 @@ public class CommandAttributeUtilityFixture
         // arrange
         CommandProgramOptionsInstance.UsesConfiguration = false;
 
-        var expectedCount = 29;
+        var expectedCount = 30;
         var sampleAssembly = typeof(Benday.CommandsFramework.Samples.SampleCommand1).Assembly;
 
         // act
@@ -76,7 +76,7 @@ public class CommandAttributeUtilityFixture
 
         var expectedNumberOfConfigCommands = 3;
 
-        var expectedCount = 29 + expectedNumberOfConfigCommands;
+        var expectedCount = 30 + expectedNumberOfConfigCommands;
         var sampleAssembly = typeof(Benday.CommandsFramework.Samples.SampleCommand1).Assembly;
 
         // act

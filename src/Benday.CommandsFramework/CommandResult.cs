@@ -1,4 +1,4 @@
-namespace Benday.CommandsFramework;
+﻿namespace Benday.CommandsFramework;
 
 /// <summary>
 /// What happened when a command ran.
@@ -17,11 +17,11 @@ public sealed class CommandResult
     private CommandResult(
         CommandExecutionStatus status,
         string message,
-        IReadOnlyList<IArgument> invalidArguments)
+        IReadOnlyList<ValidationFailure> validationFailures)
     {
         Status = status;
         Message = message;
-        InvalidArguments = invalidArguments;
+        ValidationFailures = validationFailures;
     }
 
     /// <summary>
@@ -35,9 +35,9 @@ public sealed class CommandResult
     public string Message { get; }
 
     /// <summary>
-    /// The arguments that failed validation. Empty unless Status is ValidationFailed.
+    /// Why validation failed. Empty unless Status is ValidationFailed.
     /// </summary>
-    public IReadOnlyList<IArgument> InvalidArguments { get; }
+    public IReadOnlyList<ValidationFailure> ValidationFailures { get; }
 
     /// <summary>
     /// True when the command did what it was asked to do. Displaying usage counts as
@@ -62,14 +62,12 @@ public sealed class CommandResult
     public static CommandResult UsageDisplayed() =>
         new(CommandExecutionStatus.UsageDisplayed, string.Empty, []);
 
-    public static CommandResult ValidationFailed(IReadOnlyList<IArgument> invalidArguments)
+    public static CommandResult ValidationFailed(IReadOnlyList<ValidationFailure> failures)
     {
-        var names = string.Join(", ", invalidArguments.Select(x => x.Name).Order());
-
         return new CommandResult(
             CommandExecutionStatus.ValidationFailed,
-            $"These arguments are not valid or missing: {names}.",
-            invalidArguments);
+            string.Join(" ", failures.Select(x => x.Message)),
+            failures);
     }
 
     public static CommandResult Failed(string message) =>

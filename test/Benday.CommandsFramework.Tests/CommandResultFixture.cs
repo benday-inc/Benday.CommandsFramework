@@ -154,7 +154,9 @@ public class CommandResultFixture
         Assert.False(actual.IsSuccess);
         Assert.Equal(CommandFrameworkConstants.ExitCode_Failure, actual.ExitCode);
         Assert.False(command.DidRun);
-        Assert.Contains(actual.InvalidArguments, x => x.Name == "required-thing");
+        Assert.Contains(
+            actual.ValidationFailures,
+            x => x.ArgumentNames.Contains("required-thing"));
         Assert.Contains("required-thing", actual.Message);
     }
 

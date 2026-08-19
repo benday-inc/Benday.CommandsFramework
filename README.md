@@ -609,6 +609,54 @@ public class FetchCommand : AsynchronousCommand
 | `Run()` | Build and run the application, returning the exit code |
 | `RunAsync(cancellationToken)` | Build and run the application asynchronously, returning the exit code |
 
+## Argument Rules
+
+Some requirements are about the *combination* of arguments rather than any one of them.
+Declare them and the framework enforces them, prints them in the usage output, and ships them
+in the schema:
+
+```csharp
+public override ArgumentCollection GetArguments()
+{
+    var args = new ArgumentCollection();
+
+    args.AddString("token").AsNotRequired().WithDescription("Personal access token");
+    args.AddBoolean("windowsauth").AsNotRequired().AllowEmptyValue();
+    args.AddString("username").AsNotRequired();
+    args.AddString("password").AsNotRequired();
+
+    args.ExactlyOneOf("token", "windowsauth");
+    args.RequiredTogether("username", "password");
+    args.When("mode", "advanced").Require("level").Forbid("simpleflag");
+
+    return args;
+}
+```
+
+| Rule | Meaning |
+|------|---------|
+| `ExactlyOneOf(...)` | Exactly one has to be supplied |
+| `AtLeastOneOf(...)` | At least one has to be supplied |
+| `MutuallyExclusive(...)` | No two of these together; none is required |
+| `RequiredTogether(...)` | All of them or none of them |
+| `When(arg, value).Require(...)` | Required only when `arg` has that value |
+| `When(arg, value).Forbid(...)` | Not allowed when `arg` has that value |
+
+`When(arg)` with no value means "whenever that argument is supplied at all". Zero and several
+produce different messages, because they are different mistakes:
+
+```
+$ mytool connect
+One of 'token', 'windowsauth' is required.
+
+$ mytool connect /token:abc /windowsauth
+Only one of 'token', 'windowsauth' can be supplied, but 'token', 'windowsauth' were.
+```
+
+Rules are declarative rather than a callback in `OnExecute()` so that the `--json` schema
+carries them — which is what lets a form apply them as it is being filled in rather than only
+when it is submitted.
+
 ## Multi-level Commands
 
 Give a command a `Group` and it is run as two words:

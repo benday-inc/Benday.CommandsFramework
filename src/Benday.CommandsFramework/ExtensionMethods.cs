@@ -650,4 +650,128 @@ public static class ExtensionMethods
             return executionInfo.Configuration.GetValue(configValueName);
         }
     }
+
+    /// <summary>
+    /// Requires that exactly one of these arguments is supplied. Zero and several are
+    /// different mistakes and produce different messages.
+    /// </summary>
+    /// <param name="arguments">Argument collection</param>
+    /// <param name="argumentNames">Names the rule is about</param>
+    /// <returns>The collection, so calls can be chained</returns>
+    public static ArgumentCollection ExactlyOneOf(
+        this ArgumentCollection arguments, params string[] argumentNames)
+    {
+        return arguments.AddRule(new ExactlyOneOfRule(argumentNames));
+    }
+
+    /// <summary>
+    /// Requires that at least one of these arguments is supplied.
+    /// </summary>
+    public static ArgumentCollection AtLeastOneOf(
+        this ArgumentCollection arguments, params string[] argumentNames)
+    {
+        return arguments.AddRule(new AtLeastOneOfRule(argumentNames));
+    }
+
+    /// <summary>
+    /// Declares that these arguments cannot be used together. None of them is required.
+    /// </summary>
+    public static ArgumentCollection MutuallyExclusive(
+        this ArgumentCollection arguments, params string[] argumentNames)
+    {
+        return arguments.AddRule(new MutuallyExclusiveRule(argumentNames));
+    }
+
+    /// <summary>
+    /// Declares that these arguments are supplied together or not at all.
+    /// </summary>
+    public static ArgumentCollection RequiredTogether(
+        this ArgumentCollection arguments, params string[] argumentNames)
+    {
+        return arguments.AddRule(new RequiredTogetherRule(argumentNames));
+    }
+
+    /// <summary>
+    /// Starts a rule that only applies when another argument has a particular value.
+    /// </summary>
+    /// <param name="arguments">Argument collection</param>
+    /// <param name="argumentName">Argument whose value decides whether the rule applies</param>
+    /// <param name="value">Value that makes the rule apply. Omit for "whenever this argument
+    /// is supplied at all".</param>
+    /// <returns>A builder -- call Require() or Forbid() on it</returns>
+    public static ConditionalRuleBuilder When(
+        this ArgumentCollection arguments, string argumentName, string? value = null)
+    {
+        return new ConditionalRuleBuilder(arguments, argumentName, value);
+    }
+}
+
+/// <summary>
+/// Builds a rule that only applies when another argument has a particular value.
+/// </summary>
+/// <remarks>
+/// The rule is added to the collection as soon as Require() or Forbid() is called and is
+/// updated in place by a second call, so both orders read the same:
+/// When("mode", "advanced").Require("level").Forbid("simple").
+/// </remarks>
+public sealed class ConditionalRuleBuilder
+{
+    private readonly ArgumentCollection _Arguments;
+    private readonly string _ArgumentName;
+    private readonly string? _Value;
+    private readonly List<string> _Required = new();
+    private readonly List<string> _Forbidden = new();
+    private ConditionalRule? _Rule;
+
+    internal ConditionalRuleBuilder(
+        ArgumentCollection arguments, string argumentName, string? value)
+    {
+        _Arguments = arguments;
+        _ArgumentName = argumentName;
+        _Value = value;
+    }
+
+    /// <summary>
+    /// These arguments are required when the condition holds.
+    /// </summary>
+    public ConditionalRuleBuilder Require(params string[] argumentNames)
+    {
+        _Required.AddRange(argumentNames);
+
+        return Rebuild();
+    }
+
+    /// <summary>
+    /// These arguments cannot be used when the condition holds.
+    /// </summary>
+    public ConditionalRuleBuilder Forbid(params string[] argumentNames)
+    {
+        _Forbidden.AddRange(argumentNames);
+
+        return Rebuild();
+    }
+
+    /// <summary>
+    /// The collection, for carrying on with something other than this rule.
+    /// </summary>
+    public ArgumentCollection Arguments => _Arguments;
+
+    private ConditionalRuleBuilder Rebuild()
+    {
+        var replacement = new ConditionalRule(
+            _ArgumentName, _Value, [.. _Required], [.. _Forbidden]);
+
+        if (_Rule is null)
+        {
+            _Arguments.AddRule(replacement);
+        }
+        else
+        {
+            _Arguments.ReplaceRule(_Rule, replacement);
+        }
+
+        _Rule = replacement;
+
+        return this;
+    }
 }

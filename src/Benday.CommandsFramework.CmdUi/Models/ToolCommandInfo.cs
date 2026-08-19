@@ -32,6 +32,26 @@ public class ToolCommandInfo
     public List<ToolCommandAliasInfo> CommandAliases { get; set; } = new();
 
     public List<ToolArgumentInfo> Arguments { get; set; } = new();
+
+    /// <summary>
+    /// Rules about the combination of argument values -- which arguments go together, which
+    /// cannot. Empty for a tool built against a framework version that predates them.
+    /// </summary>
+    public List<ToolArgumentRuleInfo> Rules { get; set; } = new();
+}
+
+/// <summary>
+/// A rule about the combination of argument values. Switch on RuleType.
+/// </summary>
+public class ToolArgumentRuleInfo
+{
+    public string RuleType { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public string[] ArgumentNames { get; set; } = [];
+    public string WhenArgumentName { get; set; } = string.Empty;
+    public string WhenValue { get; set; } = string.Empty;
+    public string[] RequiredNames { get; set; } = [];
+    public string[] ForbiddenNames { get; set; } = [];
 }
 
 /// <summary>

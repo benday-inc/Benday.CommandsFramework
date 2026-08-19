@@ -28,4 +28,10 @@ public class CommandInfo
     /// </summary>
     public List<CommandAliasInfo> CommandAliases { get; internal set; } = new();
     public ArgumentCollection Arguments { get; internal set; } = new ArgumentCollection();
+
+    /// <summary>
+    /// Rules about the combination of argument values. Declarative rather than a callback so
+    /// that a form can apply them as it is being filled in rather than only on submit.
+    /// </summary>
+    public List<ArgumentRuleInfo> Rules { get; internal set; } = new();
 }

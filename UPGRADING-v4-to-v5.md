@@ -40,6 +40,7 @@ are the definition of what applies.
 10. [10. `ExecuteCommand<T>` is now `ExecuteCommandAsync<T>`](#10-executecommandt-is-now-executecommandasynct)
 11. [11. Commands are created through `ActivatorUtilities`](#11-commands-are-created-through-activatorutilities)
 12. [12. The request is split out of `CommandExecutionInfo`](#12-the-request-is-split-out-of-commandexecutioninfo)
+13. [13. Validation returns failures, not arguments](#13-validation-returns-failures-not-arguments)
 
 ---
 
@@ -623,13 +624,88 @@ typing `/name` with no value.
 
 ---
 
+## 13. Validation returns failures, not arguments
+
+**Mechanical** where it applies. Most commands never touch validation and have nothing to do.
+
+`CommandBase.Validate()` returned `List<IArgument>`, so every failure had to be expressed as an
+argument. `UnknownArgument` -- a fake `IArgument` invented to stand for a key the command does not
+define -- was the proof that this was too narrow, and a rule about the *combination* of arguments
+has no single argument to blame either. Validation returns `List<ValidationFailure>` now, and
+`UnknownArgument` is deleted.
+
+### Detect
+
+```bash
+grep -rn 'override.*Validate()\|OnValidationFailure\|DisplayValidationSummary\|UnknownArgument\|InvalidArguments' --include=*.cs .
+```
+
+### Change
+
+```csharp
+// before
+protected override List<IArgument> Validate()
+protected override void OnValidationFailure(List<IArgument> validationResult)
+protected override void DisplayValidationSummary(List<IArgument> invalidArguments)
+
+// after
+protected override List<ValidationFailure> Validate()
+protected override void OnValidationFailure(List<ValidationFailure> validationResult)
+protected override void DisplayValidationSummary(List<ValidationFailure> failures)
+```
+
+A `ValidationFailure` has a ready-made `Message`, so a custom summary usually gets simpler:
+
+```csharp
+// before
+foreach (var item in invalidArguments)
+{
+    WriteLine(item is UnknownArgument
+        ? $"Unknown argument: {item.Name}"
+        : $"{item.Name} is not valid or missing");
+}
+
+// after
+foreach (var failure in failures)
+{
+    WriteLine(failure.Message);
+}
+```
+
+`CommandResult.InvalidArguments` is `CommandResult.ValidationFailures` for the same reason. Read
+`failure.ArgumentNames` for the names, `failure.Argument` for the argument itself when there is one,
+and `failure.Kind` to tell the three cases apart.
+
+### Opportunity: delete hand written checks
+
+Requirements about combinations of arguments are usually enforced by `if` statements at the top of
+`OnExecute()`. Those can become rules, which get enforced before the command runs, printed in the
+usage output, and shipped in the `--json` schema:
+
+```csharp
+// before, in OnExecute()
+if (HasValue(token) && HasValue(windowsauth)) throw new KnownException("Cannot set both");
+if (!HasValue(token) && !HasValue(windowsauth)) throw new KnownException("You must set either");
+
+// after, in GetArguments()
+args.ExactlyOneOf("token", "windowsauth");
+```
+
+Also available: `AtLeastOneOf`, `MutuallyExclusive`, `RequiredTogether`, and
+`When(arg, value).Require(...).Forbid(...)`.
+
+This one is **judgment**: finding the checks is a search, and deciding that a given `if` is really a
+rule about arguments rather than about the state of the world is not something to guess at. List the
+candidates for a human rather than converting them silently.
+
+---
+
 ## What has not landed yet
 
 These are planned for v5 and will get entries here as they land. Do not act on them yet.
 
 - Parser modes (`--arg value`, `--arg=value`, the deprecated `/arg:value`).
 - Multi-level commands (`mytool workitem list`).
-- Declarative validation rules.
 - The redefinition of quiet mode: result never suppressed, status and progress suppressed,
   errors never suppressed.
 
