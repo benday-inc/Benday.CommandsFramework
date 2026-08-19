@@ -14,14 +14,10 @@ namespace Benday.CommandsFramework;
 /// </summary>
 public class ArgumentCollection : IEnumerable<IArgument>
 {
+    // ReservedKeywords is the single source for these -- the same list is what usage output
+    // shows, so the two can't drift apart
     private static readonly HashSet<string> _FrameworkReservedArgNames =
-        new(StringComparer.OrdinalIgnoreCase)
-        {
-            ArgumentFrameworkConstants.ArgumentHelpString,
-            ArgumentFrameworkConstants.ArgumentJson,
-            ArgumentFrameworkConstants.ArgumentGui,
-            CommandFrameworkConstants.CommandArgName_QuietMode
-        };
+        new(ReservedKeywords.AllNames, StringComparer.OrdinalIgnoreCase);
 
     /// <summary>
     /// Comparer used to match argument names and aliases supplied on the command line

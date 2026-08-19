@@ -1,8 +1,20 @@
 ﻿namespace Benday.CommandsFramework;
 
 /// <summary>
-/// Interface for handling text output from commands
+/// Interface for handling text output from commands.
 /// </summary>
+/// <remarks>
+/// There are three channels, following the convention every other command line tool uses:
+/// the <b>result</b> is what the command was asked to produce and goes to stdout; <b>status</b>
+/// is commentary about the work -- progress, notes, "found 3 items" -- and goes to stderr; and
+/// <b>errors</b> go to stderr. Keeping them apart is what lets a command's output be piped
+/// somewhere useful: a command that grows a /json flag emits invalid JSON the moment anything
+/// else has written a message to the same stream.
+///
+/// WriteStatus() and WriteError() are default interface members that fall back to WriteLine(),
+/// so an existing implementation of this interface keeps working unchanged and keeps putting
+/// everything on one channel until it opts in.
+/// </remarks>
 public interface ITextOutputProvider
 {
     /// <summary>
@@ -21,4 +33,19 @@ public interface ITextOutputProvider
     /// </summary>
     /// <param name="line">Text to write</param>
     void Write(string message);
+
+    /// <summary>
+    /// Write a line of commentary about the work -- progress, notes, anything that is not
+    /// the result the command was asked to produce. Goes to the diagnostic channel, which
+    /// means a caller redirecting the result never sees it mixed in.
+    /// </summary>
+    /// <param name="line">Text to write</param>
+    void WriteStatus(string line) => WriteLine(line);
+
+    /// <summary>
+    /// Write an error message. Goes to the diagnostic channel, so a command that fails while
+    /// producing machine readable output does not land its error text inside the payload.
+    /// </summary>
+    /// <param name="line">Text to write</param>
+    void WriteError(string line) => WriteLine(line);
 }

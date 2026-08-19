@@ -599,6 +599,37 @@ public class FetchCommand : AsynchronousCommand
 | `Run()` | Build and run the application |
 | `RunAsync()` | Build and run the application asynchronously |
 
+## Output Channels
+
+Commands write on three channels, the same split every other command line tool uses:
+
+| Method | What it is for | Console destination |
+|--------|----------------|---------------------|
+| `WriteLine()` / `Write()` | The result — what the command was asked to produce | stdout |
+| `WriteStatus()` | Commentary about the work — progress, notes | stderr |
+| `WriteError()` | Failures. Never suppressed by quiet mode | stderr |
+
+This is what makes a command's output pipeable. A command that writes its result with
+`WriteLine()` and everything else with `WriteStatus()` can have its output redirected to a
+file without the commentary landing in it:
+
+```bash
+mytool export /format:json > data.json     # only the result is captured
+```
+
+`StringBuilderTextOutputProvider` captures the channels separately, so a test can assert on
+the payload without the chatter:
+
+```csharp
+Assert.Equal(expectedJson, output.GetResultOutput());
+Assert.Contains("Exported 42 rows", output.GetStatusOutput());
+```
+
+`GetOutput()` still returns everything in the order it was written.
+
+If you have written your own `ITextOutputProvider`, nothing breaks — `WriteStatus()` and
+`WriteError()` fall back to `WriteLine()` until you override them.
+
 ## Prompting for Input
 
 Commands read input through `ITextInputProvider`, the counterpart to `ITextOutputProvider`.

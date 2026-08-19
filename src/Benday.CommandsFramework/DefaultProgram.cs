@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
+using System.Text;
 using System.Text.Json;
 
 namespace Benday.CommandsFramework;
@@ -40,6 +41,24 @@ public class DefaultProgram : ICommandProgram
     private void WriteLine()
     {
         OutputProvider.WriteLine();
+    }
+
+    /// <summary>
+    /// Write a line of commentary about the work to the diagnostic channel.
+    /// </summary>
+    private void WriteStatus(string message)
+    {
+        OutputProvider.WriteStatus(message);
+    }
+
+    /// <summary>
+    /// Write an error message to the diagnostic channel. A failure has to stay out of the
+    /// command's result, or a failed command piping --json to a file lands its error text
+    /// inside the JSON.
+    /// </summary>
+    private void WriteError(string message)
+    {
+        OutputProvider.WriteError(message);
     }
 
     public void Run(string[] args)
@@ -167,7 +186,7 @@ public class DefaultProgram : ICommandProgram
             }
             catch (KnownException ex)
             {
-                WriteLine(ex.Message);
+                WriteError(ex.Message);
                 Environment.ExitCode = 1;
             }
             catch
@@ -385,7 +404,43 @@ public class DefaultProgram : ICommandProgram
 
         DisplayCommandAliases(util.GetCommandAliases(ImplementationAssembly));
 
+        DisplayReservedKeywords();
+
         Environment.ExitCode = CommandFrameworkConstants.ExitCode_Failure;
+    }
+
+    /// <summary>
+    /// Displays the names the framework reserves for itself. They are not commands and they
+    /// are not any command's arguments, so nothing else in the usage output mentions them.
+    /// </summary>
+    public virtual void DisplayReservedKeywords()
+    {
+        var keywords = ReservedKeywords.ForPrograms;
+
+        if (keywords.Count == 0)
+        {
+            return;
+        }
+
+        var separator = " - ";
+        var longestName = keywords.Max(x => x.Name.Length);
+        var nameColumnWidth = longestName + separator.Length;
+        var consoleWidth = GetConsoleWidth();
+
+        WriteLine();
+        WriteLine("Also available:");
+
+        var builder = new StringBuilder();
+
+        foreach (var keyword in keywords)
+        {
+            builder.Clear();
+            builder.Append(LineWrapUtilities.GetValueWithPadding(keyword.Name, longestName));
+            builder.Append(separator);
+            builder.AppendWrappedValue(keyword.Description, consoleWidth, nameColumnWidth);
+
+            WriteLine(builder.ToString());
+        }
     }
 
     /// <summary>

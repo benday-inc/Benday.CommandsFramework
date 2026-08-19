@@ -172,6 +172,32 @@ public abstract class CommandBase
     }
 
     /// <summary>
+    /// Write a line of commentary about the work -- progress, notes, anything that is not
+    /// the result this command was asked to produce. Goes to the diagnostic channel, so a
+    /// caller redirecting the result never sees it mixed in. Does nothing in quiet mode.
+    /// </summary>
+    /// <param name="text">Message to write</param>
+    protected virtual void WriteStatus(string text)
+    {
+        if (IsQuietMode == true)
+        {
+            return;
+        }
+
+        _OutputProvider.WriteStatus(text);
+    }
+
+    /// <summary>
+    /// Write an error message. Goes to the diagnostic channel, and is <b>not</b> suppressed
+    /// by quiet mode -- silencing the chatter should never silence a failure.
+    /// </summary>
+    /// <param name="text">Message to write</param>
+    protected virtual void WriteError(string text)
+    {
+        _OutputProvider.WriteError(text);
+    }
+
+    /// <summary>
     /// Where this command reads text input from. Comes from the program options, so a test
     /// can hand the command a QueuedTextInputProvider and drive an interactive command
     /// without a console.
@@ -540,6 +566,38 @@ public abstract class CommandBase
             {
                 DisplayArgumentUsage(builder, arg, longestNameLength, separator, consoleWidth, argNameColumnWidth);
             }
+        }
+
+        DisplayReservedKeywords(builder, consoleWidth);
+    }
+
+    /// <summary>
+    /// Adds the framework's own reserved names to the usage output. They are not part of any
+    /// command's argument list, so without this nothing ever tells anyone they exist.
+    /// </summary>
+    private static void DisplayReservedKeywords(StringBuilder builder, int consoleWidth)
+    {
+        var keywords = ReservedKeywords.ForCommands;
+
+        if (keywords.Count == 0)
+        {
+            return;
+        }
+
+        var separator = " - ";
+        var longestNameLength = keywords.Max(x => x.Name.Length);
+        var nameColumnWidth = longestNameLength + separator.Length;
+
+        builder.AppendLine();
+        builder.AppendLine("** ALSO AVAILABLE **");
+        builder.AppendLine("(these work on any command)");
+
+        foreach (var keyword in keywords)
+        {
+            builder.Append(LineWrapUtilities.GetValueWithPadding(keyword.Name, longestNameLength));
+            builder.Append(separator);
+            builder.AppendWrappedValue(keyword.Description, consoleWidth, nameColumnWidth);
+            builder.AppendLine();
         }
     }
 

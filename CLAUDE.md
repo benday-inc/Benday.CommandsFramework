@@ -158,7 +158,35 @@ Arguments with a configured default get a `(default: value)` line of their own, 
 with the description column. Whitespace-only defaults are suppressed.
 
 ### Output
-Commands use `WriteLine()` / `Write()` which go through `ITextOutputProvider`. `ConsoleTextOutputProvider` for console, `StringBuilderTextOutputProvider` for testing/capturing.
+Three channels, following the convention every other CLI uses:
+
+| Channel | Method | Console destination | Quiet mode |
+|---|---|---|---|
+| result | `WriteLine()` / `Write()` | stdout | suppressed *(v4 behavior; OUT-1 defers the redefinition to v5)* |
+| status | `WriteStatus()` | stderr | suppressed |
+| error | `WriteError()` | stderr | **never** suppressed |
+
+Keeping them apart is what lets output be piped: a command that grows a `/json` flag emits invalid
+JSON the moment anything else writes to the same stream. `DefaultProgram`'s `catch (KnownException)`
+now writes to the error channel, so a failed command piping `--json` to a file no longer lands its
+error text inside the JSON.
+
+`WriteStatus()` / `WriteError()` are **default interface members** on `ITextOutputProvider` that fall
+back to `WriteLine()`, so a provider written before the split keeps working and keeps everything on
+one channel. `ConsoleTextOutputProvider` overrides them to `Console.Error`.
+`StringBuilderTextOutputProvider` buffers each channel separately: `GetOutput()` still returns
+everything in write order (what every existing test asserts on), and `GetResultOutput()` /
+`GetStatusOutput()` / `GetErrorOutput()` give the separated views.
+
+Writing to stderr does not fail a build by default — GitHub Actions goes by exit code, and Azure
+DevOps `Bash@3` / `PowerShell@2` both default `failOnStderr: false`. The hazard is opt-in.
+
+### Reserved Keywords
+`ReservedKeywords` is the single source for the names the framework claims — it backs both the
+usage output that lists them and the argument validation that skips them (`ArgumentCollection`).
+`ForCommands` (`--help`, `quiet`) prints as an `** ALSO AVAILABLE **` section in per-command usage;
+`ForPrograms` (`--help`, `--json`, `gui`) prints as `Also available:` under the command list. Before
+this they appeared nowhere, since usage output only ever listed a command's own arguments.
 
 ### Input
 `ITextInputProvider` is the counterpart to `ITextOutputProvider` and hangs off
