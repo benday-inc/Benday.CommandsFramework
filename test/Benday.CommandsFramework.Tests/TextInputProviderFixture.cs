@@ -1,4 +1,4 @@
-using Benday.CommandsFramework.Samples;
+﻿using Benday.CommandsFramework.Samples;
 
 namespace Benday.CommandsFramework.Tests;
 
@@ -69,7 +69,7 @@ public class TextInputProviderFixture
     }
 
     [Fact]
-    public void Command_PromptsForAValueThatWasNotSupplied()
+    public async Task Command_PromptsForAValueThatWasNotSupplied()
     {
         // arrange
         var output = new StringBuilderTextOutputProvider();
@@ -77,8 +77,8 @@ public class TextInputProviderFixture
 
         var command = GetCommand(output, input);
 
-        // act
-        command.Execute();
+        await // act
+        command.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         Assert.Equal("Ben", command.NameUsed);
@@ -89,7 +89,7 @@ public class TextInputProviderFixture
     }
 
     [Fact]
-    public void Command_DoesNotPromptForAValueThatWasSupplied()
+    public async Task Command_DoesNotPromptForAValueThatWasSupplied()
     {
         // arrange
         var output = new StringBuilderTextOutputProvider();
@@ -97,8 +97,8 @@ public class TextInputProviderFixture
 
         var command = GetCommand(output, input, "/name:Alice");
 
-        // act
-        command.Execute();
+        await // act
+        command.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         Assert.Equal("Alice", command.NameUsed);
@@ -108,7 +108,7 @@ public class TextInputProviderFixture
     }
 
     [Fact]
-    public void PromptForYesNo_TakesTheDefaultOnAnEmptyAnswer()
+    public async Task PromptForYesNo_TakesTheDefaultOnAnEmptyAnswer()
     {
         // arrange -- pressing enter accepts the default
         var output = new StringBuilderTextOutputProvider();
@@ -116,8 +116,8 @@ public class TextInputProviderFixture
 
         var command = GetCommand(output, input, "/name:Alice");
 
-        // act
-        command.Execute();
+        await // act
+        command.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         Assert.True(command.DidGreet);
@@ -125,7 +125,7 @@ public class TextInputProviderFixture
     }
 
     [Fact]
-    public void PromptForYesNo_UnderstandsNo()
+    public async Task PromptForYesNo_UnderstandsNo()
     {
         // arrange
         var output = new StringBuilderTextOutputProvider();
@@ -133,8 +133,8 @@ public class TextInputProviderFixture
 
         var command = GetCommand(output, input, "/name:Alice");
 
-        // act
-        command.Execute();
+        await // act
+        command.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         Assert.False(command.DidGreet);
@@ -142,7 +142,7 @@ public class TextInputProviderFixture
     }
 
     [Fact]
-    public void Command_HandlesRunningOutOfInput()
+    public async Task Command_HandlesRunningOutOfInput()
     {
         // arrange -- nothing queued at all, which is what a closed stdin looks like
         var output = new StringBuilderTextOutputProvider();
@@ -150,8 +150,8 @@ public class TextInputProviderFixture
 
         var command = GetCommand(output, input);
 
-        // act
-        command.Execute();
+        await // act
+        command.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         Assert.Equal(string.Empty, command.NameUsed);

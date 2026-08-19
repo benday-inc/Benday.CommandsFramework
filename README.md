@@ -74,7 +74,9 @@ dotnet add package Benday.CommandsFramework
 
 ### 1. Create a Command
 
-Commands inherit from `SynchronousCommand`, `AsynchronousCommand`, or `DependencyInjectionCommand`. Use the `[Command]` attribute to define the command name and description.
+Commands inherit from `Command` (or `DependencyInjectionCommand` when they need dependency injection). Use the `[Command]` attribute to define the command name and description.
+
+There is one base class. A command whose work is sequential returns `Task.CompletedTask`; anything that touches the network needs an async environment anyway.
 
 ```csharp
 using Benday.CommandsFramework;
@@ -82,7 +84,7 @@ using Benday.CommandsFramework;
 [Command(Name = "greet",
     Description = "Says hello to someone",
     Category = "Demo")]
-public class GreetCommand : SynchronousCommand
+public class GreetCommand : Command
 {
     public GreetCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider)
         : base(info, outputProvider) { }
@@ -97,13 +99,15 @@ public class GreetCommand : SynchronousCommand
         return args;
     }
 
-    protected override void OnExecute()
+    protected override Task OnExecute(CancellationToken cancellationToken)
     {
         var name = Arguments.GetStringValue("name");
         var loud = Arguments.GetBooleanValue("loud");
 
         var message = $"Hello, {name}!";
         WriteLine(loud ? message.ToUpper() : message);
+
+        return Task.CompletedTask;
     }
 }
 ```
@@ -116,8 +120,11 @@ the application name, version and website come from that assembly's own metadata
 ```csharp
 using Benday.CommandsFramework;
 
-await CommandsApp.RunAsync(args);
+return await CommandsApp.RunAsync(args);
 ```
+
+`RunAsync` returns the exit code and also sets `Environment.ExitCode`, so a
+`static async Task<int> Main` works either way.
 
 When your commands live in a different assembly than the executable, name any type from that
 assembly:
@@ -133,11 +140,11 @@ configuration sources, or how usage is displayed. Pass any command type from you
 ```csharp
 using Benday.CommandsFramework;
 
-CommandsApp
+return await CommandsApp
     .Create<GreetCommand>(args)
     .WithAppInfo("My CLI Tool", "https://www.example.com")
     .WithVersionFromAssembly()
-    .Run();
+    .RunAsync();
 ```
 
 `Create(args)` with no type argument does the same thing using the entry assembly, and
@@ -316,7 +323,7 @@ Use `Aliases` on the `[Command]` attribute to give a command extra names. This i
 [Command(Name = "generate-project-scaffolding",
     Aliases = new[] { "gps", "scaffold" },
     Description = "Generates project scaffolding")]
-public class GenerateScaffoldingCommand : SynchronousCommand
+public class GenerateScaffoldingCommand : Command
 ```
 
 ```bash
@@ -339,7 +346,7 @@ Use `[CommandAlias]` to create a shortcut for a command that is usually run with
     Description = "Deploy to production with verbose output")]
 [CommandAlias("deploy-dev", "environment=development",
     Description = "Deploy to development")]
-public class DeployCommand : SynchronousCommand
+public class DeployCommand : Command
 ```
 
 ```bash
@@ -374,13 +381,13 @@ public void NoCommandNameProblems()
 
 ## Reusing Command Logic
 
-A command can run another command in process rather than shelling out to the command line. Use `ExecuteCommand<T>()` for synchronous commands and `ExecuteCommandAsync<T>()` for async ones. Both return the command instance so you can read results back off it.
+A command can run another command in process rather than shelling out to the command line. Use `ExecuteCommandAsync<T>()`, which returns the command instance so you can read results back off it.
 
 Expose whatever the caller needs as public properties set in `OnExecute()`:
 
 ```csharp
 [Command(Name = "greeting", Description = "Builds a greeting for a person")]
-public class GreetingCommand : SynchronousCommand
+public class GreetingCommand : Command
 {
     public GreetingCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider)
         : base(info, outputProvider) { }
@@ -394,17 +401,19 @@ public class GreetingCommand : SynchronousCommand
         return args;
     }
 
-    protected override void OnExecute()
+    protected override Task OnExecute(CancellationToken cancellationToken)
     {
         Greeting = $"Hello, {Arguments.GetStringValue("name")}!";
         WriteLine(Greeting);
+
+        return Task.CompletedTask;
     }
 }
 ```
 
 ```csharp
 [Command(Name = "greet-everybody", Description = "Greets several people")]
-public class GreetEverybodyCommand : SynchronousCommand
+public class GreetEverybodyCommand : Command
 {
     public GreetEverybodyCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider)
         : base(info, outputProvider) { }
@@ -416,14 +425,15 @@ public class GreetEverybodyCommand : SynchronousCommand
         return args;
     }
 
-    protected override void OnExecute()
+    protected override async Task OnExecute(CancellationToken cancellationToken)
     {
         var names = Arguments.GetStringValue("names")
             .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
         foreach (var name in names)
         {
-            var command = ExecuteCommand<GreetingCommand>(args => args["name"] = name);
+            var command = await ExecuteCommandAsync<GreetingCommand>(
+                args => args["name"] = name, cancellationToken: cancellationToken);
 
             WriteLine(command.Greeting);
         }
@@ -436,7 +446,7 @@ Things worth knowing:
 - The command that gets run shares the calling command's program options, configuration, and output provider.
 - It runs in **quiet mode** by default, which suppresses its `WriteLine()` output so it does not write over the calling command's output. Pass `quiet: false` to let it write.
 - A validation failure **throws** a `KnownException` instead of printing usage information. Running a command from the command line prints usage and returns, which would leave the calling command with no way of knowing that the command never ran.
-- The process exit code is left alone. A command that gets run this way cannot decide the exit code for the process.
+- The process exit code is left alone — nothing below the console entry point touches it. A command reports how it went by returning a `CommandResult`.
 - `CreateCommand<T>()` builds the command without running it, if you need to inspect or configure it first.
 - Commands nested more than `CommandFrameworkConstants.MaxCommandNestingDepth` levels deep throw, so an accidental "A calls B calls A" loop produces a clear error rather than a stack overflow.
 
@@ -596,8 +606,8 @@ public class FetchCommand : AsynchronousCommand
 | `ConfigureOptions(action)` | Configure `DefaultProgramOptions` directly |
 | `ConfigureUsageDisplay(action)` | Configure how usage/help is displayed |
 | `UsesConfiguration(bool)` | Enable/disable built-in configuration storage |
-| `Run()` | Build and run the application |
-| `RunAsync()` | Build and run the application asynchronously |
+| `Run()` | Build and run the application, returning the exit code |
+| `RunAsync(cancellationToken)` | Build and run the application asynchronously, returning the exit code |
 
 ## Output Channels
 

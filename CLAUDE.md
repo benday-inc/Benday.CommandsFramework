@@ -14,17 +14,22 @@ Solution file is `Benday.CommandsFramework.slnx` (XML-based slnx format, not .sl
 ## Key Patterns
 
 ### Defining Commands
-Commands inherit from `SynchronousCommand`, `AsynchronousCommand`, or `DependencyInjectionCommand` and use the `[Command]` attribute.
+Commands inherit from `Command` (or `DependencyInjectionCommand`) and use the `[Command]` attribute.
+There is **one** base class: `SynchronousCommand` is gone, `AsynchronousCommand` is an `[Obsolete]`
+empty subclass of `Command` kept so existing code compiles, and `CommandAttribute.IsAsync` is
+`[Obsolete]` and read by nothing — the type system already says how a command runs, and that flag
+could disagree with it (it built cleanly and then threw at run time).
+
 `CommandAttributeUtility.IsCommandType()` is the single definition of what counts as a command — a
 concrete `CommandBase` subclass carrying the attribute — and every discovery path goes through it, so
 the list of commands shown to the user can never disagree with the list that can be instantiated.
 A `[Command]` class failing either half is skipped and reported by `GetCommandNameProblems()`:
 ```csharp
 [Command(Name = "mycommand", Description = "Does something", Category = "MyCategory")]
-public class MyCommand : SynchronousCommand
+public class MyCommand : Command
 {
     public override ArgumentCollection GetArguments() { ... }
-    protected override void OnExecute() { ... }
+    protected override async Task OnExecute(CancellationToken cancellationToken) { ... }
 }
 ```
 
@@ -163,15 +168,32 @@ command names or reserved keywords, aliases claimed by two commands, empty alias
 carrying a `[Command]` attribute that the framework cannot run. Nothing calls it automatically —
 call it from a unit test.
 
+### Execution Contract
+`Command.ExecuteAsync(CancellationToken)` returns a **`CommandResult`** — `Status`
+(`Success` / `ValidationFailed` / `UsageDisplayed` / `Failed` / `Cancelled`), `Message`,
+`InvalidArguments`, `IsSuccess`, `ExitCode`. `UsageDisplayed` counts as success: the user asked for
+usage and got it.
+
+**Nothing in the framework assigns `Environment.ExitCode` except `CommandsApp.Run/RunAsync`**, the
+console entry point. `Validate()` used to set it as a side effect and `DisplayUsage()` set failure,
+which forced `CommandBase` into save/restore dances around nested calls; all of that is gone.
+`DefaultProgram.RunAsync()` *returns* the exit code, so the same commands can run in a host that
+outlives any one of them.
+
+`OnExecute(CancellationToken)` takes a token: pass it to anything that accepts one and check it
+between units of work. `ExecuteAsync` converts an `OperationCanceledException` into
+`CommandResult.Cancelled()` when the token was the cause, so cancelling *this command* does not have
+to mean stopping the process.
+
 ### Calling Commands From Commands
-`CommandBase.CreateCommand<T>()`, `ExecuteCommand<T>()` (sync) and `ExecuteCommandAsync<T>()` (async)
-instantiate and run another command in process and return the instance so results can be read off it.
+`CommandBase.CreateCommand<T>()` and `ExecuteCommandAsync<T>()` instantiate and run another command
+in process and return the instance so results can be read off it.
 Expose results as public properties set in `OnExecute()`.
 - The child shares the caller's `Options`, `Configuration` and `_OutputProvider`, and runs quiet by default.
 - Validation failure **throws** `KnownException` rather than printing usage — an in-process caller
   needs to know the command didn't run.
-- `Environment.ExitCode` is saved/restored around the call so a child can't set the process exit code.
 - `CommandExecutionInfo.NestingDepth` guards against A→B→A loops (`MaxCommandNestingDepth`).
+- There is no `ExecuteCommand<T>` any more — one base class means one method, `ExecuteCommandAsync<T>`.
 
 ### Configuration
 `FromConfig()` arguments read from a stored config file, managed by built-in commands

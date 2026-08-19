@@ -511,7 +511,6 @@ public class CommandAttributeUtility
 
         info.Name = registration.Name;
         info.Description = registration.Description;
-        info.IsAsync = registration.IsAsync;
         info.Category = registration.Category;
         info.Group = registration.Group;
         info.Aliases = registration.Attribute.Aliases;

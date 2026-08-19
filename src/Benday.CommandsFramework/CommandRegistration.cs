@@ -56,11 +56,6 @@ public sealed class CommandRegistration
     public string Description => Attribute.Description;
 
     /// <summary>
-    /// True when this command is declared as async.
-    /// </summary>
-    public bool IsAsync => Attribute.IsAsync;
-
-    /// <summary>
     /// The attribute the registration was built from.
     /// </summary>
     public CommandAttribute Attribute { get; }

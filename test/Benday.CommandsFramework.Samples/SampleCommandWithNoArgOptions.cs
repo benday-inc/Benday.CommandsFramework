@@ -8,16 +8,15 @@ using Benday.CommandsFramework;
 namespace Benday.CommandsFramework.Samples;
 
 [Command(Name = ApplicationConstants.CommandName_CommandWithNoArgs,
-    IsAsync = false,
     Description = "This is the description for command one.")]
-public class SampleCommandWithNoArgOptions : SynchronousCommand
+public class SampleCommandWithNoArgOptions : Command
 {
 	public SampleCommandWithNoArgOptions(CommandExecutionInfo info, ITextOutputProvider outputProvider) : base(info, outputProvider)
 	{
 
 	}
 
-    protected override void OnExecute()
+    protected override Task OnExecute(CancellationToken cancellationToken)
     {
         var builder = new StringBuilder();
 
@@ -31,6 +30,8 @@ public class SampleCommandWithNoArgOptions : SynchronousCommand
         }
 
         _OutputProvider.WriteLine(builder.ToString());
+
+        return Task.CompletedTask;
     }
 
     public override ArgumentCollection GetArguments()

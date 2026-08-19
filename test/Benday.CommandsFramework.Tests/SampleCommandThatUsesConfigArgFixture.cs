@@ -41,7 +41,7 @@ public class SampleCommandWithConfigArgsFixture : TestClassBase
     }
 
     [Fact]
-    public void CreateAndRun_Valid()
+    public async Task CreateAndRun_Valid()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -60,8 +60,8 @@ public class SampleCommandWithConfigArgsFixture : TestClassBase
 
         _SystemUnderTest = new SampleCommandWithConfigArgs(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+        await // act
+        _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert        
         var output = OutputProvider.GetOutput();
@@ -78,7 +78,7 @@ public class SampleCommandWithConfigArgsFixture : TestClassBase
     }
 
     [Fact]
-    public void CreateAndRun_Invalid_WithoutRequiredConfig()
+    public async Task CreateAndRun_Invalid_WithoutRequiredConfig()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -94,8 +94,8 @@ public class SampleCommandWithConfigArgsFixture : TestClassBase
 
         _SystemUnderTest = new SampleCommandWithConfigArgs(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+        await // act
+        _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert        
         var output = OutputProvider.GetOutput();
@@ -116,7 +116,7 @@ public class SampleCommandWithConfigArgsFixture : TestClassBase
     }
 
     [Fact]
-    public void CreateAndRun_Invalid_PartialRequiredConfig_MissingApiKey()
+    public async Task CreateAndRun_Invalid_PartialRequiredConfig_MissingApiKey()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -134,8 +134,8 @@ public class SampleCommandWithConfigArgsFixture : TestClassBase
 
         _SystemUnderTest = new SampleCommandWithConfigArgs(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+        await // act
+        _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert        
         var output = OutputProvider.GetOutput();
@@ -156,7 +156,7 @@ public class SampleCommandWithConfigArgsFixture : TestClassBase
     }
 
     [Fact]
-    public void CreateAndRun_Invalid_PartialRequiredConfig_MissingBaseUrl()
+    public async Task CreateAndRun_Invalid_PartialRequiredConfig_MissingBaseUrl()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -174,8 +174,8 @@ public class SampleCommandWithConfigArgsFixture : TestClassBase
 
         _SystemUnderTest = new SampleCommandWithConfigArgs(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+        await // act
+        _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert        
         var output = OutputProvider.GetOutput();

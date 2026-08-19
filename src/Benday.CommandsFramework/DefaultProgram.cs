@@ -61,89 +61,105 @@ public class DefaultProgram : ICommandProgram
         OutputProvider.WriteError(message);
     }
 
-    public void Run(string[] args)
+    /// <summary>
+    /// Runs whatever the command line asked for and reports how it went.
+    /// </summary>
+    /// <remarks>
+    /// This returns the exit code rather than assigning Environment.ExitCode. Setting the
+    /// process exit code is a console application's decision, and this class is also what a
+    /// long lived host runs commands through -- there, one command's failure has no business
+    /// deciding the fate of the process. CommandsApp is the console entry point and is where
+    /// the exit code gets applied.
+    /// </remarks>
+    /// <param name="args">Command line arguments</param>
+    /// <param name="cancellationToken">Cancels the command being run</param>
+    /// <returns>The exit code the process should use if it is exiting</returns>
+    public async Task<int> RunAsync(
+        string[] args, CancellationToken cancellationToken = default)
     {
         var util = new CommandAttributeUtility(Options);
 
         if (args.Length == 0)
         {
             DisplayUsage(util);
+
+            // no command was named, so nothing was run
+            return CommandFrameworkConstants.ExitCode_Failure;
         }
-        else
+
+        try
         {
-            try
+            if (args[0] == ArgumentFrameworkConstants.ArgumentJson)
             {
-                if (args[0] == ArgumentFrameworkConstants.ArgumentJson)
-                {
-                    DumpJson(util);
-                }
-                else if (args[0] == ArgumentFrameworkConstants.ArgumentGui)
-                {
-                    LaunchGui();
-                }
-                else if (args[0] == ArgumentFrameworkConstants.ArgumentHelpString)
-                {
-                    DisplayUsage(util);
-                    Environment.ExitCode = CommandFrameworkConstants.ExitCode_Success;
-                }
-                else
-                {
-                    // one lookup. The built-in configuration commands are ordinary
-                    // registrations in the registry, so there is no assembly to route to and
-                    // no UsesConfiguration branch here -- that used to be decided three
-                    // separate times, once here, once again below, and once inside
-                    // GetCommand().
-                    var registration = util.GetRegistry(ImplementationAssembly).Find(args[0]);
+                DumpJson(util);
 
-                    if (registration is null)
-                    {
-                        throw new KnownException($"Invalid command name '{args[0]}'.");
-                    }
-
-                    var command = util.GetCommand(args, ImplementationAssembly);
-
-                    if (command == null)
-                    {
-                        DisplayUsage(util);
-                    }
-                    else if (registration.IsAsync == false)
-                    {
-                        var runThis = command as ISynchronousCommand;
-
-                        if (runThis == null)
-                        {
-                            throw new InvalidOperationException(
-                                $"Could not convert type to {typeof(ISynchronousCommand)}.");
-                        }
-
-                        runThis.Execute();
-                    }
-                    else
-                    {
-                        var runThis = command as IAsyncCommand;
-
-                        if (runThis == null)
-                        {
-                            throw new InvalidOperationException(
-                                $"Could not convert type to {typeof(IAsyncCommand)}.");
-                        }
-
-                        var temp = runThis.ExecuteAsync().GetAwaiter();
-
-                        temp.GetResult();
-                    }
-                }
+                return CommandFrameworkConstants.ExitCode_Success;
             }
-            catch (KnownException ex)
+
+            if (args[0] == ArgumentFrameworkConstants.ArgumentGui)
             {
-                WriteError(ex.Message);
-                Environment.ExitCode = 1;
+                LaunchGui();
+
+                return CommandFrameworkConstants.ExitCode_Success;
             }
-            catch
+
+            if (args[0] == ArgumentFrameworkConstants.ArgumentHelpString)
             {
-                Environment.ExitCode = 1;
-                throw;
+                DisplayUsage(util);
+
+                return CommandFrameworkConstants.ExitCode_Success;
             }
+
+            // one lookup. The built-in configuration commands are ordinary registrations in
+            // the registry, so there is no assembly to route to and no UsesConfiguration
+            // branch here -- that used to be decided three separate times, once here, once
+            // again below, and once inside GetCommand().
+            var registration = util.GetRegistry(ImplementationAssembly).Find(args[0]);
+
+            if (registration is null)
+            {
+                throw new KnownException($"Invalid command name '{args[0]}'.");
+            }
+
+            var command = util.GetCommand(args, ImplementationAssembly);
+
+            if (command is null)
+            {
+                DisplayUsage(util);
+
+                return CommandFrameworkConstants.ExitCode_Failure;
+            }
+
+            // one base class, so there is nothing to branch on. This used to be about forty
+            // lines that told a synchronous command from an asynchronous one by reading a
+            // flag off the attribute -- a flag that could disagree with the class it was on.
+            if (command is not Command runThis)
+            {
+                throw new InvalidOperationException(
+                    $"Command '{registration.Name}' does not derive from {nameof(Command)}.");
+            }
+
+            var result = await runThis.ExecuteAsync(cancellationToken);
+
+            if (string.IsNullOrWhiteSpace(result.Message) == false &&
+                result.Status == CommandExecutionStatus.Failed)
+            {
+                WriteError(result.Message);
+            }
+
+            return result.ExitCode;
+        }
+        catch (KnownException ex)
+        {
+            WriteError(ex.Message);
+
+            return CommandFrameworkConstants.ExitCode_Failure;
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            WriteError("Cancelled.");
+
+            return CommandFrameworkConstants.ExitCode_Failure;
         }
     }
 
@@ -348,8 +364,6 @@ public class DefaultProgram : ICommandProgram
         DisplayCommandAliases(util.GetCommandAliases(ImplementationAssembly));
 
         DisplayReservedKeywords();
-
-        Environment.ExitCode = CommandFrameworkConstants.ExitCode_Failure;
     }
 
     /// <summary>

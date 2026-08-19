@@ -39,7 +39,7 @@ public class SampleCommand3Fixture
 
 
     [Fact]
-    public void GetHelp()
+    public async Task GetHelp()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -51,8 +51,8 @@ public class SampleCommand3Fixture
 
         _SystemUnderTest = new SampleCommand3(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+        await // act
+        _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert        
         var output = OutputProvider.GetOutput();

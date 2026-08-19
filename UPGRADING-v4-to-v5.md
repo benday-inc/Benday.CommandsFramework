@@ -33,6 +33,11 @@ are the definition of what applies.
 3. [3. Command names are matched without regard to case](#3-command-names-are-matched-without-regard-to-case)
 4. [4. Duplicate command names and aliases now fail at startup](#4-duplicate-command-names-and-aliases-now-fail-at-startup)
 5. [5. `ICommandProgramOptions` gained two members](#5-icommandprogramoptions-gained-two-members)
+6. [6. One command base class](#6-one-command-base-class)
+7. [7. `OnExecute` takes a `CancellationToken`](#7-onexecute-takes-a-cancellationtoken)
+8. [8. Commands return a result instead of setting `Environment.ExitCode`](#8-commands-return-a-result-instead-of-setting-environmentexitcode)
+9. [9. `Program.cs` returns the exit code](#9-programcs-returns-the-exit-code)
+10. [10. `ExecuteCommand<T>` is now `ExecuteCommandAsync<T>`](#10-executecommandt-is-now-executecommandasynct)
 
 ---
 
@@ -243,6 +248,212 @@ registry. Return whatever was last set and do not build one yourself.
 
 ---
 
+## 6. One command base class
+
+**Mechanical**, and the compiler finds every site.
+
+`SynchronousCommand` is deleted. `AsynchronousCommand` still exists as an `[Obsolete]` empty
+subclass of the new `Command`, so code deriving from it still compiles with a warning.
+`CommandAttribute.IsAsync` is `[Obsolete]` and read by nothing — the type system already says how a
+command runs, and that flag could disagree with it: `IsAsync = false` on an async command built
+cleanly and then threw `Could not convert type to ISynchronousCommand` at run time.
+
+`ISynchronousCommand` and `IAsyncCommand` are deleted. Nothing needs them once there is one base
+class.
+
+### Detect
+
+```bash
+grep -rn ': SynchronousCommand\|: AsynchronousCommand\|ISynchronousCommand\|IAsyncCommand' --include=*.cs .
+grep -rn 'IsAsync' --include=*.cs .
+```
+
+### Change
+
+```csharp
+// before
+[Command(Name = "greet", IsAsync = false)]
+public class GreetCommand : SynchronousCommand
+
+// after
+[Command(Name = "greet")]
+public class GreetCommand : Command
+```
+
+Do **all three** parts: the base class, the `IsAsync` argument, and — see the next entry — the
+`OnExecute` signature. A command whose work really is sequential returns `Task.CompletedTask`; it
+does not need to become genuinely asynchronous.
+
+### Note
+
+Do entries 6 and 7 in the same pass. They both change how a command is declared, and doing them
+together is one edit per command instead of two.
+
+---
+
+## 7. `OnExecute` takes a `CancellationToken`
+
+**Mechanical** for the signature. **Judgment** for whether to use the token.
+
+There was no way to stop a running command short of killing the process.
+
+### Detect
+
+```bash
+grep -rn 'override void OnExecute()\|override Task OnExecute()\|override async Task OnExecute()' --include=*.cs .
+```
+
+### Change
+
+For a command that was already async:
+
+```csharp
+// before
+protected override async Task OnExecute()
+
+// after
+protected override async Task OnExecute(CancellationToken cancellationToken)
+```
+
+For a command that was synchronous, the body also has to return a task. Every `return;` in the
+body becomes `return Task.CompletedTask;`, and a single trailing one is added:
+
+```csharp
+// before
+protected override void OnExecute()
+{
+    WriteLine("done");
+}
+
+// after
+protected override Task OnExecute(CancellationToken cancellationToken)
+{
+    WriteLine("done");
+
+    return Task.CompletedTask;
+}
+```
+
+An easier variant when the body already awaits something: mark it `async` and drop the return
+entirely.
+
+### Judgment: actually using the token
+
+The signature change is mechanical. Passing the token onward is not. Do it where you are
+confident — `HttpClient` calls, `Task.Delay`, anything that already takes one — and add
+`cancellationToken.ThrowIfCancellationRequested()` between iterations of a long loop. Produce a list
+of every command you did **not** thread it through, for a human to review. A token that is accepted
+and ignored is worse than none, because it looks like cancellation works.
+
+---
+
+## 8. Commands return a result instead of setting `Environment.ExitCode`
+
+**Judgment**, and usually there is nothing to do inside a command.
+
+In v4, `Validate()` assigned `Environment.ExitCode` as a side effect, `DisplayUsage()` set failure,
+and `CommandBase` saved and restored the value around nested calls to contain the damage. Nothing
+in the framework touches `Environment.ExitCode` any more except `CommandsApp.Run/RunAsync`, which is
+the console entry point.
+
+`ExecuteAsync` now returns a `CommandResult`:
+
+| Member | Meaning |
+|---|---|
+| `Status` | `Success`, `ValidationFailed`, `UsageDisplayed`, `Failed`, `Cancelled` |
+| `IsSuccess` | true for `Success` and `UsageDisplayed` — the user asked for usage and got it |
+| `ExitCode` | 0 or 1, for a caller that has to produce one |
+| `Message` | why it failed, when it failed |
+| `InvalidArguments` | which arguments failed validation |
+
+### Detect
+
+```bash
+grep -rn 'Environment.ExitCode' --include=*.cs .
+```
+
+### Change
+
+Judgment. A command that read `Environment.ExitCode` to find out whether something it called had
+failed should read the returned `CommandResult` instead. A command that *set* it to report its own
+failure should throw `KnownException` — the framework turns that into a failure exit code and
+writes the message to the error channel.
+
+---
+
+## 9. `Program.cs` returns the exit code
+
+**Mechanical.** The compiler forces this one: `Run(string[])` no longer exists.
+
+### Detect
+
+```bash
+grep -rn 'DefaultProgram\|CommandsApp' --include=Program.cs .
+```
+
+### Change
+
+```csharp
+// before
+static void Main(string[] args)
+{
+    CommandsApp.Create<SomeCommand>(args)
+        .WithAppInfo("My CLI Tool", "https://www.example.com")
+        .Run();
+}
+
+// after
+static async Task<int> Main(string[] args)
+{
+    return await CommandsApp.Create<SomeCommand>(args)
+        .WithAppInfo("My CLI Tool", "https://www.example.com")
+        .RunAsync();
+}
+```
+
+For a tool still on `DefaultProgram` rather than the builder:
+
+```csharp
+// before
+var program = new DefaultProgram(options, assembly);
+program.Run(args);
+
+// after
+var program = new DefaultProgram(options, assembly);
+return await program.RunAsync(args);
+```
+
+`DefaultProgram.RunAsync` returns the code without assigning it, so a `Main` that ignores the
+return value silently always exits 0. Assign it or return it.
+
+---
+
+## 10. `ExecuteCommand<T>` is now `ExecuteCommandAsync<T>`
+
+**Mechanical.** One base class means one way to run a command from inside another.
+
+### Detect
+
+```bash
+grep -rn 'ExecuteCommand<' --include=*.cs .
+```
+
+### Change
+
+```csharp
+// before
+var result = ExecuteCommand<OtherCommand>(args => { args["name"] = name; });
+
+// after
+var result = await ExecuteCommandAsync<OtherCommand>(
+    args => { args["name"] = name; }, cancellationToken: cancellationToken);
+```
+
+The enclosing `OnExecute` has to be `async` for this. If it was the synchronous kind, that follows
+from entry 7 anyway.
+
+---
+
 ## What has not landed yet
 
 These are planned for v5 and will get entries here as they land. Do not act on them yet.
@@ -250,10 +461,6 @@ These are planned for v5 and will get entries here as they land. Do not act on t
 - `CommandCallRequest`, splitting the request from ambient services and bookkeeping.
 - Commands activated through `ActivatorUtilities`, so they declare dependencies in their
   constructor; `DependencyInjectionCommand` becomes obsolete.
-- Commands returning a result instead of setting `Environment.ExitCode`.
-- One command base class, `Command`, with `SynchronousCommand` dropped and `IsAsync`
-  retired.
-- A `CancellationToken` threaded through the execution path.
 - Parser modes (`--arg value`, `--arg=value`, the deprecated `/arg:value`).
 - Multi-level commands (`mytool workitem list`).
 - Declarative validation rules.

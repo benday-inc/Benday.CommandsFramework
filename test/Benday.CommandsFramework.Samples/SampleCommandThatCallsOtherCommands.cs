@@ -1,4 +1,4 @@
-using System.Text;
+﻿using System.Text;
 
 namespace Benday.CommandsFramework.Samples;
 
@@ -9,7 +9,7 @@ namespace Benday.CommandsFramework.Samples;
 [Command(
     Name = ApplicationConstants.CommandName_CallsOtherCommands,
     Description = "Reuses the greeting command to greet several people")]
-public class SampleCommandThatCallsOtherCommands : SynchronousCommand
+public class SampleCommandThatCallsOtherCommands : Command
 {
     public SampleCommandThatCallsOtherCommands(
         CommandExecutionInfo info, ITextOutputProvider outputProvider) : base(info, outputProvider)
@@ -33,7 +33,7 @@ public class SampleCommandThatCallsOtherCommands : SynchronousCommand
         return args;
     }
 
-    protected override void OnExecute()
+    protected override async Task OnExecute(CancellationToken cancellationToken)
     {
         var names = Arguments.GetStringValue("names")
             .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
@@ -42,7 +42,7 @@ public class SampleCommandThatCallsOtherCommands : SynchronousCommand
 
         foreach (var name in names)
         {
-            var command = ExecuteCommand<SampleGreetingCommand>(args =>
+            var command = await ExecuteCommandAsync<SampleGreetingCommand>(args =>
             {
                 args["name"] = name;
 
@@ -50,7 +50,7 @@ public class SampleCommandThatCallsOtherCommands : SynchronousCommand
                 {
                     args["salutation"] = salutation;
                 }
-            });
+            }, cancellationToken: cancellationToken);
 
             Greetings.Add(command.Greeting);
         }
@@ -65,5 +65,6 @@ public class SampleCommandThatCallsOtherCommands : SynchronousCommand
         }
 
         WriteLine(builder.ToString());
+
     }
 }

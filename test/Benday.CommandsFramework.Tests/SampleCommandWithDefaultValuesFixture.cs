@@ -40,7 +40,7 @@ public class SampleCommandWithDefaultValuesFixture
 
 
     [Fact]
-    public void GetHelp()
+    public async Task GetHelp()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -52,8 +52,8 @@ public class SampleCommandWithDefaultValuesFixture
 
         _SystemUnderTest = new SampleCommandWithDefaultValues(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+        await // act
+        _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         var output = OutputProvider.GetOutput();
@@ -64,7 +64,7 @@ public class SampleCommandWithDefaultValuesFixture
     }
 
     [Fact]
-    public void GetHelp_ShowsDefaultValues()
+    public async Task GetHelp_ShowsDefaultValues()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -76,8 +76,8 @@ public class SampleCommandWithDefaultValuesFixture
 
         _SystemUnderTest = new SampleCommandWithDefaultValues(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+        await // act
+        _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         var output = OutputProvider.GetOutput();
@@ -90,7 +90,7 @@ public class SampleCommandWithDefaultValuesFixture
     }
 
     [Fact]
-    public void GetHelp_DefaultValueIsOnItsOwnLineAlignedToDescriptionColumn()
+    public async Task GetHelp_DefaultValueIsOnItsOwnLineAlignedToDescriptionColumn()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -102,8 +102,8 @@ public class SampleCommandWithDefaultValuesFixture
 
         _SystemUnderTest = new SampleCommandWithDefaultValues(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+        await // act
+        _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         var output = OutputProvider.GetOutput();
@@ -126,7 +126,7 @@ public class SampleCommandWithDefaultValuesFixture
     }
 
     [Fact]
-    public void CreateAndRun_Valid_NoArgsSuppliedUsesDefaults()
+    public async Task CreateAndRun_Valid_NoArgsSuppliedUsesDefaults()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -137,8 +137,8 @@ public class SampleCommandWithDefaultValuesFixture
 
         _SystemUnderTest = new SampleCommandWithDefaultValues(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+        await // act
+        _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert        
         var output = OutputProvider.GetOutput();
@@ -152,7 +152,7 @@ public class SampleCommandWithDefaultValuesFixture
     }
 
     [Fact]
-    public void CreateAndRun_Valid_UsesSuppliedValuesRatherThanDefaults()
+    public async Task CreateAndRun_Valid_UsesSuppliedValuesRatherThanDefaults()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -167,8 +167,8 @@ public class SampleCommandWithDefaultValuesFixture
 
         _SystemUnderTest = new SampleCommandWithDefaultValues(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+        await // act
+        _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert        
         var output = OutputProvider.GetOutput();

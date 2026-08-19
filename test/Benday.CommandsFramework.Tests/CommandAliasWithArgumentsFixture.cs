@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 
 using Benday.CommandsFramework.Samples;
 
@@ -85,13 +85,13 @@ public class CommandAliasWithArgumentsFixture
     }
 
     [Fact]
-    public void RunningTheAliasAppliesTheArgumentValues()
+    public async Task RunningTheAliasAppliesTheArgumentValues()
     {
         // arrange
         var program = new DefaultProgram(ProgramOptions, SampleAssembly);
 
-        // act
-        program.Run(Utilities.GetStringArray(ApplicationConstants.CommandAlias_DeployProd));
+        await // act
+        program.RunAsync(Utilities.GetStringArray(ApplicationConstants.CommandAlias_DeployProd), TestContext.Current.CancellationToken);
 
         // assert
         var output = OutputProvider.GetOutput();
@@ -103,13 +103,13 @@ public class CommandAliasWithArgumentsFixture
     }
 
     [Fact]
-    public void SecondAliasSuppliesItsOwnValues()
+    public async Task SecondAliasSuppliesItsOwnValues()
     {
         // arrange
         var program = new DefaultProgram(ProgramOptions, SampleAssembly);
 
-        // act
-        program.Run(Utilities.GetStringArray(ApplicationConstants.CommandAlias_DeployDev));
+        await // act
+        program.RunAsync(Utilities.GetStringArray(ApplicationConstants.CommandAlias_DeployDev), TestContext.Current.CancellationToken);
 
         // assert
         var output = OutputProvider.GetOutput();
@@ -122,16 +122,16 @@ public class CommandAliasWithArgumentsFixture
     }
 
     [Fact]
-    public void CommandLineWinsOverTheAlias()
+    public async Task CommandLineWinsOverTheAlias()
     {
         // arrange
         var program = new DefaultProgram(ProgramOptions, SampleAssembly);
 
-        // act
+        await // act
         // the alias sets environment to production, but staging is typed explicitly
-        program.Run(Utilities.GetStringArray(
+        program.RunAsync(Utilities.GetStringArray(
             ApplicationConstants.CommandAlias_DeployProd,
-            "/environment:staging"));
+            "/environment:staging"), TestContext.Current.CancellationToken);
 
         // assert
         var output = OutputProvider.GetOutput();
@@ -141,13 +141,13 @@ public class CommandAliasWithArgumentsFixture
     }
 
     [Fact]
-    public void ArgumentDefaultsStillApplyUnderAnAlias()
+    public async Task ArgumentDefaultsStillApplyUnderAnAlias()
     {
         // arrange
         var program = new DefaultProgram(ProgramOptions, SampleAssembly);
 
-        // act
-        program.Run(Utilities.GetStringArray(ApplicationConstants.CommandAlias_DeployProd));
+        await // act
+        program.RunAsync(Utilities.GetStringArray(ApplicationConstants.CommandAlias_DeployProd), TestContext.Current.CancellationToken);
 
         // assert
         var output = OutputProvider.GetOutput();
@@ -158,15 +158,15 @@ public class CommandAliasWithArgumentsFixture
     }
 
     [Fact]
-    public void RunningTheRealCommandNameIsUnaffectedByTheAliases()
+    public async Task RunningTheRealCommandNameIsUnaffectedByTheAliases()
     {
         // arrange
         var program = new DefaultProgram(ProgramOptions, SampleAssembly);
 
-        // act
-        program.Run(Utilities.GetStringArray(
+        await // act
+        program.RunAsync(Utilities.GetStringArray(
             ApplicationConstants.CommandName_Deploy,
-            "/environment:staging"));
+            "/environment:staging"), TestContext.Current.CancellationToken);
 
         // assert
         var output = OutputProvider.GetOutput();
@@ -242,13 +242,13 @@ public class CommandAliasWithArgumentsFixture
     }
 
     [Fact]
-    public void DisplayUsage_ListsAliasesThatSupplyArguments()
+    public async Task DisplayUsage_ListsAliasesThatSupplyArguments()
     {
         // arrange
         var program = new DefaultProgram(ProgramOptions, SampleAssembly);
 
-        // act
-        program.Run([]);
+        await // act
+        program.RunAsync([], TestContext.Current.CancellationToken);
 
         // assert
         var output = OutputProvider.GetOutput();

@@ -1,4 +1,4 @@
-using Benday.CommandsFramework;
+﻿using Benday.CommandsFramework;
 
 namespace Benday.CommandsFramework.Samples;
 
@@ -9,9 +9,8 @@ namespace Benday.CommandsFramework.Samples;
 /// than through a unit test on the argument class alone.
 /// </summary>
 [Command(Name = ApplicationConstants.CommandName_CommandWithFileAndDirectoryArgs,
-    IsAsync = false,
     Description = "Sample command demonstrating file and directory arguments.")]
-public class SampleCommandWithFileAndDirectoryArgs : SynchronousCommand
+public class SampleCommandWithFileAndDirectoryArgs : Command
 {
     public const string ArgumentName_InputFile = "inputfile";
     public const string ArgumentName_OptionalFile = "optionalfile";
@@ -54,7 +53,7 @@ public class SampleCommandWithFileAndDirectoryArgs : SynchronousCommand
         return args;
     }
 
-    protected override void OnExecute()
+    protected override Task OnExecute(CancellationToken cancellationToken)
     {
         WriteLine("** SUCCESS **");
 
@@ -71,5 +70,7 @@ public class SampleCommandWithFileAndDirectoryArgs : SynchronousCommand
         {
             WriteLine($"{ArgumentName_OptionalDirectory}: {Arguments.GetPathToDirectory(ArgumentName_OptionalDirectory)}");
         }
+
+        return Task.CompletedTask;
     }
 }

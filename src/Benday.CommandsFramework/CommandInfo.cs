@@ -15,7 +15,6 @@ public class CommandInfo
     /// a flat command name. Unlike Category, which is only a display heading.
     /// </summary>
     public string Group { get; internal set; } = string.Empty;
-    public bool IsAsync { get; internal set; }
 
     /// <summary>
     /// Alternate names that can be used on the command line in place of Name.

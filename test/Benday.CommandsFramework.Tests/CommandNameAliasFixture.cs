@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 
 using Benday.CommandsFramework.Samples;
 
@@ -159,13 +159,13 @@ public class CommandNameAliasFixture
     }
 
     [Fact]
-    public void RunByAlias_ExecutesTheCommand()
+    public async Task RunByAlias_ExecutesTheCommand()
     {
         // arrange
         var program = new DefaultProgram(ProgramOptions, SampleAssembly);
 
-        // act
-        program.Run(Utilities.GetStringArray("mc", "/message:via the alias"));
+        await // act
+        program.RunAsync(Utilities.GetStringArray("mc", "/message:via the alias"), TestContext.Current.CancellationToken);
 
         // assert
         var output = OutputProvider.GetOutput();
@@ -181,15 +181,15 @@ public class CommandNameAliasFixture
     }
 
     [Fact]
-    public void RunByRealName_StillWorks()
+    public async Task RunByRealName_StillWorks()
     {
         // arrange
         var program = new DefaultProgram(ProgramOptions, SampleAssembly);
 
-        // act
-        program.Run(Utilities.GetStringArray(
+        await // act
+        program.RunAsync(Utilities.GetStringArray(
             ApplicationConstants.CommandName_CommandWithCommandNameAliases,
-            "/message:via the real name"));
+            "/message:via the real name"), TestContext.Current.CancellationToken);
 
         // assert
         var output = OutputProvider.GetOutput();
@@ -200,13 +200,13 @@ public class CommandNameAliasFixture
     }
 
     [Fact]
-    public void RunByUnknownName_ReportsInvalidCommandName()
+    public async Task RunByUnknownName_ReportsInvalidCommandName()
     {
         // arrange
         var program = new DefaultProgram(ProgramOptions, SampleAssembly);
 
-        // act
-        program.Run(Utilities.GetStringArray("no-such-command"));
+        await // act
+        program.RunAsync(Utilities.GetStringArray("no-such-command"), TestContext.Current.CancellationToken);
 
         // assert
         var output = OutputProvider.GetOutput();
@@ -216,27 +216,27 @@ public class CommandNameAliasFixture
     }
 
     [Fact]
-    public void RunByAlias_DoesNotMutateTheCallersArgumentArray()
+    public async Task RunByAlias_DoesNotMutateTheCallersArgumentArray()
     {
         // arrange
         var program = new DefaultProgram(ProgramOptions, SampleAssembly);
         var args = Utilities.GetStringArray("mc");
 
-        // act
-        program.Run(args);
+        await // act
+        program.RunAsync(args, TestContext.Current.CancellationToken);
 
         // assert
         Assert.Equal("mc", args[0]);
     }
 
     [Fact]
-    public void DisplayUsage_ShowsAliasesNextToTheCommandName()
+    public async Task DisplayUsage_ShowsAliasesNextToTheCommandName()
     {
         // arrange
         var program = new DefaultProgram(ProgramOptions, SampleAssembly);
 
-        // act
-        program.Run([]);
+        await // act
+        program.RunAsync([], TestContext.Current.CancellationToken);
 
         // assert
         var output = OutputProvider.GetOutput();

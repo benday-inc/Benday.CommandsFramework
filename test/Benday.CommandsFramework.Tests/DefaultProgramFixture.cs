@@ -5,7 +5,7 @@ namespace Benday.CommandsFramework.Tests;
 public class DefaultProgramFixture
 {
     [Fact]
-    public void GetUsages_UsesConfigurationFile_False()
+    public async Task GetUsages_UsesConfigurationFile_False()
     {
         // arrange
         var options = new DefaultProgramOptions();
@@ -21,9 +21,9 @@ public class DefaultProgramFixture
         var sut =
             new DefaultProgram(options, typeof(SampleAsyncCommand).Assembly);
 
-        // act
+        await // act
 
-        sut.Run(new string[] { });
+        sut.RunAsync(new string[] { }, TestContext.Current.CancellationToken);
 
         // assert
         var output = outputProvider.GetOutput();
@@ -44,7 +44,7 @@ public class DefaultProgramFixture
     }
 
     [Fact]
-    public void GetUsages_UsesConfigurationFile_True()
+    public async Task GetUsages_UsesConfigurationFile_True()
     {
         // arrange
         var options = new DefaultProgramOptions();
@@ -60,9 +60,9 @@ public class DefaultProgramFixture
         var sut =
             new DefaultProgram(options, typeof(SampleAsyncCommand).Assembly);
 
-        // act
+        await // act
 
-        sut.Run(new string[] { });
+        sut.RunAsync(new string[] { }, TestContext.Current.CancellationToken);
 
         // assert
         var output = outputProvider.GetOutput();
@@ -85,7 +85,7 @@ public class DefaultProgramFixture
     }
 
     [Fact]
-    public void GetHelpStringForDefaultCommmand_UsesConfigurationFile_True()
+    public async Task GetHelpStringForDefaultCommmand_UsesConfigurationFile_True()
     {
         // arrange
         var options = new DefaultProgramOptions();
@@ -101,11 +101,11 @@ public class DefaultProgramFixture
         var sut =
             new DefaultProgram(options, typeof(SampleAsyncCommand).Assembly);
 
-        // act
+        await // act
 
-        sut.Run(new string[] {
+        sut.RunAsync(new string[] {
             CommandFrameworkConstants.CommandName_GetConfig,
-            ArgumentFrameworkConstants.ArgumentHelpString });
+            ArgumentFrameworkConstants.ArgumentHelpString }, TestContext.Current.CancellationToken);
 
         // assert
         var output = outputProvider.GetOutput();
@@ -116,7 +116,7 @@ public class DefaultProgramFixture
     }
 
     [Fact]
-    public void GetHelpStringForDefaultCommmand_UsesConfigurationFile_False()
+    public async Task GetHelpStringForDefaultCommmand_UsesConfigurationFile_False()
     {
         // arrange
         var options = new DefaultProgramOptions();
@@ -132,11 +132,11 @@ public class DefaultProgramFixture
         var sut =
             new DefaultProgram(options, typeof(SampleAsyncCommand).Assembly);
 
-        // act
+        await // act
 
-        sut.Run(new string[] {
+        sut.RunAsync(new string[] {
             CommandFrameworkConstants.CommandName_GetConfig,
-            ArgumentFrameworkConstants.ArgumentHelpString });
+            ArgumentFrameworkConstants.ArgumentHelpString }, TestContext.Current.CancellationToken);
 
         // assert
         var output = outputProvider.GetOutput();
@@ -147,7 +147,7 @@ public class DefaultProgramFixture
     }
 
     [Fact]
-    public void GetJsonForDefaultProgram()
+    public async Task GetJsonForDefaultProgram()
     {
         // arrange
         var options = new DefaultProgramOptions();
@@ -163,10 +163,10 @@ public class DefaultProgramFixture
         var sut =
             new DefaultProgram(options, typeof(SampleAsyncCommand).Assembly);
 
-        // act
+        await // act
 
-        sut.Run(new string[] {
-            ArgumentFrameworkConstants.ArgumentJson});
+        sut.RunAsync(new string[] {
+            ArgumentFrameworkConstants.ArgumentJson}, TestContext.Current.CancellationToken);
 
         // assert
         var output = outputProvider.GetOutput();

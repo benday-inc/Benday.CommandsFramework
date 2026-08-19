@@ -1,4 +1,4 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 
 using Benday.CommandsFramework.CmdUi.Models;
 using Benday.CommandsFramework.CmdUi.Services;
@@ -15,7 +15,7 @@ namespace Benday.CommandsFramework.Tests;
 /// </summary>
 public class SchemaEnvelopeFixture
 {
-    private static string GetSchemaJson()
+    private static async Task<string> GetSchemaJson()
     {
         var options = new DefaultProgramOptions
         {
@@ -34,7 +34,7 @@ public class SchemaEnvelopeFixture
 
         try
         {
-            program.Run([ArgumentFrameworkConstants.ArgumentJson]);
+            await program.RunAsync([ArgumentFrameworkConstants.ArgumentJson], TestContext.Current.CancellationToken);
         }
         finally
         {
@@ -45,10 +45,10 @@ public class SchemaEnvelopeFixture
     }
 
     [Fact]
-    public void Schema_RootIsAnObjectWithAVersion()
+    public async Task Schema_RootIsAnObjectWithAVersion()
     {
         // act
-        using var document = JsonDocument.Parse(GetSchemaJson());
+        using var document = JsonDocument.Parse(await GetSchemaJson());
 
         // assert
         Assert.Equal(JsonValueKind.Object, document.RootElement.ValueKind);
@@ -59,10 +59,10 @@ public class SchemaEnvelopeFixture
     }
 
     [Fact]
-    public void Schema_CarriesTheApplicationNameAndVersion()
+    public async Task Schema_CarriesTheApplicationNameAndVersion()
     {
         // act
-        using var document = JsonDocument.Parse(GetSchemaJson());
+        using var document = JsonDocument.Parse(await GetSchemaJson());
 
         // assert
         Assert.Equal(
@@ -72,10 +72,10 @@ public class SchemaEnvelopeFixture
     }
 
     [Fact]
-    public void Schema_StillContainsEveryCommand()
+    public async Task Schema_StillContainsEveryCommand()
     {
         // act
-        using var document = JsonDocument.Parse(GetSchemaJson());
+        using var document = JsonDocument.Parse(await GetSchemaJson());
 
         var names = document.RootElement.GetProperty("Commands")
             .EnumerateArray()
@@ -88,30 +88,30 @@ public class SchemaEnvelopeFixture
     }
 
     [Fact]
-    public void Schema_IsWriteOnly()
+    public async Task Schema_IsWriteOnly()
     {
         // The schema types serialize; they do not deserialize. CommandInfo's setters are
         // internal and Arguments is a collection of an interface, so a consumer that reaches
         // for JsonSerializer.Deserialize<CommandSchema> gets objects with everything blank
         // rather than an error. This test exists so that the trap is documented and so that
         // the day someone makes the types round-trippable, it fails and gets deleted.
-        var schema = JsonSerializer.Deserialize<CommandSchema>(GetSchemaJson());
+        var schema = JsonSerializer.Deserialize<CommandSchema>(await GetSchemaJson());
 
         Assert.NotNull(schema);
         Assert.NotEmpty(schema.Commands);
         Assert.All(schema.Commands, x => Assert.Equal(string.Empty, x.Name));
 
         // read the schema the way cmdui does instead -- through mirror types
-        var viaCmdUi = ToolSchemaService.ParseSchema(GetSchemaJson());
+        var viaCmdUi = ToolSchemaService.ParseSchema(await GetSchemaJson());
 
         Assert.All(viaCmdUi.Commands, x => Assert.NotEmpty(x.Name));
     }
 
     [Fact]
-    public void CmdUi_ReadsTheNewSchema()
+    public async Task CmdUi_ReadsTheNewSchema()
     {
         // act
-        var document = ToolSchemaService.ParseSchema(GetSchemaJson());
+        var document = ToolSchemaService.ParseSchema(await GetSchemaJson());
 
         // assert
         Assert.Equal(CommandFrameworkConstants.CurrentSchemaVersion, document.SchemaVersion);

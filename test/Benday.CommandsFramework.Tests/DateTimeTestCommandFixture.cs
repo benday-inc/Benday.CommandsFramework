@@ -53,7 +53,7 @@ public class DateTimeTestCommandFixture
     //    _SystemUnderTest = new DateTimeTestCommand(executionInfo, OutputProvider);
 
     //    // act
-    //    _SystemUnderTest.Execute();
+    //    _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
     //    // assert        
     //    var output = OutputProvider.GetOutput();
@@ -80,7 +80,7 @@ public class DateTimeTestCommandFixture
     //    _SystemUnderTest = new DateTimeTestCommand(executionInfo, OutputProvider);
 
     //    // act
-    //    _SystemUnderTest.Execute();
+    //    _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
     //    // assert        
     //    var output = OutputProvider.GetOutput();
@@ -106,7 +106,7 @@ public class DateTimeTestCommandFixture
     //    _SystemUnderTest = new DateTimeTestCommand(executionInfo, OutputProvider);
 
     //    // act
-    //    _SystemUnderTest.Execute();
+    //    _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
     //    // assert        
     //    var output = OutputProvider.GetOutput();
@@ -133,7 +133,7 @@ public class DateTimeTestCommandFixture
     //    _SystemUnderTest = new DateTimeTestCommand(executionInfo, OutputProvider);
 
     //    // act
-    //    _SystemUnderTest.Execute();
+    //    _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
     //    // assert        
     //    var output = OutputProvider.GetOutput();
@@ -143,7 +143,7 @@ public class DateTimeTestCommandFixture
     //}
 
     [Fact]
-    public void CreateAndRun_InvalidDate()
+    public async Task CreateAndRun_InvalidDate()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -155,8 +155,8 @@ public class DateTimeTestCommandFixture
 
         _SystemUnderTest = new DateTimeTestCommand(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+        await // act
+        _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert        
         var output = OutputProvider.GetOutput();

@@ -1,4 +1,4 @@
-using System.Text;
+﻿using System.Text;
 
 using Benday.CommandsFramework.Samples;
 
@@ -31,7 +31,7 @@ public class OutputChannelFixture
     }
 
     [Command(Name = "channel-sample", Description = "Writes to all three channels")]
-    private class ChannelSampleCommand : SynchronousCommand
+    private class ChannelSampleCommand : Command
     {
         public ChannelSampleCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider)
             : base(info, outputProvider)
@@ -40,11 +40,13 @@ public class OutputChannelFixture
 
         public override ArgumentCollection GetArguments() => new();
 
-        protected override void OnExecute()
+        protected override Task OnExecute(CancellationToken cancellationToken)
         {
             WriteLine(ResultText);
             WriteStatus(StatusText);
             WriteError(ErrorText);
+
+            return Task.CompletedTask;
         }
     }
 
@@ -58,13 +60,13 @@ public class OutputChannelFixture
     }
 
     [Fact]
-    public void StringBuilderProvider_KeepsTheChannelsApart()
+    public async Task StringBuilderProvider_KeepsTheChannelsApart()
     {
         // arrange
         var output = new StringBuilderTextOutputProvider();
 
-        // act
-        GetCommand(output).Execute();
+        await // act
+        GetCommand(output).ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         Assert.Contains(ResultText, output.GetResultOutput());
@@ -76,14 +78,14 @@ public class OutputChannelFixture
     }
 
     [Fact]
-    public void StringBuilderProvider_GetOutputStillReturnsEverything()
+    public async Task StringBuilderProvider_GetOutputStillReturnsEverything()
     {
         // arrange -- GetOutput() is what every existing test uses, so it keeps meaning
         // "everything, in the order it was written"
         var output = new StringBuilderTextOutputProvider();
 
-        // act
-        GetCommand(output).Execute();
+        await // act
+        GetCommand(output).ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         var all = output.GetOutput();
@@ -94,14 +96,14 @@ public class OutputChannelFixture
     }
 
     [Fact]
-    public void LegacyProvider_StillGetsEverythingOnOneChannel()
+    public async Task LegacyProvider_StillGetsEverythingOnOneChannel()
     {
         // arrange -- WriteStatus() and WriteError() are default interface members that fall
         // back to WriteLine(), so a provider written before the split keeps working
         var output = new LegacyOutputProvider();
 
-        // act
-        GetCommand(output).Execute();
+        await // act
+        GetCommand(output).ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         var all = output.Everything.ToString();
@@ -112,13 +114,13 @@ public class OutputChannelFixture
     }
 
     [Fact]
-    public void QuietMode_SuppressesStatusButNeverErrors()
+    public async Task QuietMode_SuppressesStatusButNeverErrors()
     {
         // arrange
         var output = new StringBuilderTextOutputProvider();
 
-        // act
-        GetCommand(output, $"/{CommandFrameworkConstants.CommandArgName_QuietMode}").Execute();
+        await // act
+        GetCommand(output, $"/{CommandFrameworkConstants.CommandArgName_QuietMode}").ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert -- silencing the chatter must never silence a failure
         Assert.DoesNotContain(StatusText, output.GetOutput());
@@ -163,7 +165,7 @@ public class OutputChannelFixture
     }
 
     [Fact]
-    public void FailedCommand_KeepsItsErrorOutOfTheResult()
+    public async Task FailedCommand_KeepsItsErrorOutOfTheResult()
     {
         // arrange -- this is the live bug: a failed command piping --json to a file used to
         // land its error text inside the JSON
@@ -184,8 +186,8 @@ public class OutputChannelFixture
 
         try
         {
-            // act
-            program.Run(["no-such-command"]);
+            await // act
+            program.RunAsync(["no-such-command"], TestContext.Current.CancellationToken);
         }
         finally
         {
@@ -198,7 +200,7 @@ public class OutputChannelFixture
     }
 
     [Fact]
-    public void CommandUsage_ListsTheReservedNames()
+    public async Task CommandUsage_ListsTheReservedNames()
     {
         // arrange -- usage lists only a command's own arguments, so quiet and --help used to
         // be undiscoverable
@@ -211,8 +213,8 @@ public class OutputChannelFixture
 
         var command = new SampleCommandWithAllowedValues(executionInfo, output);
 
-        // act
-        command.Execute();
+        await // act
+        command.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         var text = output.GetOutput();
@@ -223,7 +225,7 @@ public class OutputChannelFixture
     }
 
     [Fact]
-    public void ProgramUsage_ListsTheReservedNames()
+    public async Task ProgramUsage_ListsTheReservedNames()
     {
         // arrange
         var output = new StringBuilderTextOutputProvider();
@@ -242,8 +244,8 @@ public class OutputChannelFixture
 
         try
         {
-            // act
-            program.Run([]);
+            await // act
+            program.RunAsync([], TestContext.Current.CancellationToken);
         }
         finally
         {

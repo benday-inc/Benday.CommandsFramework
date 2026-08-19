@@ -74,9 +74,9 @@ public class CommandsApp
     /// website come from that assembly's metadata.
     /// </summary>
     /// <param name="args">Command line arguments</param>
-    /// <returns>A completed task once the command has run</returns>
+    /// <returns>The exit code</returns>
     /// <exception cref="InvalidOperationException">Thrown when there is no entry assembly.</exception>
-    public static Task RunAsync(string[] args)
+    public static Task<int> RunAsync(string[] args)
     {
         return Create(args).WithAppInfoFromAssembly().RunAsync();
     }
@@ -88,8 +88,8 @@ public class CommandsApp
     /// </summary>
     /// <typeparam name="TCommand">Any type from the assembly containing your commands</typeparam>
     /// <param name="args">Command line arguments</param>
-    /// <returns>A completed task once the command has run</returns>
-    public static Task RunAsync<TCommand>(string[] args) where TCommand : class
+    /// <returns>The exit code</returns>
+    public static Task<int> RunAsync<TCommand>(string[] args) where TCommand : class
     {
         return Create<TCommand>(args).WithAppInfoFromAssembly().RunAsync();
     }
@@ -397,23 +397,36 @@ public class CommandsApp
     }
 
     /// <summary>
-    /// Builds and runs the application synchronously.
+    /// Builds and runs the application, and sets Environment.ExitCode from the result.
     /// </summary>
-    public void Run()
+    /// <remarks>
+    /// This is the console entry point, so this is the one place in the framework that
+    /// assigns the process exit code. Everything below here returns a result instead, which
+    /// is what lets the same commands run in a host that outlives any one of them.
+    /// </remarks>
+    /// <returns>The exit code</returns>
+    public int Run()
+    {
+        return RunAsync().GetAwaiter().GetResult();
+    }
+
+    /// <summary>
+    /// Builds and runs the application asynchronously, and sets Environment.ExitCode from
+    /// the result.
+    /// </summary>
+    /// <param name="cancellationToken">Cancels the command being run</param>
+    /// <returns>The exit code</returns>
+    public async Task<int> RunAsync(CancellationToken cancellationToken = default)
     {
         RegisterCoreServices();
         _options.ServiceCollection = _services;
 
         var program = new DefaultProgram(_options, _commandsAssembly);
-        program.Run(_args);
-    }
 
-    /// <summary>
-    /// Builds and runs the application asynchronously.
-    /// </summary>
-    public Task RunAsync()
-    {
-        Run();
-        return Task.CompletedTask;
+        var exitCode = await program.RunAsync(_args, cancellationToken);
+
+        Environment.ExitCode = exitCode;
+
+        return exitCode;
     }
 }

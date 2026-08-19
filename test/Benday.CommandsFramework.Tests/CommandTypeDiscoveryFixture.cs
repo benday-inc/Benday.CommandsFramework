@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace Benday.CommandsFramework.Tests;
 
@@ -16,7 +16,7 @@ public class CommandTypeDiscoveryFixture
     private const string AbstractCommandName = "abstract-command";
 
     [Command(Name = RunnableCommandName, Description = "A command that the framework can run")]
-    private class RunnableCommand : SynchronousCommand
+    private class RunnableCommand : Command
     {
         public RunnableCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider)
             : base(info, outputProvider)
@@ -28,8 +28,9 @@ public class CommandTypeDiscoveryFixture
             return new ArgumentCollection();
         }
 
-        protected override void OnExecute()
+        protected override Task OnExecute(CancellationToken cancellationToken)
         {
+            return Task.CompletedTask;
         }
     }
 
@@ -46,7 +47,7 @@ public class CommandTypeDiscoveryFixture
     /// Same failure by a different route -- a CommandBase that cannot be constructed.
     /// </summary>
     [Command(Name = AbstractCommandName, Description = "Cannot be constructed")]
-    private abstract class AbstractCommand : SynchronousCommand
+    private abstract class AbstractCommand : Command
     {
         protected AbstractCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider)
             : base(info, outputProvider)

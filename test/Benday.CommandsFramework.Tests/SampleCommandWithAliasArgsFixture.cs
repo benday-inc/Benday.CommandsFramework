@@ -41,7 +41,7 @@ public class SampleCommandWithAliasArgsFixture
 
 
     [Fact]
-    public void GetHelp()
+    public async Task GetHelp()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -51,8 +51,8 @@ public class SampleCommandWithAliasArgsFixture
 
         _SystemUnderTest = new SampleCommandWithAliasArgs(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+        await // act
+        _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert        
         var output = OutputProvider.GetOutput();
@@ -76,7 +76,7 @@ public class SampleCommandWithAliasArgsFixture
     }
 
     [Fact]
-    public void CreateAndRun_Valid_RequiredAliasAppearsInValues_OnlyRequired()
+    public async Task CreateAndRun_Valid_RequiredAliasAppearsInValues_OnlyRequired()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -90,8 +90,8 @@ public class SampleCommandWithAliasArgsFixture
 
         _SystemUnderTest = new SampleCommandWithAliasArgs(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+        await // act
+        _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert        
         var output = OutputProvider.GetOutput();
@@ -102,7 +102,7 @@ public class SampleCommandWithAliasArgsFixture
     }
 
     [Fact]
-    public void CreateAndRun_Valid_RequiredAliasAppearsInValues_RequiredAndOptional()
+    public async Task CreateAndRun_Valid_RequiredAliasAppearsInValues_RequiredAndOptional()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -117,8 +117,8 @@ public class SampleCommandWithAliasArgsFixture
 
         _SystemUnderTest = new SampleCommandWithAliasArgs(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+        await // act
+        _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert        
         var output = OutputProvider.GetOutput();

@@ -1,4 +1,4 @@
-using Benday.CommandsFramework.Samples;
+﻿using Benday.CommandsFramework.Samples;
 
 namespace Benday.CommandsFramework.Tests;
 
@@ -26,7 +26,7 @@ public class CommandCallsCommandFixture
     }
 
     [Fact]
-    public void CallingCommandGetsResultsBackFromTheCommandItRan()
+    public async Task CallingCommandGetsResultsBackFromTheCommandItRan()
     {
         // arrange
         var executionInfo = GetExecutionInfo(
@@ -35,8 +35,8 @@ public class CommandCallsCommandFixture
 
         var systemUnderTest = new SampleCommandThatCallsOtherCommands(executionInfo, OutputProvider);
 
-        // act
-        systemUnderTest.Execute();
+        await // act
+        systemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         Assert.Equal(
@@ -45,7 +45,7 @@ public class CommandCallsCommandFixture
     }
 
     [Fact]
-    public void ArgumentsPassedToTheCommandAreUsed()
+    public async Task ArgumentsPassedToTheCommandAreUsed()
     {
         // arrange
         var executionInfo = GetExecutionInfo(
@@ -55,15 +55,15 @@ public class CommandCallsCommandFixture
 
         var systemUnderTest = new SampleCommandThatCallsOtherCommands(executionInfo, OutputProvider);
 
-        // act
-        systemUnderTest.Execute();
+        await // act
+        systemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         Assert.Equal(new[] { "Howdy, Alice!" }, systemUnderTest.Greetings);
     }
 
     [Fact]
-    public void DefaultValuesStillApplyToTheCommandThatGetsRun()
+    public async Task DefaultValuesStillApplyToTheCommandThatGetsRun()
     {
         // arrange
         // no salutation is supplied, so the greeting command's default is used
@@ -73,15 +73,15 @@ public class CommandCallsCommandFixture
 
         var systemUnderTest = new SampleCommandThatCallsOtherCommands(executionInfo, OutputProvider);
 
-        // act
-        systemUnderTest.Execute();
+        await // act
+        systemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         Assert.Equal(new[] { "Hello, Alice!" }, systemUnderTest.Greetings);
     }
 
     [Fact]
-    public void CommandThatGetsRunIsQuietByDefault()
+    public async Task CommandThatGetsRunIsQuietByDefault()
     {
         // arrange
         var executionInfo = GetExecutionInfo(
@@ -90,8 +90,8 @@ public class CommandCallsCommandFixture
 
         var systemUnderTest = new SampleCommandThatCallsOtherCommands(executionInfo, OutputProvider);
 
-        // act
-        systemUnderTest.Execute();
+        await // act
+        systemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         var output = OutputProvider.GetOutput();
@@ -105,7 +105,7 @@ public class CommandCallsCommandFixture
     }
 
     [Fact]
-    public void OutputFromTheCommandGoesToTheCallingCommandsOutputProvider()
+    public async Task OutputFromTheCommandGoesToTheCallingCommandsOutputProvider()
     {
         // arrange
         var executionInfo = GetExecutionInfo(
@@ -114,8 +114,8 @@ public class CommandCallsCommandFixture
 
         var systemUnderTest = new SampleGreetingCommand(executionInfo, OutputProvider);
 
-        // act
-        systemUnderTest.Execute();
+        await // act
+        systemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         // running the command directly is not quiet, so its output lands on the provider
@@ -124,7 +124,7 @@ public class CommandCallsCommandFixture
     }
 
     [Fact]
-    public void ValidationFailureDoesNotPrintUsageForTheCommandThatWasRun()
+    public async Task ValidationFailureDoesNotPrintUsageForTheCommandThatWasRun()
     {
         // arrange
         var executionInfo = GetExecutionInfo(ApplicationConstants.CommandName_CallsOtherCommandsWithBadArgs);
@@ -133,7 +133,7 @@ public class CommandCallsCommandFixture
             executionInfo, OutputProvider);
 
         // act
-        Assert.Throws<KnownException>(() => systemUnderTest.Execute());
+        await Assert.ThrowsAsync<KnownException>(() => systemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken));
 
         // assert
         // running a command from the command line prints usage on a validation failure.
@@ -147,7 +147,7 @@ public class CommandCallsCommandFixture
     }
 
     [Fact]
-    public void ValidationFailureInTheCommandThrowsKnownException()
+    public async Task ValidationFailureInTheCommandThrowsKnownException()
     {
         // arrange
         var executionInfo = GetExecutionInfo(ApplicationConstants.CommandName_CallsOtherCommandsWithBadArgs);
@@ -156,7 +156,7 @@ public class CommandCallsCommandFixture
             executionInfo, OutputProvider);
 
         // act
-        var exception = Assert.Throws<KnownException>(() => systemUnderTest.Execute());
+        var exception = await Assert.ThrowsAsync<KnownException>(() => systemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken));
 
         // assert
         Assert.Contains($"Could not run command '{ApplicationConstants.CommandName_Greeting}'", exception.Message);
@@ -164,7 +164,7 @@ public class CommandCallsCommandFixture
     }
 
     [Fact]
-    public void NestingDepthGuardStopsACommandThatCallsItself()
+    public async Task NestingDepthGuardStopsACommandThatCallsItself()
     {
         // arrange
         var executionInfo = GetExecutionInfo(ApplicationConstants.CommandName_SelfCalling);
@@ -172,7 +172,7 @@ public class CommandCallsCommandFixture
         var systemUnderTest = new SampleSelfCallingCommand(executionInfo, OutputProvider);
 
         // act
-        var exception = Assert.Throws<KnownException>(() => systemUnderTest.Execute());
+        var exception = await Assert.ThrowsAsync<KnownException>(() => systemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken));
 
         // assert
         Assert.Contains("nested more than", exception.Message);
@@ -180,7 +180,7 @@ public class CommandCallsCommandFixture
     }
 
     [Fact]
-    public void RunningACommandDoesNotChangeTheProcessExitCode()
+    public async Task RunningACommandDoesNotChangeTheProcessExitCode()
     {
         // arrange
         var originalExitCode = Environment.ExitCode;
@@ -195,7 +195,7 @@ public class CommandCallsCommandFixture
                 executionInfo, OutputProvider);
 
             // act
-            Assert.Throws<KnownException>(() => systemUnderTest.Execute());
+            await Assert.ThrowsAsync<KnownException>(() => systemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken));
 
             // assert
             // the command that was run failed validation, but that is the calling
@@ -219,7 +219,7 @@ public class CommandCallsCommandFixture
         var systemUnderTest = new SampleAsyncCallerCommand(executionInfo, OutputProvider);
 
         // act
-        await systemUnderTest.ExecuteAsync();
+        await systemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         Assert.Equal("Hello, Alice!", systemUnderTest.Greeting);
@@ -227,7 +227,7 @@ public class CommandCallsCommandFixture
     }
 
     [Fact]
-    public void CommandTypeWithoutACommandAttributeThrows()
+    public async Task CommandTypeWithoutACommandAttributeThrows()
     {
         // arrange
         var executionInfo = GetExecutionInfo(ApplicationConstants.CommandName_CallsATypeWithNoAttribute);
@@ -236,7 +236,7 @@ public class CommandCallsCommandFixture
             executionInfo, OutputProvider);
 
         // act
-        var exception = Assert.Throws<KnownException>(() => systemUnderTest.Execute());
+        var exception = await Assert.ThrowsAsync<KnownException>(() => systemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken));
 
         // assert
         Assert.Contains("does not have a CommandAttribute", exception.Message);

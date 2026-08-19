@@ -38,7 +38,7 @@ public class SampleCommandThatUsesConfigFixture
     }
 
     [Fact]
-    public void CreateAndRun_Valid_RequiredPositionalAppearsInValues_OnlyRequired()
+    public async Task CreateAndRun_Valid_RequiredPositionalAppearsInValues_OnlyRequired()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -51,8 +51,8 @@ public class SampleCommandThatUsesConfigFixture
 
         _SystemUnderTest = new SampleCommandThatUsesConfig(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+        await // act
+        _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert        
         var output = OutputProvider.GetOutput();

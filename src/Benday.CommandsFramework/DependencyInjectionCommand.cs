@@ -1,4 +1,4 @@
-using Benday.CommandsFramework;
+﻿using Benday.CommandsFramework;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Benday.CommandsFramework;
@@ -8,7 +8,7 @@ namespace Benday.CommandsFramework;
 /// The service collection is validated lazily when services are first accessed,
 /// allowing commands to be instantiated for schema discovery without DI configuration.
 /// </summary>
-public abstract class DependencyInjectionCommand : AsynchronousCommand, IDisposable
+public abstract class DependencyInjectionCommand : Command, IDisposable
 {
     protected DependencyInjectionCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider)
         : base(info, outputProvider)

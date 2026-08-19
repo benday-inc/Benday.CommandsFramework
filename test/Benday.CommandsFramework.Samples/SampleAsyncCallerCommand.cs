@@ -1,13 +1,12 @@
-namespace Benday.CommandsFramework.Samples;
+﻿namespace Benday.CommandsFramework.Samples;
 
 /// <summary>
 /// Sample async command that is run by another command.
 /// </summary>
 [Command(
     Name = ApplicationConstants.CommandName_AsyncGreeting,
-    IsAsync = true,
     Description = "Async version of the greeting command")]
-public class SampleAsyncGreetingCommand : AsynchronousCommand
+public class SampleAsyncGreetingCommand : Command
 {
     public SampleAsyncGreetingCommand(
         CommandExecutionInfo info, ITextOutputProvider outputProvider) : base(info, outputProvider)
@@ -26,7 +25,7 @@ public class SampleAsyncGreetingCommand : AsynchronousCommand
         return args;
     }
 
-    protected override Task OnExecute()
+    protected override Task OnExecute(CancellationToken cancellationToken)
     {
         Greeting = $"Hello, {Arguments.GetStringValue("name")}!";
 
@@ -41,9 +40,8 @@ public class SampleAsyncGreetingCommand : AsynchronousCommand
 /// </summary>
 [Command(
     Name = ApplicationConstants.CommandName_AsyncCallsOtherCommands,
-    IsAsync = true,
     Description = "Reuses the async greeting command")]
-public class SampleAsyncCallerCommand : AsynchronousCommand
+public class SampleAsyncCallerCommand : Command
 {
     public SampleAsyncCallerCommand(
         CommandExecutionInfo info, ITextOutputProvider outputProvider) : base(info, outputProvider)
@@ -62,7 +60,7 @@ public class SampleAsyncCallerCommand : AsynchronousCommand
         return args;
     }
 
-    protected override async Task OnExecute()
+    protected override async Task OnExecute(CancellationToken cancellationToken)
     {
         var command = await ExecuteCommandAsync<SampleAsyncGreetingCommand>(args =>
         {

@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace Benday.CommandsFramework.Tests;
 
@@ -17,7 +17,7 @@ public class CommandsAppBootstrapFixture
     /// A command in the entry assembly, which during a test run is the test executable.
     /// </summary>
     [Command(Name = CommandName, Description = "Command used by the bootstrap tests")]
-    public class BootstrapSampleCommand : SynchronousCommand
+    public class BootstrapSampleCommand : Command
     {
         public BootstrapSampleCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider)
             : base(info, outputProvider)
@@ -29,9 +29,11 @@ public class CommandsAppBootstrapFixture
             return new ArgumentCollection();
         }
 
-        protected override void OnExecute()
+        protected override Task OnExecute(CancellationToken cancellationToken)
         {
             WriteLine(ExecutedMarker);
+
+            return Task.CompletedTask;
         }
     }
 
@@ -40,12 +42,12 @@ public class CommandsAppBootstrapFixture
             throw new InvalidOperationException("No entry assembly in this test run.");
 
     [Fact]
-    public void Create_WithoutATypeArgument_DiscoversCommandsInTheEntryAssembly()
+    public async Task Create_WithoutATypeArgument_DiscoversCommandsInTheEntryAssembly()
     {
         // arrange
         var output = new StringBuilderTextOutputProvider();
 
-        // act
+        await // act
         CommandsApp
             .Create([CommandName])
             .ConfigureOptions(options =>
@@ -54,19 +56,19 @@ public class CommandsAppBootstrapFixture
                 options.OutputProvider = output;
                 options.UsesConfiguration = false;
             })
-            .Run();
+            .RunAsync(TestContext.Current.CancellationToken);
 
         // assert
         Assert.Contains(ExecutedMarker, output.GetOutput());
     }
 
     [Fact]
-    public void WithAppInfoFromAssembly_FillsInNameAndVersion()
+    public async Task WithAppInfoFromAssembly_FillsInNameAndVersion()
     {
         // arrange
         DefaultProgramOptions? captured = null;
 
-        // act
+        await // act
         CommandsApp
             .Create([CommandName])
             .WithAppInfoFromAssembly()
@@ -76,7 +78,7 @@ public class CommandsAppBootstrapFixture
                 options.UsesConfiguration = false;
                 captured = options;
             })
-            .Run();
+            .RunAsync(TestContext.Current.CancellationToken);
 
         // assert
         Assert.NotNull(captured);
@@ -89,12 +91,12 @@ public class CommandsAppBootstrapFixture
     }
 
     [Fact]
-    public void WithAppInfoFromAssembly_DoesNotOverwriteValuesThatWereAlreadySet()
+    public async Task WithAppInfoFromAssembly_DoesNotOverwriteValuesThatWereAlreadySet()
     {
         // arrange
         DefaultProgramOptions? captured = null;
 
-        // act
+        await // act
         CommandsApp
             .Create([CommandName])
             .WithAppInfo("Explicit Name", "v9.9.9", "https://www.example.com")
@@ -105,7 +107,7 @@ public class CommandsAppBootstrapFixture
                 options.UsesConfiguration = false;
                 captured = options;
             })
-            .Run();
+            .RunAsync(TestContext.Current.CancellationToken);
 
         // assert
         Assert.NotNull(captured);
@@ -115,7 +117,7 @@ public class CommandsAppBootstrapFixture
     }
 
     [Fact]
-    public void Version_HasTheSourceRevisionSuffixTrimmed()
+    public async Task Version_HasTheSourceRevisionSuffixTrimmed()
     {
         // arrange -- the SDK appends "+<commit sha>" to the informational version
         var informational = EntryAssembly
@@ -123,7 +125,7 @@ public class CommandsAppBootstrapFixture
 
         DefaultProgramOptions? captured = null;
 
-        // act
+        await // act
         CommandsApp
             .Create([CommandName])
             .WithAppInfoFromAssembly()
@@ -133,7 +135,7 @@ public class CommandsAppBootstrapFixture
                 options.UsesConfiguration = false;
                 captured = options;
             })
-            .Run();
+            .RunAsync(TestContext.Current.CancellationToken);
 
         // assert
         Assert.NotNull(captured);
@@ -148,13 +150,13 @@ public class CommandsAppBootstrapFixture
     }
 
     [Fact]
-    public void UsageHeader_SkipsValuesThatWereNeverConfigured()
+    public async Task UsageHeader_SkipsValuesThatWereNeverConfigured()
     {
         // arrange -- a bootstrapped tool usually has no website in its assembly metadata,
         // and an empty value used to print as a blank line
         var output = new StringBuilderTextOutputProvider();
 
-        // act
+        await // act
         CommandsApp
             .Create([])
             .ConfigureOptions(options =>
@@ -165,7 +167,7 @@ public class CommandsAppBootstrapFixture
                 options.OutputProvider = output;
                 options.UsesConfiguration = false;
             })
-            .Run();
+            .RunAsync(TestContext.Current.CancellationToken);
 
         // assert
         var lines = output.GetOutput()

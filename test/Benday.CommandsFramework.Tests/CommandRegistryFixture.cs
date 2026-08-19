@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 
 using Benday.CommandsFramework.Samples;
 
@@ -272,7 +272,7 @@ internal static class ConflictingCommands
     public const string AliasThatIsAlsoACommandName = "shadowed-alias";
 
     [Command(Name = DuplicateOfASampleCommandName)]
-    internal class ClaimsASampleCommandName : SynchronousCommand
+    internal class ClaimsASampleCommandName : Command
     {
         public ClaimsASampleCommandName(
             CommandExecutionInfo info, ITextOutputProvider outputProvider)
@@ -280,30 +280,33 @@ internal static class ConflictingCommands
 
         public override ArgumentCollection GetArguments() => new();
 
-        protected override void OnExecute() { }
+        protected override Task OnExecute(CancellationToken cancellationToken) =>
+            Task.CompletedTask;
     }
 
     [Command(Name = AliasThatIsAlsoACommandName)]
-    internal class ClaimsAName : SynchronousCommand
+    internal class ClaimsAName : Command
     {
         public ClaimsAName(CommandExecutionInfo info, ITextOutputProvider outputProvider)
             : base(info, outputProvider) { }
 
         public override ArgumentCollection GetArguments() => new();
 
-        protected override void OnExecute() { }
+        protected override Task OnExecute(CancellationToken cancellationToken) =>
+            Task.CompletedTask;
     }
 
     [Command(
         Name = "claims-a-taken-alias",
         Aliases = [DuplicateOfASampleAlias, AliasThatIsAlsoACommandName])]
-    internal class ClaimsATakenAlias : SynchronousCommand
+    internal class ClaimsATakenAlias : Command
     {
         public ClaimsATakenAlias(CommandExecutionInfo info, ITextOutputProvider outputProvider)
             : base(info, outputProvider) { }
 
         public override ArgumentCollection GetArguments() => new();
 
-        protected override void OnExecute() { }
+        protected override Task OnExecute(CancellationToken cancellationToken) =>
+            Task.CompletedTask;
     }
 }

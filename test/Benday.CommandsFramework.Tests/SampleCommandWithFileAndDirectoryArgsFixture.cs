@@ -1,4 +1,4 @@
-using Benday.CommandsFramework.Samples;
+﻿using Benday.CommandsFramework.Samples;
 
 namespace Benday.CommandsFramework.Tests;
 
@@ -47,7 +47,7 @@ public class SampleCommandWithFileAndDirectoryArgsFixture : IDisposable
         }
     }
 
-    private string Run(params string[] args)
+    private async Task<string> Run(params string[] args)
     {
         var executionInfo = new ArgumentCollectionFactory().Parse(
             Utilities.GetStringArray(
@@ -56,16 +56,16 @@ public class SampleCommandWithFileAndDirectoryArgsFixture : IDisposable
 
         var command = new SampleCommandWithFileAndDirectoryArgs(executionInfo, OutputProvider);
 
-        command.Execute();
+        await command.ExecuteAsync(TestContext.Current.CancellationToken);
 
         return OutputProvider.GetOutput();
     }
 
     [Fact]
-    public void Execute_ExistingFileAndDirectory_Succeeds()
+    public async Task Execute_ExistingFileAndDirectory_Succeeds()
     {
         // act
-        var output = Run(
+        var output = await Run(
             $"/{SampleCommandWithFileAndDirectoryArgs.ArgumentName_InputFile}:{_ExistingFile}",
             $"/{SampleCommandWithFileAndDirectoryArgs.ArgumentName_OutputDirectory}:{_TempDirectory}");
 
@@ -76,13 +76,13 @@ public class SampleCommandWithFileAndDirectoryArgsFixture : IDisposable
     }
 
     [Fact]
-    public void Execute_MissingFile_FailsValidation()
+    public async Task Execute_MissingFile_FailsValidation()
     {
         // arrange
         var missingFile = Path.Combine(_TempDirectory, "nope.txt");
 
         // act
-        var output = Run(
+        var output = await Run(
             $"/{SampleCommandWithFileAndDirectoryArgs.ArgumentName_InputFile}:{missingFile}",
             $"/{SampleCommandWithFileAndDirectoryArgs.ArgumentName_OutputDirectory}:{_TempDirectory}");
 
@@ -94,13 +94,13 @@ public class SampleCommandWithFileAndDirectoryArgsFixture : IDisposable
     }
 
     [Fact]
-    public void Execute_MissingDirectory_FailsValidation()
+    public async Task Execute_MissingDirectory_FailsValidation()
     {
         // arrange
         var missingDirectory = Path.Combine(_TempDirectory, "nope");
 
         // act
-        var output = Run(
+        var output = await Run(
             $"/{SampleCommandWithFileAndDirectoryArgs.ArgumentName_InputFile}:{_ExistingFile}",
             $"/{SampleCommandWithFileAndDirectoryArgs.ArgumentName_OutputDirectory}:{missingDirectory}");
 
@@ -111,14 +111,14 @@ public class SampleCommandWithFileAndDirectoryArgsFixture : IDisposable
     }
 
     [Fact]
-    public void Execute_OptionalPathsThatDoNotExist_Succeeds()
+    public async Task Execute_OptionalPathsThatDoNotExist_Succeeds()
     {
         // arrange -- ExistenceOptional() means the value is a destination, not a source
         var newFile = Path.Combine(_TempDirectory, "output.txt");
         var newDirectory = Path.Combine(_TempDirectory, "temp");
 
         // act
-        var output = Run(
+        var output = await Run(
             $"/{SampleCommandWithFileAndDirectoryArgs.ArgumentName_InputFile}:{_ExistingFile}",
             $"/{SampleCommandWithFileAndDirectoryArgs.ArgumentName_OutputDirectory}:{_TempDirectory}",
             $"/{SampleCommandWithFileAndDirectoryArgs.ArgumentName_OptionalFile}:{newFile}",

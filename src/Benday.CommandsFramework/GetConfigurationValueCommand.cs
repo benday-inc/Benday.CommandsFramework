@@ -1,9 +1,8 @@
 ﻿namespace Benday.CommandsFramework;
 
-[Command(Name = CommandFrameworkConstants.CommandName_GetConfig, IsAsync = false, 
-    Description = "Display all configuration values or a specific configuration value",
+[Command(Name = CommandFrameworkConstants.CommandName_GetConfig,     Description = "Display all configuration values or a specific configuration value",
     Category = CommandFrameworkConstants.CategoryName_Configuration)]
-public class GetConfigurationValueCommand : SynchronousCommand
+public class GetConfigurationValueCommand : Command
 {
     public GetConfigurationValueCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider) : base(info, outputProvider)
     {
@@ -20,7 +19,7 @@ public class GetConfigurationValueCommand : SynchronousCommand
         return args;
     }
 
-    protected override void OnExecute()
+    protected override Task OnExecute(CancellationToken cancellationToken)
     {
         var showOneValueOnly = Arguments.HasValue(CommandFrameworkConstants.CommandArgName_ConfigName);
 
@@ -34,6 +33,8 @@ public class GetConfigurationValueCommand : SynchronousCommand
 
             DisplayOneValue(key);
         }
+
+        return Task.CompletedTask;
     }
 
     private void DisplayAllValues()

@@ -1,4 +1,4 @@
-using Benday.CommandsFramework.Samples;
+﻿using Benday.CommandsFramework.Samples;
 using Benday.CommandsFramework.Samples.Services;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +25,7 @@ public class SharedServiceProviderFixture
         }
     }
 
-    [Command(Name = "counting-command", IsAsync = true)]
+    [Command(Name = "counting-command")]
     private class CountingCommand : DependencyInjectionCommand
     {
         public CountingCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider)
@@ -35,7 +35,7 @@ public class SharedServiceProviderFixture
 
         public InstanceCountingService? Service { get; private set; }
 
-        protected override Task OnExecute()
+        protected override Task OnExecute(CancellationToken cancellationToken)
         {
             Service = GetRequiredService<InstanceCountingService>();
 
@@ -78,8 +78,8 @@ public class SharedServiceProviderFixture
             outputProvider);
 
         // act
-        await first.ExecuteAsync();
-        await second.ExecuteAsync();
+        await first.ExecuteAsync(TestContext.Current.CancellationToken);
+        await second.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         Assert.NotNull(first.Service);
@@ -101,7 +101,7 @@ public class SharedServiceProviderFixture
             outputProvider);
 
         // act
-        await command.ExecuteAsync();
+        await command.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         Assert.NotNull(options.ServiceProvider);
@@ -118,7 +118,7 @@ public class SharedServiceProviderFixture
             new CommandExecutionInfo { CommandName = "counting-command", Options = options },
             outputProvider);
 
-        await first.ExecuteAsync();
+        await first.ExecuteAsync(TestContext.Current.CancellationToken);
         first.Dispose();
 
         var second = new CountingCommand(
@@ -126,7 +126,7 @@ public class SharedServiceProviderFixture
             outputProvider);
 
         // act
-        await second.ExecuteAsync();
+        await second.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         // disposing one command disposes its own scope but leaves the shared provider alone
@@ -153,7 +153,7 @@ public class SharedServiceProviderFixture
 
         // act
         var exception = await Assert.ThrowsAsync<InvalidOperationException>(
-            () => command.ExecuteAsync());
+            () => command.ExecuteAsync(TestContext.Current.CancellationToken));
 
         // assert
         Assert.Contains("Service collection was not populated", exception.Message);

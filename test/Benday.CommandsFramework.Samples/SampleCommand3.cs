@@ -1,7 +1,7 @@
 ﻿namespace Benday.CommandsFramework.Samples;
 
 [Command(Name = ApplicationConstants.CommandName_Command3, Category = "thingy")]
-public class SampleCommand3 : SynchronousCommand
+public class SampleCommand3 : Command
 {
     public SampleCommand3(CommandExecutionInfo info, ITextOutputProvider outputProvider) : base(info, outputProvider)
     {
@@ -22,7 +22,7 @@ public class SampleCommand3 : SynchronousCommand
         return args;
     }
 
-    protected override void OnExecute()
+    protected override Task OnExecute(CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

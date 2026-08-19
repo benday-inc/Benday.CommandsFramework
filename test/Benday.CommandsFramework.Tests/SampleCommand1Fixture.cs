@@ -39,7 +39,7 @@ public class SampleCommand1Fixture
 
 
     [Fact]
-    public void CreateAndRun_ValidArgs()
+    public async Task CreateAndRun_ValidArgs()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -55,8 +55,8 @@ public class SampleCommand1Fixture
 
         _SystemUnderTest = new SampleCommand1(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+        await // act
+        _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert        
         var output = OutputProvider.GetOutput();
@@ -65,7 +65,7 @@ public class SampleCommand1Fixture
     }
 
     [Fact]
-    public void CreateAndRun_MultipleInvalidArgs()
+    public async Task CreateAndRun_MultipleInvalidArgs()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -80,8 +80,8 @@ public class SampleCommand1Fixture
 
         _SystemUnderTest = new SampleCommand1(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+        await // act
+        _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert        
         var output = OutputProvider.GetOutput();
@@ -90,7 +90,7 @@ public class SampleCommand1Fixture
     }
 
     [Fact]
-    public void CreateAndRun_OneInvalidArg()
+    public async Task CreateAndRun_OneInvalidArg()
     {
         // arrange
         // /isawesome2 is an unknown arg AND causes required /isawesome to be missing,
@@ -109,8 +109,8 @@ public class SampleCommand1Fixture
 
         _SystemUnderTest = new SampleCommand1(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+        await // act
+        _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         var output = OutputProvider.GetOutput();
@@ -121,7 +121,7 @@ public class SampleCommand1Fixture
     }
 
     [Fact]
-    public void CreateAndRun_DisplayUsage()
+    public async Task CreateAndRun_DisplayUsage()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -133,8 +133,8 @@ public class SampleCommand1Fixture
 
         _SystemUnderTest = new SampleCommand1(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+        await // act
+        _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         var output = OutputProvider.GetOutput();

@@ -1,4 +1,4 @@
-using Benday.CommandsFramework.Samples;
+﻿using Benday.CommandsFramework.Samples;
 
 using Microsoft.Extensions.Configuration;
 
@@ -7,14 +7,14 @@ namespace Benday.CommandsFramework.Tests;
 public class CommandsAppFixture
 {
     [Fact]
-    public void ConfigureConfiguration_AddsInMemoryValues()
+    public async Task ConfigureConfiguration_AddsInMemoryValues()
     {
         // arrange
         var args = new[] { "commandname1", "/arg1:Hello", "/isawesome:true", "/count:42", "/dateofthingy:01/01/2025" };
 
         IConfiguration? capturedConfig = null;
 
-        // act
+        await // act
         CommandsApp
             .Create<SampleCommand1>(args)
             .WithAppInfo("Test App", "https://www.example.com")
@@ -30,7 +30,7 @@ public class CommandsAppFixture
             {
                 capturedConfig = config;
             })
-            .Run();
+            .RunAsync(TestContext.Current.CancellationToken);
 
         // assert
         Assert.NotNull(capturedConfig);
@@ -39,14 +39,14 @@ public class CommandsAppFixture
     }
 
     [Fact]
-    public void ConfigureConfiguration_WorksWithoutPriorWithAppSettings()
+    public async Task ConfigureConfiguration_WorksWithoutPriorWithAppSettings()
     {
         // arrange
         var args = new[] { "commandname1", "/arg1:Hello", "/isawesome:true", "/count:42", "/dateofthingy:01/01/2025" };
 
         IConfiguration? capturedConfig = null;
 
-        // act - calling ConfigureConfiguration without WithAppSettings first
+        await // act - calling ConfigureConfiguration without WithAppSettings first
         CommandsApp
             .Create<SampleCommand1>(args)
             .WithAppInfo("Test App", "https://www.example.com")
@@ -61,7 +61,7 @@ public class CommandsAppFixture
             {
                 capturedConfig = config;
             })
-            .Run();
+            .RunAsync(TestContext.Current.CancellationToken);
 
         // assert
         Assert.NotNull(capturedConfig);
@@ -69,14 +69,14 @@ public class CommandsAppFixture
     }
 
     [Fact]
-    public void ConfigureConfiguration_CanBeCalledMultipleTimes()
+    public async Task ConfigureConfiguration_CanBeCalledMultipleTimes()
     {
         // arrange
         var args = new[] { "commandname1", "/arg1:Hello", "/isawesome:true", "/count:42", "/dateofthingy:01/01/2025" };
 
         IConfiguration? capturedConfig = null;
 
-        // act
+        await // act
         CommandsApp
             .Create<SampleCommand1>(args)
             .WithAppInfo("Test App", "https://www.example.com")
@@ -98,7 +98,7 @@ public class CommandsAppFixture
             {
                 capturedConfig = config;
             })
-            .Run();
+            .RunAsync(TestContext.Current.CancellationToken);
 
         // assert
         Assert.NotNull(capturedConfig);

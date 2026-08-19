@@ -1,4 +1,4 @@
-using Benday.CommandsFramework.Samples;
+﻿using Benday.CommandsFramework.Samples;
 
 namespace Benday.CommandsFramework.Tests;
 
@@ -150,7 +150,7 @@ public class StringArgumentAllowedValuesFixture
     // ---- Command-level integration tests ----
 
     [Fact]
-    public void Command_AllowedValues_ValidValue_Succeeds()
+    public async Task Command_AllowedValues_ValidValue_Succeeds()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -161,8 +161,8 @@ public class StringArgumentAllowedValuesFixture
         var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
         var command = new SampleCommandWithAllowedValues(executionInfo, OutputProvider);
 
-        // act
-        command.Execute();
+        await // act
+        command.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         var output = OutputProvider.GetOutput();
@@ -170,7 +170,7 @@ public class StringArgumentAllowedValuesFixture
     }
 
     [Fact]
-    public void Command_AllowedValues_InvalidValue_ShowsValidationError()
+    public async Task Command_AllowedValues_InvalidValue_ShowsValidationError()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -181,8 +181,8 @@ public class StringArgumentAllowedValuesFixture
         var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
         var command = new SampleCommandWithAllowedValues(executionInfo, OutputProvider);
 
-        // act
-        command.Execute();
+        await // act
+        command.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         var output = OutputProvider.GetOutput();
@@ -192,7 +192,7 @@ public class StringArgumentAllowedValuesFixture
     }
 
     [Fact]
-    public void Command_AllowedValues_OptionalArgWithInvalidValue_ShowsValidationError()
+    public async Task Command_AllowedValues_OptionalArgWithInvalidValue_ShowsValidationError()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -204,8 +204,8 @@ public class StringArgumentAllowedValuesFixture
         var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
         var command = new SampleCommandWithAllowedValues(executionInfo, OutputProvider);
 
-        // act
-        command.Execute();
+        await // act
+        command.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         var output = OutputProvider.GetOutput();

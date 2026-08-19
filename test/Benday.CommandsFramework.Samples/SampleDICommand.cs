@@ -1,11 +1,10 @@
-using Benday.CommandsFramework.Samples.Services;
+﻿using Benday.CommandsFramework.Samples.Services;
 
 namespace Benday.CommandsFramework.Samples;
 
 [Command(Name = "greet",
     Description = "Sample command demonstrating dependency injection",
-    Category = "Samples",
-    IsAsync = true)]
+    Category = "Samples")]
 public class SampleDICommand : DependencyInjectionCommand
 {
     public SampleDICommand(CommandExecutionInfo info, ITextOutputProvider outputProvider)
@@ -24,7 +23,7 @@ public class SampleDICommand : DependencyInjectionCommand
         return arguments;
     }
 
-    protected override Task OnExecute()
+    protected override Task OnExecute(CancellationToken cancellationToken)
     {
         var name = Arguments.GetStringValue("name");
 

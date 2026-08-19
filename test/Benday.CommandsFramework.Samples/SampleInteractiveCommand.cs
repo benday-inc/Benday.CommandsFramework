@@ -1,4 +1,4 @@
-using Benday.CommandsFramework;
+﻿using Benday.CommandsFramework;
 
 namespace Benday.CommandsFramework.Samples;
 
@@ -8,9 +8,8 @@ namespace Benday.CommandsFramework.Samples;
 /// an interactive command testable.
 /// </summary>
 [Command(Name = ApplicationConstants.CommandName_Interactive,
-    IsAsync = false,
     Description = "Sample command demonstrating prompting for input.")]
-public class SampleInteractiveCommand : SynchronousCommand
+public class SampleInteractiveCommand : Command
 {
     public const string ArgumentName_Name = "name";
 
@@ -40,7 +39,7 @@ public class SampleInteractiveCommand : SynchronousCommand
     /// </summary>
     public bool DidGreet { get; private set; }
 
-    protected override void OnExecute()
+    protected override Task OnExecute(CancellationToken cancellationToken)
     {
         var name = Arguments.GetStringValue(ArgumentName_Name);
 
@@ -52,7 +51,7 @@ public class SampleInteractiveCommand : SynchronousCommand
         if (string.IsNullOrWhiteSpace(name) == true)
         {
             WriteLine("No name supplied. Nothing to do.");
-            return;
+            return Task.CompletedTask;
         }
 
         NameUsed = name;
@@ -60,11 +59,13 @@ public class SampleInteractiveCommand : SynchronousCommand
         if (PromptForYesNo($"Say hello to {name}?") == false)
         {
             WriteLine("Suit yourself.");
-            return;
+            return Task.CompletedTask;
         }
 
         DidGreet = true;
 
         WriteLine($"Hello, {name}!");
+
+        return Task.CompletedTask;
     }
 }

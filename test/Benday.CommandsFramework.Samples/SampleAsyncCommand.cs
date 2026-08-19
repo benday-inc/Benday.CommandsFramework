@@ -1,7 +1,7 @@
 ﻿namespace Benday.CommandsFramework.Samples;
 
 [Command(Name = ApplicationConstants.CommandName_Command2)]
-public class SampleAsyncCommand : AsynchronousCommand
+public class SampleAsyncCommand : Command
 {
     public SampleAsyncCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider) : 
         base(info, outputProvider)
@@ -9,7 +9,7 @@ public class SampleAsyncCommand : AsynchronousCommand
 
     }
 
-    protected override async Task OnExecute()
+    protected override async Task OnExecute(CancellationToken cancellationToken)
     {
         var temp = GetStringAsync().GetAwaiter();
 

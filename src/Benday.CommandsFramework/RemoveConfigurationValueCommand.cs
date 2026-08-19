@@ -1,10 +1,9 @@
 ﻿namespace Benday.CommandsFramework;
 
 [Command(Name = CommandFrameworkConstants.CommandName_RemoveConfig, 
-    IsAsync = false, 
-    Description = "Remove a configuration value",
+        Description = "Remove a configuration value",
     Category = CommandFrameworkConstants.CategoryName_Configuration)]
-public class RemoveConfigurationValueCommand : SynchronousCommand
+public class RemoveConfigurationValueCommand : Command
 {
     public RemoveConfigurationValueCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider) : base(info, outputProvider)
     {
@@ -21,11 +20,13 @@ public class RemoveConfigurationValueCommand : SynchronousCommand
         return args;
     }
 
-    protected override void OnExecute()
+    protected override Task OnExecute(CancellationToken cancellationToken)
     {
         var key = Arguments.GetStringValue(CommandFrameworkConstants.CommandArgName_ConfigName);
 
         RemoveValue(key);
+
+        return Task.CompletedTask;
     }
 
     private void RemoveValue(string key)

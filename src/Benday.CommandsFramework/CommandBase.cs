@@ -345,74 +345,30 @@ public abstract class CommandBase
     /// rather than printing the usage information, because the calling command needs to
     /// know that the command did not run.
     /// </summary>
+    /// <remarks>
+    /// This used to save and restore Environment.ExitCode around the call, so that a command
+    /// run by another command could not decide the exit code of the process. Commands return
+    /// a CommandResult now and nothing here touches the process exit code, so there is
+    /// nothing to contain.
+    /// </remarks>
     /// <typeparam name="T">Type of the command to run</typeparam>
     /// <param name="configureArguments">Callback for populating the arguments for the command</param>
     /// <param name="quiet">Run the command in quiet mode. Defaults to true.</param>
-    /// <returns>The command instance after it has run</returns>
-    /// <exception cref="KnownException">Thrown when the arguments for the command are not valid</exception>
-    protected T ExecuteCommand<T>(
-        Action<Dictionary<string, string>>? configureArguments = null,
-        bool quiet = true) where T : SynchronousCommand
-    {
-        var command = CreateCommand<T>(configureArguments, quiet);
-
-        RunWithoutChangingExitCode(command, () => command.Execute());
-
-        return command;
-    }
-
-    /// <summary>
-    /// Creates another command, validates it, and runs it asynchronously. The command
-    /// instance is returned so that results can be read back off it.
-    /// Unlike running a command from the command line, a validation failure here throws
-    /// rather than printing the usage information, because the calling command needs to
-    /// know that the command did not run.
-    /// </summary>
-    /// <typeparam name="T">Type of the command to run</typeparam>
-    /// <param name="configureArguments">Callback for populating the arguments for the command</param>
-    /// <param name="quiet">Run the command in quiet mode. Defaults to true.</param>
+    /// <param name="cancellationToken">Cancels the command being run</param>
     /// <returns>The command instance after it has run</returns>
     /// <exception cref="KnownException">Thrown when the arguments for the command are not valid</exception>
     protected async Task<T> ExecuteCommandAsync<T>(
         Action<Dictionary<string, string>>? configureArguments = null,
-        bool quiet = true) where T : AsynchronousCommand
+        bool quiet = true,
+        CancellationToken cancellationToken = default) where T : Command
     {
         var command = CreateCommand<T>(configureArguments, quiet);
 
-        var exitCode = Environment.ExitCode;
+        ThrowOnValidationFailure(command);
 
-        try
-        {
-            ThrowOnValidationFailure(command);
-
-            await command.ExecuteAsync();
-        }
-        finally
-        {
-            // a command that is run by another command must not decide the exit code for
-            // the process. That belongs to the command that was actually asked for.
-            Environment.ExitCode = exitCode;
-        }
+        await command.ExecuteAsync(cancellationToken);
 
         return command;
-    }
-
-    private void RunWithoutChangingExitCode(CommandBase command, Action run)
-    {
-        var exitCode = Environment.ExitCode;
-
-        try
-        {
-            ThrowOnValidationFailure(command);
-
-            run();
-        }
-        finally
-        {
-            // a command that is run by another command must not decide the exit code for
-            // the process. That belongs to the command that was actually asked for.
-            Environment.ExitCode = exitCode;
-        }
     }
 
     private static void ThrowOnValidationFailure(CommandBase command)
@@ -722,11 +678,6 @@ public abstract class CommandBase
             {
                 returnValue.Add(new UnknownArgument(unknownKey));
             }
-        }
-
-        if (returnValue.Count > 0)
-        {
-            Environment.ExitCode = 1;
         }
 
         return returnValue;

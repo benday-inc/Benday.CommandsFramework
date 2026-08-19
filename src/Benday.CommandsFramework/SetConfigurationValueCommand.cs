@@ -1,8 +1,8 @@
 ﻿namespace Benday.CommandsFramework;
 
-[Command(Name = CommandFrameworkConstants.CommandName_SetConfig, IsAsync = false, Description = "Set a configuration value",
+[Command(Name = CommandFrameworkConstants.CommandName_SetConfig, Description = "Set a configuration value",
     Category = CommandFrameworkConstants.CategoryName_Configuration)]
-public class SetConfigurationValueCommand : SynchronousCommand
+public class SetConfigurationValueCommand : Command
 {
     public SetConfigurationValueCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider) : base(info, outputProvider)
     {
@@ -19,7 +19,7 @@ public class SetConfigurationValueCommand : SynchronousCommand
         return args;
     }
 
-    protected override void OnExecute()
+    protected override Task OnExecute(CancellationToken cancellationToken)
     {
         var key = Arguments.GetStringValue(CommandFrameworkConstants.CommandArgName_ConfigName);
         var value = Arguments.GetStringValue(CommandFrameworkConstants.CommandArgName_ConfigValue);
@@ -27,5 +27,7 @@ public class SetConfigurationValueCommand : SynchronousCommand
         ExecutionInfo.Configuration.SetValue(key, value);
 
         WriteLine("Configuration value set.");
+
+        return Task.CompletedTask;
     }
 }

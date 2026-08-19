@@ -16,8 +16,14 @@ public class CommandAttribute : Attribute
     public string Name { get; set; } = string.Empty;
     
     /// <summary>
-    /// True if this command should be run in async mode
+    /// True if this command should be run in async mode.
     /// </summary>
+    /// <remarks>
+    /// Nothing reads this any more. There is one command base class, so the type system
+    /// already says how a command runs -- and this flag could disagree with it, which built
+    /// cleanly and then threw at run time.
+    /// </remarks>
+    [Obsolete("Nothing reads this. There is one command base class, so it says nothing the type system does not. It will be removed in v6.")]
     public bool IsAsync { get; set; } = false;
 
     /// <summary>

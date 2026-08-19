@@ -1,4 +1,4 @@
-using System.Text;
+﻿using System.Text;
 
 namespace Benday.CommandsFramework.Samples;
 
@@ -10,7 +10,7 @@ namespace Benday.CommandsFramework.Samples;
 /// </summary>
 [Command(Name = ApplicationConstants.CommandName_CommandWithDefaultsAndRequiredArg,
     Description = "Command with a required arg plus an arg that has a default value")]
-public class SampleCommandWithDefaultsAndRequiredArg : SynchronousCommand
+public class SampleCommandWithDefaultsAndRequiredArg : Command
 {
     public SampleCommandWithDefaultsAndRequiredArg(
         CommandExecutionInfo info, ITextOutputProvider outputProvider) : base(info, outputProvider)
@@ -33,7 +33,7 @@ public class SampleCommandWithDefaultsAndRequiredArg : SynchronousCommand
         return args;
     }
 
-    protected override void OnExecute()
+    protected override Task OnExecute(CancellationToken cancellationToken)
     {
         var builder = new StringBuilder();
 
@@ -47,5 +47,7 @@ public class SampleCommandWithDefaultsAndRequiredArg : SynchronousCommand
         }
 
         _OutputProvider.WriteLine(builder.ToString());
+
+        return Task.CompletedTask;
     }
 }

@@ -1,4 +1,4 @@
-namespace Benday.CommandsFramework.Samples;
+﻿namespace Benday.CommandsFramework.Samples;
 
 /// <summary>
 /// Sample command that produces a result which other commands can reuse. The result is
@@ -7,7 +7,7 @@ namespace Benday.CommandsFramework.Samples;
 [Command(
     Name = ApplicationConstants.CommandName_Greeting,
     Description = "Builds a greeting for a person")]
-public class SampleGreetingCommand : SynchronousCommand
+public class SampleGreetingCommand : Command
 {
     public SampleGreetingCommand(
         CommandExecutionInfo info, ITextOutputProvider outputProvider) : base(info, outputProvider)
@@ -32,10 +32,12 @@ public class SampleGreetingCommand : SynchronousCommand
         return args;
     }
 
-    protected override void OnExecute()
+    protected override Task OnExecute(CancellationToken cancellationToken)
     {
         Greeting = $"{Arguments.GetStringValue("salutation")}, {Arguments.GetStringValue("name")}!";
 
         WriteLine(Greeting);
+
+        return Task.CompletedTask;
     }
 }
