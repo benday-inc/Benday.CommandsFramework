@@ -113,4 +113,24 @@ public class StringBuilderTextOutputProvider : ITextOutputProvider
         _Instance.AppendLine(line);
         _Error.AppendLine(line);
     }
+
+    /// <summary>
+    /// Every progress report, in order, so a test can assert on what a command reported
+    /// rather than on how it happened to be drawn.
+    /// </summary>
+    public List<CommandProgress> ProgressReports { get; } = new();
+
+    /// <summary>
+    /// Record a progress report. It is also written to the status channel, so output that is
+    /// read as text still reads sensibly.
+    /// </summary>
+    /// <param name="progress">The report</param>
+    public void ReportProgress(CommandProgress progress)
+    {
+        ArgumentNullException.ThrowIfNull(progress, nameof(progress));
+
+        ProgressReports.Add(progress);
+
+        WriteStatus(progress.ToString());
+    }
 }

@@ -302,6 +302,50 @@ public abstract class CommandBase : IDisposable
         _OutputProvider.WriteError(text);
     }
 
+    private IProgress<CommandProgress>? _Progress;
+
+    /// <summary>
+    /// Where this command reports progress. Reports go to the diagnostic channel, so they
+    /// survive a caller redirecting the command's result and stay out of it.
+    /// </summary>
+    /// <remarks>
+    /// This is an IProgress&lt;T&gt; so it can be handed to anything that already knows how
+    /// to report progress -- including framework and library APIs that take one.
+    /// </remarks>
+    protected IProgress<CommandProgress> Progress
+    {
+        get
+        {
+            _Progress ??= new Progress<CommandProgress>(OnProgressReported);
+
+            return _Progress;
+        }
+    }
+
+    private void OnProgressReported(CommandProgress progress)
+    {
+        if (IsQuietMode == true || progress is null)
+        {
+            return;
+        }
+
+        _OutputProvider.ReportProgress(progress);
+    }
+
+    /// <summary>
+    /// Report progress. Does nothing in quiet mode -- progress is commentary.
+    /// </summary>
+    /// <param name="message">What the command is doing</param>
+    /// <param name="current">How many units are done, when that is known</param>
+    /// <param name="total">How many units there are, when that is known</param>
+    protected void ReportProgress(string message, int? current = null, int? total = null)
+    {
+        // reported straight through rather than through the IProgress instance, because
+        // Progress<T> posts to the synchronization context and a command that reports and
+        // then immediately finishes would race its own output
+        OnProgressReported(new CommandProgress(message, current, total));
+    }
+
     /// <summary>
     /// Where this command reads text input from. Comes from the program options, so a test
     /// can hand the command a QueuedTextInputProvider and drive an interactive command

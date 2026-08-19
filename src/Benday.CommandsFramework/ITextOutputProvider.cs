@@ -62,4 +62,15 @@ public interface ITextOutputProvider
     /// width the framework used to compute for itself.
     /// </remarks>
     int Width => CommandFrameworkConstants.DefaultOutputWidth;
+
+    /// <summary>
+    /// Report progress from a running command.
+    /// </summary>
+    /// <remarks>
+    /// Progress is commentary, so the default writes it to the status channel -- which means
+    /// a provider that does nothing special still behaves correctly. A console provider can
+    /// redraw one line in place; a user interface can move a real progress bar.
+    /// </remarks>
+    /// <param name="progress">The report</param>
+    void ReportProgress(CommandProgress progress) => WriteStatus(progress.ToString());
 }
