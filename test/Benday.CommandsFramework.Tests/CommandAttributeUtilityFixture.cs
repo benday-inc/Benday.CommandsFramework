@@ -1,4 +1,4 @@
-using Benday.CommandsFramework.Samples;
+﻿using Benday.CommandsFramework.Samples;
 using System.Reflection;
 using System.Text;
 
@@ -54,7 +54,8 @@ public class CommandAttributeUtilityFixture
         // arrange
         CommandProgramOptionsInstance.UsesConfiguration = false;
 
-        var expectedCount = 30;
+        // bump this when a sample command is added -- that is the point of the check
+        var expectedCount = 31;
         var sampleAssembly = typeof(Benday.CommandsFramework.Samples.SampleCommand1).Assembly;
 
         // act
@@ -76,7 +77,7 @@ public class CommandAttributeUtilityFixture
 
         var expectedNumberOfConfigCommands = 4;
 
-        var expectedCount = 30 + expectedNumberOfConfigCommands;
+        var expectedCount = 31 + expectedNumberOfConfigCommands;
         var sampleAssembly = typeof(Benday.CommandsFramework.Samples.SampleCommand1).Assembly;
 
         // act

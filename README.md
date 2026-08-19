@@ -648,6 +648,37 @@ base-url - set (required)
 
 Add `/missingonly` to see only what is missing.
 
+## Finding a Value Instead of Asking for It
+
+When a value can usually be worked out, let the framework find it and only insist when it
+cannot:
+
+```csharp
+args.AddFile("solution")
+    .DiscoverSingleMatch("*.sln")
+    .AsRequired()
+    .WithDescription("Solution file. Found automatically when there is exactly one here.");
+```
+
+```
+$ mytool build                    # one .sln here, so it is used
+$ mytool build                    # none here
+solution was not supplied and no files matching '*.sln' were found in /work.
+Supply it with /solution:value.
+
+$ mytool build                    # three of them
+solution was not supplied and 3 files match '*.sln' in /work: a.sln, b.sln, c.sln.
+Supply it with /solution:value to choose one.
+```
+
+Finding nothing and finding several are different situations and say different things, because
+they call for different things from you.
+
+The search runs when the command is validated, never when its arguments are declared — so
+`--json` does not glob the disk once per command every time something asks for the schema. It
+is a last resort: anything supplied on the command line, by an alias, from configuration, or as
+a default wins.
+
 ## Argument Rules
 
 Some requirements are about the *combination* of arguments rather than any one of them.

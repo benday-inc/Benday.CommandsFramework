@@ -41,6 +41,32 @@ public interface IArgument
     bool MustExist { get => false; }
 
     /// <summary>
+    /// A search pattern that can find this argument's value when it is not supplied, such as
+    /// "*.sln". Empty when the value has to be supplied.
+    /// </summary>
+    /// <remarks>
+    /// The search runs at validation time rather than when the arguments are declared. Doing
+    /// it in GetArguments() would mean --json globbed the disk once per command in the tool,
+    /// every time anything asked for the schema.
+    /// </remarks>
+    string DiscoveryPattern { get => string.Empty; }
+
+    /// <summary>
+    /// Directory to search for DiscoveryPattern. Empty means the working directory.
+    /// </summary>
+    string DiscoveryDirectory { get => string.Empty; }
+
+    /// <summary>
+    /// Whether the search for DiscoveryPattern descends into subdirectories.
+    /// </summary>
+    bool DiscoveryIsRecursive { get => false; }
+
+    /// <summary>
+    /// True when this argument's value can be found rather than supplied.
+    /// </summary>
+    bool IsDiscoverable => string.IsNullOrWhiteSpace(DiscoveryPattern) == false;
+
+    /// <summary>
     /// Human readable description for the argument
     /// </summary>
     string Description { get; }

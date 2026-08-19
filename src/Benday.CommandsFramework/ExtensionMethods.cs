@@ -251,6 +251,63 @@ public static class ExtensionMethods
     }
 
     /// <summary>
+    /// Finds this argument's value when it is not supplied, by searching for exactly one
+    /// match of a pattern.
+    /// </summary>
+    /// <remarks>
+    /// "Find the one .sln in this folder, and make me say which one if there is not exactly
+    /// one." Zero matches and several matches are different situations and produce different
+    /// messages, which is most of the value -- "I could not find one" and "I found four,
+    /// pick one" call for different things from the user.
+    ///
+    /// The search runs at validation time. Doing it when the arguments are declared would
+    /// mean --json globbed the disk once per command in the tool.
+    /// </remarks>
+    /// <param name="arg">File or directory argument to configure</param>
+    /// <param name="pattern">Search pattern, such as "*.sln"</param>
+    /// <param name="directory">Directory to search. Defaults to the working directory.</param>
+    /// <param name="recursive">Search subdirectories too</param>
+    /// <returns>The argument</returns>
+    /// <exception cref="InvalidOperationException">Thrown for an argument that is not a file
+    /// or directory argument -- there is nothing to search for.</exception>
+    public static Argument<T> DiscoverSingleMatch<T>(
+        this Argument<T> arg,
+        string pattern,
+        string? directory = null,
+        bool recursive = false)
+    {
+        if (arg == null)
+        {
+            throw new ArgumentNullException(nameof(arg));
+        }
+
+        if (string.IsNullOrWhiteSpace(pattern) == true)
+        {
+            throw new ArgumentException("Pattern is required.", nameof(pattern));
+        }
+
+        if (arg is DirectoryArgument directoryArg)
+        {
+            directoryArg.DiscoveryPattern = pattern;
+            directoryArg.DiscoveryDirectory = directory ?? string.Empty;
+            directoryArg.DiscoveryIsRecursive = recursive;
+        }
+        else if (arg is FileArgument fileArg)
+        {
+            fileArg.DiscoveryPattern = pattern;
+            fileArg.DiscoveryDirectory = directory ?? string.Empty;
+            fileArg.DiscoveryIsRecursive = recursive;
+        }
+        else
+        {
+            throw new InvalidOperationException(
+                $"Cannot call DiscoverSingleMatch() on non-directory/non-file arg '{arg.Name}'.");
+        }
+
+        return arg;
+    }
+
+    /// <summary>
     /// Gets the value from an unnamed variable based on position in the arg string.
     /// </summary>
     /// <param name="collection">Argument collection</param>

@@ -123,6 +123,64 @@ public class CommandAttributeUtility
     }
 
     /// <summary>
+    /// Checks every command's arguments for problems that can only be seen once the argument
+    /// definitions exist.
+    /// </summary>
+    /// <remarks>
+    /// Separate from CommandRegistry.Problems on purpose: this has to instantiate every
+    /// command in the tool to ask it for its arguments, which is exactly the cost the
+    /// registry was built to avoid paying on every run. Call it from a unit test.
+    ///
+    /// What it finds today is an optional positional argument declared before a required
+    /// one. Positions are ordinal over the values that were actually supplied, so an omitted
+    /// optional one silently shifts every position after it and the command reads the wrong
+    /// values without any error at all.
+    /// </remarks>
+    /// <param name="containingAssembly">Assembly containing the commands</param>
+    /// <returns>Human readable descriptions of any problems found</returns>
+    public List<string> GetArgumentProblems(Assembly containingAssembly)
+    {
+        if (containingAssembly is null)
+        {
+            throw new ArgumentNullException(nameof(containingAssembly));
+        }
+
+        var problems = new List<string>();
+
+        foreach (var usage in GetAllCommandUsages(containingAssembly))
+        {
+            var positionals = usage.Arguments
+                .Where(x => x.IsPositionalSource == true)
+                .OrderBy(x => x.Alias, StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            var seenOptional = new List<string>();
+
+            foreach (var argument in positionals)
+            {
+                if (argument.IsRequired == false)
+                {
+                    seenOptional.Add(argument.Name);
+                }
+                else if (seenOptional.Count > 0)
+                {
+                    var optionalNames = string.Join(
+                        ", ", seenOptional.Select(x => "'" + x + "'"));
+
+                    problems.Add(
+                        $"Command '{usage.Name}' declares required positional argument " +
+                        $"'{argument.Name}' after optional positional {optionalNames}. " +
+                        "Positions are counted over the values that are actually supplied, so " +
+                        "leaving the optional one out shifts every position after it and the " +
+                        "command reads the wrong values without any error.");
+                }
+            }
+        }
+
+        return problems;
+    }
+
+    /// <summary>
     /// Gets the types in an assembly that are marked with a CommandAttribute but that the
     /// framework cannot run, so that a unit test can report them instead of leaving the
     /// author wondering why their command never shows up.

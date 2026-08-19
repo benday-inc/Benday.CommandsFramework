@@ -815,6 +815,10 @@ public abstract class CommandBase : IDisposable
 
         SetValuesFromExecutionInfo();
 
+        // a value that can be found is a last resort, after the command line, the alias
+        // presets, configuration and the default value have all had their say
+        returnValue.AddRange(DiscoverMissingValues());
+
         foreach (var key in Arguments.Keys)
         {
             var temp = Arguments[key];
@@ -856,6 +860,93 @@ public abstract class CommandBase : IDisposable
         }
 
         return returnValue;
+    }
+
+    /// <summary>
+    /// Fills in the arguments that can be found by searching rather than supplied, and
+    /// reports the ones where the search did not turn up exactly one match.
+    /// </summary>
+    /// <remarks>
+    /// This runs at validation time rather than when the arguments are declared, so that
+    /// --json does not glob the disk once per command in the tool every time anything asks
+    /// for the schema.
+    /// </remarks>
+    private List<ValidationFailure> DiscoverMissingValues()
+    {
+        var returnValue = new List<ValidationFailure>();
+
+        foreach (var key in Arguments.Keys)
+        {
+            var argument = Arguments[key];
+
+            if (argument.IsDiscoverable == false || argument.HasValue == true)
+            {
+                continue;
+            }
+
+            var directory = string.IsNullOrWhiteSpace(argument.DiscoveryDirectory)
+                ? Environment.CurrentDirectory
+                : argument.DiscoveryDirectory;
+
+            var searchOption = argument.DiscoveryIsRecursive
+                ? SearchOption.AllDirectories
+                : SearchOption.TopDirectoryOnly;
+
+            var matches = FindMatches(argument, directory, searchOption);
+
+            if (matches.Count == 1)
+            {
+                argument.TrySetValue(matches[0]);
+
+                continue;
+            }
+
+            // an optional argument that finds nothing is simply not supplied. Only a required
+            // one turns an unsuccessful search into a failure.
+            if (matches.Count == 0 && argument.IsRequired == false)
+            {
+                continue;
+            }
+
+            var what = argument.PathType == ArgumentPathType.Directory ? "directories" : "files";
+
+            var message = matches.Count == 0
+                ? $"{argument.Name} was not supplied and no {what} matching " +
+                    $"'{argument.DiscoveryPattern}' were found in {directory}. " +
+                    $"Supply it with /{argument.Name}:value."
+                : $"{argument.Name} was not supplied and {matches.Count} {what} match " +
+                    $"'{argument.DiscoveryPattern}' in {directory}: " +
+                    $"{string.Join(", ", matches.Select(Path.GetFileName))}. " +
+                    $"Supply it with /{argument.Name}:value to choose one.";
+
+            returnValue.Add(ValidationFailure.ForDiscovery(argument, message));
+        }
+
+        return returnValue;
+    }
+
+    private static List<string> FindMatches(
+        IArgument argument, string directory, SearchOption searchOption)
+    {
+        if (Directory.Exists(directory) == false)
+        {
+            return [];
+        }
+
+        try
+        {
+            var matches = argument.PathType == ArgumentPathType.Directory
+                ? Directory.GetDirectories(directory, argument.DiscoveryPattern, searchOption)
+                : Directory.GetFiles(directory, argument.DiscoveryPattern, searchOption);
+
+            return [.. matches.Order(StringComparer.OrdinalIgnoreCase)];
+        }
+        catch (UnauthorizedAccessException)
+        {
+            // an unreadable directory is the same as one with nothing in it as far as
+            // finding a value goes
+            return [];
+        }
     }
 
     /// <summary>

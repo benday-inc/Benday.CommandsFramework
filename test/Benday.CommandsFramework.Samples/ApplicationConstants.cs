@@ -21,6 +21,7 @@ public static class ApplicationConstants
     public const string CommandAlias_ShowWidget = "showwidget";
     public const string CommandName_Progress = "progress";
     public const string CommandName_CommandWithRules = "rulescommand";
+    public const string CommandName_CommandWithDiscovery = "discoverycommand";
     public const string CommandName_CommandWithDefaultsAndRequiredArg = "defaultsandrequired";
     public const string CommandName_CommandWithCommandNameAliases = "command-with-a-long-name";
     public const string CommandName_Greeting = "greeting";

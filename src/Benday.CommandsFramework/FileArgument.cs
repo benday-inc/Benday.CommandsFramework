@@ -20,6 +20,22 @@ public class FileArgument : StringArgument, IArgument
     public override ArgumentDataType DataType { get => ArgumentDataType.String; }
 
     /// <summary>
+    /// A search pattern that can find this argument's value when it is not supplied. Empty
+    /// when the value has to be supplied. Set through DiscoverSingleMatch().
+    /// </summary>
+    public string DiscoveryPattern { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Directory to search. Empty means the working directory.
+    /// </summary>
+    public string DiscoveryDirectory { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Whether the search descends into subdirectories.
+    /// </summary>
+    public bool DiscoveryIsRecursive { get; set; }
+
+    /// <summary>
     /// This argument's value is a path to a file.
     /// </summary>
     public ArgumentPathType PathType { get => ArgumentPathType.File; }

@@ -138,6 +138,28 @@ The schema types **serialize but do not deserialize** — `CommandInfo`'s setter
 `Arguments` is a collection of an interface, so `JsonSerializer.Deserialize<CommandSchema>` hands
 back blank objects instead of throwing. Read a schema through mirror types, the way cmdui does.
 
+### Single-match Discovery
+`AddFile("input").DiscoverSingleMatch("*.json")` finds a value instead of requiring one — "find the
+one .sln here, and make me say which one if there isn't exactly one".
+
+- Runs at **validation time**, never in `GetArguments()` — globbing there would mean `--json` hit the
+  disk once per command in the tool, every time anything asked for the schema.
+- Last resort: only when command line, alias presets, config and default have all left it empty.
+- **Zero and several get different messages**, which is most of the value: "no files matching X were
+  found in Y" vs "3 files match X in Y: a, b, c — supply it to choose one".
+- Zero matches on an *optional* argument is fine (it's simply not supplied); several is still a
+  failure, because the command can't pick.
+- Throws on a non-file/non-directory argument, like `MustExist()`.
+- Travels in the schema as `IArgument.DiscoveryPattern` / `DiscoveryDirectory` /
+  `DiscoveryIsRecursive` / `IsDiscoverable`.
+
+Related hazard: **optional positional arguments must be trailing**. Positions are ordinal over the
+values actually supplied, so an omitted optional one silently shifts every position after it and the
+command reads the wrong values with no error at all.
+`CommandAttributeUtility.GetArgumentProblems(assembly)` catches that — it's separate from
+`CommandRegistry.Problems` because it has to instantiate every command to ask for its arguments,
+which is the cost the registry exists to avoid. Call it from a unit test.
+
 ### Built-in Keywords
 - `--help` — display usage
 - `--json` — dump full command schema as JSON (used by cmdui for auto-generating UI)

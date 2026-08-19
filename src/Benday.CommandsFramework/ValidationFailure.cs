@@ -26,7 +26,13 @@ public enum ValidationFailureKind
     /// A required value that can come from stored configuration was neither supplied on the
     /// command line nor found in the configuration.
     /// </summary>
-    MissingConfiguration
+    MissingConfiguration,
+
+    /// <summary>
+    /// A value that can be found by searching was not supplied, and the search did not turn
+    /// up exactly one match.
+    /// </summary>
+    DiscoveryFailed
 }
 
 /// <summary>
@@ -111,6 +117,28 @@ public sealed class ValidationFailure
             $"once with: {setConfigurationCommandName} " +
             $"/{CommandFrameworkConstants.CommandArgName_ConfigName}:{argument.Name} " +
             $"/{CommandFrameworkConstants.CommandArgName_ConfigValue}:value",
+            [argument.Name],
+            argument);
+    }
+
+    /// <summary>
+    /// A value that can be found by searching was not supplied, and the search did not find
+    /// exactly one match.
+    /// </summary>
+    /// <remarks>
+    /// Finding nothing and finding several are different situations and get different
+    /// messages -- "I could not find one" and "I found four, pick one" call for different
+    /// things from the user, and telling them apart is most of what this feature is for.
+    /// </remarks>
+    /// <param name="argument">The argument</param>
+    /// <param name="message">What the search found, or did not</param>
+    public static ValidationFailure ForDiscovery(IArgument argument, string message)
+    {
+        ArgumentNullException.ThrowIfNull(argument, nameof(argument));
+
+        return new ValidationFailure(
+            ValidationFailureKind.DiscoveryFailed,
+            message,
             [argument.Name],
             argument);
     }
