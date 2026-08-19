@@ -164,7 +164,27 @@ which is the cost the registry exists to avoid. Call it from a unit test.
 - `--help` — display usage
 - `--json` — dump full command schema as JSON (used by cmdui for auto-generating UI)
 - `gui` — launch `cmdui` for the current tool
+- `completion` — print the shell completion stub (`/shell:pwsh|zsh|bash`)
+- `--complete "<line>"` — **hidden**; what the stubs call back into. Reserved but deliberately not
+  listed in usage output: it's for shells, not people.
 - `quiet` — reserved argument; suppresses `CommandBase.WriteLine()` output
+
+### Shell Completion
+Dynamic, not generated: the stub is a fixed few lines that hand the whole command line back to the
+tool, so it never goes stale when the tool changes. Affordable because `CompletionEngine` is
+deliberately cheap — completing a **command name** reads the registry and instantiates **nothing**;
+only once a command resolves does it create *that one* command to ask for its arguments. (Measured on
+the samples tool: `--complete` ~100ms vs `--json` ~300ms, most of the former being .NET startup.)
+
+Wire format is one candidate per line: `value` + optional TAB + `description`. A line starting with
+`:` is a **directive** rather than a candidate — `:file:PATTERN` and `:dir` tell the shell to
+complete paths itself, because it already knows how and handles quoting correctly. A file argument
+with a `DiscoverSingleMatch` pattern narrows its directive to that pattern.
+
+Payoff ranking is pwsh > zsh > bash: PowerShell shows descriptions as tooltips and maps directives to
+`ProviderItem`/`ProviderContainer`; bash can't show descriptions at all, so the stub drops them.
+`CompletionScripts.GetShellFunctionName()` sanitizes the tool name — a tool named after its assembly
+has dots in it, which a shell function name can't.
 
 ### Command Registry
 `CommandRegistry` is the single place commands are discovered. `CommandAttributeUtility.GetRegistry()`
