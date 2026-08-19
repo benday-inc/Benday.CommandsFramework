@@ -270,7 +270,16 @@ public class OutputChannelFixture
         Assert.Contains(ArgumentFrameworkConstants.ArgumentGui, ReservedKeywords.AllNames);
         Assert.Contains(CommandFrameworkConstants.CommandArgName_QuietMode, ReservedKeywords.AllNames);
 
-        // --help is on both lists but should only be counted once
-        Assert.Equal(4, ReservedKeywords.AllNames.Count);
+        Assert.Contains(ArgumentFrameworkConstants.CommandCompletion, ReservedKeywords.AllNames);
+
+        // --complete is reserved but deliberately not listed in usage output: it exists for
+        // shell completion stubs rather than for people
+        Assert.Contains(ArgumentFrameworkConstants.ArgumentComplete, ReservedKeywords.AllNames);
+        Assert.DoesNotContain(
+            ReservedKeywords.ForPrograms,
+            x => x.Name == ArgumentFrameworkConstants.ArgumentComplete);
+
+        // --help is on both lists but is only counted once
+        Assert.Equal(6, ReservedKeywords.AllNames.Count);
     }
 }

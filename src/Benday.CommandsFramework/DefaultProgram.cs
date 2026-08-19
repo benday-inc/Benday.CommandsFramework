@@ -103,6 +103,22 @@ public class DefaultProgram : ICommandProgram
                 return CommandFrameworkConstants.ExitCode_Success;
             }
 
+            if (args[0] == ArgumentFrameworkConstants.ArgumentComplete)
+            {
+                // called by a shell completion stub on every TAB, so this path stays cheap:
+                // completing a command name reads the registry and instantiates nothing
+                WriteCompletions(util, args.Length > 1 ? args[1] : string.Empty);
+
+                return CommandFrameworkConstants.ExitCode_Success;
+            }
+
+            if (args[0] == ArgumentFrameworkConstants.CommandCompletion)
+            {
+                WriteCompletionScript(args);
+
+                return CommandFrameworkConstants.ExitCode_Success;
+            }
+
             if (args[0] == ArgumentFrameworkConstants.ArgumentHelpString)
             {
                 DisplayUsage(util);
@@ -171,6 +187,62 @@ public class DefaultProgram : ICommandProgram
 
             return CommandFrameworkConstants.ExitCode_Failure;
         }
+    }
+
+    /// <summary>
+    /// Writes the completion candidates for a partially typed command line, one per line.
+    /// </summary>
+    private void WriteCompletions(CommandAttributeUtility util, string commandLine)
+    {
+        var engine = new CompletionEngine(
+            util, util.GetRegistry(ImplementationAssembly), ImplementationAssembly);
+
+        foreach (var candidate in engine.GetCandidates(commandLine))
+        {
+            WriteLine(candidate.ToString());
+        }
+    }
+
+    /// <summary>
+    /// Writes the shell stub that calls back into --complete.
+    /// </summary>
+    private void WriteCompletionScript(string[] args)
+    {
+        var arguments = new ArgumentCollectionFactory()
+            .GetArgsAsDictionary(args[1..], false);
+
+        arguments.TryGetValue(CompletionShellArgumentName, out var shell);
+
+        if (string.IsNullOrWhiteSpace(shell) == true)
+        {
+            WriteLine("Prints the shell completion script for this tool.");
+            WriteLine();
+            WriteLine("Usage:");
+
+            foreach (var supported in CompletionScripts.SupportedShells)
+            {
+                WriteLine(
+                    $"  {GetToolName()} {ArgumentFrameworkConstants.CommandCompletion} " +
+                    $"/{CompletionShellArgumentName}:{supported}");
+            }
+
+            return;
+        }
+
+        WriteLine(CompletionScripts.GetScript(shell, GetToolName()));
+    }
+
+    /// <summary>
+    /// Name of the argument that picks the shell for the completion script.
+    /// </summary>
+    public const string CompletionShellArgumentName = "shell";
+
+    /// <summary>
+    /// The name the tool is typed as, which is what a completion stub has to register for.
+    /// </summary>
+    private static string GetToolName()
+    {
+        return Process.GetCurrentProcess().ProcessName;
     }
 
     private void LaunchGui()

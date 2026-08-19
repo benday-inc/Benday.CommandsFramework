@@ -1,4 +1,4 @@
-namespace Benday.CommandsFramework;
+﻿namespace Benday.CommandsFramework;
 
 /// <summary>
 /// A name the framework claims for itself, along with what it does. These never appear in a
@@ -58,15 +58,24 @@ public static class ReservedKeywords
             "Write the full command schema as JSON. This is what cmdui reads."),
         new ReservedKeyword(
             ArgumentFrameworkConstants.ArgumentGui,
-            "Launch the cmdui web interface for this tool.")
+            "Launch the cmdui web interface for this tool."),
+        new ReservedKeyword(
+            ArgumentFrameworkConstants.CommandCompletion,
+            "Print the shell completion script for this tool.")
     ];
 
     /// <summary>
     /// Every reserved name, with no duplicates.
     /// </summary>
+    /// <remarks>
+    /// Includes --complete, which is not listed in usage output because it exists for shell
+    /// completion stubs rather than for people -- but it is still a name a command cannot
+    /// have.
+    /// </remarks>
     public static IReadOnlyList<string> AllNames { get; } =
         ForCommands.Concat(ForPrograms)
             .Select(x => x.Name)
+            .Append(ArgumentFrameworkConstants.ArgumentComplete)
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .ToList();
 }
