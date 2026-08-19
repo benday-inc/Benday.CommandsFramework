@@ -335,9 +335,14 @@ public class DefaultProgram : ICommandProgram
 
     private void DumpJson(CommandAttributeUtility util)
     {
-        var usages = util.GetAllCommandUsages(ImplementationAssembly);
+        var schema = new CommandSchema
+        {
+            ApplicationName = Options.ApplicationName,
+            ApplicationVersion = Options.Version,
+            Commands = util.GetAllCommandUsages(ImplementationAssembly)
+        };
 
-        var json = JsonSerializer.Serialize(usages, new JsonSerializerOptions()
+        var json = JsonSerializer.Serialize(schema, new JsonSerializerOptions()
         {
             WriteIndented = true
         });

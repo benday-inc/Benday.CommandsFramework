@@ -9,6 +9,13 @@ public static class CommandFrameworkConstants
     public const string CommandArgName_ConfigValue = "value";
     public const string CategoryName_Configuration = "Configuration";
     public const string CommandArgName_QuietMode = "quiet";
+    /// <summary>
+    /// Version of the shape that --json writes. Version 1 was a bare array of commands with
+    /// no envelope; version 2 is a CommandSchema object. A consumer can tell them apart from
+    /// the root JSON token alone, which is why there is no negotiation.
+    /// </summary>
+    public const int CurrentSchemaVersion = 2;
+
     public const int ExitCode_Success = 0;
     public const int ExitCode_Failure = 1;
 
