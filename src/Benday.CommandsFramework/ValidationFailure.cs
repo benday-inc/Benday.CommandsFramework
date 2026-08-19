@@ -20,7 +20,13 @@ public enum ValidationFailureKind
     /// <summary>
     /// A rule about the combination of arguments was broken.
     /// </summary>
-    RuleViolated
+    RuleViolated,
+
+    /// <summary>
+    /// A required value that can come from stored configuration was neither supplied on the
+    /// command line nor found in the configuration.
+    /// </summary>
+    MissingConfiguration
 }
 
 /// <summary>
@@ -76,6 +82,35 @@ public sealed class ValidationFailure
         return new ValidationFailure(
             ValidationFailureKind.InvalidArgument,
             $"{argument.Name} is not valid or missing",
+            [argument.Name],
+            argument);
+    }
+
+    /// <summary>
+    /// A required argument that reads from stored configuration has no value from either
+    /// place.
+    /// </summary>
+    /// <remarks>
+    /// This exists so the message can say what to do about it. Without it, a missing
+    /// configuration value shows up either as a generic "not valid or missing" or -- worse,
+    /// and this is what actually happened in practice -- as an exception thrown from a lazy
+    /// configuration getter part way through the command, after validation had already
+    /// passed and the command had started doing work.
+    /// </remarks>
+    /// <param name="argument">The argument</param>
+    /// <param name="setConfigurationCommandName">Name of the command that sets configuration
+    /// values, so the message can name it</param>
+    public static ValidationFailure ForMissingConfiguration(
+        IArgument argument, string setConfigurationCommandName)
+    {
+        ArgumentNullException.ThrowIfNull(argument, nameof(argument));
+
+        return new ValidationFailure(
+            ValidationFailureKind.MissingConfiguration,
+            $"{argument.Name} is required. Supply it with /{argument.Name}:value, or store it " +
+            $"once with: {setConfigurationCommandName} " +
+            $"/{CommandFrameworkConstants.CommandArgName_ConfigName}:{argument.Name} " +
+            $"/{CommandFrameworkConstants.CommandArgName_ConfigValue}:value",
             [argument.Name],
             argument);
     }

@@ -110,9 +110,11 @@ public class SampleCommandWithConfigArgsFixture : TestClassBase
             output, "** SUCCESS **", "should not succeed");
 
         AssertThatString.Contains(
-            output, "api-key is not valid or missing", "api-key should fail");
+            output, "api-key is required.", "api-key should fail");
         AssertThatString.Contains(
-            output, "base-url is not valid or missing", "base-url should fail");
+            output, "set-configuration /name:api-key", "should say how to store it");
+        AssertThatString.Contains(
+            output, "base-url is required.", "base-url should fail");
     }
 
     [Fact]
@@ -152,7 +154,9 @@ public class SampleCommandWithConfigArgsFixture : TestClassBase
             output, "base-url is not valid or missing", "base-url should not fail");
 
         AssertThatString.Contains(
-            output, "api-key is not valid or missing", "api-key should fail");
+            output, "api-key is required.", "api-key should fail");
+        AssertThatString.Contains(
+            output, "set-configuration /name:api-key", "should say how to store it");
     }
 
     [Fact]
@@ -189,7 +193,7 @@ public class SampleCommandWithConfigArgsFixture : TestClassBase
             output, "** SUCCESS **", "should not succeed");
 
         AssertThatString.Contains(
-            output, "base-url is not valid or missing", "base-url should fail");
+            output, "base-url is required.", "base-url should fail");
 
         AssertThatString.DoesNotContain(
             output, "api-key is not valid or missing", "api-key should not fail");

@@ -609,6 +609,45 @@ public class FetchCommand : AsynchronousCommand
 | `Run()` | Build and run the application, returning the exit code |
 | `RunAsync(cancellationToken)` | Build and run the application asynchronously, returning the exit code |
 
+## Configuration
+
+An argument can read its value from the tool's stored configuration, so a user supplies it
+once instead of on every command line:
+
+```csharp
+args.AddString("api-key").AsRequired().FromConfig()
+    .WithDescription("API key");
+```
+
+```bash
+mytool set-configuration /name:api-key /value:abc123
+```
+
+Command line beats configuration, so a stored value can always be overridden for one run.
+
+If a required value is in neither place, that is a **validation** failure with a message that
+says exactly what to do — rather than an exception thrown part way through the command:
+
+```
+$ mytool api-call
+** INVALID ARGUMENT **
+api-key is required. Supply it with /api-key:value, or store it once with:
+set-configuration /name:api-key /value:value
+```
+
+`check-configuration` reports what the whole tool needs and whether it is set:
+
+```
+$ mytool check-configuration
+api-key - NOT SET (required)
+    used by: api-call, api-upload
+    set it with: set-configuration /name:api-key /value:value
+base-url - set (required)
+    used by: api-call, api-upload
+```
+
+Add `/missingonly` to see only what is missing.
+
 ## Argument Rules
 
 Some requirements are about the *combination* of arguments rather than any one of them.

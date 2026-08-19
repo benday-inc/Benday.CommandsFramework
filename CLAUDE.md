@@ -228,8 +228,18 @@ Expose results as public properties set in `OnExecute()`.
 
 ### Configuration
 `FromConfig()` arguments read from a stored config file, managed by built-in commands
-`set-configuration`, `get-configuration`, `remove-configuration` (enabled via
-`ICommandProgramOptions.UsesConfiguration`). `CommandsApp.ConfigureConfiguration()` adds custom
+`set-configuration`, `get-configuration`, `remove-configuration`, `check-configuration` (enabled via
+`ICommandProgramOptions.UsesConfiguration`).
+
+A required `FromConfig()` argument with no value from either place fails **validation** with
+`ValidationFailureKind.MissingConfiguration` and a message naming the exact `set-configuration`
+call — not a generic "not valid or missing", and emphatically not an exception from a lazy config
+getter part way through `OnExecute()` after validation already passed.
+
+`check-configuration` is the doctor: it reflects over every command's arguments, lists each
+`FromConfig()` value, whether it's set, and which commands read it. Free once arguments declare
+they read from config — the same declaration drives both. `/missingonly` narrows it; `IsComplete`
+and `Requirements` are readable when the command is run in process. `CommandsApp.ConfigureConfiguration()` adds custom
 `IConfiguration` sources. Config-sourced args print in a separate `** CONFIGURATION **` section of usage output.
 
 ### Validation

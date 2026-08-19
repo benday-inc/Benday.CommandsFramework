@@ -821,7 +821,13 @@ public abstract class CommandBase : IDisposable
 
             if (temp != null && temp.Validate() == false)
             {
-                returnValue.Add(ValidationFailure.ForArgument(temp));
+                // an argument that reads from stored configuration gets a message that says
+                // how to store it, rather than the generic one
+                returnValue.Add(
+                    temp.IsFromConfig == true && temp.HasValue == false
+                        ? ValidationFailure.ForMissingConfiguration(
+                            temp, CommandFrameworkConstants.CommandName_SetConfig)
+                        : ValidationFailure.ForArgument(temp));
             }
         }
 
