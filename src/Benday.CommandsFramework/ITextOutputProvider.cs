@@ -48,4 +48,18 @@ public interface ITextOutputProvider
     /// </summary>
     /// <param name="line">Text to write</param>
     void WriteError(string line) => WriteLine(line);
+
+    /// <summary>
+    /// How many characters wide the output is, for wrapping usage text.
+    /// </summary>
+    /// <remarks>
+    /// This belongs to the output provider because the terminal is not always where the
+    /// output is going. Inside a pane of a terminal UI, or in a web page, the width of the
+    /// console window is the wrong number -- and reading Console.WindowWidth from a process
+    /// with no console throws.
+    ///
+    /// Default interface member, so an existing provider keeps working and reports the same
+    /// width the framework used to compute for itself.
+    /// </remarks>
+    int Width => CommandFrameworkConstants.DefaultOutputWidth;
 }

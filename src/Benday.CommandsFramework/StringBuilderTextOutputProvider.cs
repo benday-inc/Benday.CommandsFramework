@@ -1,4 +1,4 @@
-using System.Text;
+﻿using System.Text;
 
 namespace Benday.CommandsFramework;
 
@@ -22,6 +22,12 @@ public class StringBuilderTextOutputProvider : ITextOutputProvider
         _Status = new StringBuilder();
         _Error = new StringBuilder();
     }
+
+    /// <summary>
+    /// How wide the captured output is treated as being, for wrapping. Settable so a test can
+    /// pin the wrapping rather than depending on the terminal that happens to be running it.
+    /// </summary>
+    public int Width { get; set; } = CommandFrameworkConstants.DefaultOutputWidth;
 
     private StringBuilder _Instance;
     private StringBuilder _Result;

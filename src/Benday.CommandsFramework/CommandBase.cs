@@ -581,16 +581,9 @@ public abstract class CommandBase : IDisposable
                     });
         }
 
-        int consoleWidth;
-
-        if (Console.IsOutputRedirected == true)
-        {
-            consoleWidth = 60;
-        }
-        else
-        {
-            consoleWidth = Console.WindowWidth;
-        }
+        // the output provider knows where the output is going; the console window is not
+        // always the right answer
+        var consoleWidth = _OutputProvider.Width;
 
         var separator = " - ";
         int argNameColumnWidth = (longestNameLength + separator.Length);

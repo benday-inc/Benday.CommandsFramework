@@ -239,8 +239,13 @@ command-line arguments fail validation via `ArgumentCollection.UnrecognizedKeys`
 
 ### Usage Output
 `CommandBase.DisplayUsage(StringBuilder)` builds the per-command usage text. Argument names are
-padded to a shared column width and descriptions are line-wrapped against `Console.WindowWidth`
-(60 when output is redirected) via `LineWrapUtilities`. It is called from two places: the `--help`
+padded to a shared column width and descriptions are line-wrapped against
+**`ITextOutputProvider.Width`** via `LineWrapUtilities` — the provider knows where the output is
+going, and the console window is the wrong number inside a TUI pane or a web page (and reading it
+from a process with no console throws). `ConsoleTextOutputProvider.Width` is the window width, or
+`CommandFrameworkConstants.DefaultOutputWidth` (60) when redirected or unavailable;
+`StringBuilderTextOutputProvider.Width` is settable so a test can pin the wrapping. It is a default
+interface member, so an existing provider reports the default. It is called from two places: the `--help`
 path (before values are set) and `OnValidationFailure` (after values are set) — which is exactly why
 defaults must be recorded separately rather than read off `Value`.
 

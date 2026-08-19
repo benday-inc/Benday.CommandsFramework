@@ -495,14 +495,7 @@ public class DefaultProgram : ICommandProgram
 
     private int GetConsoleWidth()
     {
-        if (Console.IsOutputRedirected == true)
-        {
-            return 80;
-        }
-        else
-        {
-            return Console.WindowWidth;
-        }
+        return OutputProvider.Width;
     }
 
     /// <summary>

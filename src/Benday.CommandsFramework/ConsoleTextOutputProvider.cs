@@ -44,4 +44,29 @@ public class ConsoleTextOutputProvider : ITextOutputProvider
     {
         Console.Error.WriteLine(line);
     }
+
+    /// <summary>
+    /// The width of the console window, or the default when output is redirected or there is
+    /// no console attached -- reading the window width in either case is meaningless at best
+    /// and throws at worst.
+    /// </summary>
+    public int Width
+    {
+        get
+        {
+            if (Console.IsOutputRedirected == true)
+            {
+                return CommandFrameworkConstants.DefaultOutputWidth;
+            }
+
+            try
+            {
+                return Console.WindowWidth;
+            }
+            catch (IOException)
+            {
+                return CommandFrameworkConstants.DefaultOutputWidth;
+            }
+        }
+    }
 }

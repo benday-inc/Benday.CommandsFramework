@@ -16,6 +16,12 @@ public static class CommandFrameworkConstants
     /// </summary>
     public const int CurrentSchemaVersion = 2;
 
+    /// <summary>
+    /// Width to wrap output at when the real width is not known -- output is redirected, or
+    /// there is no console at all.
+    /// </summary>
+    public const int DefaultOutputWidth = 60;
+
     public const int ExitCode_Success = 0;
     public const int ExitCode_Failure = 1;
 
