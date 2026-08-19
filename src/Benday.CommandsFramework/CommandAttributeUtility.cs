@@ -78,6 +78,55 @@ public class CommandAttributeUtility
     }
 
     /// <summary>
+    /// The single definition of what counts as a command. A type qualifies when it is marked
+    /// with a CommandAttribute and the framework can actually create and run it, which means
+    /// it also has to be a concrete subclass of CommandBase.
+    /// </summary>
+    /// <remarks>
+    /// Every place that looks for commands goes through this so that the list of commands
+    /// shown to the user cannot disagree with the list of commands that can be instantiated.
+    /// When those two disagreed, a CommandAttribute on a class that was not a CommandBase was
+    /// listed in the help and then took down the whole --json schema dump.
+    /// </remarks>
+    /// <param name="type">Type to check</param>
+    /// <returns>True when the type is a runnable command</returns>
+    public static bool IsCommandType(Type type)
+    {
+        if (type is null)
+        {
+            return false;
+        }
+
+        return
+            type.IsAbstract == false &&
+            type.IsSubclassOf(typeof(CommandBase)) == true &&
+            type.GetCustomAttributes<CommandAttribute>().Any() == true;
+    }
+
+    /// <summary>
+    /// Gets the types in an assembly that are marked with a CommandAttribute but that the
+    /// framework cannot run, so that a unit test can report them instead of leaving the
+    /// author wondering why their command never shows up.
+    /// </summary>
+    /// <param name="containingAssembly">Assembly to examine</param>
+    /// <returns>Types with a CommandAttribute that are not runnable commands</returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    public List<Type> GetUnrunnableCommandTypes(Assembly containingAssembly)
+    {
+        if (containingAssembly is null)
+        {
+            throw new ArgumentNullException(nameof(containingAssembly));
+        }
+
+        return
+            (from type in containingAssembly.GetTypes()
+             where
+                 type.GetCustomAttributes<CommandAttribute>().Any() == true &&
+                 IsCommandType(type) == false
+             select type).ToList();
+    }
+
+    /// <summary>
     /// Gets the types in an assembly that are marked with a CommandAttribute, including
     /// the built-in configuration commands when the program uses configuration.
     /// </summary>
@@ -85,7 +134,7 @@ public class CommandAttributeUtility
     {
         var matchingTypes =
             (from type in containingAssembly.GetTypes()
-             where type.GetCustomAttributes<CommandAttribute>().Any()
+             where IsCommandType(type) == true
              select type).ToList();
 
         if (_ProgramOptions.UsesConfiguration == true)
@@ -98,7 +147,7 @@ public class CommandAttributeUtility
             {
                 matchingTypes.AddRange(
                     (from type in thisAssembly.GetTypes()
-                     where type.GetCustomAttributes<CommandAttribute>().Any()
+                     where IsCommandType(type) == true
                      select type).ToList());
             }
         }
@@ -303,7 +352,19 @@ public class CommandAttributeUtility
         var attributes = GetAvailableCommandAttributes(containingAssembly);
         var aliases = GetCommandAliases(containingAssembly);
 
-        return GetCommandNameProblems(attributes, aliases);
+        var problems = GetCommandNameProblems(attributes, aliases);
+
+        foreach (var type in GetUnrunnableCommandTypes(containingAssembly))
+        {
+            var attribute = type.GetCustomAttribute<CommandAttribute>();
+
+            problems.Add(
+                $"Type '{type.FullName}' has a CommandAttribute for command " +
+                $"'{attribute?.Name}' but is not a concrete subclass of CommandBase, " +
+                "so it is skipped and the command cannot be run.");
+        }
+
+        return problems;
     }
 
     /// <summary>
@@ -406,7 +467,7 @@ public class CommandAttributeUtility
         var match =
             (from type in containingAssembly.GetTypes()
              where
-                 type.IsSubclassOf(typeof(CommandBase)) == true &&
+                 IsCommandType(type) == true &&
                  type.GetCustomAttributes<CommandAttribute>().Any(t => t.Name == commandName)
              select type).FirstOrDefault();
 
@@ -430,7 +491,7 @@ public class CommandAttributeUtility
         var match =
             (from type in containingAssembly.GetTypes()
              where
-                 type.IsSubclassOf(typeof(CommandBase)) == true &&
+                 IsCommandType(type) == true &&
                  type.GetCustomAttributes<CommandAttribute>().Any(t => t.Name == commandName)
              select type.GetCustomAttribute<CommandAttribute>()).FirstOrDefault();
 

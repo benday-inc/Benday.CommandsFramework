@@ -12,6 +12,7 @@ public static class ApplicationConstants
     public const string CommandName_CommandThatUsesConfig = "useconfig";
     public const string CommandName_CommandWithNoArgs = "noargs";
     public const string CommandName_CommandWithAllowedValues = "allowedvaluescommand";
+    public const string CommandName_CommandWithFileAndDirectoryArgs = "filesanddirs";
     public const string CommandName_CommandWithDefaultsAndRequiredArg = "defaultsandrequired";
     public const string CommandName_CommandWithCommandNameAliases = "command-with-a-long-name";
     public const string CommandName_Greeting = "greeting";

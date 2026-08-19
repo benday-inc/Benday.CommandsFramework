@@ -226,7 +226,22 @@ public abstract class Argument<T> : IArgument
     /// List of valid values for this argument. Empty array means any value is accepted.
     /// When non-empty, the argument value must match one of these values (case-insensitive).
     /// </summary>
-    public virtual string[] AllowedValues { get; set; } = [];
+    /// <remarks>
+    /// Allowed values are a string argument feature -- StringArgument is the only argument
+    /// type that overrides this and the only one whose Validate() enforces the list. Setting
+    /// it on any other argument type throws rather than being quietly ignored, because an
+    /// ignored list still travels in the --json schema and cmdui would render a dropdown that
+    /// nothing enforces.
+    /// </remarks>
+    /// <exception cref="InvalidOperationException">Thrown when set on an argument type that
+    /// does not support allowed values.</exception>
+    public virtual string[] AllowedValues
+    {
+        get => [];
+        set => throw new InvalidOperationException(
+            $"Allowed values are only supported on string arguments. " +
+            $"Argument '{Name}' is a {DataType} argument.");
+    }
 
     /// <summary>
     /// Validate this argument according to the configuration.

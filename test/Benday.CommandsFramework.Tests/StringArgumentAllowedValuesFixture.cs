@@ -213,4 +213,70 @@ public class StringArgumentAllowedValuesFixture
         Assert.Contains("** INVALID ARGUMENT **", output);
         Assert.Contains("mode is not valid or missing", output);
     }
+
+    // ---- allowed values belong to string arguments only ----
+
+    [Fact]
+    public void AllowedValues_OnInt32Argument_Throws()
+    {
+        // arrange
+        var arg = new ArgumentCollection().AddInt32("count");
+
+        // act & assert -- silently ignoring the list would still ship it in the --json
+        // schema, so cmdui would render a dropdown that nothing enforces
+        var actual = Assert.Throws<InvalidOperationException>(
+            () => arg.AllowedValues = ["1", "2"]);
+
+        Assert.Contains("count", actual.Message);
+        Assert.Contains("Int32", actual.Message);
+    }
+
+    [Fact]
+    public void AllowedValues_OnBooleanArgument_Throws()
+    {
+        var arg = new ArgumentCollection().AddBoolean("verbose");
+
+        Assert.Throws<InvalidOperationException>(() => arg.AllowedValues = ["true"]);
+    }
+
+    [Fact]
+    public void AllowedValues_OnDateTimeArgument_Throws()
+    {
+        var arg = new ArgumentCollection().AddDateTime("asof");
+
+        Assert.Throws<InvalidOperationException>(() => arg.AllowedValues = ["2026-01-01"]);
+    }
+
+    [Fact]
+    public void AllowedValues_OnNonStringArgument_IsEmptyInTheSchema()
+    {
+        // arrange
+        var args = new ArgumentCollection();
+        args.AddInt32("count");
+        args.AddBoolean("verbose");
+        args.AddDateTime("asof");
+
+        // act & assert
+        foreach (var arg in args)
+        {
+            Assert.Empty(arg.AllowedValues);
+        }
+    }
+
+    [Fact]
+    public void AllowedValues_OnFileArgument_IsEnforced()
+    {
+        // arrange -- file and directory arguments are string arguments, so they keep the
+        // feature and keep enforcing it through base.Validate()
+        var arg = new ArgumentCollection().AddFile("template")
+            .WithAllowedValues("small.json", "large.json")
+            .AsRequired();
+
+        // act & assert
+        arg.Value = "small.json";
+        Assert.True(arg.Validate());
+
+        arg.Value = "other.json";
+        Assert.False(arg.Validate());
+    }
 }

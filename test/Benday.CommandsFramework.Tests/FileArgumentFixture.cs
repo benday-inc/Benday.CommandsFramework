@@ -323,4 +323,52 @@ public class FileArgumentFixture
 
         return new DirectoryInfo(unitTestTestDataDir);
     }
+
+    [Fact]
+    public void DataType_FromConstructor()
+    {
+        // act
+        _SystemUnderTest = new FileArgument(EXPECTED_ARG_NAME);
+
+        // assert
+        Assert.Equal(EXPECTED_ARG_DATATYPE, SystemUnderTest.DataType);
+    }
+
+    [Fact]
+    public void DataType_FromFluentApi()
+    {
+        // arrange
+        var arg = new ArgumentCollection().AddFile(EXPECTED_ARG_NAME)
+            .AsRequired()
+            .WithDescription(EXPECTED_ARG_DESC);
+
+        // act
+        _SystemUnderTest = arg as FileArgument ?? throw new InvalidOperationException("Wrong type");
+
+        // assert
+        Assert.Equal(EXPECTED_ARG_DATATYPE, SystemUnderTest.DataType);
+    }
+
+    [Fact]
+    public void DataType_AsSeenThroughIArgument()
+    {
+        // arrange -- this is the view the --json schema and cmdui get
+        IArgument arg = new FileArgument(EXPECTED_ARG_NAME);
+
+        // assert
+        Assert.Equal(EXPECTED_ARG_DATATYPE, arg.DataType);
+    }
+
+    [Fact]
+    public void DataType_MatchesAPlainStringArgument()
+    {
+        // arrange -- FileArgument reports the same DataType as a plain string argument, which
+        // is why DataType alone cannot tell a file argument apart from a string one.
+        // The distinction travels on IArgument.PathType instead.
+        IArgument fileOrDirectory = new FileArgument(EXPECTED_ARG_NAME);
+        IArgument plainString = new StringArgument(EXPECTED_ARG_NAME);
+
+        // assert
+        Assert.Equal(plainString.DataType, fileOrDirectory.DataType);
+    }
 }

@@ -27,6 +27,13 @@ public class StringArgument : Argument<string>
     public override ArgumentDataType DataType { get => ArgumentDataType.String; }
 
     /// <summary>
+    /// List of valid values for this argument. Empty array means any value is accepted.
+    /// When non-empty, the argument value must match one of these values (case-insensitive).
+    /// This is enforced by Validate() below.
+    /// </summary>
+    public override string[] AllowedValues { get; set; } = [];
+
+    /// <summary>
     /// Get the default value for the argument
     /// </summary>
     /// <returns>Empty string</returns>
