@@ -157,6 +157,81 @@ public abstract class CommandBase
     }
 
     /// <summary>
+    /// Write a message to the output provider without a trailing newline. Does nothing in
+    /// quiet mode. Use this for a prompt, so that the answer is typed on the same line.
+    /// </summary>
+    /// <param name="text">Message to write</param>
+    protected virtual void Write(string text)
+    {
+        if (IsQuietMode == true)
+        {
+            return;
+        }
+
+        _OutputProvider.Write(text);
+    }
+
+    /// <summary>
+    /// Where this command reads text input from. Comes from the program options, so a test
+    /// can hand the command a QueuedTextInputProvider and drive an interactive command
+    /// without a console.
+    /// </summary>
+    protected ITextInputProvider InputProvider
+    {
+        get
+        {
+            return ExecutionInfo.Options.InputProvider;
+        }
+    }
+
+    /// <summary>
+    /// Read a line of input.
+    /// </summary>
+    /// <returns>The line that was read, or null when there is no more input.</returns>
+    protected string? ReadLine()
+    {
+        return InputProvider.ReadLine();
+    }
+
+    /// <summary>
+    /// Write a prompt and read the answer.
+    /// </summary>
+    /// <param name="prompt">Prompt to display. Written without a trailing newline, so the
+    /// answer is typed on the same line.</param>
+    /// <returns>The answer with surrounding whitespace trimmed, or null when there is no
+    /// more input.</returns>
+    protected string? Prompt(string prompt)
+    {
+        Write(prompt);
+
+        return ReadLine()?.Trim();
+    }
+
+    /// <summary>
+    /// Write a prompt and read a yes or no answer.
+    /// </summary>
+    /// <param name="prompt">Prompt to display, without the "(Y/n)" part -- that is added
+    /// from defaultAnswer.</param>
+    /// <param name="defaultAnswer">Answer to use when the user presses enter without typing
+    /// anything, and when there is no more input.</param>
+    /// <returns>True for yes, false for no</returns>
+    protected bool PromptForYesNo(string prompt, bool defaultAnswer = true)
+    {
+        var suffix = defaultAnswer == true ? " (Y/n): " : " (y/N): ";
+
+        var answer = Prompt($"{prompt}{suffix}");
+
+        if (string.IsNullOrWhiteSpace(answer) == true)
+        {
+            return defaultAnswer;
+        }
+
+        return
+            string.Equals(answer, "y", StringComparison.OrdinalIgnoreCase) == true ||
+            string.Equals(answer, "yes", StringComparison.OrdinalIgnoreCase) == true;
+    }
+
+    /// <summary>
     /// Creates another command so that its logic can be reused from inside this command.
     /// The new command shares this command's program options, configuration and output
     /// provider, and runs in quiet mode by default so that it does not write over the

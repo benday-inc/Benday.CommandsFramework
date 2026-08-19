@@ -11,6 +11,17 @@ public interface ICommandProgramOptions
     string ConfigurationFolderName { get; set; }
     bool UsesConfiguration { get; set; }
     ITextOutputProvider OutputProvider { get; set; }
+
+    /// <summary>
+    /// Where commands read text input from. The counterpart to OutputProvider.
+    /// </summary>
+    /// <remarks>
+    /// This is a default interface member so that adding it does not break anything that
+    /// already implements ICommandProgramOptions. That also means it is read only here --
+    /// DefaultProgramOptions declares it as a settable property, which is what test code
+    /// and CommandsApp.ConfigureOptions() work with.
+    /// </remarks>
+    ITextInputProvider InputProvider { get => new ConsoleTextInputProvider(); }
     IServiceCollection? ServiceCollection { get; set; }
 
     /// <summary>

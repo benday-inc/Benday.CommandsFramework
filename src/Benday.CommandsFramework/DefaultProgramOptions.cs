@@ -30,6 +30,12 @@ public class DefaultProgramOptions : ICommandProgramOptions
     public ITextOutputProvider OutputProvider { get; set; } = new ConsoleTextOutputProvider();
 
     /// <summary>
+    /// Where commands read text input from. Defaults to the console. Swap in a
+    /// QueuedTextInputProvider to test a command that prompts.
+    /// </summary>
+    public ITextInputProvider InputProvider { get; set; } = new ConsoleTextInputProvider();
+
+    /// <summary>
     /// Provides access to the service provider for dependency injection.
     /// This is entirely optional.
     /// </summary>

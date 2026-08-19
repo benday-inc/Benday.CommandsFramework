@@ -599,6 +599,52 @@ public class FetchCommand : AsynchronousCommand
 | `Run()` | Build and run the application |
 | `RunAsync()` | Build and run the application asynchronously |
 
+## Prompting for Input
+
+Commands read input through `ITextInputProvider`, the counterpart to `ITextOutputProvider`.
+`CommandBase` gives you `ReadLine()`, `Prompt()` and `PromptForYesNo()`:
+
+```csharp
+protected override void OnExecute()
+{
+    var name = Arguments.GetStringValue("name");
+
+    if (string.IsNullOrWhiteSpace(name))
+    {
+        name = Prompt("What is your name? ");
+    }
+
+    if (PromptForYesNo($"Say hello to {name}?"))
+    {
+        WriteLine($"Hello, {name}!");
+    }
+}
+```
+
+Because the provider comes from the program options rather than from the console, an
+interactive command is testable — queue up the answers and run it:
+
+```csharp
+var output = new StringBuilderTextOutputProvider();
+var input = new QueuedTextInputProvider("Ben", "y");
+
+var options = new DefaultProgramOptions
+{
+    ApplicationName = "My CLI Tool",
+    OutputProvider = output,
+    InputProvider = input
+};
+
+// ...run the command, then assert
+Assert.Contains("Hello, Ben!", output.GetOutput());
+Assert.Equal(2, input.ReadCount);
+```
+
+| Type | Description |
+|------|-------------|
+| `ConsoleTextInputProvider` | Reads from the console. The default. |
+| `QueuedTextInputProvider` | Hands out queued lines, then `null`. For tests. |
+
 ## Data Formatting Utilities
 
 The framework includes utility classes in `Benday.CommandsFramework.DataFormatting` for working with tabular and CSV data inside your commands.

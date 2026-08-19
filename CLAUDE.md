@@ -158,7 +158,20 @@ Arguments with a configured default get a `(default: value)` line of their own, 
 with the description column. Whitespace-only defaults are suppressed.
 
 ### Output
-Commands use `WriteLine()` which goes through `ITextOutputProvider`. `ConsoleTextOutputProvider` for console, `StringBuilderTextOutputProvider` for testing/capturing.
+Commands use `WriteLine()` / `Write()` which go through `ITextOutputProvider`. `ConsoleTextOutputProvider` for console, `StringBuilderTextOutputProvider` for testing/capturing.
+
+### Input
+`ITextInputProvider` is the counterpart to `ITextOutputProvider` and hangs off
+`ICommandProgramOptions.InputProvider` — *not* the constructor, which is a hardcoded two-arg
+reflection contract in two places. `ConsoleTextInputProvider` for real use;
+`QueuedTextInputProvider` queues answers for tests (`ReadCount` / `RemainingLineCount` let a test
+assert how many times a command prompted). It returns `null` once the queue is empty, which is what
+`Console.ReadLine()` returns at end of input.
+
+`CommandBase` exposes `ReadLine()`, `Prompt(text)` (writes without a newline, trims the answer) and
+`PromptForYesNo(text, defaultAnswer)`. `DefaultProgram`'s cmdui install prompt goes through the same
+provider. On `ICommandProgramOptions` the member is a get-only default interface member so adding it
+broke no implementor; `DefaultProgramOptions` declares it settable.
 
 ### Data Formatting
 `DataFormatting/` has `CsvReader`, `CsvWriter`, `CsvRow`, and `TableFormatter` /

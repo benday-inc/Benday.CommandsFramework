@@ -191,7 +191,7 @@ public class DefaultProgram : ICommandProgram
             WriteLine();
             Write("Would you like to install it now? (Y/n): ");
 
-            var response = Console.ReadLine()?.Trim().ToLowerInvariant();
+            var response = Options.InputProvider.ReadLine()?.Trim().ToLowerInvariant();
 
             if (string.IsNullOrEmpty(response) || response == "y" || response == "yes")
             {
