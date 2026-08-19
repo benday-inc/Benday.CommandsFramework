@@ -110,7 +110,25 @@ public class GreetCommand : SynchronousCommand
 
 ### 2. Set Up Program.cs
 
-Use the `CommandsApp` builder to configure and run your CLI app. Pass any command type from your assembly to `Create<T>()` — the framework discovers all `[Command]`-attributed classes in that assembly.
+The whole of Program.cs can be one line. Commands are discovered in the entry assembly, and
+the application name, version and website come from that assembly's own metadata.
+
+```csharp
+using Benday.CommandsFramework;
+
+await CommandsApp.RunAsync(args);
+```
+
+When your commands live in a different assembly than the executable, name any type from that
+assembly:
+
+```csharp
+await CommandsApp.RunAsync<GreetCommand>(args);
+```
+
+Use the `CommandsApp` builder when you need to configure anything — dependency injection,
+configuration sources, or how usage is displayed. Pass any command type from your assembly to
+`Create<T>()` — the framework discovers all `[Command]`-attributed classes in that assembly.
 
 ```csharp
 using Benday.CommandsFramework;
@@ -121,6 +139,11 @@ CommandsApp
     .WithVersionFromAssembly()
     .Run();
 ```
+
+`Create(args)` with no type argument does the same thing using the entry assembly, and
+`WithAppInfoFromAssembly()` fills in whichever of name, version and website you have not set
+yourself. A value that is never set is simply left out of the usage header rather than printing
+as a blank line.
 
 ### 3. Run It
 
@@ -554,8 +577,12 @@ public class FetchCommand : AsynchronousCommand
 
 | Method | Description |
 |--------|-------------|
+| `RunAsync(args)` | **Static.** Create, configure from assembly metadata, and run in one call |
+| `RunAsync<TCommand>(args)` | **Static.** Same, with commands discovered in the assembly containing `TCommand` |
 | `Create<TCommand>(args)` | Create builder, discover commands from the assembly containing `TCommand` |
+| `Create(args)` | Create builder, discover commands from the entry assembly |
 | `Create(args, assembly)` | Create builder with explicit assembly |
+| `WithAppInfoFromAssembly()` | Fill in name, version and website from assembly metadata, leaving anything already set alone |
 | `WithAppInfo(name, website)` | Set application name and website |
 | `WithAppInfo(name, version, website)` | Set application name, version, and website |
 | `WithVersion(version)` | Set version string |

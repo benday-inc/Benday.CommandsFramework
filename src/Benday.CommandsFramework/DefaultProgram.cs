@@ -344,17 +344,23 @@ public class DefaultProgram : ICommandProgram
     /// <param name="util"></param>
     public virtual void DisplayUsage(CommandAttributeUtility util)
     {
-        if (Options.DisplayUsageOptions.ShowApplicationName)
+        // a value that was never configured prints as a blank line, which is most of the
+        // usage header when a tool is bootstrapped with CommandsApp.RunAsync(args) and has
+        // no website in its assembly metadata
+        if (Options.DisplayUsageOptions.ShowApplicationName &&
+            string.IsNullOrWhiteSpace(Options.ApplicationName) == false)
         {
             WriteLine($"{Options.ApplicationName}");
         }
 
-        if (Options.DisplayUsageOptions.ShowWebsite)
+        if (Options.DisplayUsageOptions.ShowWebsite &&
+            string.IsNullOrWhiteSpace(Options.Website) == false)
         {
             WriteLine($"{Options.Website}");
         }
 
-        if (Options.DisplayUsageOptions.ShowVersion)
+        if (Options.DisplayUsageOptions.ShowVersion &&
+            string.IsNullOrWhiteSpace(Options.Version) == false)
         {
             WriteLine($"{Options.Version}");
         }

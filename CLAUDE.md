@@ -164,6 +164,22 @@ Commands use `WriteLine()` which goes through `ITextOutputProvider`. `ConsoleTex
 `DataFormatting/` has `CsvReader`, `CsvWriter`, `CsvRow`, and `TableFormatter` /
 `TableColumnDefinition` for tabular console output.
 
+### Bootstrapping
+`CommandsApp.RunAsync(args)` is the whole of Program.cs for a tool with no DI or configuration
+setup: commands come from the entry assembly, and `ApplicationName` / `Version` / `Website` come
+from that assembly's metadata (`AssemblyTitle` → `AssemblyProduct` → simple name; informational
+version with the `+sha` suffix trimmed, then file version; `AssemblyMetadata` named
+`PackageProjectUrl` / `RepositoryUrl` / `Website`, none of which the SDK emits by default).
+`RunAsync<T>(args)` is the same when the commands live in another assembly.
+
+`Create(args)` (entry assembly) and `WithAppInfoFromAssembly()` expose the same defaults to the
+fluent builder; the latter never overwrites a value that was already set. `DisplayUsage()` skips
+a header line whose value is blank, so an unset website does not print as an empty line.
+
+Note that `GetCommand()` builds a `FileBasedConfigurationManager` from `ConfigurationFolderName`
+regardless of `UsesConfiguration`, and that throws on a blank name — so a builder-configured app
+still needs an `ApplicationName` even with configuration turned off.
+
 ### Dependency Injection
 `DependencyInjectionCommand` base class plus `CommandsApp` fluent setup for registering services into
 the command's `IServiceProvider`. The provider is built once on first use and cached on
