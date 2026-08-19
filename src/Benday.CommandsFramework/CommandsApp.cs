@@ -375,6 +375,31 @@ public class CommandsApp
         }
     }
 
+    /// <summary>
+    /// Runs every IServiceRegistrar found in the assemblies that hold the commands, so an
+    /// assembly can declare its own dependencies without Program.cs enumerating them.
+    /// </summary>
+    /// <remarks>
+    /// This has to happen before the provider is built. Microsoft.Extensions.DependencyInjection
+    /// seals its registrations at BuildServiceProvider(), and the provider is cached so that
+    /// singletons really are singletons -- so a registration hook that ran any later would
+    /// compile, run, and silently do nothing.
+    /// </remarks>
+    private void RunServiceRegistrars()
+    {
+        var registry = CommandRegistry.Build(_options, _commandsAssembly);
+
+        _options.CommandRegistry = registry;
+
+        foreach (var registrarType in registry.ServiceRegistrarTypes)
+        {
+            if (Activator.CreateInstance(registrarType) is IServiceRegistrar registrar)
+            {
+                registrar.Register(_services);
+            }
+        }
+    }
+
     private void RegisterCoreServices()
     {
         // Register ITextOutputProvider if not already registered
@@ -418,7 +443,9 @@ public class CommandsApp
     /// <returns>The exit code</returns>
     public async Task<int> RunAsync(CancellationToken cancellationToken = default)
     {
+        RunServiceRegistrars();
         RegisterCoreServices();
+
         _options.ServiceCollection = _services;
 
         var program = new DefaultProgram(_options, _commandsAssembly);

@@ -1,7 +1,39 @@
-﻿namespace Benday.CommandsFramework;
+﻿﻿using Microsoft.Extensions.DependencyInjection;
+
+namespace Benday.CommandsFramework;
 
 public static class CommandFrameworkUtilities
 {
+    /// <summary>
+    /// Gets the service provider for a program, building it the first time it is asked for
+    /// and then reusing it.
+    /// </summary>
+    /// <remarks>
+    /// The provider is built once and cached on the options, so singleton services really
+    /// are singletons across every command in the process. A program that registered nothing
+    /// still gets a provider rather than a null, so command activation is the same code path
+    /// whether or not the tool uses dependency injection.
+    /// </remarks>
+    /// <param name="options">Program options</param>
+    /// <returns>The service provider</returns>
+    public static IServiceProvider GetServiceProvider(ICommandProgramOptions options)
+    {
+        ArgumentNullException.ThrowIfNull(options, nameof(options));
+
+        if (options.ServiceProvider is not null)
+        {
+            return options.ServiceProvider;
+        }
+
+        var services = options.ServiceCollection ?? new ServiceCollection();
+
+        var provider = services.BuildServiceProvider();
+
+        options.ServiceProvider = provider;
+
+        return provider;
+    }
+
     public static string GetPathToSourceFile(string sourceFile, bool mustExist)
     {
         if (Path.IsPathFullyQualified(sourceFile) == true)

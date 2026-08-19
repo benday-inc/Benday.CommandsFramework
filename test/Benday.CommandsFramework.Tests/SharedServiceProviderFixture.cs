@@ -26,7 +26,9 @@ public class SharedServiceProviderFixture
     }
 
     [Command(Name = "counting-command")]
+#pragma warning disable CS0618 // the obsolete base class is deliberate here
     private class CountingCommand : DependencyInjectionCommand
+#pragma warning restore CS0618
     {
         public CountingCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider)
             : base(info, outputProvider)
@@ -156,6 +158,7 @@ public class SharedServiceProviderFixture
             () => command.ExecuteAsync(TestContext.Current.CancellationToken));
 
         // assert
-        Assert.Contains("Service collection was not populated", exception.Message);
+        Assert.Contains("service collection was not populated", exception.Message);
+        Assert.Contains("check Program.cs", exception.Message);
     }
 }

@@ -4,17 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Benday.CommandsFramework;
 
 /// <summary>
 /// Base class for all command implementations
 /// </summary>
-public abstract class CommandBase
+public abstract class CommandBase : IDisposable
 {
     private readonly CommandExecutionInfo _Info;
     protected readonly ITextOutputProvider _OutputProvider;
     private ArgumentCollection _Arguments;
     private bool _HaveValuesBeenSet = false;
+    private IServiceScope? _ServiceScope;
+    private bool _OwnsServiceScope;
+    private bool _IsDisposed;
 
     /// <summary>
     /// Constructor
@@ -32,6 +37,106 @@ public abstract class CommandBase
         _Info = info ?? throw new ArgumentNullException(nameof(info));
         _OutputProvider = outputProvider;
         _Arguments = GetArguments();
+    }
+
+    /// <summary>
+    /// Gives this command a dependency injection scope to resolve services from.
+    /// </summary>
+    /// <remarks>
+    /// The scope belongs to whoever created the command. A command run from the command line
+    /// gets its own and disposes it when it is disposed; a command run by another command
+    /// shares the caller's, because a call chain that is logically one operation should see
+    /// one set of scoped services. Before this, every command created its own scope lazily
+    /// and nothing ever disposed it -- harmless in a one shot CLI and a real leak in a host
+    /// that runs many commands in one process.
+    /// </remarks>
+    /// <param name="scope">Scope to use</param>
+    /// <param name="ownsScope">True when disposing this command should dispose the scope</param>
+    internal void SetServiceScope(IServiceScope scope, bool ownsScope)
+    {
+        _ServiceScope = scope;
+        _OwnsServiceScope = ownsScope;
+    }
+
+    /// <summary>
+    /// The dependency injection scope this command resolves services from. Created on first
+    /// use when nobody handed one in, which is what happens when a command is constructed
+    /// directly rather than through the framework.
+    /// </summary>
+    private IServiceScope Scope
+    {
+        get
+        {
+            if (_ServiceScope is null)
+            {
+                _ServiceScope = CommandFrameworkUtilities
+                    .GetServiceProvider(ExecutionInfo.Options)
+                    .CreateScope();
+
+                _OwnsServiceScope = true;
+            }
+
+            return _ServiceScope;
+        }
+    }
+
+    /// <summary>
+    /// Get a required service instance from the service provider.
+    /// </summary>
+    /// <remarks>
+    /// Prefer declaring the dependency as a constructor parameter -- commands are created
+    /// through ActivatorUtilities, so anything registered can be injected. This is the escape
+    /// hatch for a service that can only be resolved once the command knows its arguments.
+    /// </remarks>
+    /// <typeparam name="T">Service type</typeparam>
+    /// <returns>The service</returns>
+    protected T GetRequiredService<T>() where T : notnull
+    {
+        try
+        {
+            return Scope.ServiceProvider.GetRequiredService<T>();
+        }
+        catch (InvalidOperationException ex)
+        {
+            // "no service for type X" is the right message when the program registered other
+            // things and forgot this one. When it registered nothing at all, the real problem
+            // is one level up and saying so saves a hunt.
+            var services = ExecutionInfo.Options.ServiceCollection;
+
+            if (services is null || services.Count == 0)
+            {
+                throw new InvalidOperationException(
+                    $"Could not resolve '{typeof(T).Name}' because the service collection was " +
+                    "not populated. HINT: check Program.cs", ex);
+            }
+
+            throw;
+        }
+    }
+
+    /// <summary>
+    /// Releases the dependency injection scope, when this command owns one.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (_IsDisposed == true)
+        {
+            return;
+        }
+
+        if (disposing == true && _OwnsServiceScope == true)
+        {
+            _ServiceScope?.Dispose();
+        }
+
+        _ServiceScope = null;
+        _IsDisposed = true;
     }
 
     /// <summary>
@@ -315,25 +420,21 @@ public abstract class CommandBase
             info.Configuration = ExecutionInfo.Configuration;
         }
 
-        var ctor = commandType.GetConstructor(
-            new Type[] { typeof(CommandExecutionInfo), typeof(ITextOutputProvider) });
-
-        if (ctor is null)
-        {
-            throw new KnownException(
-                $"Could not locate a constructor on command type '{commandType.Name}' that takes " +
-                $"{nameof(CommandExecutionInfo)} and {nameof(ITextOutputProvider)}.");
-        }
-
         // the calling command's output provider is passed along rather than the one from
         // the program options so that output from the command that gets run lands
         // wherever the calling command's output is going
-        var instance = ctor.Invoke(new object[] { info, _OutputProvider });
+        var instance = ActivatorUtilities.CreateInstance(
+            Scope.ServiceProvider, commandType, info, _OutputProvider);
 
         if (instance is not T returnValue)
         {
             throw new KnownException($"Could not create an instance of command type '{commandType.Name}'.");
         }
+
+        // the command being called shares this command's scope and does not own it. A call
+        // chain that is logically one operation should see one set of scoped services, and
+        // giving the child its own scope made them inconsistent across the chain.
+        returnValue.SetServiceScope(Scope, false);
 
         return returnValue;
     }

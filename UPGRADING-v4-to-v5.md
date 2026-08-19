@@ -38,6 +38,7 @@ are the definition of what applies.
 8. [8. Commands return a result instead of setting `Environment.ExitCode`](#8-commands-return-a-result-instead-of-setting-environmentexitcode)
 9. [9. `Program.cs` returns the exit code](#9-programcs-returns-the-exit-code)
 10. [10. `ExecuteCommand<T>` is now `ExecuteCommandAsync<T>`](#10-executecommandt-is-now-executecommandasynct)
+11. [11. Commands are created through `ActivatorUtilities`](#11-commands-are-created-through-activatorutilities)
 
 ---
 
@@ -454,13 +455,107 @@ from entry 7 anyway.
 
 ---
 
+## 11. Commands are created through `ActivatorUtilities`
+
+**Mechanical** where it applies, and for most tools it does not apply at all.
+
+v4 looked for one hardcoded constructor — `(CommandExecutionInfo, ITextOutputProvider)` — in two
+places. That meant adding a framework parameter would break every downstream command at *run* time
+rather than at compile time, because the lookup simply returned null. Commands are created through
+`ActivatorUtilities.CreateInstance` now, so a command can declare the services it needs as
+constructor parameters after those two.
+
+Existing two-argument constructors keep working unchanged. There is nothing to do unless you are
+using `DependencyInjectionCommand`.
+
+### Detect
+
+```bash
+grep -rn ': DependencyInjectionCommand' --include=*.cs .
+grep -rn 'GetRequiredService<' --include=*.cs .
+```
+
+### Change
+
+`DependencyInjectionCommand` is `[Obsolete]` but still works. When you move a command off it:
+
+```csharp
+// before
+public class GreetCommand : DependencyInjectionCommand
+{
+    public GreetCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider)
+        : base(info, outputProvider) { }
+
+    protected override Task OnExecute(CancellationToken cancellationToken)
+    {
+        var service = GetRequiredService<IGreetingService>();
+        ...
+    }
+}
+
+// after
+public class GreetCommand : Command
+{
+    private readonly IGreetingService _GreetingService;
+
+    public GreetCommand(
+        CommandExecutionInfo info,
+        ITextOutputProvider outputProvider,
+        IGreetingService greetingService) : base(info, outputProvider)
+    {
+        _GreetingService = greetingService;
+    }
+
+    protected override Task OnExecute(CancellationToken cancellationToken)
+    {
+        ...
+    }
+}
+```
+
+`GetRequiredService<T>()` still works from any command — it moved to `CommandBase` — so changing
+only the base class is a valid, smaller step.
+
+### Gotcha: do not use an injected field from `GetArguments()`
+
+It will be null. `CommandBase`'s constructor calls `GetArguments()`, which runs *before* any derived
+field is assigned. This was already true in v4; it becomes easier to trip over now that constructor
+injection is available.
+
+### Registering an assembly's services
+
+If Program.cs currently enumerates the services an assembly of commands needs, that assembly can
+declare them itself:
+
+```csharp
+public class MyToolServiceRegistrar : IServiceRegistrar
+{
+    public void Register(IServiceCollection services)
+    {
+        services.AddSingleton<IGreetingService, GreetingService>();
+    }
+}
+```
+
+`CommandsApp` finds it during the assembly scan and calls it before building the provider. It has to
+be a startup hook rather than a per-command one: `Microsoft.Extensions.DependencyInjection` seals
+registrations at `BuildServiceProvider()`, and the provider is cached so that singletons really are
+singletons — so a hook that ran any later would compile, run, and silently do nothing.
+
+### Note on scopes
+
+Commands are `IDisposable` now and own a dependency injection scope. `DefaultProgram` disposes the
+command it ran; if you create commands yourself, dispose them. A command run through
+`ExecuteCommandAsync<T>` shares the caller's scope and must not be disposed separately — awaiting it
+is enough.
+
+---
+
 ## What has not landed yet
 
 These are planned for v5 and will get entries here as they land. Do not act on them yet.
 
 - `CommandCallRequest`, splitting the request from ambient services and bookkeeping.
-- Commands activated through `ActivatorUtilities`, so they declare dependencies in their
-  constructor; `DependencyInjectionCommand` becomes obsolete.
 - Parser modes (`--arg value`, `--arg=value`, the deprecated `/arg:value`).
 - Multi-level commands (`mytool workitem list`).
 - Declarative validation rules.

@@ -1,4 +1,6 @@
 ﻿using System.Reflection;
+
+using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System.Text;
 
@@ -476,18 +478,36 @@ public class CommandAttributeUtility
         ArgumentNullException.ThrowIfNull(registration, nameof(registration));
         ArgumentNullException.ThrowIfNull(execInfo, nameof(execInfo));
 
-        var ctor = registration.CommandType.GetConstructor(
-            new Type[] { typeof(CommandExecutionInfo), typeof(ITextOutputProvider) });
+        // ActivatorUtilities rather than a hardcoded constructor lookup, so a command can
+        // declare the services it needs as constructor parameters. The old two-argument
+        // GetConstructor() meant any new framework parameter broke every downstream command
+        // -- at run time, not compile time, because the lookup simply returned null.
+        var scope = CommandFrameworkUtilities
+            .GetServiceProvider(_ProgramOptions)
+            .CreateScope();
 
-        if (ctor is null)
+        try
         {
-            throw new MissingArgumentException(
-                $"Could not locate a constructor on command type named '{registration.Name}'.");
+            var instance = ActivatorUtilities.CreateInstance(
+                scope.ServiceProvider,
+                registration.CommandType,
+                execInfo,
+                _ProgramOptions.OutputProvider);
+
+            var command = (CommandBase)instance;
+
+            // the command owns the scope and releases it when it is disposed. Nothing used
+            // to dispose a command, so the scope was never released.
+            command.SetServiceScope(scope, true);
+
+            return command;
         }
+        catch
+        {
+            scope.Dispose();
 
-        var instance = ctor.Invoke(new object[] { execInfo, _ProgramOptions.OutputProvider });
-
-        return (CommandBase)instance;
+            throw;
+        }
     }
 
     /// <summary>
@@ -503,6 +523,63 @@ public class CommandAttributeUtility
             .Registrations
             .Select(x => GetCommandUsage(x, asm))
             .ToList();
+    }
+
+    /// <summary>
+    /// Creates a command for the purpose of reading its argument definitions, filling in any
+    /// constructor dependency that cannot be resolved with null rather than failing.
+    /// </summary>
+    /// <remarks>
+    /// The schema path instantiates every command in the tool, so it cannot be as strict as
+    /// the run path: one command with an unregistered dependency would otherwise take down
+    /// the whole --json dump, and cmdui with it. This is safe because GetArguments() cannot
+    /// depend on injected state anyway -- CommandBase's constructor calls it, which runs
+    /// before any derived field is assigned.
+    /// </remarks>
+    private CommandBase CreateInstanceForSchema(
+        CommandRegistration registration, CommandExecutionInfo execInfo)
+    {
+        var provider = CommandFrameworkUtilities.GetServiceProvider(_ProgramOptions);
+
+        var constructor = registration.CommandType
+            .GetConstructors()
+            .OrderByDescending(x => x.GetParameters().Length)
+            .FirstOrDefault();
+
+        if (constructor is null)
+        {
+            throw new MissingArgumentException(
+                $"Could not locate a constructor on command type named '{registration.Name}'.");
+        }
+
+        var arguments = new List<object?>();
+
+        foreach (var parameter in constructor.GetParameters())
+        {
+            if (parameter.ParameterType.IsAssignableFrom(typeof(CommandExecutionInfo)) == true)
+            {
+                arguments.Add(execInfo);
+            }
+            else if (parameter.ParameterType.IsInstanceOfType(_ProgramOptions.OutputProvider) == true)
+            {
+                arguments.Add(_ProgramOptions.OutputProvider);
+            }
+            else
+            {
+                // GetService rather than GetRequiredService: an unresolved dependency becomes
+                // null instead of an exception
+                arguments.Add(
+                    provider.GetService(parameter.ParameterType) ??
+                    GetDefaultValue(parameter.ParameterType));
+            }
+        }
+
+        return (CommandBase)constructor.Invoke([.. arguments]);
+    }
+
+    private static object? GetDefaultValue(Type type)
+    {
+        return type.IsValueType == true ? Activator.CreateInstance(type) : null;
     }
 
     private CommandInfo GetCommandUsage(CommandRegistration registration, Assembly asm)
@@ -521,14 +598,17 @@ public class CommandAttributeUtility
             .Where(x => x.HasArguments)
             .ToList();
 
-        var command = GetCommand(
-            new[] { registration.Name, ArgumentFrameworkConstants.ArgumentHelpString },
-            asm);
-
-        if (command != null)
+        var execInfo = new CommandExecutionInfo
         {
-            info.Arguments = command.GetArguments();
-        }
+            CommandName = registration.Name,
+            Options = _ProgramOptions,
+            Configuration = new FileBasedConfigurationManager(
+                _ProgramOptions.ConfigurationFolderName)
+        };
+
+        using var command = CreateInstanceForSchema(registration, execInfo);
+
+        info.Arguments = command.GetArguments();
 
         return info;
     }

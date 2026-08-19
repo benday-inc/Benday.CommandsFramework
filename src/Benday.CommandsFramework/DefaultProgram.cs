@@ -121,7 +121,11 @@ public class DefaultProgram : ICommandProgram
                 throw new KnownException($"Invalid command name '{args[0]}'.");
             }
 
-            var command = util.GetCommand(args, ImplementationAssembly);
+            // the command owns a dependency injection scope, so the runner disposes it when
+            // the command is done. Nothing used to dispose a command at all, which meant the
+            // scope was never released -- harmless in a one shot CLI and a real leak in a
+            // host that runs many commands in one process.
+            using var command = util.GetCommand(args, ImplementationAssembly);
 
             if (command is null)
             {

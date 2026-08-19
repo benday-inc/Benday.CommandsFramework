@@ -26,12 +26,14 @@ public sealed class CommandRegistry
         IReadOnlyList<CommandRegistration> registrations,
         IReadOnlyList<string> problems,
         Assembly? primaryAssembly,
-        bool includesBuiltIns)
+        bool includesBuiltIns,
+        IReadOnlyList<Type> serviceRegistrarTypes)
     {
         Registrations = registrations;
         Problems = problems;
         PrimaryAssembly = primaryAssembly;
         IncludesBuiltIns = includesBuiltIns;
+        ServiceRegistrarTypes = serviceRegistrarTypes;
 
         _ByPath = new Dictionary<string, CommandRegistration>(
             ArgumentCollection.ArgumentNameComparer);
@@ -98,6 +100,13 @@ public sealed class CommandRegistry
     /// Whether the framework's built-in commands are registered.
     /// </summary>
     public bool IncludesBuiltIns { get; }
+
+    /// <summary>
+    /// Types implementing IServiceRegistrar that were found while scanning. CommandsApp
+    /// invokes these before it builds the service provider, so an assembly of commands can
+    /// declare its own dependencies without Program.cs enumerating them.
+    /// </summary>
+    public IReadOnlyList<Type> ServiceRegistrarTypes { get; }
 
     /// <summary>
     /// True when this registry was built for the given assembly and configuration setting,
@@ -206,25 +215,31 @@ public sealed class CommandRegistry
 
         var registrations = new List<CommandRegistration>();
         var problems = new List<string>();
+        var registrarTypes = new List<Type>();
 
         foreach (var type in types)
         {
-                if (type.GetCustomAttributes<CommandAttribute>().Any() == false)
-                {
-                    continue;
-                }
+            if (IsServiceRegistrarType(type) == true)
+            {
+                registrarTypes.Add(type);
+            }
 
-                if (CommandAttributeUtility.IsCommandType(type) == false)
-                {
-                    var name = type.GetCustomAttribute<CommandAttribute>()?.Name;
+            if (type.GetCustomAttributes<CommandAttribute>().Any() == false)
+            {
+                continue;
+            }
 
-                    problems.Add(
-                        $"Type '{type.FullName}' has a CommandAttribute for command " +
-                        $"'{name}' but is not a concrete subclass of CommandBase, " +
-                        "so it is skipped and the command cannot be run.");
+            if (CommandAttributeUtility.IsCommandType(type) == false)
+            {
+                var name = type.GetCustomAttribute<CommandAttribute>()?.Name;
 
-                    continue;
-                }
+                problems.Add(
+                    $"Type '{type.FullName}' has a CommandAttribute for command " +
+                    $"'{name}' but is not a concrete subclass of CommandBase, " +
+                    "so it is skipped and the command cannot be run.");
+
+                continue;
+            }
 
             var attribute = type.GetCustomAttribute<CommandAttribute>()!;
 
@@ -245,7 +260,19 @@ public sealed class CommandRegistry
             registrations.Any(x => x.SourceAssembly == builtInAssembly);
 
         return new CommandRegistry(
-            registrations, problems, primaryAssembly, includesBuiltIns);
+            registrations, problems, primaryAssembly, includesBuiltIns, registrarTypes);
+    }
+
+    /// <summary>
+    /// True when a type can be used to register services at startup.
+    /// </summary>
+    private static bool IsServiceRegistrarType(Type type)
+    {
+        return
+            type.IsAbstract == false &&
+            type.IsInterface == false &&
+            typeof(IServiceRegistrar).IsAssignableFrom(type) == true &&
+            type.GetConstructor(Type.EmptyTypes) is not null;
     }
 
     /// <summary>

@@ -281,11 +281,32 @@ regardless of `UsesConfiguration`, and that throws on a blank name — so a buil
 still needs an `ApplicationName` even with configuration turned off.
 
 ### Dependency Injection
-`DependencyInjectionCommand` base class plus `CommandsApp` fluent setup for registering services into
-the command's `IServiceProvider`. The provider is built once on first use and cached on
-`ICommandProgramOptions.ServiceProvider`, so all commands in a process share it (singletons really are
-singletons). Each command creates its own `IServiceScope`; `DependencyInjectionCommand` implements
-`IDisposable` to release it.
+Commands are created through `ActivatorUtilities.CreateInstance`, so **any command can declare the
+services it needs as constructor parameters** after `CommandExecutionInfo` and `ITextOutputProvider`.
+`GetRequiredService<T>()` lives on `CommandBase` as the escape hatch. `DependencyInjectionCommand` is
+`[Obsolete]` and adds nothing — absorbing it cost nothing because the scope is created lazily.
+
+The provider is built once by `CommandFrameworkUtilities.GetServiceProvider()` and cached on
+`ICommandProgramOptions.ServiceProvider`, so singletons really are singletons. A program that
+registered nothing still gets an (empty) provider, so activation is one code path.
+
+**Scope ownership belongs to the runner.** `CommandAttributeUtility.CreateInstance` creates a scope,
+activates the command in it, and hands ownership to the command; `DefaultProgram` disposes the
+command (`using`) when it is done. Nothing used to dispose a command at all, so the scope was never
+released. A command started by `ExecuteCommandAsync<T>` **shares the caller's scope and does not own
+it** — a call chain that is logically one operation should see one set of scoped services.
+
+**The schema path is deliberately laxer than the run path.** `--json` instantiates every command, so
+`CreateInstanceForSchema()` fills an unresolvable constructor dependency with `null` instead of
+throwing — otherwise one command with a missing registration takes down the whole dump and cmdui with
+it. That is safe because `GetArguments()` *cannot* depend on injected state: `CommandBase`'s
+constructor calls it, which runs before any derived field is assigned.
+
+**Per-assembly registration is `IServiceRegistrar`**, not a per-command hook. Implement it (public
+parameterless constructor), and `CommandsApp` finds it during the registry scan and calls it before
+building the provider. It has to be a startup hook: `Microsoft.Extensions.DependencyInjection` seals
+registrations at `BuildServiceProvider()` and the provider is cached, so a registration hook on the
+command would compile, run, and silently do nothing.
 
 ## CmdUI Project
 `cmdui` is a schema-driven Blazor Server app that auto-generates a web UI for any CommandsFramework tool:
