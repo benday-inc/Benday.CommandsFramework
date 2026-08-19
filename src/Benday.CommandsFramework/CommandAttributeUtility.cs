@@ -60,7 +60,7 @@ public class CommandAttributeUtility
     /// Get the list of command names in an assembly
     /// </summary>
     /// <param name="containingAssembly">Assembly to examine</param>
-    /// <returns>List of command names for all classes with a CommandAttribute in the assembly</returns>
+    /// <returns>Command names as they are typed, group included for a grouped command</returns>
     /// <exception cref="ArgumentNullException"></exception>
     public List<string> GetAvailableCommandNames(Assembly containingAssembly)
     {
@@ -69,9 +69,11 @@ public class CommandAttributeUtility
             throw new ArgumentNullException(nameof(containingAssembly));
         }
 
+        // the path rather than the bare name: a grouped command is typed as 'widget list',
+        // and that is also how the registry is keyed, so the two cannot disagree
         return GetRegistry(containingAssembly)
             .Registrations
-            .Select(x => x.Name)
+            .Select(x => x.PathAsString)
             .ToList();
     }
 
@@ -427,29 +429,25 @@ public class CommandAttributeUtility
             throw new ArgumentNullException(nameof(containingAssembly));
         }
 
-        var execInfo = new ArgumentCollectionFactory().Parse(args);
-
-        if (execInfo is null || string.IsNullOrEmpty(execInfo.CommandName) == true)
-        {
-            throw new MissingArgumentException("Could not locate a command name.");
-        }
-
         var registry = GetRegistry(containingAssembly);
 
-        var resolution = registry.Resolve([execInfo.CommandName]);
+        // the command name can be more than one token when the command declares a group, so
+        // the registry decides where the name stops and the arguments begin rather than the
+        // parser assuming args[0]
+        var resolution = registry.Resolve(args);
 
         if (resolution is null)
         {
             throw new MissingArgumentException(
-                $"Could not locate a command named '{execInfo.CommandName}'.");
+                $"Could not locate a command named '{args[0]}'.");
         }
+
+        var arguments = new ArgumentCollectionFactory().GetArgsAsDictionary(
+            [.. resolution.RemainingTokens], true);
 
         // argument values from an alias are added as though they had been typed on the
         // command line, so anything actually typed wins and the existing command line over
         // config over default order is unchanged
-        var arguments = new Dictionary<string, string>(
-            execInfo.Arguments, ArgumentCollection.ArgumentNameComparer);
-
         foreach (var argument in resolution.PresetArguments)
         {
             arguments.TryAdd(argument.Key, argument.Value);
@@ -457,8 +455,11 @@ public class CommandAttributeUtility
 
         // everything downstream deals only in real command names, and what was actually
         // typed survives on the request rather than being overwritten
-        execInfo.Request = new CommandCallRequest(
-            resolution.Registration.Name, arguments, resolution.MatchedAs);
+        var execInfo = new CommandExecutionInfo
+        {
+            Request = new CommandCallRequest(
+                resolution.Registration.PathAsString, arguments, resolution.MatchedAs)
+        };
 
         execInfo.Options = _ProgramOptions;
         execInfo.Configuration = new FileBasedConfigurationManager(

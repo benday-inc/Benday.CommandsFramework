@@ -22,10 +22,33 @@ public sealed class CommandRegistration
         Aliases = aliases;
 
         // Path is a list rather than a string so that multi-level command names have
-        // somewhere to live. Until commands can declare a group, every path is one segment.
-        Path = string.IsNullOrWhiteSpace(attribute.Group)
+        // somewhere to live
+        Path = GetPath(attribute);
+    }
+
+    /// <summary>
+    /// The tokens that name a command, worked out from its attribute. One segment for a flat
+    /// command name, two when the command declares a group.
+    /// </summary>
+    /// <param name="attribute">Command attribute</param>
+    /// <returns>The path segments</returns>
+    public static IReadOnlyList<string> GetPath(CommandAttribute attribute)
+    {
+        ArgumentNullException.ThrowIfNull(attribute, nameof(attribute));
+
+        return string.IsNullOrWhiteSpace(attribute.Group)
             ? [attribute.Name]
             : [attribute.Group, attribute.Name];
+    }
+
+    /// <summary>
+    /// The command's name as it is typed, group included.
+    /// </summary>
+    /// <param name="attribute">Command attribute</param>
+    /// <returns>The command name as typed</returns>
+    public static string GetPathAsString(CommandAttribute attribute)
+    {
+        return string.Join(" ", GetPath(attribute));
     }
 
     /// <summary>

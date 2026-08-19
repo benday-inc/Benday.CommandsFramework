@@ -6,6 +6,7 @@ namespace Benday.CommandsFramework.Tests;
 /// Tests for running a command from inside another command so that command logic can be
 /// reused without shelling out to the command line.
 /// </summary>
+[Collection(ProcessExitCodeCollection.Name)]
 public class CommandCallsCommandFixture
 {
     private StringBuilderTextOutputProvider? _OutputProvider;

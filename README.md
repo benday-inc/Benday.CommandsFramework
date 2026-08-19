@@ -609,6 +609,38 @@ public class FetchCommand : AsynchronousCommand
 | `Run()` | Build and run the application, returning the exit code |
 | `RunAsync(cancellationToken)` | Build and run the application asynchronously, returning the exit code |
 
+## Multi-level Commands
+
+Give a command a `Group` and it is run as two words:
+
+```csharp
+[Command(Group = "widget", Name = "list", Description = "Lists the widgets")]
+public class WidgetListCommand : Command
+```
+
+```bash
+mytool widget list /filter:blue
+```
+
+Resolution is greedy longest-first, so a two-word name wins over a one-word name that happens
+to match the first word. A group on its own is not a command.
+
+`Group` is deliberately separate from `Category`. Category is a display heading for the command
+list — strings like "Work Items" — and using it as a prefix would produce command names nobody
+would type. Grouping is a rename, not a prefix.
+
+Adopting groups in an existing tool does not have to break anyone's scripts. Keep the old flat
+name as an alias:
+
+```csharp
+[Command(Group = "widget", Name = "show",
+    Description = "Shows one widget",
+    Aliases = ["showwidget"])]
+```
+
+Both `mytool widget show /name:sprocket` and `mytool showwidget /name:sprocket` work, and the
+command list shows `widget show (showwidget)`.
+
 ## Output Channels
 
 Commands write on three channels, the same split every other command line tool uses:

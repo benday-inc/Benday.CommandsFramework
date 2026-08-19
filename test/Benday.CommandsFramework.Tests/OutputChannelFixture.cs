@@ -9,6 +9,7 @@ namespace Benday.CommandsFramework.Tests;
 /// grew a /json flag emitted invalid JSON the moment anything else wrote a message, and a
 /// failing command wrote its error message into the payload.
 /// </summary>
+[Collection(ProcessExitCodeCollection.Name)]
 public class OutputChannelFixture
 {
     private const string ResultText = "this is the result";

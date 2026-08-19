@@ -15,6 +15,10 @@ public static class ApplicationConstants
     public const string CommandName_CommandWithFileAndDirectoryArgs = "filesanddirs";
     public const string CommandName_Interactive = "interactive";
     public const string CommandName_ConstructorInjection = "injected-greeting";
+    public const string CommandGroup_Widget = "widget";
+    public const string CommandName_WidgetList = "list";
+    public const string CommandName_WidgetShow = "show";
+    public const string CommandAlias_ShowWidget = "showwidget";
     public const string CommandName_CommandWithDefaultsAndRequiredArg = "defaultsandrequired";
     public const string CommandName_CommandWithCommandNameAliases = "command-with-a-long-name";
     public const string CommandName_Greeting = "greeting";

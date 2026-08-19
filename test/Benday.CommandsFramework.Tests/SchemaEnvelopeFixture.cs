@@ -13,6 +13,7 @@ namespace Benday.CommandsFramework.Tests;
 /// 5.x form is an object, which is the entire discriminator -- no negotiation, and nothing
 /// that shipped against 4.x has to change.
 /// </summary>
+[Collection(ProcessExitCodeCollection.Name)]
 public class SchemaEnvelopeFixture
 {
     private static async Task<string> GetSchemaJson()

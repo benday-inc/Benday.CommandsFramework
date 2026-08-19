@@ -114,12 +114,18 @@ public class DefaultProgram : ICommandProgram
             // the registry, so there is no assembly to route to and no UsesConfiguration
             // branch here -- that used to be decided three separate times, once here, once
             // again below, and once inside GetCommand().
-            var registration = util.GetRegistry(ImplementationAssembly).Find(args[0]);
+            //
+            // Resolve() rather than Find(): a command name can be more than one token when
+            // the command declares a group, and matching is greedy longest first so a two
+            // segment name wins over a one segment name that matches the first token.
+            var resolution = util.GetRegistry(ImplementationAssembly).Resolve(args);
 
-            if (registration is null)
+            if (resolution is null)
             {
                 throw new KnownException($"Invalid command name '{args[0]}'.");
             }
+
+            var registration = resolution.Registration;
 
             // the command owns a dependency injection scope, so the runner disposes it when
             // the command is done. Nothing used to dispose a command at all, which meant the
@@ -457,7 +463,7 @@ public class DefaultProgram : ICommandProgram
         var separator = " - ";
         int commandNameColumnWidth = (longestName + separator.Length);
 
-        foreach (var command in commands.OrderBy(x => x.Name))
+        foreach (var command in commands.OrderBy(CommandRegistration.GetPathAsString))
         {
             Write(LineWrapUtilities.GetValueWithPadding(GetCommandDisplayName(command), longestName));
             Write(separator);
@@ -476,12 +482,15 @@ public class DefaultProgram : ICommandProgram
     /// <returns>Display name for the command</returns>
     protected static string GetCommandDisplayName(CommandAttribute command)
     {
+        // the group is part of how the command is typed, so it belongs in the list
+        var path = CommandRegistration.GetPathAsString(command);
+
         if (command.Aliases.Length == 0)
         {
-            return command.Name;
+            return path;
         }
 
-        return $"{command.Name} ({string.Join(", ", command.Aliases)})";
+        return $"{path} ({string.Join(", ", command.Aliases)})";
     }
 
     private int GetConsoleWidth()
@@ -515,7 +524,8 @@ public class DefaultProgram : ICommandProgram
             WriteLine($"* {category} *");
             WriteLine();
 
-            foreach (var command in commands.Where(x => x.Category == category).OrderBy(x => x.Name))
+            foreach (var command in commands.Where(x => x.Category == category)
+                .OrderBy(CommandRegistration.GetPathAsString))
             {
                 Write(LineWrapUtilities.GetValueWithPadding(GetCommandDisplayName(command), longestName));
                 Write(separator);

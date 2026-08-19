@@ -84,6 +84,24 @@ happens through the normal alias path in `ArgumentCollection.SetValues()`. Posit
   breaks whichever was set first.
 - Usage output renders these as `{name:Type}` (required) / `[{name:Type}]` (optional) via `GetKeyString()`.
 
+### Multi-level Commands
+`[Command(Group = "widget", Name = "list")]` is run as `mytool widget list`. The group is declared
+explicitly and is **not** derived from `Category` — categories hold display strings like
+"Work Items" and "Project Administration", so prefixing with them would produce names nobody would
+type. Grouping is a rename, not a prefix.
+
+- The **registry** decides where the name stops and the arguments begin, not the parser.
+  `CommandRegistry.Resolve(tokens)` matches greedy longest-first, so `thing list` beats a flat
+  command named `thing`, and `RemainingTokens` is what reaches
+  `ArgumentCollectionFactory.GetArgsAsDictionary()`.
+- `ExecutionInfo.CommandName` is the **path** (`"widget list"`), and so is
+  `GetAvailableCommandNames()` — anything else and the name you type wouldn't match the name the
+  framework reports. `CommandRegistration.Name` is still the bare last segment.
+- A group on its own is not a command: `mytool widget` is an invalid command name.
+- Existing tools adopt groups without breaking scripts by keeping the old flat name as an alias:
+  `[Command(Group = "widget", Name = "show", Aliases = ["showwidget"])]`.
+- `CommandInfo.Group` carries it in the schema; cmdui mirrors it and exposes `PathAsString`.
+
 ### Argument Aliases vs Command Aliases
 Different mechanisms, easy to confuse. `WithAlias()` is an *argument* alias (a second name for a
 `/switch`), matched in `SetValues()` after real names. Command aliases are `CommandAttribute.Aliases`
@@ -140,9 +158,8 @@ changes whether the built-ins are registered.
 - `Resolve(tokens)` matches greedy longest-first and returns a `CommandResolution` carrying the
   registration, the leftover tokens for the parser, the `PresetArguments` from a `[CommandAlias]`,
   and `MatchedAs` (what was actually typed). Resolution no longer overwrites the typed name in place.
-- `CommandRegistration.Path` is a list so a `Group` can become the first segment
-  (`CommandAttribute.Group`, distinct from `Category` which is only a display heading). Multi-level
-  *dispatch* is not wired into `DefaultProgram` yet — that is FEAT-2.
+- `CommandRegistration.Path` is a list so a `Group` can become the first segment — see
+  **Multi-level Commands** below.
 - `BuildFromTypes()` builds from an explicit type list; useful for tests that need a registry
   without whatever else is in the assembly.
 

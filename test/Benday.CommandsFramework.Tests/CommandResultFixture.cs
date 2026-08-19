@@ -6,6 +6,7 @@ namespace Benday.CommandsFramework.Tests;
 /// Tests the execution contract: a command reports what happened by returning a result, not
 /// by assigning Environment.ExitCode as a side effect, and it can be cancelled.
 /// </summary>
+[Collection(ProcessExitCodeCollection.Name)]
 public class CommandResultFixture
 {
     [Command(Name = "result-sample", Description = "Command used by the execution contract tests")]

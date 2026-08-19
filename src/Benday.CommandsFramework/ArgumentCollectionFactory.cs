@@ -46,7 +46,18 @@ public class ArgumentCollectionFactory
         return count;
     }
 
-    private Dictionary<string, string> GetArgsAsDictionary(string[] args,
+    /// <summary>
+    /// Parses argument tokens -- everything after the command name -- into key/value pairs.
+    /// </summary>
+    /// <remarks>
+    /// Public because a multi-level command name is more than one token, so the caller has
+    /// to say where the name stops and the arguments start. Positional argument counting is
+    /// stateful, so use a fresh factory per parse.
+    /// </remarks>
+    /// <param name="args">Argument tokens, not including the command name</param>
+    /// <param name="processPositionalArguments">Whether bare values become positional args</param>
+    /// <returns>The argument values, keyed without regard to case</returns>
+    public Dictionary<string, string> GetArgsAsDictionary(string[] args,
         bool processPositionalArguments)
     {
         // case-insensitive so that '/Name:a /name:b' is recognized as the same argument

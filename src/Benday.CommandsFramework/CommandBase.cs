@@ -411,7 +411,10 @@ public abstract class CommandBase : IDisposable
 
         var info = new CommandExecutionInfo
         {
-            Request = new CommandCallRequest(attribute.Name, arguments),
+            // the group is part of the command name, so a grouped command that is run from
+            // another command gets the same name it would get from the command line
+            Request = new CommandCallRequest(
+                CommandRegistration.GetPathAsString(attribute), arguments),
             Options = ExecutionInfo.Options,
             NestingDepth = ExecutionInfo.NestingDepth + 1
         };
