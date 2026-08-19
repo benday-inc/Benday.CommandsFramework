@@ -8,6 +8,15 @@ having to remember what changed. It is equally readable by a person.
 lands, so this document is never reconstructed from memory. The
 [What has not landed yet](#what-has-not-landed-yet) section says what is still coming.
 
+**Nothing below is optional busywork.** Every entry is a change that will either stop the tool
+compiling or change what it does at run time. Entries 1 and 9 are the ones that make the
+compiler produce the rest of the work list, so do them first and let the errors guide you.
+
+**What v5 adds that you do not have to adopt**, but probably want to: multi-level command names
+(`Group` on `[Command]`), declarative argument rules, single-match discovery, progress
+reporting, shell completion, `check-configuration`, and the status/error output channels. None
+of these break anything; each has a section in the README.
+
 ---
 
 ## How to use this document
@@ -702,12 +711,30 @@ candidates for a human rather than converting them silently.
 
 ## What has not landed yet
 
-These are planned for v5 and will get entries here as they land. Do not act on them yet.
+Planned, not built. Do not act on these; they will get entries here when they land.
 
-- Parser modes (`--arg value`, `--arg=value`, the deprecated `/arg:value`).
-- Multi-level commands (`mytool workitem list`).
-- The redefinition of quiet mode: result never suppressed, status and progress suppressed,
-  errors never suppressed.
+- **Parser modes** — a program-level setting selecting `--arg value`, `--arg=value`, and the
+  deprecated `/arg:value`. Until this lands, `/arg:value` is the only syntax.
+- **The redefinition of quiet mode** — result never suppressed, status and progress
+  suppressed, errors never suppressed. Today `quiet` still suppresses `WriteLine()`, which is
+  the v4 behavior. The new `WriteStatus()` and `WriteError()` channels are already in place, so
+  moving a command's chatter onto `WriteStatus()` now is a safe step in the right direction.
+
+## Things that changed without breaking anything
+
+No action needed. Listed so that a diff of behavior does not look like a bug.
+
+- Usage output lists the framework's reserved names (`--help`, `--json`, `gui`, `completion`,
+  `quiet`) in an `** ALSO AVAILABLE **` section. Before, nothing mentioned them anywhere.
+- Usage output no longer prints a blank line for an application name, version or website that
+  was never set.
+- Usage text wraps against `ITextOutputProvider.Width` rather than `Console.WindowWidth`. The
+  redirected fallback is 60 everywhere; the program's command list used to use 80.
+- A `[Command]` attribute on a class the framework cannot run is skipped and reported rather
+  than crashing `--json`.
+- `AllowedValues` on a non-string argument now throws instead of being silently ignored.
+- The `--json` schema gained `PathType`, `MustExist`, `Group`, `Rules`, `DiscoveryPattern`,
+  `DiscoveryDirectory` and `DiscoveryIsRecursive`, and lost `IsAsync`.
 
 ---
 
@@ -718,6 +745,37 @@ Run both, in this order, from the root of the tool being upgraded:
 ```bash
 dotnet build
 dotnet test
+```
+
+Then run the tool itself, which catches things a build cannot:
+
+```bash
+mytool                      # the command list, with any groups
+mytool --json | head        # an object with SchemaVersion, not a bare array
+mytool somecommand --help   # usage, with ** ALSO AVAILABLE ** at the end
+```
+
+And add these two tests, which turn the framework's own build-time checks into part of the
+suite. Both were available in v4 and called by nothing:
+
+```csharp
+[Fact]
+public void CommandsHaveNoRegistryProblems()
+{
+    var options = new DefaultProgramOptions { ApplicationName = "My CLI Tool" };
+
+    Assert.Empty(CommandRegistry.Build(options, typeof(SomeCommand).Assembly).Problems);
+}
+
+[Fact]
+public void CommandsHaveNoArgumentProblems()
+{
+    var options = new DefaultProgramOptions { ApplicationName = "My CLI Tool" };
+
+    var utility = new CommandAttributeUtility(options);
+
+    Assert.Empty(utility.GetArgumentProblems(typeof(SomeCommand).Assembly));
+}
 ```
 
 `dotnet build` must report **0 errors**. Warnings that existed before the upgrade are fine;

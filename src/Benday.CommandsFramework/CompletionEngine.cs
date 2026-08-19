@@ -159,6 +159,13 @@ public sealed class CompletionEngine
             [.. resolution.Registration.Path, ArgumentFrameworkConstants.ArgumentHelpString],
             _Assembly);
 
+        if (command is null)
+        {
+            // the registry resolved it, so this should not happen -- offering nothing is the
+            // right answer if it somehow does, since a completion path must never fail
+            return returnValue;
+        }
+
         var arguments = command.GetArguments();
 
         // '/name:' means the user is on to the value
