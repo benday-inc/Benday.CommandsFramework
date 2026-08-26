@@ -88,6 +88,9 @@ public static class ReservedKeywords
             ArgumentFrameworkConstants.ArgumentGui,
             "Launch the cmdui web interface for this tool."),
         new ReservedKeyword(
+            ArgumentFrameworkConstants.ArgumentTui,
+            "Launch the terminal interface for this tool, when it was built with one."),
+        new ReservedKeyword(
             ArgumentFrameworkConstants.CommandCompletion,
             "Print the shell completion script for this tool.")
     ];

@@ -1,6 +1,6 @@
 # Design: in-process TUI for Benday.CommandsFramework
 
-Status: **proposal**. Nothing here is implemented yet.
+Status: **in progress**. Phases 0, 1 and 2 are implemented; 3 onwards are not.
 
 A terminal UI that any CommandsFramework tool can launch with `mytool tui` — browse the
 commands, fill in a form, watch the output stream, cancel a long one. The same idea as
@@ -315,15 +315,21 @@ a feature that already exists); a config screen backed by `check-configuration`,
 reports `IsComplete` and `Requirements` when run in process; run history; queueing several
 commands into one log.
 
-## Open questions
+## Decisions
 
-1. **Spectre.Console vs Terminal.Gui.** Recommendation above is Spectre; it is a real choice.
-2. **TFMs** — `net8.0;net9.0;net10.0` as proposed, or net10-only like CmdUi?
-3. **Package name** — `Benday.CommandsFramework.Tui`?
-4. **Does `tui` belong in v5**, or in a v5.1 once the v5 API has settled?
-5. **Is an out-of-process `cmdtui` wanted eventually** for tools that cannot take a new
-   reference? It would change nothing here, but it would argue for keeping the rendering
-   layer behind an interface over the model rather than over `IArgument` directly.
+These were open questions while this was a proposal. All five are settled.
+
+1. **Spectre.Console**, as recommended. `Spectre.Console.Testing.TestConsole` is what the
+   rendering tests run against.
+2. **TFMs are `net8.0;net9.0;net10.0`**, matching the core framework rather than CmdUi.
+3. **Package name is `Benday.CommandsFramework.Tui`.**
+4. **`tui` ships in v5.1**, the version already on this branch. Core's release notes carry it
+   and the TUI package ships at the same version.
+5. **In-process only. There will be no out-of-process `cmdtui`.** So the rendering layer sits
+   directly on `IArgument` and `CommandRegistry` rather than behind a schema-shaped model —
+   which is what makes live per-field validation a direct `TrySetValue()` / `Validate()` call
+   with nothing in between. `Model/` still exists and still holds every decision, but it holds
+   view-models over the real objects, not a mirror of the JSON schema.
 
 ## Notes for whoever implements this
 

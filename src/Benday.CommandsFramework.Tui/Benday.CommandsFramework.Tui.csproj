@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <!-- matches the core framework rather than CmdUi's net10.0: a terminal interface is
+             useful to every tool the framework supports, and Spectre.Console targets
+             netstandard2.0, so nothing here forces net10 -->
+        <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Title>Terminal user interface for Benday.CommandsFramework tools</Title>
+        <Description>An in-process terminal UI for any tool built on Benday.CommandsFramework. Reference this package and call .WithTui() and the tool gains a 'tui' keyword that browses its commands, fills in a form and runs it without leaving the terminal.</Description>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <Authors>benday</Authors>
+        <PackageProjectUrl>https://github.com/benday-inc/Benday.CommandsFramework</PackageProjectUrl>
+        <Copyright>2026</Copyright>
+        <RepositoryUrl>https://github.com/benday-inc/Benday.CommandsFramework.git</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageIcon>bdc_mark_128_128.png</PackageIcon>
+        <PackageTags>dotnet;cli;command-line;tui;terminal;console;commands;framework</PackageTags>
+        <TheVersion>5.1.0</TheVersion>
+        <AssemblyVersion>$(TheVersion).0</AssemblyVersion>
+        <Version>$(TheVersion)</Version>
+        <PackageReleaseNotes>
+v5.1 - First release. Adds the 'tui' keyword to any tool that references this package and calls .WithTui() on the CommandsApp builder;
+        </PackageReleaseNotes>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="..\..\bdc_mark_128_128.png">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
+        <None Include="..\..\README.md">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Spectre.Console" Version="0.57.2" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Benday.CommandsFramework\Benday.CommandsFramework.csproj" />
+    </ItemGroup>
+</Project>

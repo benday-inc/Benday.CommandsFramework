@@ -66,6 +66,12 @@ public class DefaultProgramOptions : ICommandProgramOptions
     public ArgumentSyntax ArgumentSyntax { get; set; } = ArgumentSyntax.Both;
 
     /// <summary>
+    /// What runs when the 'tui' keyword is used. Null unless the tool referenced
+    /// Benday.CommandsFramework.Tui and called WithTui().
+    /// </summary>
+    public ITuiHost? TuiHost { get; set; } = null;
+
+    /// <summary>
     /// Whether an argument typed in the deprecated slash form produces a warning.
     /// </summary>
     public bool WarnOnDeprecatedArgumentSyntax { get; set; } = true;

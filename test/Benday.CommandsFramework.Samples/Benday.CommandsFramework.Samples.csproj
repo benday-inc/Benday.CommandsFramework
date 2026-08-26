@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Benday.CommandsFramework\Benday.CommandsFramework.csproj" />
+    <ProjectReference Include="..\..\src\Benday.CommandsFramework.Tui\Benday.CommandsFramework.Tui.csproj" />
   </ItemGroup>
 
 </Project>

@@ -329,6 +329,8 @@ public class CommandNameAliasFixture
     [InlineData("--help")]
     [InlineData("--json")]
     [InlineData("gui")]
+    [InlineData("tui")]
+    [InlineData("completion")]
     public void GetCommandNameProblems_DetectsAliasThatCollidesWithAReservedKeyword(string reserved)
     {
         // arrange

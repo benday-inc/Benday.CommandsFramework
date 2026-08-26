@@ -103,6 +103,11 @@ public class DefaultProgram : ICommandProgram
                 return CommandFrameworkConstants.ExitCode_Success;
             }
 
+            if (args[0] == ArgumentFrameworkConstants.ArgumentTui)
+            {
+                return await LaunchTuiAsync(cancellationToken);
+            }
+
             if (args[0] == ArgumentFrameworkConstants.ArgumentComplete)
             {
                 // called by a shell completion stub on every TAB, so this path stays cheap:
@@ -244,6 +249,32 @@ public class DefaultProgram : ICommandProgram
     private static string GetToolName()
     {
         return Process.GetCurrentProcess().ProcessName;
+    }
+
+    /// <summary>
+    /// Runs the terminal interface, when this tool was built with one.
+    /// </summary>
+    /// <remarks>
+    /// Deliberately not the 'gui' behaviour of offering to install something. cmdui is a
+    /// separate executable, so gui can go and get it; TUI support is a compile time reference
+    /// and no runtime install can supply it, so the only useful thing to say is what the tool
+    /// author has to do.
+    /// </remarks>
+    private async Task<int> LaunchTuiAsync(CancellationToken cancellationToken)
+    {
+        var host = Options.TuiHost;
+
+        if (host is null)
+        {
+            WriteError(
+                "This tool was not built with terminal interface support. Add a reference to " +
+                "the Benday.CommandsFramework.Tui package and call .WithTui() when configuring " +
+                "the app.");
+
+            return CommandFrameworkConstants.ExitCode_Failure;
+        }
+
+        return await host.RunAsync(this, cancellationToken);
     }
 
     private void LaunchGui()

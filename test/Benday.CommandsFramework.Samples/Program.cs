@@ -1,6 +1,7 @@
 ﻿using Benday.CommandsFramework;
 using Benday.CommandsFramework.Samples;
 using Benday.CommandsFramework.Samples.Services;
+using Benday.CommandsFramework.Tui;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +17,8 @@ class Program
             .Create<SampleCommand1>(args)
             .WithAppInfo("Sample Tool using Commands Framework", "https://www.benday.com")
             .WithVersionFromAssembly()
+            // one line, and the tool gains a 'tui' keyword
+            .WithTui()
             .ConfigureServices(services =>
             {
                 // Register your services for dependency injection

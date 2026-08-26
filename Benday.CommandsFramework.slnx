@@ -17,9 +17,11 @@
   <Folder Name="/src/">
     <Project Path="src/Benday.CommandsFramework.CmdUi/Benday.CommandsFramework.CmdUi.csproj" />
     <Project Path="src/Benday.CommandsFramework/Benday.CommandsFramework.csproj" />
+    <Project Path="src/Benday.CommandsFramework.Tui/Benday.CommandsFramework.Tui.csproj" />
   </Folder>
   <Folder Name="/test/">
     <Project Path="test/Benday.CommandsFramework.Samples/Benday.CommandsFramework.Samples.csproj" />
     <Project Path="test/Benday.CommandsFramework.Tests/Benday.CommandsFramework.Tests.csproj" />
+    <Project Path="test/Benday.CommandsFramework.Tui.Tests/Benday.CommandsFramework.Tui.Tests.csproj" />
   </Folder>
 </Solution>

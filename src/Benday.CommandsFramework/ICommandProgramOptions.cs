@@ -49,6 +49,17 @@ public interface ICommandProgramOptions
     ArgumentSyntax ArgumentSyntax => ArgumentSyntax.Both;
 
     /// <summary>
+    /// What runs when the 'tui' keyword is used. Null means this tool was not built with a
+    /// terminal interface.
+    /// </summary>
+    /// <remarks>
+    /// A default interface member, for the same reason InputProvider and ArgumentSyntax are:
+    /// adding it broke no existing implementation. DefaultProgramOptions declares it settable,
+    /// and the WithTui() extension in Benday.CommandsFramework.Tui is what sets it.
+    /// </remarks>
+    ITuiHost? TuiHost => null;
+
+    /// <summary>
     /// When true (the default), an argument typed in the deprecated slash form produces a
     /// warning on the diagnostic channel. Set it to false for a tool whose existing scripts
     /// should stay quiet while they are being migrated.

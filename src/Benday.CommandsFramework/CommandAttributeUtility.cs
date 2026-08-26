@@ -378,12 +378,12 @@ public class CommandAttributeUtility
 
         var problems = new List<string>();
 
-        var reservedNames = new[]
-        {
-            ArgumentFrameworkConstants.ArgumentHelpString,
-            ArgumentFrameworkConstants.ArgumentJson,
-            ArgumentFrameworkConstants.ArgumentGui
-        };
+        // ReservedKeywords is the single source, the same one CommandRegistry.GetProblems
+        // reads. This used to be a hand written array of three names, so a command or alias
+        // that collided with 'completion', 'quiet', '--complete' or 'tui' was reported as a
+        // problem by the registry and not by this -- two lists of the same thing, disagreeing.
+        var reservedNames = ReservedKeywords.AllNames
+            .ToHashSet(ArgumentCollection.ArgumentNameComparer);
 
         var duplicateNames = attributes
             .GroupBy(x => x.Name)
@@ -396,6 +396,17 @@ public class CommandAttributeUtility
         }
 
         var commandNames = attributes.Select(x => x.Name).ToHashSet();
+
+        foreach (var attribute in attributes)
+        {
+            if (reservedNames.Contains(CommandRegistration.GetPathAsString(attribute)) == true)
+            {
+                problems.Add(
+                    $"Command name '{CommandRegistration.GetPathAsString(attribute)}' is a " +
+                    "reserved framework keyword. The keyword wins, so the command can never " +
+                    "be run.");
+            }
+        }
 
         foreach (var alias in aliases)
         {

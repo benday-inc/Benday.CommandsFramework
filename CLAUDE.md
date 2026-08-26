@@ -6,7 +6,9 @@ A .NET CLI framework for building command-line tools. Provides structured comman
 ## Solution Structure
 - `src/Benday.CommandsFramework/` - Core framework library (NuGet package, targets net8.0;net9.0;net10.0)
 - `src/Benday.CommandsFramework.CmdUi/` - Blazor Server web UI shell for any framework-based tool (dotnet global tool `cmdui`, targets net10.0)
+- `src/Benday.CommandsFramework.Tui/` - In-process terminal UI for any framework-based tool (NuGet library, targets net8.0;net9.0;net10.0). See `DESIGN-TUI.md`.
 - `test/Benday.CommandsFramework.Tests/` - Unit tests (xunit.v3, via Microsoft.Testing.Platform)
+- `test/Benday.CommandsFramework.Tui.Tests/` - Unit tests for the TUI package (xunit.v3 + `Spectre.Console.Testing`)
 - `test/Benday.CommandsFramework.Samples/` - Sample commands demonstrating framework features
 
 Solution file is `Benday.CommandsFramework.slnx` (XML-based slnx format, not .sln).
@@ -199,6 +201,7 @@ which is the cost the registry exists to avoid. Call it from a unit test.
 - `--help` — display usage
 - `--json` — dump full command schema as JSON (used by cmdui for auto-generating UI)
 - `gui` — launch `cmdui` for the current tool
+- `tui` — launch the in-process terminal UI, when the tool was built with one
 - `completion` — print the shell completion stub (`--shell pwsh|zsh|bash`)
 - `--complete "<line>"` — **hidden**; what the stubs call back into. Reserved but deliberately not
   listed in usage output: it's for shells, not people.
@@ -258,15 +261,17 @@ the command name (`CommandAttributeUtility.ResolveCommandName`, called from `Get
   explicit command-line args win and no new precedence logic exists. Listed in a separate
   `Command aliases:` section.
 
-`CommandAttributeUtility.GetCommandNameProblems()` reports duplicate names, aliases colliding with
-command names or reserved keywords, aliases claimed by two commands, empty aliases, and classes
-carrying a `[Command]` attribute that the framework cannot run. Nothing calls it automatically —
-call it from a unit test.
+`CommandAttributeUtility.GetCommandNameProblems()` reports duplicate names, command names and
+aliases colliding with reserved keywords, aliases colliding with command names, aliases claimed by
+two commands, empty aliases, and classes carrying a `[Command]` attribute that the framework cannot
+run. It reads `ReservedKeywords.AllNames`, the same source `CommandRegistry.Problems` reads — it
+used to carry a hand-written list of three names, so the two disagreed about `completion`, `quiet`
+and `--complete`. Nothing calls it automatically — call it from a unit test.
 
 ### Execution Contract
 `Command.ExecuteAsync(CancellationToken)` returns a **`CommandResult`** — `Status`
 (`Success` / `ValidationFailed` / `UsageDisplayed` / `Failed` / `Cancelled`), `Message`,
-`InvalidArguments`, `IsSuccess`, `ExitCode`. `UsageDisplayed` counts as success: the user asked for
+`ValidationFailures`, `IsSuccess`, `ExitCode`. `UsageDisplayed` counts as success: the user asked for
 usage and got it.
 
 **Nothing in the framework assigns `Environment.ExitCode` except `CommandsApp.Run/RunAsync`**, the
@@ -479,6 +484,37 @@ parameterless constructor), and `CommandsApp` finds it during the registry scan 
 building the provider. It has to be a startup hook: `Microsoft.Extensions.DependencyInjection` seals
 registrations at `BuildServiceProvider()` and the provider is cached, so a registration hook on the
 command would compile, run, and silently do nothing.
+
+### Terminal UI
+`tui` runs an in-process TUI. Unlike `gui`, which shells out to the separately installed
+`cmdui`, TUI support is a **compile-time reference**: a tool adds
+`Benday.CommandsFramework.Tui` and calls `.WithTui()` on the `CommandsApp` builder. So `tui`
+on a tool that did not do that says what the author has to add rather than offering to install
+anything — no runtime install can supply a reference.
+
+The core package must **not** grow a dependency on a rendering library, so what core holds is
+`ITuiHost` (one method, `RunAsync(ICommandProgram, CancellationToken)`) plus
+`ICommandProgramOptions.TuiHost` (a default interface member, null by default, settable on
+`DefaultProgramOptions`) and the dispatch in `DefaultProgram.RunAsync`. Everything else lives
+in the TUI package.
+
+`WithTui()` is an extension on `CommandsApp` in the TUI package that goes through the public
+`ConfigureOptions()` — `CommandsApp`'s options field is private, so there is nothing else it
+could do.
+
+Inside the package, **every decision lives in `Model/` and nothing there renders**
+(`TuiSession` is built from `ICommandProgram` and holds the title, version, website and the
+registry). `SpectreTuiHost` is the thin Spectre.Console layer and takes an `IAnsiConsole`, so
+tests drive it with `Spectre.Console.Testing.TestConsole`. If a test needs a terminal, the
+logic is in the wrong layer.
+
+`TuiSession.Create()` goes through `CommandAttributeUtility.GetRegistry()`, which caches onto
+`ICommandProgramOptions.CommandRegistry` — opening the TUI instantiates **no commands** and
+costs about what `--complete` costs, not what `--json` costs.
+
+The host must not wait for a key press unless `IAnsiConsole.Profile.Capabilities.Interactive`
+is true. Redirected — a test, a pipe, a CI log — there is no key press coming and the tool
+would hang forever.
 
 ## CmdUI Project
 `cmdui` is a schema-driven Blazor Server app that auto-generates a web UI for any CommandsFramework tool:

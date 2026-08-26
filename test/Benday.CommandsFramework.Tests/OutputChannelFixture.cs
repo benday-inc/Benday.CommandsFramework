@@ -279,7 +279,9 @@ public class OutputChannelFixture
             ReservedKeywords.ForPrograms,
             x => x.Name == ArgumentFrameworkConstants.ArgumentComplete);
 
+        Assert.Contains(ArgumentFrameworkConstants.ArgumentTui, ReservedKeywords.AllNames);
+
         // --help is on both lists but is only counted once
-        Assert.Equal(6, ReservedKeywords.AllNames.Count);
+        Assert.Equal(7, ReservedKeywords.AllNames.Count);
     }
 }
