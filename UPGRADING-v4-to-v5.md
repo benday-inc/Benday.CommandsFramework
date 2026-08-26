@@ -9,8 +9,13 @@ lands, so this document is never reconstructed from memory. The
 [What has not landed yet](#what-has-not-landed-yet) section says what is still coming.
 
 **Nothing below is optional busywork.** Every entry is a change that will either stop the tool
-compiling or change what it does at run time. Entries 1 and 9 are the ones that make the
-compiler produce the rest of the work list, so do them first and let the errors guide you.
+compiling or change what it does at run time. Entry 1 is the one that makes the compiler
+produce most of the work list, so do it first and let the errors guide you.
+
+**The compiler does not find everything.** Entries 3, 8 and 9 can all leave a tool that builds
+clean with zero warnings and behaves differently than it did in v4. Entry 9 is the one most
+often missed: a tool that uses the fluent builder still compiles, and silently always exits 0.
+Read those three even when the build is green.
 
 **What v5 adds that you do not have to adopt**, but probably want to: multi-level command names
 (`Group` on `[Command]`), declarative argument rules, single-match discovery, progress
@@ -20,6 +25,18 @@ of these break anything; each has a section in the README.
 ---
 
 ## How to use this document
+
+0. **Record the baseline before touching anything.** [Verification](#verification) compares
+   against it, and once the upgrade starts you cannot get it back. Write down the error count,
+   the warning count, and the number of tests that pass:
+
+   ```bash
+   dotnet build 2>&1 | tail -3
+   dotnet test
+   ```
+
+   Confirm the test run reports a **total**, not just "Determining projects to restore" — see
+   [Verification](#verification) for why a run that reports nothing is not a baseline.
 
 1. Read [Ordering](#ordering) and do the steps in that order. Some changes depend on others.
 2. For each entry, run its **Detect** command first. If it finds nothing, skip the entry.
@@ -32,6 +49,35 @@ of these break anything; each has a section in the README.
 
 Do not skip a Detect step because the change "looks like it does not apply" — these commands
 are the definition of what applies.
+
+### A Detect command that fails looks exactly like one that finds nothing
+
+Both print nothing, and step 2 says to skip an entry that finds nothing. So a broken shell
+quietly turns this document into a no-op. Before starting, confirm the shape of these commands
+works at all:
+
+```bash
+grep -rn 'class' --include='*.cs' . | head -1      # must print a line
+```
+
+Two defaults on macOS break them:
+
+- **zsh** expands an unquoted `--include=*.cs` before `grep` ever sees it, and aborts the whole
+  command with `no matches found`. Every glob in this document is quoted for that reason. If
+  you retype one, keep the quotes.
+- **BSD `grep`** has no `-P`, so a PCRE pattern fails with `invalid option -- P`. No Detect
+  command in this document needs `-P` any more.
+
+And one that bites when searching for a pattern starting with a dash: `--` ends option parsing,
+so anything after it is a filename, including `--include`. Put `--include` first.
+
+```bash
+grep -rn -- '--json' --include='*.cs' .    # --include treated as a file: "No such file"
+grep -rn --include='*.cs' -- '--json' .    # correct
+```
+
+Run them from the root of the tool being upgraded. If one errors, fix the command — do not
+conclude that the entry does not apply.
 
 ---
 
@@ -60,7 +106,7 @@ are the definition of what applies.
 ### Detect
 
 ```bash
-grep -rn 'Include="Benday.CommandsFramework"' --include=*.csproj .
+grep -rn 'Include="Benday.CommandsFramework"' --include='*.csproj' .
 ```
 
 ### Change
@@ -75,6 +121,14 @@ grep -rn 'Include="Benday.CommandsFramework"' --include=*.csproj .
 
 A floating `4.*` will not move to 5.x on its own, which is the point — nothing upgrades by
 accident.
+
+A tool that pins exact versions instead — `Version="4.17.0"` — moves to `Version="5.0.0"`.
+Keep whichever style the tool already uses. Switching a pinned reference to a floating one
+changes how the tool takes every future update, and that is not a mechanical step.
+
+Change **every** project that references the package, not just the one holding `Program.cs`.
+A test project left on 4.x restores a second copy of the framework and produces errors that
+read as though the upgrade half-failed.
 
 ### Note
 
@@ -112,8 +166,8 @@ apart from the root JSON token alone. There is no negotiation and nothing to ask
 ### Detect
 
 ```bash
-grep -rn -- '--json' --include=*.cs . | grep -v 'ArgumentFrameworkConstants'
-grep -rn 'Deserialize<List<' --include=*.cs .
+grep -rn --include='*.cs' -- '--json' . | grep -v 'ArgumentFrameworkConstants'
+grep -rn 'Deserialize<List<' --include='*.cs' .
 ```
 
 ### Change
@@ -158,13 +212,23 @@ commands apart.
 
 ### Detect
 
-```bash
-grep -rn '\[Command(' --include=*.cs . | grep -oiP 'Name\s*=\s*"\K[^"]+' | \
-  tr 'A-Z' 'a-z' | sort | uniq -d
+Use the registry test from
+[entry 4](#4-duplicate-command-names-and-aliases-now-fail-at-startup). `CommandRegistry.Build`
+keys the registry case-insensitively, so two commands differing only by case are precisely the
+ambiguity it throws on, and the message names both offenders. Rename one of them.
+
+**Do not grep for `Name = "..."` to find these.** A `[Command]` attribute is commonly written
+across several lines:
+
+```csharp
+[Command(
+    Name = "mail",
+    Description = "Launch the UI.")]
 ```
 
-Anything this prints is a pair of command names that differed only by case and are now a
-collision — the registry will refuse to build. Rename one of them.
+Any pattern anchored to the `[Command(` line matches a bare `[Command(` and extracts no name at
+all, so it reports "no duplicates" for a tool that has them. Building the registry is the only
+detection here that cannot quietly return a false negative.
 
 ### Note
 
@@ -245,7 +309,7 @@ nothing. In v5 it is a normal settable member.
 ### Detect
 
 ```bash
-grep -rn ': ICommandProgramOptions' --include=*.cs .
+grep -rn ': ICommandProgramOptions' --include='*.cs' .
 ```
 
 ### Change
@@ -258,6 +322,37 @@ public CommandRegistry? CommandRegistry { get; set; } = null;
 `CommandRegistry` is a cache slot — the framework populates it the first time it needs the
 registry. Return whatever was last set and do not build one yourself.
 
+### Opportunity: commands that prompt for input
+
+`InputProvider` exists so that a command that prompts reads through it instead of calling
+`Console.ReadLine()` directly. That is what makes an interactive command testable — a test
+hands the command a `QueuedTextInputProvider` and drives it without a console — and what lets
+a command run somewhere that has no console at all. Nothing breaks if you skip this, but the
+upgrade is when to find the sites.
+
+### Detect
+
+```bash
+grep -rn 'Console.ReadLine\|Console.ReadKey' --include='*.cs' .
+```
+
+### Change
+
+`CommandBase` already wraps the provider, so this is usually shorter than what it replaces:
+
+```csharp
+// before
+Console.Write("Name: ");
+var name = Console.ReadLine()?.Trim();
+
+// after
+var name = Prompt("Name: ");
+```
+
+`ReadLine()`, `Prompt(prompt)` and `PromptForYesNo(prompt, defaultAnswer)` are all on
+`CommandBase`. `ITextInputProvider` exposes `ReadLine()` only, so a `Console.ReadKey()` — a
+"press any key to continue" — has no equivalent and stays as it is.
+
 ---
 
 ## 6. One command base class
@@ -265,7 +360,10 @@ registry. Return whatever was last set and do not build one yourself.
 **Mechanical**, and the compiler finds every site.
 
 `SynchronousCommand` is deleted. `AsynchronousCommand` still exists as an `[Obsolete]` empty
-subclass of the new `Command`, so code deriving from it still compiles with a warning.
+subclass of the new `Command`, so code deriving from it still compiles — with a `CS0618`
+warning that the tool did not have before, which [Verification](#verification) treats as a
+failure. It exists so that a large tool can be moved a few commands at a time, not so that the
+upgrade can stop half way. Finish the move in this pass.
 `CommandAttribute.IsAsync` is `[Obsolete]` and read by nothing — the type system already says how a
 command runs, and that flag could disagree with it: `IsAsync = false` on an async command built
 cleanly and then threw `Could not convert type to ISynchronousCommand` at run time.
@@ -276,8 +374,8 @@ class.
 ### Detect
 
 ```bash
-grep -rn ': SynchronousCommand\|: AsynchronousCommand\|ISynchronousCommand\|IAsyncCommand' --include=*.cs .
-grep -rn 'IsAsync' --include=*.cs .
+grep -rn ': SynchronousCommand\|: AsynchronousCommand\|ISynchronousCommand\|IAsyncCommand' --include='*.cs' .
+grep -rn 'IsAsync' --include='*.cs' .
 ```
 
 ### Change
@@ -312,7 +410,7 @@ There was no way to stop a running command short of killing the process.
 ### Detect
 
 ```bash
-grep -rn 'override void OnExecute()\|override Task OnExecute()\|override async Task OnExecute()' --include=*.cs .
+grep -rn 'override void OnExecute()\|override Task OnExecute()\|override async Task OnExecute()' --include='*.cs' .
 ```
 
 ### Change
@@ -381,7 +479,7 @@ the console entry point.
 ### Detect
 
 ```bash
-grep -rn 'Environment.ExitCode' --include=*.cs .
+grep -rn 'Environment.ExitCode' --include='*.cs' .
 ```
 
 ### Change
@@ -395,12 +493,30 @@ writes the message to the error channel.
 
 ## 9. `Program.cs` returns the exit code
 
-**Mechanical.** The compiler forces this one: `Run(string[])` no longer exists.
+**Mechanical** once you find it, but **the compiler will not find it for you.** This is the
+most commonly missed entry in the document — read it even if the build is clean.
+
+The static `CommandsApp.Run(string[])` is gone, so a tool that called *that* fails to compile.
+But the fluent builder's instance `Run()` still exists and still returns `int`. A `Program.cs`
+shaped like the "before" example below therefore compiles against v5 with **zero errors and
+zero warnings** — and, because `static void Main` discards the returned `int`, the tool then
+always exits 0. Every failure reports success to whatever called it: a shell script, a
+pipeline, a scheduled task.
+
+Detect is the only thing that catches this. Run it even if nothing else in this document
+applied.
 
 ### Detect
 
 ```bash
-grep -rn 'DefaultProgram\|CommandsApp' --include=Program.cs .
+grep -rn 'DefaultProgram\|CommandsApp' --include='Program.cs' .
+```
+
+Then confirm the entry point returns what it gets. Both of these are the bug:
+
+```bash
+grep -rn 'static void Main' --include='Program.cs' .
+grep -rn '\.Run()' --include='Program.cs' .
 ```
 
 ### Change
@@ -435,8 +551,18 @@ var program = new DefaultProgram(options, assembly);
 return await program.RunAsync(args);
 ```
 
-`DefaultProgram.RunAsync` returns the code without assigning it, so a `Main` that ignores the
-return value silently always exits 0. Assign it or return it.
+Nothing in the framework assigns `Environment.ExitCode` on your behalf any more (see
+[entry 8](#8-commands-return-a-result-instead-of-setting-environmentexitcode)), so a `Main`
+that ignores the returned code silently always exits 0. Assign it or return it.
+
+### Verify it, because the build cannot
+
+```bash
+mytool no-such-command > /dev/null 2>&1; echo $?   # must be 1
+mytool --help          > /dev/null 2>&1; echo $?   # must be 0
+```
+
+A tool that prints an error and exits 0 has this entry outstanding, whatever the build says.
 
 ---
 
@@ -447,7 +573,7 @@ return value silently always exits 0. Assign it or return it.
 ### Detect
 
 ```bash
-grep -rn 'ExecuteCommand<' --include=*.cs .
+grep -rn 'ExecuteCommand<' --include='*.cs' .
 ```
 
 ### Change
@@ -482,13 +608,18 @@ using `DependencyInjectionCommand`.
 ### Detect
 
 ```bash
-grep -rn ': DependencyInjectionCommand' --include=*.cs .
-grep -rn 'GetRequiredService<' --include=*.cs .
+grep -rn ': DependencyInjectionCommand' --include='*.cs' .
+grep -rn 'GetRequiredService<' --include='*.cs' .
 ```
 
 ### Change
 
-`DependencyInjectionCommand` is `[Obsolete]` but still works. When you move a command off it:
+`DependencyInjectionCommand` is `[Obsolete]` but still works — at the cost of a new `CS0618`,
+which [Verification](#verification) treats as a failure, so move off it in this pass.
+
+A command that never called `GetRequiredService<T>()` needs nothing but the base class name
+changed; that case is a one-word edit and there is no reason to defer it. When you move a
+command that does use it:
 
 ```csharp
 // before
@@ -579,8 +710,8 @@ the record of what the user typed. That record is `Request.RequestedName` now.
 ### Detect
 
 ```bash
-grep -rn 'CommandName = \|\.Arguments = ' --include=*.cs . | grep -i 'executioninfo\|execinfo'
-grep -rn 'new CommandExecutionInfo' --include=*.cs .
+grep -rn 'CommandName = \|\.Arguments = ' --include='*.cs' . | grep -i 'executioninfo\|execinfo'
+grep -rn 'new CommandExecutionInfo' --include='*.cs' .
 ```
 
 ### Change
@@ -646,7 +777,7 @@ has no single argument to blame either. Validation returns `List<ValidationFailu
 ### Detect
 
 ```bash
-grep -rn 'override.*Validate()\|OnValidationFailure\|DisplayValidationSummary\|UnknownArgument\|InvalidArguments' --include=*.cs .
+grep -rn 'override.*Validate()\|OnValidationFailure\|DisplayValidationSummary\|UnknownArgument\|InvalidArguments' --include='*.cs' .
 ```
 
 ### Change
@@ -726,6 +857,11 @@ No action needed. Listed so that a diff of behavior does not look like a bug.
 
 - Usage output lists the framework's reserved names (`--help`, `--json`, `gui`, `completion`,
   `quiet`) in an `** ALSO AVAILABLE **` section. Before, nothing mentioned them anywhere.
+- The command list gains commands the tool did not declare. `check-configuration` is new in v5
+  and, like `get-configuration`, `set-configuration` and `remove-configuration`, is registered
+  automatically whenever the program sets `UsesConfiguration = true`. A tool that diffs its
+  command-list output against v4 sees several entries it did not add. They are built-in
+  registrations, not a scan picking up something it should not have.
 - Usage output no longer prints a blank line for an application name, version or website that
   was never set.
 - Usage text wraps against `ITextOutputProvider.Width` rather than `Console.WindowWidth`. The
@@ -755,28 +891,72 @@ mytool --json | head        # an object with SchemaVersion, not a bare array
 mytool somecommand --help   # usage, with ** ALSO AVAILABLE ** at the end
 ```
 
+And check the exit codes, which is the only way to confirm
+[entry 9](#9-programcs-returns-the-exit-code) actually landed — a `Program.cs` that still
+discards the result builds clean and passes every check above:
+
+```bash
+mytool no-such-command > /dev/null 2>&1; echo $?   # must be 1
+mytool --help          > /dev/null 2>&1; echo $?   # must be 0
+mytool                 > /dev/null 2>&1; echo $?   # must be 1 -- no command named
+```
+
+If all three print 0, the exit code is not being returned.
+
 And add these two tests, which turn the framework's own build-time checks into part of the
 suite. Both were available in v4 and called by nothing:
 
 ```csharp
+/// <summary>
+/// Mirrors what Program.cs configures, so the registry under test is the one the tool
+/// actually builds at run time. UsesConfiguration in particular changes which commands
+/// are registered -- a test that leaves it at the default is checking a different registry
+/// than the tool has.
+/// </summary>
+private static DefaultProgramOptions GetProgramOptions()
+{
+    return new DefaultProgramOptions
+    {
+        ApplicationName = "My CLI Tool",
+        UsesConfiguration = true,
+        StrictArgumentValidation = true,
+        ConfigurationFolderName = "mytool"
+    };
+}
+
 [Fact]
 public void CommandsHaveNoRegistryProblems()
 {
-    var options = new DefaultProgramOptions { ApplicationName = "My CLI Tool" };
+    var registry = CommandRegistry.Build(
+        GetProgramOptions(), typeof(SomeCommand).Assembly);
 
-    Assert.Empty(CommandRegistry.Build(options, typeof(SomeCommand).Assembly).Problems);
+    // print them -- "Assert.Empty failed, collection had 3 items" does not say which
+    foreach (var problem in registry.Problems)
+    {
+        Console.WriteLine(problem);
+    }
+
+    Assert.Empty(registry.Problems);
 }
 
 [Fact]
 public void CommandsHaveNoArgumentProblems()
 {
-    var options = new DefaultProgramOptions { ApplicationName = "My CLI Tool" };
+    var utility = new CommandAttributeUtility(GetProgramOptions());
 
-    var utility = new CommandAttributeUtility(options);
+    var problems = utility.GetArgumentProblems(typeof(SomeCommand).Assembly);
 
-    Assert.Empty(utility.GetArgumentProblems(typeof(SomeCommand).Assembly));
+    foreach (var problem in problems)
+    {
+        Console.WriteLine(problem);
+    }
+
+    Assert.Empty(problems);
 }
 ```
+
+Point them at a type in the **tool's** command assembly, not the test assembly —
+`typeof(SomeCommand).Assembly` has to resolve to the assembly the tool scans at run time.
 
 `dotnet build` must report **0 errors**. Warnings that existed before the upgrade are fine;
 new ones are not, and `CS0108` in particular means something in the tool is now hiding a
@@ -787,9 +967,28 @@ from the Microsoft.Testing.Platform runner:
 
 | Exit code | Meaning |
 |---|---|
-| 0 | Everything passed |
+| 0 | Everything passed — **only if the run also reported a test total** |
 | 2 | A test failed |
 | 5 | **Zero tests ran** — treat this as a failure, not a pass |
 
 Exit code 5 is the one that catches people out: a run that discovers no tests is not a green
 run.
+
+**A green exit code is not enough on its own.** Depending on the runner and how the test
+project is configured, `dotnet test` can run nothing, print nothing beyond
+`Determining projects to restore`, and exit **0** — a worse version of exit code 5, because
+it looks like success. Confirm you can see the count:
+
+```bash
+dotnet test 2>&1 | grep -i 'total\|passed\|failed'
+```
+
+If that prints nothing, `dotnet test` is not running the suite and the comparison against your
+baseline is meaningless. Run the test project's own executable instead, which always reports:
+
+```bash
+dotnet build
+./test/MyTool.UnitTests/bin/Debug/net10.0/MyTool.UnitTests
+```
+
+Whichever you use, use the **same one** for the before and after counts.
