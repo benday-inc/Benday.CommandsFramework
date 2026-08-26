@@ -301,11 +301,16 @@ asserting `CommandRegistry.Problems` flags a command that tries to claim the nam
 
 Each phase is independently useful and independently shippable.
 
-0. **Skeleton** — `ITuiHost`, the `tui` keyword, reserved-keyword registration, `.WithTui()`,
-   a TUI that opens and exits cleanly. Proves the wiring.
-1. **Command browser** — registry-driven tree, fuzzy filter. Read-only, runs nothing.
-2. **Form + preview** — widget mapping, live per-field validation, live command-line preview.
-   Still runs nothing; "copy the command line" is already a shippable feature on its own.
+0. **Skeleton** — done. `ITuiHost`, the `tui` keyword, reserved-keyword registration,
+   `.WithTui()`, a TUI that opens and exits cleanly.
+1. **Command browser** — done. `TuiCommandBrowser` over `CommandRegistry.Registrations`,
+   grouped by `Category` and nested by `Group`, fuzzy filter across name, path, aliases,
+   category and description, `[CommandAlias]` presets in their own section, `Problems`
+   surfaced. Instantiates nothing.
+2. **Form + preview** — done. `TuiField` widget mapping, per-field validation that never
+   commits a value the argument refuses, whole-form validation through the command's own
+   `Validate()`, and a live command-line preview rendered through `ArgumentSyntaxFormatter`
+   with copy-to-clipboard.
 3. **Execute** — run in-process, stream output, progress, cancellation, `CommandResult`.
 4. **Completion** — wire `CompletionEngine` into the form, implement the path directives.
 5. **Rules** — radio groups, conditional fields, greying out.
@@ -341,5 +346,37 @@ These were open questions while this was a proposal. All five are settled.
   `src/Benday.CommandsFramework.CmdUi/Models/`. This design deliberately adds nothing to
   either, so cmdui should need no changes.
 - Small doc drift found while writing this: CLAUDE.md's "Execution Contract" section lists
-  `CommandResult.InvalidArguments`; the actual property is `ValidationFailures`. Worth fixing
-  in CLAUDE.md.
+  `CommandResult.InvalidArguments`; the actual property is `ValidationFailures`. Fixed in
+  CLAUDE.md.
+
+## Corrections found while implementing
+
+Everything above was written without a working .NET SDK, so none of it had been compiled.
+Almost all of it held. What did not:
+
+- **`CommandBase.Validate()` is `protected`.** The design has the form "call `Validate()`
+  directly", which does not compile from outside the command. Widening it would break any
+  tool overriding it as `protected override`, so v5.1 adds a public
+  `CommandBase.ValidateArguments()` that calls it. Calling it repeatedly is safe and is the
+  point: the first call applies configuration and command line values and then
+  `SetValuesFromExecutionInfo()` is a no-op, so a value typed into a field is never
+  overwritten by a later validation.
+- **A command's `Arguments` are empty until it is validated.** `GetCommand()` parses the
+  command line onto `ExecutionInfo.Request`; the values only reach the argument definitions
+  in `Validate()`. So a form has to validate once when it opens, before anything reads a
+  field's value.
+- **`CommandRegistry.BuildFromTypes` takes no options.** It is
+  `BuildFromTypes(IEnumerable<Type>, Assembly? builtInAssembly, Assembly? primaryAssembly)`.
+- **`ArgumentSyntaxFormatter` is a class of extension methods on `ArgumentSyntax`.** The
+  design's `ArgumentSyntaxFormatter.FormatNameValue(syntax, name, value)` compiles, but every
+  caller in the framework writes `syntax.FormatNameValue(name, value)`.
+- **The `TuiTextOutputProvider` sketch is missing two members.** `WriteLine()` with no
+  arguments and `Write(string)` are abstract on `ITextOutputProvider`; only `WriteStatus`,
+  `WriteError`, `Width` and `ReportProgress` are defaulted. Phase 3 needs all six.
+- **`ArgumentRule` has `Describe()`, not a `Description` property.**
+- Separately, adding `tui` to the reserved keywords turned up a real defect that had nothing
+  to do with the TUI: `CommandAttributeUtility.GetCommandNameProblems()` carried its own hand
+  written list of three reserved names instead of reading `ReservedKeywords.AllNames`, so it
+  was already blind to `completion`, `quiet` and `--complete`, and it checked aliases against
+  reserved names but never command names. `CommandRegistry.GetProblems()` had always done
+  both. Fixed.

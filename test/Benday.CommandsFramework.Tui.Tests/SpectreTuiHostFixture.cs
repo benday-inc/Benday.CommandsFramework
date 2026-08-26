@@ -13,6 +13,13 @@ namespace Benday.CommandsFramework.Tui.Tests;
 /// </summary>
 public class SpectreTuiHostFixture
 {
+    /// <summary>
+    /// How long a test waits before deciding the interface has hung. Every failure mode here
+    /// looks like waiting for input that is not coming, so an assertion that never returns is
+    /// the shape a bug takes.
+    /// </summary>
+    private static readonly TimeSpan Patience = TimeSpan.FromSeconds(15);
+
     private static DefaultProgramOptions GetOptions()
     {
         return new DefaultProgramOptions
@@ -30,7 +37,8 @@ public class SpectreTuiHostFixture
         // wide enough that the assertions are about content rather than about wrapping
         var console = new TestConsole();
 
-        console.Profile.Width = 120;
+        console.Profile.Width = 200;
+        console.Profile.Height = 60;
 
         return console;
     }
@@ -38,6 +46,12 @@ public class SpectreTuiHostFixture
     private static DefaultProgram GetProgram()
     {
         return new DefaultProgram(GetOptions(), typeof(SampleCommand1).Assembly);
+    }
+
+    private static Task<int> RunAsync(SpectreTuiHost host, CancellationToken cancellationToken)
+    {
+        return host.RunAsync(GetProgram(), cancellationToken)
+            .WaitAsync(Patience, cancellationToken);
     }
 
     [Fact]
@@ -48,7 +62,7 @@ public class SpectreTuiHostFixture
         var host = new SpectreTuiHost(console);
 
         // act
-        var exitCode = await host.RunAsync(GetProgram(), TestContext.Current.CancellationToken);
+        var exitCode = await RunAsync(host, TestContext.Current.CancellationToken);
 
         // assert
         Assert.Equal(CommandFrameworkConstants.ExitCode_Success, exitCode);
@@ -62,7 +76,7 @@ public class SpectreTuiHostFixture
         var host = new SpectreTuiHost(console);
 
         // act
-        await host.RunAsync(GetProgram(), TestContext.Current.CancellationToken);
+        await RunAsync(host, TestContext.Current.CancellationToken);
 
         // assert
         var text = console.Output;
@@ -81,17 +95,18 @@ public class SpectreTuiHostFixture
         var session = TuiSession.Create(GetOptions(), typeof(SampleCommand1).Assembly);
 
         // act
-        await host.RunAsync(session, TestContext.Current.CancellationToken);
+        await host.RunAsync(session, TestContext.Current.CancellationToken)
+            .WaitAsync(Patience, TestContext.Current.CancellationToken);
 
         // assert
         Assert.Contains($"Commands: {session.CommandCount}", console.Output);
     }
 
     [Fact]
-    public async Task RunAsync_OnANonInteractiveTerminal_DoesNotWaitForAKeyPress()
+    public async Task RunAsync_OnANonInteractiveTerminal_ListsTheCommandsAndStops()
     {
         // arrange -- a TestConsole is not interactive, and neither is a redirected one. There
-        // is no key press coming, so waiting for one would hang the tool forever.
+        // is no input coming, so prompting would hang the tool forever.
         var console = GetConsole();
 
         Assert.False(console.Profile.Capabilities.Interactive);
@@ -99,32 +114,78 @@ public class SpectreTuiHostFixture
         var host = new SpectreTuiHost(console);
 
         // act
-        var exitCode = await host.RunAsync(GetProgram(), TestContext.Current.CancellationToken)
-            .WaitAsync(TimeSpan.FromSeconds(10), TestContext.Current.CancellationToken);
+        var exitCode = await RunAsync(host, TestContext.Current.CancellationToken);
 
         // assert
         Assert.Equal(CommandFrameworkConstants.ExitCode_Success, exitCode);
-        Assert.DoesNotContain("Press any key", console.Output);
+
+        var text = console.Output;
+
+        Assert.Contains("greeting", text);
+        Assert.Contains("not interactive", text);
     }
 
     [Fact]
-    public async Task RunAsync_OnAnInteractiveTerminal_WaitsForAKeyPress()
+    public async Task RunAsync_OnANonInteractiveTerminal_ShowsAMultiLevelCommandUnderItsGroup()
+    {
+        // arrange
+        var console = GetConsole();
+        var host = new SpectreTuiHost(console);
+
+        // act
+        await RunAsync(host, TestContext.Current.CancellationToken);
+
+        // assert -- 'widget list' is typed as two tokens, so the list shows it that way
+        var text = console.Output;
+
+        Assert.Contains("widget", text);
+        Assert.Contains("Widget Management", text);
+    }
+
+    [Fact]
+    public async Task RunAsync_OnAnInteractiveTerminal_BrowsesUntilTheUserQuits()
     {
         // arrange
         var console = GetConsole();
 
         console.Interactive();
-        console.Input.PushKey(ConsoleKey.Q);
+
+        // escape is the way out of the list
+        console.Input.PushKey(ConsoleKey.Escape);
 
         var host = new SpectreTuiHost(console);
 
         // act
-        var exitCode = await host.RunAsync(GetProgram(), TestContext.Current.CancellationToken)
-            .WaitAsync(TimeSpan.FromSeconds(10), TestContext.Current.CancellationToken);
+        var exitCode = await RunAsync(host, TestContext.Current.CancellationToken);
 
         // assert
         Assert.Equal(CommandFrameworkConstants.ExitCode_Success, exitCode);
-        Assert.Contains("Press any key", console.Output);
+        Assert.Contains("Pick one to fill in its arguments", console.Output);
+    }
+
+    [Fact]
+    public async Task RunAsync_OnAnInteractiveTerminal_OpensAFormAndComesBack()
+    {
+        // arrange
+        var console = GetConsole();
+
+        console.Interactive();
+
+        // down past the filter entry onto the first command, open it, escape out of the form,
+        // then escape out of the list
+        console.Input.PushKey(ConsoleKey.DownArrow);
+        console.Input.PushKey(ConsoleKey.Enter);
+        console.Input.PushKey(ConsoleKey.Escape);
+        console.Input.PushKey(ConsoleKey.Escape);
+
+        var host = new SpectreTuiHost(console);
+
+        // act
+        var exitCode = await RunAsync(host, TestContext.Current.CancellationToken);
+
+        // assert
+        Assert.Equal(CommandFrameworkConstants.ExitCode_Success, exitCode);
+        Assert.Contains("Command line", console.Output);
     }
 
     [Fact]
@@ -164,7 +225,8 @@ public class SpectreTuiHostFixture
         var session = TuiSession.Create(options, typeof(SampleCommand1).Assembly);
 
         // act
-        await host.RunAsync(session, TestContext.Current.CancellationToken);
+        await host.RunAsync(session, TestContext.Current.CancellationToken)
+            .WaitAsync(Patience, TestContext.Current.CancellationToken);
 
         // assert
         Assert.True(session.HasProblems);

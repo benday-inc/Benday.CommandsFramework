@@ -23,7 +23,7 @@
         <AssemblyVersion>$(TheVersion).0</AssemblyVersion>
         <Version>$(TheVersion)</Version>
         <PackageReleaseNotes>
-v5.1 - First release. Adds the 'tui' keyword to any tool that references this package and calls .WithTui() on the CommandsApp builder;
+v5.1 - First release. Adds the 'tui' keyword to any tool that references this package and calls .WithTui() on the CommandsApp builder; Browse the tool's commands grouped by category and nested by command group, with a fuzzy filter across names, aliases, categories and descriptions; Fill in a command's arguments in a form that picks its widget from the argument's own type, validates each value as it is typed without ever storing one the argument refuses, and reports what is wrong through the command's own validation; A live command line preview shows what the form adds up to, rendered in whichever argument syntax the tool accepts, with copy to clipboard; Running a command from the interface is not implemented yet;
         </PackageReleaseNotes>
     </PropertyGroup>
     <ItemGroup>

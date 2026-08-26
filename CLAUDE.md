@@ -503,18 +503,38 @@ in the TUI package.
 could do.
 
 Inside the package, **every decision lives in `Model/` and nothing there renders**
-(`TuiSession` is built from `ICommandProgram` and holds the title, version, website and the
-registry). `SpectreTuiHost` is the thin Spectre.Console layer and takes an `IAnsiConsole`, so
-tests drive it with `Spectre.Console.Testing.TestConsole`. If a test needs a terminal, the
-logic is in the wrong layer.
+(`TuiSession`, `TuiCommandBrowser`, `TuiField`, `TuiCommandForm`, `TuiCommandLine`,
+`FuzzyMatch`). `Screens/` and `SpectreTuiHost` are the thin Spectre.Console layer and take an
+`IAnsiConsole`, so tests drive them with `Spectre.Console.Testing.TestConsole`. If a test
+needs a terminal, the logic is in the wrong layer.
 
 `TuiSession.Create()` goes through `CommandAttributeUtility.GetRegistry()`, which caches onto
-`ICommandProgramOptions.CommandRegistry` — opening the TUI instantiates **no commands** and
-costs about what `--complete` costs, not what `--json` costs.
+`ICommandProgramOptions.CommandRegistry` — the **browser instantiates no commands** and costs
+about what `--complete` costs, not what `--json` costs. `TuiCommandForm.Open()` is the only
+place a command is created; it goes through the ordinary `GetCommand()` run path so the
+instance the form edits is the instance that would run, and it **owns the DI scope**, which is
+why it is `IDisposable` and why the host wraps it in `using`.
 
-The host must not wait for a key press unless `IAnsiConsole.Profile.Capabilities.Interactive`
-is true. Redirected — a test, a pipe, a CI log — there is no key press coming and the tool
-would hang forever.
+The host must not prompt unless `IAnsiConsole.Profile.Capabilities.Interactive` is true.
+Redirected — a test, a pipe, a CI log — there is no input coming and the tool would hang
+forever; there it prints the command tree and stops.
+
+**Widget selection checks `AllowedValues` before `DataType`** (`TuiField.GetWidget`), because
+a file argument derives from `StringArgument` and can carry a list. `PathType` — not
+`DataType` — is what tells a path from a string.
+
+**The command-line preview goes through `ArgumentSyntaxFormatter`**, so it follows whichever
+syntax the tool declared. `GetDisplayText()` uses the spaced form a person types;
+`GetCommandLineTokens()` uses `FormatNameValueAsSingleToken` so a value with spaces survives
+being one element of an argument array. Positional values are written without their names, in
+position order — the position lives only in the `POSITION_n` alias.
+
+**`CommandBase.ValidateArguments()`** is the public wrapper around the protected `Validate()`,
+added for exactly this: a form has to ask what is wrong before anything runs. It is safe to
+call on every keystroke — the first call applies config and command-line values, and
+`SetValuesFromExecutionInfo()` is a no-op afterwards, so a typed value is never overwritten.
+A command's `Arguments` are **empty until it is validated**, which is why the form validates
+once when it opens.
 
 ## CmdUI Project
 `cmdui` is a schema-driven Blazor Server app that auto-generates a web UI for any CommandsFramework tool:

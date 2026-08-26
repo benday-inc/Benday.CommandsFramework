@@ -1,4 +1,5 @@
 using Benday.CommandsFramework.Tui.Model;
+using Benday.CommandsFramework.Tui.Screens;
 
 using Spectre.Console;
 
@@ -8,13 +9,13 @@ namespace Benday.CommandsFramework.Tui;
 /// The terminal interface, rendered with Spectre.Console.
 /// </summary>
 /// <remarks>
-/// This is the thin rendering layer. Anything that decides something belongs in
-/// <see cref="TuiSession"/> and the rest of Model, so it can be tested without a terminal.
+/// This is the thin rendering layer. Anything that decides something belongs in Model, so it
+/// can be tested without a terminal.
 ///
 /// The console is injectable so a test can drive this with Spectre's TestConsole. That is
 /// also what keeps the interface honest about non interactive terminals: a TestConsole is
-/// not interactive, and neither is a redirected one, and in both cases waiting for a key
-/// press would hang forever.
+/// not interactive, and neither is a redirected one, and in both cases prompting would hang
+/// forever waiting for input that is not coming.
 /// </remarks>
 public sealed class SpectreTuiHost : ITuiHost
 {
@@ -79,9 +80,21 @@ public sealed class SpectreTuiHost : ITuiHost
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            Render(console, session);
+            RenderHeader(console, session);
 
-            await WaitForExitAsync(console, cancellationToken);
+            var browser = new TuiCommandBrowser(session);
+
+            if (console.Profile.Capabilities.Interactive == false)
+            {
+                // redirected -- a test, a pipe, a CI log. There is no input coming, so the
+                // interface shows what it has to show and stops rather than hanging on a
+                // prompt that can never be answered.
+                RenderOverview(console, browser);
+
+                return CommandFrameworkConstants.ExitCode_Success;
+            }
+
+            await BrowseAsync(console, session, browser, cancellationToken);
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
@@ -96,9 +109,79 @@ public sealed class SpectreTuiHost : ITuiHost
     }
 
     /// <summary>
-    /// Draws the interface.
+    /// The browse, fill in, go back loop.
     /// </summary>
-    private static void Render(IAnsiConsole console, TuiSession session)
+    private async Task BrowseAsync(
+        IAnsiConsole console,
+        TuiSession session,
+        TuiCommandBrowser browser,
+        CancellationToken cancellationToken)
+    {
+        var screen = new CommandBrowserScreen(console, browser);
+
+        while (cancellationToken.IsCancellationRequested == false)
+        {
+            var action = await screen.ShowAsync(cancellationToken);
+
+            if (action == TuiScreenAction.Quit)
+            {
+                return;
+            }
+
+            if (action != TuiScreenAction.OpenForm || screen.SelectedCommand is null)
+            {
+                continue;
+            }
+
+            await ShowFormAsync(
+                console,
+                session,
+                screen.SelectedCommand,
+                screen.SelectedPresetArguments,
+                cancellationToken);
+        }
+    }
+
+    /// <summary>
+    /// Opens the form for one command.
+    /// </summary>
+    /// <remarks>
+    /// The form owns the command, and the command owns a dependency injection scope, so the
+    /// 'using' is not decoration. An interface opens many forms in one process, which is
+    /// exactly where a scope that is never released becomes a real leak.
+    /// </remarks>
+    private static async Task ShowFormAsync(
+        IAnsiConsole console,
+        TuiSession session,
+        TuiCommandItem command,
+        IReadOnlyDictionary<string, string>? presetArguments,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            using var form = TuiCommandForm.Open(
+                session.Options, session.CommandsAssembly, command, presetArguments);
+
+            await new CommandFormScreen(console, form).ShowAsync(cancellationToken);
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            // one command that cannot be created -- an unregistered dependency, most likely
+            // -- is not a reason to close the interface on everything else
+            console.MarkupLine(
+                $"[red]'{Markup.Escape(command.PathAsString)}' could not be opened: " +
+                $"{Markup.Escape(ex.Message)}[/]");
+        }
+    }
+
+    /// <summary>
+    /// Draws the banner: which tool this is, and anything wrong with it.
+    /// </summary>
+    private static void RenderHeader(IAnsiConsole console, TuiSession session)
     {
         console.Write(new Rule($"[bold]{Markup.Escape(session.Title)}[/]")
         {
@@ -118,10 +201,6 @@ public sealed class SpectreTuiHost : ITuiHost
         {
             RenderProblems(console, session);
         }
-
-        console.MarkupLine(
-            "[grey]The command browser, the argument form and running a command are not " +
-            "built yet.[/]");
     }
 
     /// <summary>
@@ -172,25 +251,58 @@ public sealed class SpectreTuiHost : ITuiHost
     }
 
     /// <summary>
-    /// Waits for the user to close the interface.
+    /// Lists the commands, for a terminal that cannot be prompted.
     /// </summary>
-    /// <remarks>
-    /// Only when the terminal is interactive. Redirected -- a test, a pipe, a CI log -- there
-    /// is no key press coming and waiting for one would hang the tool forever.
-    /// </remarks>
-    private static async Task WaitForExitAsync(
-        IAnsiConsole console, CancellationToken cancellationToken)
+    private static void RenderOverview(IAnsiConsole console, TuiCommandBrowser browser)
     {
-        if (console.Profile.Capabilities.Interactive == false)
+        var tree = new Tree("[bold]Commands[/]");
+
+        foreach (var category in browser.GetTree())
         {
-            return;
+            var categoryNode = tree.AddNode($"[bold]{Markup.Escape(category.Name)}[/]");
+
+            foreach (var group in category.Groups)
+            {
+                var parent = group.HasGroup == true
+                    ? categoryNode.AddNode($"[blue]{Markup.Escape(group.Name)}[/]")
+                    : categoryNode;
+
+                foreach (var command in group.Commands)
+                {
+                    parent.AddNode(Describe(command, group.HasGroup));
+                }
+            }
+        }
+
+        console.Write(tree);
+
+        var aliases = browser.GetMatchingAliases();
+
+        if (aliases.Count > 0)
+        {
+            var aliasTree = new Tree("[bold]Command aliases[/]");
+
+            foreach (var alias in aliases)
+            {
+                aliasTree.AddNode(
+                    $"{Markup.Escape(alias.Name)} [grey]- {Markup.Escape(alias.Description)}[/]");
+            }
+
+            console.WriteLine();
+            console.Write(aliasTree);
         }
 
         console.WriteLine();
-        console.Markup("[grey]Press any key to exit.[/]");
+        console.MarkupLine(
+            "[grey]This terminal is not interactive, so the list is all there is to show.[/]");
+    }
 
-        await console.Input.ReadKeyAsync(true, cancellationToken);
+    private static string Describe(TuiCommandItem command, bool insideGroup)
+    {
+        var label = Markup.Escape(command.GetLabel(insideGroup));
 
-        console.WriteLine();
+        return string.IsNullOrWhiteSpace(command.Description) == true
+            ? label
+            : $"{label} [grey]- {Markup.Escape(command.Description)}[/]";
     }
 }

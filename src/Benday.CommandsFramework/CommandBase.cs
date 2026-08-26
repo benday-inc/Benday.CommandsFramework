@@ -817,6 +817,28 @@ public abstract class CommandBase : IDisposable
     }
 
     /// <summary>
+    /// Checks the command's arguments as they currently stand and reports what is wrong with
+    /// them, without running the command.
+    /// </summary>
+    /// <remarks>
+    /// Validate() is protected because a command validates itself as part of running, and
+    /// nothing outside had a reason to ask. A user interface does: it fills the arguments in
+    /// a field at a time and has to say what is wrong before anything runs. This is that
+    /// question asked from outside, and it is a wrapper rather than a widening of Validate()
+    /// so that a tool overriding Validate() as protected still compiles.
+    ///
+    /// Calling this repeatedly is safe and is the point. The first call applies configuration
+    /// values and command line values on top of the argument definitions; after that
+    /// SetValuesFromExecutionInfo() is a no-op, so values set through the arguments
+    /// themselves are not overwritten by later calls.
+    /// </remarks>
+    /// <returns>What is wrong with the arguments, empty when nothing is</returns>
+    public List<ValidationFailure> ValidateArguments()
+    {
+        return Validate();
+    }
+
+    /// <summary>
     /// Validate the arguments provided using the required argument definition for the
     /// command.
     /// </summary>

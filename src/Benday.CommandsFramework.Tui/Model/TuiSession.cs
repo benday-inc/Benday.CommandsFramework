@@ -20,15 +20,26 @@ public sealed class TuiSession
 {
     private TuiSession(
         string title,
-        string version,
-        string website,
+        ICommandProgramOptions options,
+        Assembly commandsAssembly,
         CommandRegistry registry)
     {
         Title = title;
-        Version = version;
-        Website = website;
+        Options = options;
+        CommandsAssembly = commandsAssembly;
         Registry = registry;
     }
+
+    /// <summary>
+    /// The tool's options. A form needs these to build the command it is a form for, and to
+    /// know which argument syntax the command line preview should be written in.
+    /// </summary>
+    public ICommandProgramOptions Options { get; }
+
+    /// <summary>
+    /// The assembly holding the tool's commands.
+    /// </summary>
+    public Assembly CommandsAssembly { get; }
 
     /// <summary>
     /// The tool's name, or a stand-in when it has none. A blank title would render as an
@@ -39,12 +50,18 @@ public sealed class TuiSession
     /// <summary>
     /// The tool's version. Empty when it was never configured.
     /// </summary>
-    public string Version { get; }
+    public string Version => Options.Version ?? string.Empty;
 
     /// <summary>
     /// The tool's website. Empty when it was never configured.
     /// </summary>
-    public string Website { get; }
+    public string Website => Options.Website ?? string.Empty;
+
+    /// <summary>
+    /// Which argument syntax the tool accepts. The command line preview follows it, so a
+    /// tool configured for Posix or Slash gets a preview it can actually parse.
+    /// </summary>
+    public ArgumentSyntax ArgumentSyntax => Options.ArgumentSyntax;
 
     /// <summary>
     /// The commands this tool can run.
@@ -106,10 +123,6 @@ public sealed class TuiSession
             ? commandsAssembly.GetName().Name ?? "Commands"
             : options.ApplicationName;
 
-        return new TuiSession(
-            title,
-            options.Version ?? string.Empty,
-            options.Website ?? string.Empty,
-            registry);
+        return new TuiSession(title, options, commandsAssembly, registry);
     }
 }

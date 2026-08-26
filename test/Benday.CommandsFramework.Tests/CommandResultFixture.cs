@@ -322,4 +322,49 @@ public class CommandResultFixture
             Environment.ExitCode = originalExitCode;
         }
     }
+
+    [Fact]
+    public void ValidateArguments_AsksACommandWhatIsWrongWithoutRunningIt()
+    {
+        // arrange -- a user interface fills the arguments in a field at a time and has to say
+        // what is wrong before anything runs. Validate() is protected because a command
+        // validates itself as part of running; this is the same question asked from outside.
+        var executionInfo = new ArgumentCollectionFactory().Parse(
+            Utilities.GetStringArray("result-sample"));
+
+        using var command = new ResultSampleCommand(
+            executionInfo, new StringBuilderTextOutputProvider());
+
+        // act
+        var failures = command.ValidateArguments();
+
+        // assert
+        Assert.NotEmpty(failures);
+        Assert.False(command.DidRun);
+        Assert.Contains(failures, x => x.ArgumentNames.Contains("required-thing"));
+    }
+
+    [Fact]
+    public void ValidateArguments_DoesNotOverwriteAValueSetThroughTheArgumentsThemselves()
+    {
+        // arrange -- this is what makes validating on every keystroke possible: the first
+        // call applies configuration and command line values, and later calls leave the
+        // arguments alone
+        var executionInfo = new ArgumentCollectionFactory().Parse(
+            Utilities.GetStringArray("result-sample"));
+
+        using var command = new ResultSampleCommand(
+            executionInfo, new StringBuilderTextOutputProvider());
+
+        command.ValidateArguments();
+
+        Assert.True(command.Arguments["required-thing"].TrySetValue("typed in"));
+
+        // act
+        var failures = command.ValidateArguments();
+
+        // assert
+        Assert.Empty(failures);
+        Assert.Equal("typed in", command.Arguments["required-thing"].Value);
+    }
 }
