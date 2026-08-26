@@ -61,8 +61,8 @@ public class SampleCommandWithAliasArgsFixture
         Assert.DoesNotContain("** INVALID ARGUMENTS **", output);
         Assert.Contains("** USAGE **", output);
 
-        AssertContains(output, "/Value1");
-        AssertContains(output, "[/Value2");
+        AssertContains(output, "--Value1");
+        AssertContains(output, "[--Value2");
     }
 
     private void AssertDoesNotContain(string actual, string notExpected)

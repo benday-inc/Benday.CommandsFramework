@@ -15,7 +15,12 @@ public static class CommandFrameworkConstants
     /// no envelope; version 2 is a CommandSchema object. A consumer can tell them apart from
     /// the root JSON token alone, which is why there is no negotiation.
     /// </summary>
-    public const int CurrentSchemaVersion = 2;
+    /// <remarks>
+    /// Version 3 adds ArgumentSyntax. A consumer that builds a command line -- cmdui does --
+    /// cannot guess it: a version 2 tool accepts only the slash form, and a version 3 tool
+    /// may accept only the POSIX form. The absence of the property means slash.
+    /// </remarks>
+    public const int CurrentSchemaVersion = 3;
 
     /// <summary>
     /// Width to wrap output at when the real width is not known -- output is redirected, or

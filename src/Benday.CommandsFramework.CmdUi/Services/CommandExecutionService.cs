@@ -6,10 +6,12 @@ namespace Benday.CommandsFramework.CmdUi.Services;
 public class CommandExecutionService
 {
     private readonly AppState _appState;
+    private readonly ToolSchemaService _schemaService;
 
-    public CommandExecutionService(AppState appState)
+    public CommandExecutionService(AppState appState, ToolSchemaService schemaService)
     {
         _appState = appState;
+        _schemaService = schemaService;
     }
 
     public async Task<CommandExecutionResult> ExecuteCommandAsync(
@@ -18,7 +20,13 @@ public class CommandExecutionService
         List<ToolArgumentInfo> arguments,
         Dictionary<string, string> values)
     {
-        var argList = BuildArgumentList(commandName, arguments, values);
+        // which syntax to build depends on the tool, not on cmdui: a tool built against an
+        // older framework only understands the slash form. The schema says which, and the
+        // schema service has it cached from the probe that produced these arguments.
+        var schema = await _schemaService.GetSchemaDocumentAsync(toolName);
+
+        var argList = BuildArgumentList(
+            commandName, arguments, values, schema.AcceptsPosixSyntax);
         var commandLine = $"{toolName} {string.Join(" ", argList)}";
 
         var psi = new ProcessStartInfo
@@ -55,10 +63,24 @@ public class CommandExecutionService
         };
     }
 
+    /// <summary>
+    /// An argument name as the target tool expects it to be typed.
+    /// </summary>
+    private static string FormatName(string name, bool posix) =>
+        posix == true ? $"--{name}" : $"/{name}";
+
+    /// <summary>
+    /// An argument name and value in a single token, so it survives being passed as one
+    /// element of ProcessStartInfo.ArgumentList.
+    /// </summary>
+    private static string FormatNameValue(string name, string value, bool posix) =>
+        posix == true ? $"--{name}={value}" : $"/{name}:{value}";
+
     private static List<string> BuildArgumentList(
         string commandName,
         List<ToolArgumentInfo> arguments,
-        Dictionary<string, string> values)
+        Dictionary<string, string> values,
+        bool posix)
     {
         var result = new List<string> { commandName };
 
@@ -91,21 +113,21 @@ public class CommandExecutionService
                     if (arg.AllowEmptyValue)
                     {
                         // Flag-style: presence means true
-                        result.Add($"/{arg.Name}");
+                        result.Add(FormatName(arg.Name, posix));
                     }
                     else
                     {
-                        result.Add($"/{arg.Name}:true");
+                        result.Add(FormatNameValue(arg.Name, "true", posix));
                     }
                 }
                 else if (!arg.AllowEmptyValue && val == "false")
                 {
-                    result.Add($"/{arg.Name}:false");
+                    result.Add(FormatNameValue(arg.Name, "false", posix));
                 }
             }
             else if (!string.IsNullOrEmpty(val))
             {
-                result.Add($"/{arg.Name}:{val}");
+                result.Add(FormatNameValue(arg.Name, val, posix));
             }
         }
 

@@ -48,7 +48,7 @@ public class ConfigurationRequirementFixture
             result.ValidationFailures,
             x => x.Kind == ValidationFailureKind.MissingConfiguration);
 
-        Assert.Contains("set-configuration /name:api-key", output.GetOutput());
+        Assert.Contains("set-configuration --name api-key", output.GetOutput());
     }
 
     [Fact]

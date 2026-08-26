@@ -561,13 +561,22 @@ public abstract class CommandBase : IDisposable
         }
         else
         {
+            var syntax = ExecutionInfo.Options.ArgumentSyntax;
+
+            // a boolean flag that allows an empty value is typed on its own, so showing it
+            // with a value would be telling the user to type something the parser does not
+            // want
+            var key = arg.DataType == ArgumentDataType.Boolean && arg.AllowEmptyValue == true
+                ? syntax.FormatName(arg.Name)
+                : syntax.FormatNameValue(arg.Name, $"<{arg.DataType}>");
+
             if (arg.IsRequired == true)
             {
-                return $"/{arg.Name}:{arg.DataType}";
+                return key;
             }
             else
             {
-                return $"[/{arg.Name}:{arg.DataType}]";
+                return $"[{key}]";
             }
         }
         
@@ -695,7 +704,7 @@ public abstract class CommandBase : IDisposable
     /// Adds the framework's own reserved names to the usage output. They are not part of any
     /// command's argument list, so without this nothing ever tells anyone they exist.
     /// </summary>
-    private static void DisplayReservedKeywords(StringBuilder builder, int consoleWidth)
+    private void DisplayReservedKeywords(StringBuilder builder, int consoleWidth)
     {
         var keywords = ReservedKeywords.ForCommands;
 
@@ -704,8 +713,10 @@ public abstract class CommandBase : IDisposable
             return;
         }
 
+        var syntax = ExecutionInfo.Options.ArgumentSyntax;
+
         var separator = " - ";
-        var longestNameLength = keywords.Max(x => x.Name.Length);
+        var longestNameLength = keywords.Max(x => x.GetDisplayName(syntax).Length);
         var nameColumnWidth = longestNameLength + separator.Length;
 
         builder.AppendLine();
@@ -714,7 +725,8 @@ public abstract class CommandBase : IDisposable
 
         foreach (var keyword in keywords)
         {
-            builder.Append(LineWrapUtilities.GetValueWithPadding(keyword.Name, longestNameLength));
+            builder.Append(LineWrapUtilities.GetValueWithPadding(
+                keyword.GetDisplayName(syntax), longestNameLength));
             builder.Append(separator);
             builder.AppendWrappedValue(keyword.Description, consoleWidth, nameColumnWidth);
             builder.AppendLine();
@@ -830,7 +842,8 @@ public abstract class CommandBase : IDisposable
                 returnValue.Add(
                     temp.IsFromConfig == true && temp.HasValue == false
                         ? ValidationFailure.ForMissingConfiguration(
-                            temp, CommandFrameworkConstants.CommandName_SetConfig)
+                            temp, CommandFrameworkConstants.CommandName_SetConfig,
+                            ExecutionInfo.Options.ArgumentSyntax)
                         : ValidationFailure.ForArgument(temp));
             }
         }

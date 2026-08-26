@@ -84,27 +84,58 @@ public class ShellCompletionFixture
     {
         var candidates = Complete($"samples {ApplicationConstants.CommandName_Greeting} ");
 
-        Assert.Contains(candidates, x => x.Value == "/name:");
+        Assert.Contains(candidates, x => x.Value == "--name");
         Assert.Contains(candidates, x => x.Value == ArgumentFrameworkConstants.ArgumentHelpString);
     }
 
     [Fact]
     public void ArgumentsAlreadySupplied_AreNotOfferedAgain()
     {
-        var values = Values($"samples {ApplicationConstants.CommandName_Greeting} /name:Ben ");
+        var values = Values($"samples {ApplicationConstants.CommandName_Greeting} --name Ben ");
 
-        Assert.DoesNotContain("/name:", values);
-        Assert.Contains("/salutation:", values);
+        Assert.DoesNotContain("--name", values);
+        Assert.Contains("--salutation", values);
     }
 
     [Fact]
     public void BooleanFlag_IsOfferedWithoutAColon()
     {
-        // '/verbose' is typed on its own; '/verbose:' would be wrong
+        // '--verbose' is typed on its own; '--verbose=' would be wrong
         var values = Values($"samples {ApplicationConstants.CommandName_Deploy} ");
 
-        Assert.Contains("/verbose", values);
-        Assert.DoesNotContain("/verbose:", values);
+        Assert.Contains("--verbose", values);
+        Assert.DoesNotContain("--verbose=", values);
+    }
+
+    [Fact]
+    public void SlashArgumentsAlreadySupplied_AreStillRecognized()
+    {
+        // the deprecated form still parses, so an argument supplied that way must not be
+        // offered again either
+        var values = Values($"samples {ApplicationConstants.CommandName_Greeting} /name:Ben ");
+
+        Assert.DoesNotContain("--name", values);
+        Assert.Contains("--salutation", values);
+    }
+
+    [Fact]
+    public void AfterAnOptionWithNoValue_ItsAllowedValuesAreOffered()
+    {
+        // the space separated form: the value is the next token, so that is what completes
+        var values = Values(
+            $"samples {ApplicationConstants.CommandName_CommandWithAllowedValues} --environment ");
+
+        Assert.Equal(["dev", "staging", "prod"], values);
+    }
+
+    [Fact]
+    public void AllowedValues_AreOfferedAfterAnEqualsSign()
+    {
+        var values = Values(
+            $"samples {ApplicationConstants.CommandName_CommandWithAllowedValues} --environment=");
+
+        Assert.Equal(
+            ["--environment=dev", "--environment=staging", "--environment=prod"], values);
     }
 
     [Fact]
@@ -247,7 +278,7 @@ public class ShellCompletionFixture
         // act
         await program.RunAsync(
             [ArgumentFrameworkConstants.CommandCompletion,
-             $"/{DefaultProgram.CompletionShellArgumentName}:bash"],
+             $"--{DefaultProgram.CompletionShellArgumentName}", "bash"],
             TestContext.Current.CancellationToken);
 
         // assert
@@ -270,7 +301,7 @@ public class ShellCompletionFixture
         // assert
         foreach (var shell in CompletionScripts.SupportedShells)
         {
-            Assert.Contains($"/{DefaultProgram.CompletionShellArgumentName}:{shell}",
+            Assert.Contains($"--{DefaultProgram.CompletionShellArgumentName} {shell}",
                 output.GetResultOutput());
         }
     }

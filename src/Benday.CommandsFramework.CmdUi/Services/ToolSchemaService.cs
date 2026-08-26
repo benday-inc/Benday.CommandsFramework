@@ -16,7 +16,7 @@ public class ToolSchemaService
     /// <summary>
     /// Highest schema version this build of cmdui understands.
     /// </summary>
-    public const int HighestSupportedSchemaVersion = 2;
+    public const int HighestSupportedSchemaVersion = 3;
 
     public async Task<List<ToolCommandInfo>> GetCommandSchemaAsync(string toolName)
     {
@@ -99,6 +99,7 @@ public class ToolSchemaService
             return new ToolSchemaDocument
             {
                 SchemaVersion = 1,
+                ArgumentSyntax = "Slash",
                 Commands = parsed.RootElement.Deserialize<List<ToolCommandInfo>>(
                     SchemaSerializerOptions) ?? new List<ToolCommandInfo>()
             };
@@ -120,6 +121,13 @@ public class ToolSchemaService
                 $"This tool reports schema version {document.SchemaVersion}, and this " +
                 $"version of cmdui only understands up to {HighestSupportedSchemaVersion}. " +
                 "Update cmdui with: dotnet tool update -g Benday.CommandsFramework.CmdUi");
+        }
+
+        if (document.SchemaVersion < 3)
+        {
+            // ArgumentSyntax arrived in version 3. A tool older than that only understands
+            // the slash form, whatever the property defaulted to.
+            document.ArgumentSyntax = "Slash";
         }
 
         return document;

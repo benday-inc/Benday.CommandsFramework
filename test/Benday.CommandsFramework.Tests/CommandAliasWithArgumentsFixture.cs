@@ -257,8 +257,8 @@ public class CommandAliasWithArgumentsFixture
         Assert.Contains("Command aliases:", output);
         Assert.Contains(ApplicationConstants.CommandAlias_DeployProd, output);
         Assert.Contains("Deploy to production with verbose output", output);
-        Assert.Contains("/environment:production", output);
-        Assert.Contains("/verbose", output);
+        Assert.Contains("--environment production", output);
+        Assert.Contains("--verbose", output);
     }
 
     [Fact]

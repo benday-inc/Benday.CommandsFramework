@@ -36,4 +36,22 @@ public interface ICommandProgramOptions
     /// When false (default), unknown arguments are silently ignored.
     /// </summary>
     bool StrictArgumentValidation { get; set; }
+
+    /// <summary>
+    /// Which command line argument syntax this program accepts. Defaults to
+    /// <see cref="ArgumentSyntax.Both"/> -- the POSIX form is what gets rendered and the
+    /// deprecated slash form still parses.
+    /// </summary>
+    /// <remarks>
+    /// A default interface member, so adding it broke no existing implementation of this
+    /// interface. DefaultProgramOptions declares it settable.
+    /// </remarks>
+    ArgumentSyntax ArgumentSyntax => ArgumentSyntax.Both;
+
+    /// <summary>
+    /// When true (the default), an argument typed in the deprecated slash form produces a
+    /// warning on the diagnostic channel. Set it to false for a tool whose existing scripts
+    /// should stay quiet while they are being migrated.
+    /// </summary>
+    bool WarnOnDeprecatedArgumentSyntax => true;
 }

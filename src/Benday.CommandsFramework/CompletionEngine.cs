@@ -168,26 +168,48 @@ public sealed class CompletionEngine
 
         var arguments = command.GetArguments();
 
-        // '/name:' means the user is on to the value
-        var colonIndex = partial.IndexOf(':');
+        var syntax = _Utility.ProgramOptions.ArgumentSyntax;
 
-        if (partial.StartsWith('/') == true && colonIndex > 0)
+        // '--name=', '--name:' and '/name:' all mean the user is on to the value
+        var delimiterIndex = IndexOfValueDelimiter(partial, syntax);
+
+        if (delimiterIndex > 0)
         {
-            var name = partial[1..colonIndex];
-            var valueSoFar = partial[(colonIndex + 1)..];
+            var name = StripPrefix(partial[..delimiterIndex], syntax);
+            var valueSoFar = partial[(delimiterIndex + 1)..];
 
             if (arguments.ContainsKey(name) == true)
             {
-                return GetValueCandidates(arguments[name], partial[..(colonIndex + 1)], valueSoFar);
+                return GetValueCandidates(
+                    arguments[name], partial[..(delimiterIndex + 1)], valueSoFar);
             }
 
             return returnValue;
         }
 
-        var alreadySupplied = resolution.RemainingTokens
-            .Where(x => x.StartsWith('/') == true)
-            .Select(x => x.Contains(':') ? x[1..x.IndexOf(':')] : x[1..])
-            .ToHashSet(ArgumentCollection.ArgumentNameComparer);
+        // nothing typed yet, and the token before it was an option with no value attached --
+        // so what comes next is that option's value, typed the space separated way
+        if (string.IsNullOrEmpty(partial) == true)
+        {
+            var previous = resolution.RemainingTokens.Count == 0
+                ? null
+                : resolution.RemainingTokens[^1];
+
+            if (previous is not null &&
+                IsOptionToken(previous, syntax) == true &&
+                IndexOfValueDelimiter(previous, syntax) < 0)
+            {
+                var name = StripPrefix(previous, syntax);
+
+                if (arguments.ContainsKey(name) == true &&
+                    TakesAValue(arguments[name]) == true)
+                {
+                    return GetValueCandidates(arguments[name], string.Empty, string.Empty);
+                }
+            }
+        }
+
+        var alreadySupplied = GetSuppliedNames(resolution.RemainingTokens, syntax, arguments);
 
         foreach (var key in arguments.Keys)
         {
@@ -198,10 +220,15 @@ public sealed class CompletionEngine
                 continue;
             }
 
-            var candidate = argument.AllowEmptyValue == true &&
-                argument.DataType == ArgumentDataType.Boolean
-                    ? $"/{argument.Name}"
-                    : $"/{argument.Name}:";
+            // In the POSIX syntax the name is a complete token on its own -- the value is the
+            // next word, and a second TAB completes it. Offering '--name=' instead would put
+            // an '=' in the middle of the word being completed, which bash splits on by
+            // default and then completes the wrong half of.
+            //
+            // The slash syntax has no such separate token, so it keeps its trailing colon.
+            var candidate = syntax == ArgumentSyntax.Slash && TakesAValue(argument) == true
+                ? $"/{argument.Name}:"
+                : syntax.FormatName(argument.Name);
 
             if (Matches(candidate, partial) == true)
             {
@@ -212,10 +239,12 @@ public sealed class CompletionEngine
 
         foreach (var keyword in ReservedKeywords.ForCommands)
         {
-            if (Matches(keyword.Name, partial) == true)
+            var name = keyword.GetDisplayName(syntax);
+
+            if (Matches(name, partial) == true)
             {
                 returnValue.Add(
-                    CompletionCandidate.ForValue(keyword.Name, keyword.Description));
+                    CompletionCandidate.ForValue(name, keyword.Description));
             }
         }
 
@@ -262,6 +291,106 @@ public sealed class CompletionEngine
                 {
                     returnValue.Add(CompletionCandidate.ForValue($"{prefix}{value}"));
                 }
+            }
+        }
+
+        return returnValue;
+    }
+
+    /// <summary>
+    /// Whether an option consumes a following token. A boolean flag that allows an empty
+    /// value does not.
+    /// </summary>
+    private static bool TakesAValue(IArgument argument)
+    {
+        return argument.DataType != ArgumentDataType.Boolean ||
+            argument.AllowEmptyValue == false;
+    }
+
+    /// <summary>
+    /// True when this token is an option rather than a value, in either syntax.
+    /// </summary>
+    private static bool IsOptionToken(string token, ArgumentSyntax syntax)
+    {
+        if (syntax.AllowsPosix() == true &&
+            token.StartsWith('-') == true &&
+            token.Length > 1 &&
+            token != "--")
+        {
+            return true;
+        }
+
+        return syntax.AllowsSlash() == true && token.StartsWith('/') == true;
+    }
+
+    /// <summary>
+    /// Where the value starts in an option token, or -1 when the token carries no value.
+    /// </summary>
+    private static int IndexOfValueDelimiter(string token, ArgumentSyntax syntax)
+    {
+        if (IsOptionToken(token, syntax) == false)
+        {
+            return -1;
+        }
+
+        return token.StartsWith('/') == true
+            ? token.IndexOf(':')
+            : token.IndexOfAny(['=', ':']);
+    }
+
+    /// <summary>
+    /// Strips the '--', '-' or '/' from the front of an option token.
+    /// </summary>
+    private static string StripPrefix(string token, ArgumentSyntax syntax)
+    {
+        if (token.StartsWith("--") == true)
+        {
+            return token[2..];
+        }
+
+        if (token.StartsWith('-') == true || token.StartsWith('/') == true)
+        {
+            return token[1..];
+        }
+
+        return token;
+    }
+
+    /// <summary>
+    /// The argument names already on the command line, so they are not offered twice.
+    /// </summary>
+    /// <remarks>
+    /// A token consumed as the value of the option before it is not itself an option, which
+    /// is why this walks the tokens rather than filtering them.
+    /// </remarks>
+    private static HashSet<string> GetSuppliedNames(
+        IReadOnlyList<string> tokens, ArgumentSyntax syntax, ArgumentCollection arguments)
+    {
+        var returnValue = new HashSet<string>(ArgumentCollection.ArgumentNameComparer);
+
+        for (var index = 0; index < tokens.Count; index++)
+        {
+            var token = tokens[index];
+
+            if (IsOptionToken(token, syntax) == false)
+            {
+                continue;
+            }
+
+            var delimiterIndex = IndexOfValueDelimiter(token, syntax);
+
+            var name = delimiterIndex > 0
+                ? StripPrefix(token[..delimiterIndex], syntax)
+                : StripPrefix(token, syntax);
+
+            returnValue.Add(name);
+
+            if (delimiterIndex < 0 &&
+                arguments.ContainsKey(name) == true &&
+                TakesAValue(arguments[name]) == true)
+            {
+                // the next token is this option's value, not an option of its own
+                index++;
             }
         }
 

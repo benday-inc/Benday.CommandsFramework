@@ -28,5 +28,23 @@ public class ToolSchemaDocument
     /// </summary>
     public string ApplicationVersion { get; set; } = string.Empty;
 
+    /// <summary>
+    /// Which argument syntax the tool accepts: "Both", "Posix" or "Slash".
+    /// </summary>
+    /// <remarks>
+    /// Defaults to "Slash" rather than to the framework's own default, because a schema that
+    /// does not carry this property came from a tool that predates the POSIX syntax and
+    /// therefore only accepts the slash form. Guessing "Both" here would build command lines
+    /// that older tools cannot parse.
+    /// </remarks>
+    public string ArgumentSyntax { get; set; } = "Slash";
+
+    /// <summary>
+    /// True when the tool accepts the POSIX form, which is what cmdui prefers to emit.
+    /// </summary>
+    public bool AcceptsPosixSyntax =>
+        string.Equals(ArgumentSyntax, "Both", StringComparison.OrdinalIgnoreCase) ||
+        string.Equals(ArgumentSyntax, "Posix", StringComparison.OrdinalIgnoreCase);
+
     public List<ToolCommandInfo> Commands { get; set; } = new();
 }

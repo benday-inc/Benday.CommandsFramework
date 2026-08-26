@@ -59,27 +59,60 @@ the real default even on the validation-failure path. The implicit type default 
 `DateTime.MinValue`) does not count — `HasDefaultValue` is false unless `WithDefaultValue()` was called.
 
 ### CLI Argument Format
-Arguments use `/name:value` syntax. Boolean flags with `AllowEmptyValue` use `/name` (presence = true).
-Parsing lives in `ArgumentCollectionFactory.GetArgsAsDictionary()`; `input[0]` is the command name and
-everything after it is parsed.
+Arguments use the POSIX long option form: `--name value`, `--name=value`, `--name:value`, and
+`--flag` for a boolean with `AllowEmptyValue`. A one-dash token is the same thing with the name
+after it (`-e production`), which is how an argument alias becomes a short option — there is no
+clustering, so `-abc` means the argument named `abc`. A bare `--` ends the options and everything
+after it is a value.
+
+`ArgumentSyntax` on `ICommandProgramOptions` selects what a program accepts — `Both` (default:
+parses both forms, renders POSIX, warns on slash), `Posix`, or `Slash`. It is a **default interface
+member**, so adding it broke no implementor; `DefaultProgramOptions` declares it settable.
+`WarnOnDeprecatedArgumentSyntax` silences the warning.
+
+The deprecated `/name:value` form still parses under `Both`. The warning goes to the **diagnostic
+channel** (`WriteStatus`), because a tool piping `--json` to a file must not get a deprecation notice
+inside its output.
+
+**`--name value` is parsed twice, and only the second parse counts.** Nothing in the two tokens
+`--name` and `value` says whether `value` belongs to `--name` or is a positional argument following a
+boolean flag; only the command's argument definitions say that, and the only way to read them is to
+ask the command — which cannot be built without a `CommandExecutionInfo`. So
+`CommandAttributeUtility.GetCommand()` parses once without definitions to build a provisional
+request (every form except the space-separated one binds correctly without them), constructs the
+command, then re-parses with `command.Arguments` and replaces `execInfo.Request`. **No extra
+instantiation** — the command created there is the one that runs. `ArgumentCollectionFactory.Definitions`
+is null for callers that parse a fragment before any command is resolved; an option then consumes the
+next token whenever that token does not itself look like an option.
+
+`--help` keeps its **literal key**, dashes and all, because that is the key every command checks for.
+Parsing it as an ordinary option would file it under `help` and nothing would find it.
 
 Value precedence: command line > command alias presets > configuration (`FromConfig()`) > default value.
 
 **Argument names are matched case-insensitively** via `ArgumentCollection.ArgumentNameComparer`
 (`OrdinalIgnoreCase`), which backs the argument dictionary, the alias lookup in `SetValues()`, the
 parsed dictionary from `ArgumentCollectionFactory`, and `CommandExecutionInfo.Arguments`. So
-`/verbose`, `/Verbose` and `/VERBOSE` all reach the same argument, for both the `/name:value` and
-flag-style forms. Argument *values* keep their case; only names are case-insensitive.
+`--verbose`, `--Verbose` and `--VERBOSE` all reach the same argument, for every form. Argument
+*values* keep their case; only names are case-insensitive.
 
 Use `ArgumentCollection.ArgumentNameComparer` whenever you build a dictionary that will hold argument
 names, so a name can't get in twice under different casing.
+
+**Everything that renders an argument name goes through `ArgumentSyntaxFormatter`** —
+`FormatName()`, `FormatNameValue()`, `FormatNameValueAsSingleToken()`. Usage output
+(`CommandBase.GetKeyString`), shell completion, `ValidationFailure.ForMissingConfiguration`,
+`CheckConfigurationCommand`, the command-alias summary in `DefaultProgram`, and the `completion`
+usage hint all used to build their own `/name:value` strings. If any one of them disagrees with the
+parser, the tool tells people to type something it will not accept.
 
 ### Positional Arguments
 `FromPositionalArgument(n)` sets `Alias = "POSITION_n"` and `IsPositionalSource = true`; binding then
 happens through the normal alias path in `ArgumentCollection.SetValues()`. Position must be >= 1.
 - Counting covers only bare positional values, so named args interleave freely without shifting positions.
 - A `/`-prefixed token with **more than one slash** and no colon is treated as a Unix path and becomes
-  positional; one slash and no colon is treated as a flag name.
+  positional; one slash and no colon is treated as a flag name — so `/tmp` is read as a flag, which
+  is the guess `ArgumentSyntax.Posix` removes by not treating `/` as a prefix at all.
 - `WithAlias()` and `FromPositionalArgument()` share the `Alias` slot — using both on one argument
   breaks whichever was set first.
 - Usage output renders these as `{name:Type}` (required) / `[{name:Type}]` (optional) via `GetKeyString()`.
@@ -129,8 +162,10 @@ differently as a result; anything that wants to know a path from a string reads 
 
 ### Schema Envelope
 `--json` writes a `CommandSchema` object: `SchemaVersion`, `ApplicationName`, `ApplicationVersion`,
-`Commands`. v4 wrote a bare array, so consumers discriminate on the **root JSON token alone** — no
-negotiation. `CommandFrameworkConstants.CurrentSchemaVersion` is the version;
+`ArgumentSyntax`, `Commands`. v4 wrote a bare array, so consumers discriminate on the **root JSON token alone** — no
+negotiation. `CommandFrameworkConstants.CurrentSchemaVersion` is the version (**3**, which added
+`ArgumentSyntax` — a consumer that builds a command line cannot guess it, and the property's
+absence means slash);
 `ToolSchemaService.ParseSchema` in cmdui is the reference reader and refuses a version newer than it
 understands rather than guessing.
 
@@ -164,10 +199,11 @@ which is the cost the registry exists to avoid. Call it from a unit test.
 - `--help` — display usage
 - `--json` — dump full command schema as JSON (used by cmdui for auto-generating UI)
 - `gui` — launch `cmdui` for the current tool
-- `completion` — print the shell completion stub (`/shell:pwsh|zsh|bash`)
+- `completion` — print the shell completion stub (`--shell pwsh|zsh|bash`)
 - `--complete "<line>"` — **hidden**; what the stubs call back into. Reserved but deliberately not
   listed in usage output: it's for shells, not people.
-- `quiet` — reserved argument; suppresses `CommandBase.WriteLine()` output
+- `--quiet` — reserved argument; suppresses `CommandBase.WriteLine()` output
+- `--` — end of options; everything after it is a value
 
 ### Shell Completion
 Dynamic, not generated: the stub is a fixed few lines that hand the whole command line back to the
@@ -280,7 +316,7 @@ getter part way through `OnExecute()` after validation already passed.
 
 `check-configuration` is the doctor: it reflects over every command's arguments, lists each
 `FromConfig()` value, whether it's set, and which commands read it. Free once arguments declare
-they read from config — the same declaration drives both. `/missingonly` narrows it; `IsComplete`
+they read from config — the same declaration drives both. `--missingonly` narrows it; `IsComplete`
 and `Requirements` are readable when the command is run in process. `CommandsApp.ConfigureConfiguration()` adds custom
 `IConfiguration` sources. Config-sourced args print in a separate `** CONFIGURATION **` section of usage output.
 
@@ -343,7 +379,7 @@ Three channels, following the convention every other CLI uses:
 | status | `WriteStatus()` | stderr | suppressed |
 | error | `WriteError()` | stderr | **never** suppressed |
 
-Keeping them apart is what lets output be piped: a command that grows a `/json` flag emits invalid
+Keeping them apart is what lets output be piped: a command that grows a `--json` flag emits invalid
 JSON the moment anything else writes to the same stream. `DefaultProgram`'s `catch (KnownException)`
 now writes to the error channel, so a failed command piping `--json` to a file no longer lands its
 error text inside the JSON.
@@ -377,7 +413,9 @@ immediately finishes would race its own output.
 ### Reserved Keywords
 `ReservedKeywords` is the single source for the names the framework claims — it backs both the
 usage output that lists them and the argument validation that skips them (`ArgumentCollection`).
-`ForCommands` (`--help`, `quiet`) prints as an `** ALSO AVAILABLE **` section in per-command usage;
+`ForCommands` (`--help`, `--quiet`) prints as an `** ALSO AVAILABLE **` section in per-command usage;
+`ReservedKeyword.IsArgument` says whether a name takes the argument prefix — `gui` and `completion`
+are commands and are typed bare, `quiet` is an argument and renders as `--quiet` or `/quiet`;
 `ForPrograms` (`--help`, `--json`, `gui`) prints as `Also available:` under the command list. Before
 this they appeared nowhere, since usage output only ever listed a command's own arguments.
 
@@ -458,6 +496,13 @@ are hand-maintained mirrors of `CommandInfo` / `IArgument`. Deserialization igno
 properties, so adding a property to the framework schema does **not** break cmdui — it silently goes
 missing in the UI. When adding anything to `IArgument` or `CommandInfo`, add the matching property here
 too.
+
+`ToolSchemaDocument.ArgumentSyntax` defaults to **`"Slash"`**, not to the framework's own default.
+A schema without the property came from a tool that predates the POSIX syntax and only accepts
+slash; guessing `"Both"` would build command lines that older tools cannot parse.
+`ParseSchema` forces it to `"Slash"` for any schema below version 3, and
+`CommandExecutionService` reads it to decide which form to emit — cmdui drives *other* tools, so
+the syntax is the tool's to declare, not cmdui's to choose.
 
 `CommandInfo` exposes the two alias kinds separately: `Aliases` (plain renames from
 `CommandAttribute.Aliases`) and `CommandAliases` (a `List<CommandAliasInfo>` for `[CommandAlias]`

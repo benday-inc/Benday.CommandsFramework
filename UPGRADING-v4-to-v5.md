@@ -8,14 +8,19 @@ having to remember what changed. It is equally readable by a person.
 lands, so this document is never reconstructed from memory. The
 [What has not landed yet](#what-has-not-landed-yet) section says what is still coming.
 
-**Nothing below is optional busywork.** Every entry is a change that will either stop the tool
-compiling or change what it does at run time. Entry 1 is the one that makes the compiler
+**Entries 1 through 13 are not optional busywork.** Each is a change that will either stop the
+tool compiling or change what it does at run time. Entry 1 is the one that makes the compiler
 produce most of the work list, so do it first and let the errors guide you.
 
-**The compiler does not find everything.** Entries 3, 8 and 9 can all leave a tool that builds
-clean with zero warnings and behaves differently than it did in v4. Entry 9 is the one most
-often missed: a tool that uses the fluent builder still compiles, and silently always exits 0.
-Read those three even when the build is green.
+**Entry 14 is the exception** — the POSIX argument syntax is additive, and a tool that skips it
+keeps working. It is in the numbered list rather than the "do not have to adopt" list below
+because it does break tests that assert on usage text, and because a tool's own docs and scripts
+now describe a deprecated syntax. Read it; most of it is a search and replace on documentation.
+
+**The compiler does not find everything.** Entries 3, 8, 9 and 14 can all leave a tool that
+builds clean with zero warnings and behaves differently than it did in v4. Entry 9 is the one
+most often missed: a tool that uses the fluent builder still compiles, and silently always
+exits 0. Read those four even when the build is green.
 
 **What v5 adds that you do not have to adopt**, but probably want to: multi-level command names
 (`Group` on `[Command]`), declarative argument rules, single-match discovery, progress
@@ -96,6 +101,7 @@ conclude that the entry does not apply.
 11. [11. Commands are created through `ActivatorUtilities`](#11-commands-are-created-through-activatorutilities)
 12. [12. The request is split out of `CommandExecutionInfo`](#12-the-request-is-split-out-of-commandexecutioninfo)
 13. [13. Validation returns failures, not arguments](#13-validation-returns-failures-not-arguments)
+14. [14. The POSIX argument syntax, and `/arg:value` is deprecated](#14-the-posix-argument-syntax-and-argvalue-is-deprecated)
 
 ---
 
@@ -153,12 +159,17 @@ v5 wraps it:
 
 ```json
 {
-  "SchemaVersion": 2,
+  "SchemaVersion": 3,
   "ApplicationName": "My CLI Tool",
-  "ApplicationVersion": "v5.0.0",
+  "ApplicationVersion": "v5.1.0",
+  "ArgumentSyntax": "Both",
   "Commands": [ { "Name": "greet", "Arguments": [ ... ] } ]
 }
 ```
+
+`SchemaVersion` was 2 in v5.0 and is 3 from v5.1, which added `ArgumentSyntax` — see
+[entry 14](#14-the-posix-argument-syntax-and-argvalue-is-deprecated). Both are objects, so the
+root-token test below is unaffected.
 
 Because the old form is an **array** and the new one is an **object**, a consumer tells them
 apart from the root JSON token alone. There is no negotiation and nothing to ask the tool.
@@ -305,6 +316,15 @@ CommandRegistry? CommandRegistry { get; set; }   // built once, then shared
 
 `InputProvider` shipped in v4.20 as a get-only default interface member so that adding it broke
 nothing. In v5 it is a normal settable member.
+
+v5.1 added two more — `ArgumentSyntax` and `WarnOnDeprecatedArgumentSyntax` — but both are
+get-only **default interface members**, so an implementation that does not declare them still
+compiles and gets the defaults. Declare them settable only if you want to change them:
+
+```csharp
+public ArgumentSyntax ArgumentSyntax { get; set; } = ArgumentSyntax.Both;
+public bool WarnOnDeprecatedArgumentSyntax { get; set; } = true;
+```
 
 ### Detect
 
@@ -840,12 +860,167 @@ candidates for a human rather than converting them silently.
 
 ---
 
+## 14. The POSIX argument syntax, and `/arg:value` is deprecated
+
+**Judgment**, and **nothing here is required to make the tool work.** This is the one entry in
+this document that is not a break: `/arg:value` still parses, and a tool that ignores this entry
+entirely keeps running. Two things do need attention, and both are found by the Detect commands
+below — a test that asserts on usage text, and the tool's own docs and scripts.
+
+Arguments are now typed the way every modern cross platform CLI types them:
+
+```bash
+mytool deploy --environment production      # space
+mytool deploy --environment=production      # equals
+mytool deploy --environment:production      # colon
+mytool deploy --verbose                     # flag (a Boolean with AllowEmptyValue)
+mytool deploy -e production                 # an argument alias as a short option
+mytool commit -- --not-an-option            # end of options
+```
+
+The default, `ArgumentSyntax.Both`, accepts both forms, renders the POSIX one everywhere, and
+prints a deprecation warning on the **diagnostic channel** when a slash argument is used.
+
+### Detect
+
+```bash
+# 1. tests and code that assert on the old rendering -- these will fail
+grep -rn --include='*.cs' -E '"\[?/[A-Za-z][A-Za-z0-9_-]*[:"]' . | grep -v '/bin/\|/obj/'
+
+# 2. the tool's own docs, scripts and README
+grep -rn --include='*.md' --include='*.sh' --include='*.ps1' \
+    -E '(^|[ `"])/[A-Za-z][A-Za-z0-9_-]*:[A-Za-z0-9]' .
+
+# 3. anything that builds a command line for this tool or reads its schema
+grep -rn --include='*.cs' -E '\$?"/\{|ArgumentList\.Add' .
+```
+
+Hit 1 is the only one that fails a build. Hits 2 and 3 are correctness of a different kind:
+documentation that tells people to type the deprecated form, and code that generates it.
+
+Each grep must print something or print nothing for a reason you understand — a grep that
+silently matches nothing because of a quoting problem looks exactly like a clean tool. Confirm
+the shape works by running grep 1 against a file you know contains `"/something:"`.
+
+### Change
+
+**Hit 1 — tests.** Usage output now renders `--arg1 <String>` where it rendered `/arg1:String`,
+and the reserved `quiet` keyword is listed as `--quiet` rather than as a bare word nobody could
+type. Update the expected strings:
+
+```csharp
+// before
+Assert.Contains("/environment:String", usageText);
+Assert.Contains("[/verbose", usageText);
+
+// after
+Assert.Contains("--environment <String>", usageText);
+Assert.Contains("[--verbose]", usageText);
+```
+
+A fixture that is not ready to move can pin itself instead, and keep asserting the old strings:
+
+```csharp
+var options = new DefaultProgramOptions { ArgumentSyntax = ArgumentSyntax.Slash };
+```
+
+Tests that *pass* arguments (`"/name:Ben"`) do not need to change — that syntax still parses.
+
+**Hit 2 — docs and scripts.** Mechanical: `/name:value` becomes `--name value`, and `/flag`
+becomes `--flag`. Watch for absolute paths, which the same pattern matches —
+`CsvReader.FromFile("/path/to/data.csv")` and `2>/dev/null` must be left alone.
+
+**Hit 3 — anything generating a command line.** Emit `--name=value` rather than `--name value`
+when the result is passed as a single element of an argument array, so the pair survives as one
+token:
+
+```csharp
+// before
+psi.ArgumentList.Add($"/{name}:{value}");
+
+// after
+psi.ArgumentList.Add($"--{name}={value}");
+```
+
+If you are driving *another* tool rather than your own, read its syntax from its schema rather
+than assuming — see [Schema consumers](#schema-consumers) below.
+
+### Adopting it fully
+
+Optional, and at your own pace:
+
+1. Update the tool's docs and scripts to `--name value` (hit 2 above).
+2. Leave `ArgumentSyntax` at `Both` while both forms are in circulation.
+3. Set `ArgumentSyntax = ArgumentSyntax.Posix` once you are ready to stop accepting slash.
+
+To keep existing scripts quiet while you migrate them:
+
+```csharp
+options.WarnOnDeprecatedArgumentSyntax = false;
+```
+
+To opt out of the whole change and keep the v4 syntax:
+
+```csharp
+options.ArgumentSyntax = ArgumentSyntax.Slash;
+```
+
+That also turns the deprecation warning off — a program that has said what it wants does not
+need to be told.
+
+### Why you would want `Posix` rather than `Both`
+
+The slash syntax cannot tell a switch from a single-segment absolute path. `/tmp` has one slash
+and no colon, so it has always been read as a flag named `tmp` rather than as the path it plainly
+is — the parser guesses from the slash count, and one slash means switch:
+
+```bash
+mytool build /tmp                # v4 and Both: a flag named 'tmp'
+mytool build /tmp                # Posix: the positional value '/tmp'
+```
+
+Turning the slash syntax off is what removes the guess. Until then, a leading `./tmp` avoids it.
+
+### Gotcha: an unrecognized argument now eats the token after it
+
+`--name value` is two tokens, so the parser has to decide whether `value` belongs to `--name`.
+It decides from the argument definitions: a Boolean with `AllowEmptyValue` is a flag and takes
+nothing, everything else takes the next token — **including an argument the command does not
+define.** So a typo'd `--nmae value` swallows `value` instead of letting it land in a positional
+slot, and with `StrictArgumentValidation` off nothing says so.
+
+```csharp
+options.StrictArgumentValidation = true;
+```
+
+That is what turns the typo into a validation failure. It is worth turning on regardless, and
+this entry makes it worth more.
+
+### Schema consumers
+
+The `--json` schema is version **3** and carries `ArgumentSyntax`. Anything that builds a command
+line for a tool it does not own must read it: a version 2 tool accepts only slash, and a version 3
+tool may accept only POSIX. **The property's absence means slash**, not the framework's own
+default — a schema without it came from a tool that predates this change.
+
+```csharp
+var syntax = document.SchemaVersion < 3
+    ? "Slash"                       // predates the property
+    : document.ArgumentSyntax;
+```
+
+cmdui does this already. Update it alongside the tool:
+
+```bash
+dotnet tool update -g Benday.CommandsFramework.CmdUi
+```
+
+---
+
 ## What has not landed yet
 
 Planned, not built. Do not act on these; they will get entries here when they land.
 
-- **Parser modes** — a program-level setting selecting `--arg value`, `--arg=value`, and the
-  deprecated `/arg:value`. Until this lands, `/arg:value` is the only syntax.
 - **The redefinition of quiet mode** — result never suppressed, status and progress
   suppressed, errors never suppressed. Today `quiet` still suppresses `WriteLine()`, which is
   the v4 behavior. The new `WriteStatus()` and `WriteError()` channels are already in place, so
@@ -870,7 +1045,10 @@ No action needed. Listed so that a diff of behavior does not look like a bug.
   than crashing `--json`.
 - `AllowedValues` on a non-string argument now throws instead of being silently ignored.
 - The `--json` schema gained `PathType`, `MustExist`, `Group`, `Rules`, `DiscoveryPattern`,
-  `DiscoveryDirectory` and `DiscoveryIsRecursive`, and lost `IsAsync`.
+  `DiscoveryDirectory`, `DiscoveryIsRecursive` and `ArgumentSyntax`, and lost `IsAsync`.
+- Shell completion offers `--name` rather than `/name:`. The value is the next word, so a second
+  TAB completes it — which also avoids putting an `=` inside the word being completed, something
+  bash splits on by default.
 
 ---
 
@@ -890,6 +1068,24 @@ mytool                      # the command list, with any groups
 mytool --json | head        # an object with SchemaVersion, not a bare array
 mytool somecommand --help   # usage, with ** ALSO AVAILABLE ** at the end
 ```
+
+Usage output must now show `--somearg <String>` rather than `/somearg:String`, and must list
+`--quiet` in the `** ALSO AVAILABLE **` section. If it still shows the slash form, something is
+setting `ArgumentSyntax` to `Slash`.
+
+Then confirm both syntaxes reach the same argument, which is what says
+[entry 14](#14-the-posix-argument-syntax-and-argvalue-is-deprecated) landed without breaking
+anything that was already working:
+
+```bash
+mytool somecommand --somearg value      # must work
+mytool somecommand --somearg=value      # must work
+mytool somecommand /somearg:value       # must work, and warn on stderr
+mytool somecommand /somearg:value 2>/dev/null   # the warning must not appear on stdout
+```
+
+The last one matters more than it looks: a deprecation warning written to stdout lands inside
+the output of any command being piped or redirected.
 
 And check the exit codes, which is the only way to confirm
 [entry 9](#9-programcs-returns-the-exit-code) actually landed — a `Program.cs` that still

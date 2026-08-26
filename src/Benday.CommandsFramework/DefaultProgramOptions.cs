@@ -58,4 +58,15 @@ public class DefaultProgramOptions : ICommandProgramOptions
     /// When false (default), unknown arguments are silently ignored.
     /// </summary>
     public bool StrictArgumentValidation { get; set; } = false;
+
+    /// <summary>
+    /// Which command line argument syntax this program accepts. Defaults to accepting both
+    /// the POSIX form and the deprecated slash form.
+    /// </summary>
+    public ArgumentSyntax ArgumentSyntax { get; set; } = ArgumentSyntax.Both;
+
+    /// <summary>
+    /// Whether an argument typed in the deprecated slash form produces a warning.
+    /// </summary>
+    public bool WarnOnDeprecatedArgumentSyntax { get; set; } = true;
 }

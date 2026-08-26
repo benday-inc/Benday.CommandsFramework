@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Benday.CommandsFramework;
 
 /// <summary>
@@ -29,6 +31,17 @@ public class CommandSchema
     /// schema's -- SchemaVersion is the schema's.
     /// </summary>
     public string ApplicationVersion { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Which argument syntax this tool accepts.
+    /// </summary>
+    /// <remarks>
+    /// Here because a consumer that builds a command line for the tool has no other way to
+    /// know. Serialized as its name -- "Both", "Posix" or "Slash" -- so that reading it does
+    /// not depend on the numeric values of an enum in this assembly.
+    /// </remarks>
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public ArgumentSyntax ArgumentSyntax { get; set; } = ArgumentSyntax.Both;
 
     /// <summary>
     /// Every command the tool exposes.

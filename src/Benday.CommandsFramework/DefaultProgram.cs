@@ -208,7 +208,7 @@ public class DefaultProgram : ICommandProgram
     /// </summary>
     private void WriteCompletionScript(string[] args)
     {
-        var arguments = new ArgumentCollectionFactory()
+        var arguments = new ArgumentCollectionFactory { Syntax = Options.ArgumentSyntax }
             .GetArgsAsDictionary(args[1..], false);
 
         arguments.TryGetValue(CompletionShellArgumentName, out var shell);
@@ -223,7 +223,8 @@ public class DefaultProgram : ICommandProgram
             {
                 WriteLine(
                     $"  {GetToolName()} {ArgumentFrameworkConstants.CommandCompletion} " +
-                    $"/{CompletionShellArgumentName}:{supported}");
+                    Options.ArgumentSyntax.FormatNameValue(
+                        CompletionShellArgumentName, supported));
             }
 
             return;
@@ -387,6 +388,7 @@ public class DefaultProgram : ICommandProgram
         {
             ApplicationName = Options.ApplicationName,
             ApplicationVersion = Options.Version,
+            ArgumentSyntax = Options.ArgumentSyntax,
             Commands = util.GetAllCommandUsages(ImplementationAssembly)
         };
 
@@ -512,7 +514,9 @@ public class DefaultProgram : ICommandProgram
 
             var argumentSummary = string.Join(" ",
                 alias.Arguments.Select(x =>
-                    string.IsNullOrEmpty(x.Value) ? $"/{x.Key}" : $"/{x.Key}:{x.Value}"));
+                    string.IsNullOrEmpty(x.Value)
+                        ? Options.ArgumentSyntax.FormatName(x.Key)
+                        : Options.ArgumentSyntax.FormatNameValue(x.Key, x.Value)));
 
             var description = string.IsNullOrWhiteSpace(alias.Description)
                 ? $"{alias.CommandName} {argumentSummary}"

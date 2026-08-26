@@ -20,6 +20,7 @@ Let us know by submitting an [issue](https://github.com/benday-inc/Benday.Comman
 ## Features
 
 - Named commands with descriptions and categories
+- POSIX argument syntax — `--name value`, `--name=value`, `--name:value`, `-n value` and `--flag`
 - Typed arguments: `String`, `Boolean`, `Int32`, `DateTime`, `File`, `Directory`
 - Fluent argument definition API with required/optional, default values, and allowed values
 - Automatic argument parsing and validation
@@ -41,6 +42,7 @@ Let us know by submitting an [issue](https://github.com/benday-inc/Benday.Comman
   - [2. Set Up Program.cs](#2-set-up-programcs)
   - [3. Run It](#3-run-it)
 - [Argument Types](#argument-types)
+  - [Argument Syntax](#argument-syntax)
   - [Positional Arguments](#positional-arguments)
   - [Argument Aliases](#argument-aliases)
   - [Friendly Names](#friendly-names)
@@ -155,10 +157,10 @@ as a blank line.
 ### 3. Run It
 
 ```bash
-dotnet run -- greet /name:World
+dotnet run -- greet --name World
 # Output: Hello, World!
 
-dotnet run -- greet /name:World /loud
+dotnet run -- greet --name World --loud
 # Output: HELLO, WORLD!
 
 dotnet run -- greet --help
@@ -191,9 +193,71 @@ public override ArgumentCollection GetArguments()
 }
 ```
 
-Arguments are passed on the command line using `/name:value` syntax. Boolean flags with `AllowEmptyValue()` can be passed as just `/name` (presence means `true`).
+### Argument Syntax
 
-Argument names are matched without regard to case, so `/verbose`, `/Verbose`, and `/VERBOSE` all reach the same argument. Argument *values* keep their case — only names are case-insensitive.
+Arguments use the POSIX long option form that git, docker, the dotnet CLI and anything built on
+`System.CommandLine` use. A value can be separated from its name by a space, an `=` or a `:` —
+all three are equivalent:
+
+```bash
+mytool deploy --environment production
+mytool deploy --environment=production
+mytool deploy --environment:production
+```
+
+A boolean argument declared with `AllowEmptyValue()` is a flag, and is typed on its own:
+
+```bash
+mytool deploy --verbose
+```
+
+An argument alias can be typed with a single dash, which is how you get short options:
+
+```csharp
+args.AddString("environment").WithAlias("e");
+```
+
+```bash
+mytool deploy -e production
+mytool deploy -e=production
+```
+
+Everything after a bare `--` is a value rather than an option, which is how you pass a value
+that starts with a dash:
+
+```bash
+mytool commit -- --not-an-option
+```
+
+Argument names are matched without regard to case, so `--verbose`, `--Verbose`, and `--VERBOSE`
+all reach the same argument. Argument *values* keep their case — only names are
+case-insensitive.
+
+#### The deprecated `/name:value` syntax
+
+Before v5.1 the only syntax was `/name:value`, with `/name` for flags. It still parses, and
+using it prints a deprecation warning on the diagnostic channel. Select what your tool accepts
+with `ArgumentSyntax`:
+
+```csharp
+var options = new DefaultProgramOptions
+{
+    ArgumentSyntax = ArgumentSyntax.Both   // the default
+};
+```
+
+| Value | Accepts | Renders | Warns |
+|---|---|---|---|
+| `Both` (default) | POSIX and slash | POSIX | on a slash argument |
+| `Posix` | POSIX only | POSIX | n/a |
+| `Slash` | slash only | slash | no |
+
+Usage output, shell completion and validation messages all render whichever syntax the program
+accepts, so a tool never tells you to type something its parser will reject. Set
+`WarnOnDeprecatedArgumentSyntax = false` to keep existing scripts quiet while you migrate them.
+
+The syntax a tool accepts travels in the `--json` schema as `ArgumentSyntax`, which is how
+`cmdui` knows how to build a command line for it.
 
 ### Positional Arguments
 
@@ -221,13 +285,13 @@ public override ArgumentCollection GetArguments()
 
 ```bash
 mytool copy input.txt output.txt
-mytool copy input.txt output.txt /overwrite
+mytool copy input.txt output.txt --overwrite
 ```
 
 Named arguments do not consume positions, so they can appear anywhere in the command line without shifting the positional values:
 
 ```bash
-mytool copy /overwrite input.txt output.txt   # source=input.txt, destination=output.txt
+mytool copy --overwrite input.txt output.txt   # source=input.txt, destination=output.txt
 ```
 
 Unix style paths are handled correctly. A value like `/home/user/data.txt` contains more than one slash and no colon, so it is treated as a positional value rather than as an argument name.
@@ -250,8 +314,8 @@ args.AddString("environment").AsRequired()
 ```
 
 ```bash
-mytool deploy /environment:production
-mytool deploy /env:production            # same thing
+mytool deploy --environment production
+mytool deploy --env production            # same thing
 ```
 
 The real argument name is matched first, so an alias can never shadow another argument's name.
@@ -306,9 +370,9 @@ deploy --help
 
 ** USAGE **
 deploy
-/environment:String - environment to deploy to
-[/thing:String]     - thing to deploy
-                      (default: the-usual-thing)
+--environment <String> - environment to deploy to
+[--thing <String>]     - thing to deploy
+                        (default: the-usual-thing)
 ```
 
 The default is also reported when a command fails validation, and it always shows the configured default rather than whatever was typed on the command line. Defaults are exposed on `IArgument.DefaultValue` and `IArgument.HasDefaultValue`, and are included in the `--json` schema output.
@@ -351,7 +415,7 @@ public class DeployCommand : Command
 
 ```bash
 mytool deploy-prod                          # environment=production, verbose=true
-mytool deploy-prod /environment:staging     # environment=staging, verbose=true
+mytool deploy-prod --environment staging     # environment=staging, verbose=true
 ```
 
 The values are applied as though they had been typed on the command line, so anything actually supplied on the command line wins over them. The full order of precedence is:
@@ -362,9 +426,9 @@ A command can have as many `[CommandAlias]` attributes as you like. They are lis
 
 ```
 Command aliases:
-deploy-dev  - Deploy to development (deploy /environment:development)
+deploy-dev  - Deploy to development (deploy --environment development)
 deploy-prod - Deploy to production with verbose output (deploy
-              /environment:production /verbose)
+              --environment production --verbose)
 ```
 
 Nothing validates aliases automatically. Call `CommandAttributeUtility.GetCommandNameProblems()` from a unit test to catch duplicate command names, aliases that collide with a command name or with a reserved keyword, aliases claimed by two commands, and empty aliases:
@@ -620,7 +684,7 @@ args.AddString("api-key").AsRequired().FromConfig()
 ```
 
 ```bash
-mytool set-configuration /name:api-key /value:abc123
+mytool set-configuration --name api-key --value abc123
 ```
 
 Command line beats configuration, so a stored value can always be overridden for one run.
@@ -631,8 +695,8 @@ says exactly what to do — rather than an exception thrown part way through the
 ```
 $ mytool api-call
 ** INVALID ARGUMENT **
-api-key is required. Supply it with /api-key:value, or store it once with:
-set-configuration /name:api-key /value:value
+api-key is required. Supply it with --api-key value, or store it once with:
+set-configuration --name api-key --value value
 ```
 
 `check-configuration` reports what the whole tool needs and whether it is set:
@@ -641,12 +705,12 @@ set-configuration /name:api-key /value:value
 $ mytool check-configuration
 api-key - NOT SET (required)
     used by: api-call, api-upload
-    set it with: set-configuration /name:api-key /value:value
+    set it with: set-configuration --name api-key --value value
 base-url - set (required)
     used by: api-call, api-upload
 ```
 
-Add `/missingonly` to see only what is missing.
+Add `--missingonly` to see only what is missing.
 
 ## Finding a Value Instead of Asking for It
 
@@ -664,11 +728,11 @@ args.AddFile("solution")
 $ mytool build                    # one .sln here, so it is used
 $ mytool build                    # none here
 solution was not supplied and no files matching '*.sln' were found in /work.
-Supply it with /solution:value.
+Supply it with --solution value.
 
 $ mytool build                    # three of them
 solution was not supplied and 3 files match '*.sln' in /work: a.sln, b.sln, c.sln.
-Supply it with /solution:value to choose one.
+Supply it with --solution value to choose one.
 ```
 
 Finding nothing and finding several are different situations and say different things, because
@@ -719,7 +783,7 @@ produce different messages, because they are different mistakes:
 $ mytool connect
 One of 'token', 'windowsauth' is required.
 
-$ mytool connect /token:abc /windowsauth
+$ mytool connect --token abc --windowsauth
 Only one of 'token', 'windowsauth' can be supplied, but 'token', 'windowsauth' were.
 ```
 
@@ -737,7 +801,7 @@ public class WidgetListCommand : Command
 ```
 
 ```bash
-mytool widget list /filter:blue
+mytool widget list --filter blue
 ```
 
 Resolution is greedy longest-first, so a two-word name wins over a one-word name that happens
@@ -756,7 +820,7 @@ name as an alias:
     Aliases = ["showwidget"])]
 ```
 
-Both `mytool widget show /name:sprocket` and `mytool showwidget /name:sprocket` work, and the
+Both `mytool widget show --name sprocket` and `mytool showwidget --name sprocket` work, and the
 command list shows `widget show (showwidget)`.
 
 ## Output Channels
@@ -774,7 +838,7 @@ This is what makes a command's output pipeable. A command that writes its result
 file without the commentary landing in it:
 
 ```bash
-mytool export /format:json > data.json     # only the result is captured
+mytool export --format json > data.json     # only the result is captured
 ```
 
 `StringBuilderTextOutputProvider` captures the channels separately, so a test can assert on
@@ -981,6 +1045,8 @@ writer.SaveToFile("/path/to/updated.csv");
 - `--help` — Display usage information for a command
 - `--json` — Output the full command schema as JSON (used by tooling)
 - `gui` — Launch the CmdUi web interface for this tool
-- `quiet` — Suppress a command's `WriteLine()` output. Applied automatically to commands that are run by another command.
+- `completion` — Print the shell completion script (`--shell pwsh|zsh|bash`)
+- `--quiet` — Suppress a command's `WriteLine()` output. Applied automatically to commands that are run by another command.
+- `--` — End of options. Everything after it is a value, even if it starts with a dash.
 
 

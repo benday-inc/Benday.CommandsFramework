@@ -86,8 +86,11 @@ public class CheckConfigurationCommand : Command
             {
                 WriteLine(
                     $"    set it with: {CommandFrameworkConstants.CommandName_SetConfig} " +
-                    $"/{CommandFrameworkConstants.CommandArgName_ConfigName}:{requirement.Name} " +
-                    $"/{CommandFrameworkConstants.CommandArgName_ConfigValue}:value");
+                    ExecutionInfo.Options.ArgumentSyntax.FormatNameValue(
+                        CommandFrameworkConstants.CommandArgName_ConfigName,
+                        requirement.Name) + " " +
+                    ExecutionInfo.Options.ArgumentSyntax.FormatNameValue(
+                        CommandFrameworkConstants.CommandArgName_ConfigValue, "value"));
             }
         }
 

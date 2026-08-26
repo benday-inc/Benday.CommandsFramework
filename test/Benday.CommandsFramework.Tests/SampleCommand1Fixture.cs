@@ -146,11 +146,11 @@ public class SampleCommand1Fixture
 
         var expectedLineStarts = new string[]
         {
-            "/arg1",
-            "/isawesome",
-            "/count",
-            "/dateofthingy",
-            "[/verbose"
+            "--arg1",
+            "--isawesome",
+            "--count",
+            "--dateofthingy",
+            "[--verbose"
         };
 
         foreach (var lineStart in expectedLineStarts)

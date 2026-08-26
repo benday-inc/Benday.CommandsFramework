@@ -14,6 +14,13 @@ public class CommandAttributeUtility
 {
     private ICommandProgramOptions _ProgramOptions;
 
+    /// <summary>
+    /// The program options this utility was built with. Exposed so that anything working
+    /// alongside it -- shell completion, for one -- renders arguments in the same syntax the
+    /// parser accepts.
+    /// </summary>
+    public ICommandProgramOptions ProgramOptions => _ProgramOptions;
+
     public CommandAttributeUtility(ICommandProgramOptions options)
     {
         _ProgramOptions = options;
@@ -500,8 +507,39 @@ public class CommandAttributeUtility
                 $"Could not locate a command named '{args[0]}'.");
         }
 
-        var arguments = new ArgumentCollectionFactory().GetArgsAsDictionary(
-            [.. resolution.RemainingTokens], true);
+        var syntax = _ProgramOptions.ArgumentSyntax;
+
+        var tokens = resolution.RemainingTokens.ToArray();
+
+        // Parsed twice, and the second parse is the one that counts.
+        //
+        // '--name value' is two tokens, and nothing in them says whether 'value' belongs to
+        // '--name' or is a positional argument that follows a boolean flag. Only the
+        // command's own argument definitions say that, and the only way to read them is to
+        // ask the command -- which cannot be built without a CommandExecutionInfo. So the
+        // first parse produces a provisional request good enough to construct the command
+        // (every form except the space separated one binds correctly without definitions),
+        // and the second parse redoes the work knowing what each argument actually is.
+        //
+        // No extra instantiation: the command being created here is the one that runs.
+        var provisional = ParseArguments(tokens, syntax, definitions: null, out _);
+
+        var execInfo = new CommandExecutionInfo
+        {
+            Request = new CommandCallRequest(
+                resolution.Registration.PathAsString, provisional, resolution.MatchedAs)
+        };
+
+        execInfo.Options = _ProgramOptions;
+        execInfo.Configuration = new FileBasedConfigurationManager(
+            _ProgramOptions.ConfigurationFolderName);
+
+        // the built-in commands are ordinary registrations, so there is nothing to route --
+        // this used to branch on UsesConfiguration and try one assembly and then the other
+        var command = CreateInstance(resolution.Registration, execInfo);
+
+        var arguments = ParseArguments(
+            tokens, syntax, command.Arguments, out var deprecatedTokens);
 
         // argument values from an alias are added as though they had been typed on the
         // command line, so anything actually typed wins and the existing command line over
@@ -513,19 +551,76 @@ public class CommandAttributeUtility
 
         // everything downstream deals only in real command names, and what was actually
         // typed survives on the request rather than being overwritten
-        var execInfo = new CommandExecutionInfo
+        execInfo.Request = new CommandCallRequest(
+            resolution.Registration.PathAsString, arguments, resolution.MatchedAs);
+
+        WarnAboutDeprecatedSyntax(deprecatedTokens);
+
+        return command;
+    }
+
+    /// <summary>
+    /// Parses argument tokens in the program's configured syntax.
+    /// </summary>
+    private static Dictionary<string, string> ParseArguments(
+        string[] tokens, ArgumentSyntax syntax, ArgumentCollection? definitions,
+        out List<string> deprecatedTokens)
+    {
+        // positional argument counting is stateful, so this is a fresh factory per parse
+        var factory = new ArgumentCollectionFactory
         {
-            Request = new CommandCallRequest(
-                resolution.Registration.PathAsString, arguments, resolution.MatchedAs)
+            Syntax = syntax,
+            Definitions = definitions
         };
 
-        execInfo.Options = _ProgramOptions;
-        execInfo.Configuration = new FileBasedConfigurationManager(
-            _ProgramOptions.ConfigurationFolderName);
+        var returnValue = factory.GetArgsAsDictionary(tokens, true);
 
-        // the built-in commands are ordinary registrations, so there is nothing to route --
-        // this used to branch on UsesConfiguration and try one assembly and then the other
-        return CreateInstance(resolution.Registration, execInfo);
+        deprecatedTokens = factory.DeprecatedSlashTokens;
+
+        return returnValue;
+    }
+
+    /// <summary>
+    /// Tells the user that the slash syntax they typed is on its way out.
+    /// </summary>
+    /// <remarks>
+    /// Written to the diagnostic channel rather than to the result channel. A tool whose
+    /// result is being redirected to a file or piped into a JSON reader must not get a
+    /// deprecation notice in the middle of its output.
+    /// </remarks>
+    private void WarnAboutDeprecatedSyntax(List<string> deprecatedTokens)
+    {
+        if (deprecatedTokens.Count == 0 ||
+            _ProgramOptions.ArgumentSyntax.WarnsAboutSlash() == false ||
+            _ProgramOptions.WarnOnDeprecatedArgumentSyntax == false)
+        {
+            return;
+        }
+
+        var suggestions = string.Join(", ", deprecatedTokens
+            .Select(SuggestPosixForm)
+            .Distinct());
+
+        _ProgramOptions.OutputProvider.WriteStatus(
+            $"warning: {string.Join(", ", deprecatedTokens.Distinct())} " +
+            $"{(deprecatedTokens.Distinct().Count() == 1 ? "uses" : "use")} the deprecated " +
+            $"slash argument syntax, which will be removed in a future version. " +
+            $"Use {suggestions} instead.");
+    }
+
+    /// <summary>
+    /// Rewrites a slash argument as the POSIX form it should have been typed as.
+    /// </summary>
+    private static string SuggestPosixForm(string token)
+    {
+        var withoutSlash = token[1..];
+
+        var locationOfColon = withoutSlash.IndexOf(':');
+
+        return locationOfColon < 0
+            ? ArgumentSyntax.Posix.FormatName(withoutSlash)
+            : ArgumentSyntax.Posix.FormatNameValue(
+                withoutSlash[..locationOfColon], withoutSlash[(locationOfColon + 1)..]);
     }
 
     /// <summary>

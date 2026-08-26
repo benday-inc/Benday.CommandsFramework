@@ -106,17 +106,23 @@ public sealed class ValidationFailure
     /// <param name="argument">The argument</param>
     /// <param name="setConfigurationCommandName">Name of the command that sets configuration
     /// values, so the message can name it</param>
+    /// <param name="syntax">The argument syntax the program accepts, so the message tells the
+    /// user to type something the parser will actually take</param>
     public static ValidationFailure ForMissingConfiguration(
-        IArgument argument, string setConfigurationCommandName)
+        IArgument argument, string setConfigurationCommandName,
+        ArgumentSyntax syntax = ArgumentSyntax.Both)
     {
         ArgumentNullException.ThrowIfNull(argument, nameof(argument));
 
         return new ValidationFailure(
             ValidationFailureKind.MissingConfiguration,
-            $"{argument.Name} is required. Supply it with /{argument.Name}:value, or store it " +
+            $"{argument.Name} is required. Supply it with " +
+            $"{syntax.FormatNameValue(argument.Name, "value")}, or store it " +
             $"once with: {setConfigurationCommandName} " +
-            $"/{CommandFrameworkConstants.CommandArgName_ConfigName}:{argument.Name} " +
-            $"/{CommandFrameworkConstants.CommandArgName_ConfigValue}:value",
+            syntax.FormatNameValue(
+                CommandFrameworkConstants.CommandArgName_ConfigName, argument.Name) + " " +
+            syntax.FormatNameValue(
+                CommandFrameworkConstants.CommandArgName_ConfigValue, "value"),
             [argument.Name],
             argument);
     }

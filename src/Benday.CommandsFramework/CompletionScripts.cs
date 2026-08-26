@@ -54,7 +54,7 @@ public static class CompletionScripts
         $$"""
         # {{toolName}} completion for PowerShell.
         # Add to your profile with:
-        #   {{toolName}} completion /shell:pwsh >> $PROFILE
+        #   {{toolName}} completion --shell pwsh >> $PROFILE
 
         Register-ArgumentCompleter -Native -CommandName '{{toolName}}' -ScriptBlock {
             param($wordToComplete, $commandAst, $cursorPosition)
@@ -117,7 +117,7 @@ public static class CompletionScripts
         return $$"""
         # {{toolName}} completion for zsh.
         # Add to your .zshrc with:
-        #   {{toolName}} completion /shell:zsh >> ~/.zshrc
+        #   {{toolName}} completion --shell zsh >> ~/.zshrc
 
         _{{functionName}}_complete() {
             local line candidates value description
@@ -164,7 +164,7 @@ public static class CompletionScripts
         return $$"""
         # {{toolName}} completion for bash.
         # Add to your .bashrc with:
-        #   {{toolName}} completion /shell:bash >> ~/.bashrc
+        #   {{toolName}} completion --shell bash >> ~/.bashrc
 
         _{{functionName}}_complete() {
             local line candidates value word
@@ -189,6 +189,13 @@ public static class CompletionScripts
                         ;;
                 esac
             done < <('{{toolName}}' '{{ArgumentFrameworkConstants.ArgumentComplete}}' "$line" 2>/dev/null)
+
+            # bash treats '=' as a word break, so after '--name=' the word being completed is
+            # what follows the '=' and the candidates still carry the '--name=' prefix. Left
+            # alone, bash appends the whole candidate and produces '--name=--name=value'.
+            if [[ "${COMP_LINE}" == *=* && "$word" != *=* ]]; then
+                candidates=( "${candidates[@]#*=}" )
+            fi
 
             COMPREPLY=( $(compgen -W "${candidates[*]}" -- "$word") )
         }

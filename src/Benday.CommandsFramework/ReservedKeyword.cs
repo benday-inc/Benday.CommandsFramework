@@ -8,10 +8,37 @@
 /// </summary>
 public sealed class ReservedKeyword
 {
-    public ReservedKeyword(string name, string description)
+    public ReservedKeyword(string name, string description, bool isArgument = false)
     {
         Name = name;
         Description = description;
+        IsArgument = isArgument;
+    }
+
+    /// <summary>
+    /// True when this is an argument rather than a bare keyword, and so is written with the
+    /// program's argument prefix.
+    /// </summary>
+    /// <remarks>
+    /// 'gui' and 'completion' are commands and are typed as they are. 'quiet' is an argument,
+    /// so it is typed as '--quiet' or '/quiet' depending on the program's syntax -- it used to
+    /// be listed here as a bare word, which is not something anyone could type.
+    /// </remarks>
+    public bool IsArgument { get; }
+
+    /// <summary>
+    /// The name as it should be typed under a given argument syntax.
+    /// </summary>
+    public string GetDisplayName(ArgumentSyntax syntax)
+    {
+        // '--help' and '--json' carry their own dashes, and keep them in every syntax --
+        // they are the names the framework matches literally
+        if (IsArgument == false || Name.StartsWith('-') == true)
+        {
+            return Name;
+        }
+
+        return syntax.FormatName(Name);
     }
 
     /// <summary>
@@ -41,7 +68,8 @@ public static class ReservedKeywords
             "Display this usage information instead of running the command."),
         new ReservedKeyword(
             CommandFrameworkConstants.CommandArgName_QuietMode,
-            "Suppress this command's status output.")
+            "Suppress this command's status output.",
+            isArgument: true)
     ];
 
     /// <summary>

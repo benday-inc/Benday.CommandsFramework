@@ -112,7 +112,7 @@ public class SampleCommandWithConfigArgsFixture : TestClassBase
         AssertThatString.Contains(
             output, "api-key is required.", "api-key should fail");
         AssertThatString.Contains(
-            output, "set-configuration /name:api-key", "should say how to store it");
+            output, "set-configuration --name api-key", "should say how to store it");
         AssertThatString.Contains(
             output, "base-url is required.", "base-url should fail");
     }
@@ -156,7 +156,7 @@ public class SampleCommandWithConfigArgsFixture : TestClassBase
         AssertThatString.Contains(
             output, "api-key is required.", "api-key should fail");
         AssertThatString.Contains(
-            output, "set-configuration /name:api-key", "should say how to store it");
+            output, "set-configuration --name api-key", "should say how to store it");
     }
 
     [Fact]
