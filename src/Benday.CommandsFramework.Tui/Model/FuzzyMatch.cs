@@ -47,13 +47,13 @@ public static class FuzzyMatch
             return 0;
         }
 
-        var exactIndex = text.IndexOf(filter, StringComparison.OrdinalIgnoreCase);
+        // a contiguous match is worth more than a scattered one, and one at the start is worth
+        // more than one in the middle
+        var contiguous = ScoreContiguous(text, filter);
 
-        if (exactIndex >= 0)
+        if (contiguous > 0)
         {
-            // a contiguous match is worth more than a scattered one, and one at the start is
-            // worth more than one in the middle
-            return 1000 + (exactIndex == 0 ? 100 : 0) + Math.Max(0, 50 - exactIndex);
+            return contiguous;
         }
 
         var score = 0;
@@ -76,6 +76,43 @@ public static class FuzzyMatch
         }
 
         return score;
+    }
+
+    /// <summary>
+    /// How well the filter matches, counting only a run of characters that appears as it was
+    /// typed. Zero for anything looser.
+    /// </summary>
+    /// <remarks>
+    /// This is what prose is matched with, and the difference from Score() is the whole reason
+    /// both exist. Scattered characters are the right rule for a name, which is short and
+    /// which people type an abbreviation of -- 'wl' should find 'widget list'. It is the wrong
+    /// rule for a sentence: a description long enough to be useful contains almost any four
+    /// letters somewhere in order, so 'list' matched the description of nearly two commands in
+    /// three on a real tool, and the ones it found for a reason were buried among them.
+    /// </remarks>
+    /// <param name="text">Text to search</param>
+    /// <param name="filter">What was typed</param>
+    /// <returns>The score, or 0 when the filter does not appear</returns>
+    public static int ScoreContiguous(string? text, string? filter)
+    {
+        if (string.IsNullOrEmpty(filter) == true)
+        {
+            return 1;
+        }
+
+        if (string.IsNullOrEmpty(text) == true)
+        {
+            return 0;
+        }
+
+        var index = text.IndexOf(filter, StringComparison.OrdinalIgnoreCase);
+
+        if (index < 0)
+        {
+            return 0;
+        }
+
+        return 1000 + (index == 0 ? 100 : 0) + Math.Max(0, 50 - index);
     }
 
     /// <summary>
@@ -102,6 +139,39 @@ public static class FuzzyMatch
         foreach (var candidate in candidates)
         {
             var score = Score(candidate, filter);
+
+            if (score > best)
+            {
+                best = score;
+            }
+        }
+
+        return best;
+    }
+
+    /// <summary>
+    /// The best contiguous score across several pieces of text.
+    /// </summary>
+    /// <param name="filter">What was typed</param>
+    /// <param name="candidates">The text to search</param>
+    /// <returns>The best score, or 0 when nothing matches</returns>
+    public static int BestContiguousScore(string? filter, params string?[] candidates)
+    {
+        if (string.IsNullOrEmpty(filter) == true)
+        {
+            return 1;
+        }
+
+        if (candidates is null)
+        {
+            return 0;
+        }
+
+        var best = 0;
+
+        foreach (var candidate in candidates)
+        {
+            var score = ScoreContiguous(candidate, filter);
 
             if (score > best)
             {

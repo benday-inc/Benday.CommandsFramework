@@ -69,4 +69,40 @@ public class FuzzyMatchFixture
     {
         Assert.Equal(0, FuzzyMatch.BestScore("zzz", "list", "Lists the things"));
     }
+
+    [Fact]
+    public void ScoreContiguous_TakesAFilterThatAppearsAsTyped()
+    {
+        // arrange, act and assert
+        Assert.True(FuzzyMatch.ScoreContiguous("Lists the widgets.", "list") > 0);
+        Assert.True(FuzzyMatch.ScoreContiguous("Lists the widgets.", "LIST") > 0);
+    }
+
+    [Fact]
+    public void ScoreContiguous_RefusesScatteredCharacters()
+    {
+        // arrange -- the difference from Score(), and the reason both exist
+        const string Sentence = "Sample command that finds its input file.";
+
+        // act and assert
+        Assert.True(FuzzyMatch.Score(Sentence, "list") > 0);
+        Assert.Equal(0, FuzzyMatch.ScoreContiguous(Sentence, "list"));
+    }
+
+    [Fact]
+    public void ScoreContiguous_RanksAnEarlierMatchHigher()
+    {
+        // arrange, act and assert
+        Assert.True(
+            FuzzyMatch.ScoreContiguous("list the things", "list") >
+            FuzzyMatch.ScoreContiguous("go and list the things", "list"));
+    }
+
+    [Fact]
+    public void ScoreContiguous_TreatsAnEmptyFilterAsNoQuestion()
+    {
+        // arrange, act and assert
+        Assert.True(FuzzyMatch.ScoreContiguous("anything", "") > 0);
+        Assert.Equal(0, FuzzyMatch.ScoreContiguous("", "something"));
+    }
 }

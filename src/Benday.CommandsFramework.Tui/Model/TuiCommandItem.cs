@@ -1,6 +1,22 @@
 namespace Benday.CommandsFramework.Tui.Model;
 
 /// <summary>
+/// Keeps what a filter found by name ahead of what it found in prose.
+/// </summary>
+/// <remarks>
+/// A tier rather than a weighting, so the two kinds of match cannot interleave: every name
+/// match, however loose, sorts above every description match. Nothing depends on the size of
+/// the number beyond it being larger than any score a single field can produce.
+/// </remarks>
+internal static class TuiMatchRanking
+{
+    /// <summary>
+    /// Added to a score that came from a command's name, path or alias.
+    /// </summary>
+    public const int ByName = 10_000;
+}
+
+/// <summary>
 /// One command as the browser shows it. A view over the registration -- no command is
 /// instantiated to build this.
 /// </summary>
@@ -82,25 +98,38 @@ public sealed class TuiCommandItem
     /// </summary>
     /// <remarks>
     /// Across everything the user might remember about it -- what it is called, what it is
-    /// called instead, what heading it is under, and what it does.
+    /// called instead, what heading it is under, and what it does. The two kinds of text are
+    /// matched differently and ranked apart, which is what keeps a filter usable on a tool
+    /// with a lot of commands:
+    ///
+    /// A name is short and gets matched loosely, so 'wl' finds 'widget list'. A description is
+    /// prose and gets matched only where the filter appears in it as typed -- scattered
+    /// characters in a sentence are a coincidence, not a match. And anything found by name
+    /// outranks anything found by description, because a user who types a word is looking for
+    /// the command called that first.
     /// </remarks>
     /// <param name="filter">What was typed</param>
     /// <returns>The score, or 0 when it does not match</returns>
     public int Score(string? filter)
     {
-        var best = FuzzyMatch.BestScore(filter, PathAsString, Name, Category, Description);
+        var byName = FuzzyMatch.BestScore(filter, PathAsString, Name);
 
         foreach (var alias in PlainAliases)
         {
             var score = FuzzyMatch.Score(alias, filter);
 
-            if (score > best)
+            if (score > byName)
             {
-                best = score;
+                byName = score;
             }
         }
 
-        return best;
+        if (byName > 0)
+        {
+            return TuiMatchRanking.ByName + byName;
+        }
+
+        return FuzzyMatch.BestContiguousScore(filter, Category, Description);
     }
 
     public override string ToString() => PathAsString;
@@ -152,8 +181,14 @@ public sealed class TuiCommandAliasItem
     /// </summary>
     /// <param name="filter">What was typed</param>
     /// <returns>The score, or 0 when it does not match</returns>
-    public int Score(string? filter) =>
-        FuzzyMatch.BestScore(filter, Name, Description, Command.PathAsString);
+    public int Score(string? filter)
+    {
+        var byName = FuzzyMatch.BestScore(filter, Name, Command.PathAsString);
+
+        return byName > 0
+            ? TuiMatchRanking.ByName + byName
+            : FuzzyMatch.BestContiguousScore(filter, Description);
+    }
 
     public override string ToString() => Name;
 }

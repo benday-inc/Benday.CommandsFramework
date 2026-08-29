@@ -67,6 +67,92 @@ public class TuiCommandBrowserFixture
     }
 
     [Fact]
+    public void AFilterDoesNotMatchLettersScatteredThroughADescription()
+    {
+        // arrange -- a description long enough to be useful contains almost any four letters
+        // somewhere in order, so matching prose loosely matches nearly everything. On a real
+        // tool 'list' found 50 commands out of 77 this way, and the eight actually called
+        // 'list...' were buried among them.
+        var browser = GetSystemUnderTest();
+
+        // act
+        browser.Filter = "list";
+
+        var matching = browser.GetMatchingCommands();
+
+        // assert -- 'widget list' is called that; 'discoverycommand' merely has an l, an i, an
+        // s and a t scattered through a sentence
+        Assert.Contains(matching, x => x.PathAsString == "widget list");
+        Assert.DoesNotContain(
+            matching,
+            x => x.Name == ApplicationConstants.CommandName_CommandWithDiscovery);
+    }
+
+    [Fact]
+    public void AFilterStillMatchesLettersScatteredThroughAName()
+    {
+        // arrange -- a name is short and people type an abbreviation of one, which is the case
+        // loose matching is for
+        var browser = GetSystemUnderTest();
+
+        // act
+        browser.Filter = "wl";
+
+        // assert
+        Assert.Contains(browser.GetMatchingCommands(), x => x.PathAsString == "widget list");
+    }
+
+    [Fact]
+    public void WhatIsFoundByNameOutranksWhatIsFoundByDescription()
+    {
+        // arrange -- someone who types a word is looking for the command called that first
+        var browser = GetSystemUnderTest();
+
+        // act
+        browser.Filter = "widget";
+
+        var matching = browser.GetMatchingCommands();
+
+        // assert
+        Assert.NotEmpty(matching);
+        Assert.StartsWith("widget", matching[0].PathAsString, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public void AFilteredTreePutsTheBestMatchUnderTheFirstHeading()
+    {
+        // arrange -- headings ordered alphabetically regardless of the ranking put the best
+        // match under whichever heading sorted first, which on a tool with many categories
+        // means the command the user typed for is off the first screen
+        var browser = GetSystemUnderTest();
+
+        browser.Filter = "widget";
+
+        // act
+        var tree = browser.GetTree();
+        var best = browser.GetMatchingCommands()[0];
+
+        // assert
+        Assert.NotEmpty(tree);
+        Assert.Contains(
+            tree[0].Groups.SelectMany(x => x.Commands),
+            x => x.PathAsString == best.PathAsString);
+    }
+
+    [Fact]
+    public void AnUnfilteredTreeIsStillArrangedAlphabeticallyByHeading()
+    {
+        // arrange -- ranking only applies when there is something to rank by
+        var browser = GetSystemUnderTest();
+
+        // act
+        var names = browser.GetTree().Select(x => x.Name).ToList();
+
+        // assert
+        Assert.Equal(names.OrderBy(x => x, StringComparer.OrdinalIgnoreCase).ToList(), names);
+    }
+
+    [Fact]
     public void AFilterSearchesAliasesToo()
     {
         // arrange

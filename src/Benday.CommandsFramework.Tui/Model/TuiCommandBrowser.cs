@@ -122,7 +122,13 @@ public sealed class TuiCommandBrowser
             .Select((item, index) => (item, index))
             .ToDictionary(x => x.item, x => x.index);
 
-        return matching
+        // with a filter on, the headings follow the ranking too. Ordering them alphabetically
+        // regardless puts the best match under whichever heading happens to sort first, which
+        // on a tool with a lot of categories means the thing the user typed for is off the
+        // first screen -- indistinguishable from the filter not working.
+        var isFiltered = string.IsNullOrWhiteSpace(Filter) == false;
+
+        var categories = matching
             .GroupBy(x => string.IsNullOrWhiteSpace(x.Category) == true ? "Commands" : x.Category)
             .Select(categoryGroup => new TuiCommandCategory(
                 categoryGroup.Key,
@@ -133,10 +139,48 @@ public sealed class TuiCommandBrowser
                         g.OrderBy(x => ordering[x]).ToList()))
                     // a flat command sits above the groups, which read as sub-headings
                     .OrderBy(x => x.HasGroup == true ? 1 : 0)
+                    .ThenBy(x => BestRank(x.Commands, ordering, isFiltered))
                     .ThenBy(x => x.Name, ArgumentCollection.ArgumentNameComparer)
                     .ToList()))
-            .OrderBy(x => x.Name, StringComparer.OrdinalIgnoreCase)
             .ToList();
+
+        return categories
+            .OrderBy(x => BestRank(x.Groups.SelectMany(g => g.Commands), ordering, isFiltered))
+            .ThenBy(x => x.Name, StringComparer.OrdinalIgnoreCase)
+            .ToList();
+    }
+
+    /// <summary>
+    /// Where the best-ranked command in a set sits in the overall ranking, or the same value for
+    /// everything when there is no filter to rank by.
+    /// </summary>
+    /// <remarks>
+    /// The ranking is already in the order of the matching list, so this reads a position out of
+    /// it rather than scoring anything a second time. With no filter every position collapses to
+    /// zero and the caller's alphabetical tie-break is what orders the display -- which is the
+    /// order an unfiltered list has always had.
+    /// </remarks>
+    private static int BestRank(
+        IEnumerable<TuiCommandItem> commands,
+        IReadOnlyDictionary<TuiCommandItem, int> ordering,
+        bool isFiltered)
+    {
+        if (isFiltered == false)
+        {
+            return 0;
+        }
+
+        var best = int.MaxValue;
+
+        foreach (var command in commands)
+        {
+            if (ordering.TryGetValue(command, out var rank) == true && rank < best)
+            {
+                best = rank;
+            }
+        }
+
+        return best;
     }
 }
 
