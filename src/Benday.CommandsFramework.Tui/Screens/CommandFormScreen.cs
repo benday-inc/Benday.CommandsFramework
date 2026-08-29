@@ -65,12 +65,15 @@ internal sealed class CommandFormScreen
         {
             Render();
 
-            var back = new MenuItem(MenuAction.Back, "Back to the commands");
+            var back = new MenuItem(
+                MenuAction.Back, "Back to the commands [grey](or press esc)[/]");
 
             var prompt = new SelectionPrompt<MenuItem>()
-                .Title("Pick a field to fill in.")
+                .Title(
+                    "Pick a field to fill in." + Environment.NewLine +
+                    "[grey]Press esc to go back to the commands.[/]")
                 .PageSize(20)
-                .MoreChoicesText("[grey](move up and down for more)[/]")
+                .MoreChoicesText("[grey](move up and down for more, esc goes back)[/]")
                 .UseConverter(x => x.Label)
                 .AddCancelResult(back);
 

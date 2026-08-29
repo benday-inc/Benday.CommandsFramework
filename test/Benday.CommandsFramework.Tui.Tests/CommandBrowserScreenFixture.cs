@@ -103,6 +103,68 @@ public class CommandBrowserScreenFixture
     }
 
     [Fact]
+    public async Task TheListSaysHowToLeave()
+    {
+        // arrange -- the way out is a row at the bottom of the list, which is off the screen
+        // on a tool with a lot of commands
+        var console = GetConsole();
+
+        console.Input.PushKey(ConsoleKey.Escape);
+
+        var screen = new CommandBrowserScreen(console, GetBrowser());
+
+        // act
+        await screen.ShowAsync(TestContext.Current.CancellationToken);
+
+        // assert -- said twice, because each goes missing in a different situation: the title
+        // is the first thing to scroll off a list longer than the terminal, and the
+        // more-choices line is only drawn when the list is longer than a page
+        Assert.Contains("Press esc to quit", console.Output);
+        Assert.Contains("esc quits", console.Output);
+    }
+
+    [Fact]
+    public async Task TheWayOutIsARowInTheListAsWellAsAKeystroke()
+    {
+        // arrange -- a short enough list that the bottom of it is on screen, which is when the
+        // row is what someone finds
+        var console = GetConsole();
+        var browser = GetBrowser();
+
+        browser.Filter = "greeting";
+
+        console.Input.PushKey(ConsoleKey.Escape);
+
+        var screen = new CommandBrowserScreen(console, browser);
+
+        // act
+        await screen.ShowAsync(TestContext.Current.CancellationToken);
+
+        // assert
+        Assert.Contains("Quit", console.Output);
+        Assert.Contains("or press esc", console.Output);
+    }
+
+    [Fact]
+    public async Task EscapeLeavesEvenWithSomethingTypedIntoTheSearch()
+    {
+        // arrange -- the hint says esc quits without qualification, so this is what makes that
+        // true rather than nearly true
+        var console = GetConsole();
+
+        console.Input.PushText("greet");
+        console.Input.PushKey(ConsoleKey.Escape);
+
+        var screen = new CommandBrowserScreen(console, GetBrowser());
+
+        // act
+        var action = await screen.ShowAsync(TestContext.Current.CancellationToken);
+
+        // assert
+        Assert.Equal(TuiScreenAction.Quit, action);
+    }
+
+    [Fact]
     public async Task EscapeStillLeaves()
     {
         // arrange -- search takes over the keyboard, so this is worth pinning down

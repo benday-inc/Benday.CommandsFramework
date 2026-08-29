@@ -140,6 +140,45 @@ public class CommandRunScreenFixture
     }
 
     [Fact]
+    public async Task ARunOnATerminalSaysHowToStopIt()
+    {
+        // arrange -- said before the command starts, because the moment someone wants to know
+        // is while a long one is running
+        var options = GetOptions();
+        var console = GetConsole();
+
+        console.Interactive();
+
+        using var form = Open(options, ApplicationConstants.CommandName_Greeting);
+
+        form.FindField("name")!.TrySetValue("Ann");
+
+        // act
+        var (output, _) = await RunAsync(console, options, form);
+
+        // assert
+        Assert.Contains("Press ctrl-c to cancel it", output);
+    }
+
+    [Fact]
+    public async Task ARunWithNoTerminalDoesNotOfferAKeystroke()
+    {
+        // arrange -- there is no keyboard attached to a pipe
+        var options = GetOptions();
+        var console = GetConsole();
+
+        using var form = Open(options, ApplicationConstants.CommandName_Greeting);
+
+        form.FindField("name")!.TrySetValue("Ann");
+
+        // act
+        var (output, _) = await RunAsync(console, options, form);
+
+        // assert
+        Assert.DoesNotContain("ctrl-c", output, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
     public async Task ThereIsNoPromptWhereThereIsNoOneToAnswerIt()
     {
         // arrange -- a redirected console is a test, a pipe or a CI log. Prompting there

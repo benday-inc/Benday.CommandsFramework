@@ -72,12 +72,15 @@ internal sealed class CommandBrowserScreen
         SelectedCommand = null;
         SelectedPresetArguments = null;
 
-        var quit = new Choice("Quit", TuiScreenAction.Quit);
+        var quit = new Choice("Quit [grey](or press esc)[/]", TuiScreenAction.Quit);
 
         var prompt = new SelectionPrompt<Choice>()
             .Title(GetTitle())
             .PageSize(20)
-            .MoreChoicesText("[grey](move up and down for more)[/]")
+            // this line is drawn at the bottom of the visible list, which is the one place a
+            // hint survives a list longer than the terminal -- the title above it is the first
+            // thing to scroll away
+            .MoreChoicesText("[grey](move up and down for more, esc quits)[/]")
             .UseConverter(x => x.Label)
             .AddCancelResult(quit);
 
@@ -139,7 +142,11 @@ internal sealed class CommandBrowserScreen
             ? $"[bold]{total}[/] commands."
             : $"[bold]{shown}[/] of {total} commands.";
 
-        return $"{counted} Pick one to fill in its arguments, or type to jump to one.";
+        // the way out is a row at the bottom of the list, which on a tool with 77 commands is
+        // off the screen -- so the keystroke that does the same thing is said where it can be
+        // seen. Escape leaves even when something has been typed into the search.
+        return $"{counted} Pick one to fill in its arguments, or type to jump to one." +
+            $"{Environment.NewLine}[grey]Press esc to quit.[/]";
     }
 
     /// <summary>

@@ -40,6 +40,14 @@ internal sealed class CommandRunScreen
         _Console.WriteLine();
         _Console.Write(new Rule("[bold]Running[/]") { Justification = Justify.Left });
         _Console.MarkupLine($"[grey]{Markup.Escape(form.GetCommandLine())}[/]");
+
+        if (interactive == true)
+        {
+            // said before the command starts rather than after a key is pressed, because the
+            // moment someone wants it is while a long command is running
+            _Console.MarkupLine("[grey]Press ctrl-c to cancel it.[/]");
+        }
+
         _Console.WriteLine();
 
         // cancelling the command is not cancelling the interface, which is the whole reason

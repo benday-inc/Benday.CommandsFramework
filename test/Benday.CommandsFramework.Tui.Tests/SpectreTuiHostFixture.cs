@@ -188,6 +188,9 @@ public class SpectreTuiHostFixture
         // assert
         Assert.Equal(CommandFrameworkConstants.ExitCode_Success, exitCode);
         Assert.Contains("Command line", console.Output);
+
+        // and the form says how to get back out of it
+        Assert.Contains("Press esc to go back to the commands", console.Output);
     }
 
     [Fact]
