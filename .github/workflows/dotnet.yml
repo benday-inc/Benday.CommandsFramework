@@ -46,8 +46,14 @@ jobs:
       - name: Restore Benday.CommandsFramework.CmdUi
         run: dotnet restore src/Benday.CommandsFramework.CmdUi/Benday.CommandsFramework.CmdUi.csproj
 
+      - name: Restore Benday.CommandsFramework.Tui
+        run: dotnet restore src/Benday.CommandsFramework.Tui/Benday.CommandsFramework.Tui.csproj
+
       - name: Restore Benday.CommandsFramework.Tests
         run: dotnet restore test/Benday.CommandsFramework.Tests/Benday.CommandsFramework.Tests.csproj
+
+      - name: Restore Benday.CommandsFramework.Tui.Tests
+        run: dotnet restore test/Benday.CommandsFramework.Tui.Tests/Benday.CommandsFramework.Tui.Tests.csproj
 
       - name: Build Benday.CommandsFramework (Release)
         run: dotnet build src/Benday.CommandsFramework/Benday.CommandsFramework.csproj --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
@@ -55,14 +61,26 @@ jobs:
       - name: Build Benday.CommandsFramework.CmdUi (Release)
         run: dotnet build src/Benday.CommandsFramework.CmdUi/Benday.CommandsFramework.CmdUi.csproj --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
 
+      - name: Build Benday.CommandsFramework.Tui (Release)
+        run: dotnet build src/Benday.CommandsFramework.Tui/Benday.CommandsFramework.Tui.csproj --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
+
       - name: Build Benday.CommandsFramework.Tests (Release)
         run: dotnet build test/Benday.CommandsFramework.Tests/Benday.CommandsFramework.Tests.csproj --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
+
+      - name: Build Benday.CommandsFramework.Tui.Tests (Release)
+        run: dotnet build test/Benday.CommandsFramework.Tui.Tests/Benday.CommandsFramework.Tui.Tests.csproj --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
 
       - name: Test (Release)
         run: dotnet test test/Benday.CommandsFramework.Tests/Benday.CommandsFramework.Tests.csproj --configuration ${{ env.BUILD_CONFIGURATION }} --no-build --verbosity normal
 
+      - name: Test Benday.CommandsFramework.Tui (Release)
+        run: dotnet test test/Benday.CommandsFramework.Tui.Tests/Benday.CommandsFramework.Tui.Tests.csproj --configuration ${{ env.BUILD_CONFIGURATION }} --no-build --verbosity normal
+
       - name: Pack Benday.CommandsFramework
         run: dotnet pack src/Benday.CommandsFramework/Benday.CommandsFramework.csproj --no-build --configuration ${{ env.BUILD_CONFIGURATION }} --output ./artifacts
+
+      - name: Pack Benday.CommandsFramework.Tui
+        run: dotnet pack src/Benday.CommandsFramework.Tui/Benday.CommandsFramework.Tui.csproj --no-build --configuration ${{ env.BUILD_CONFIGURATION }} --output ./artifacts
 
       - name: Pack Benday.CommandsFramework.CmdUi
         run: dotnet pack src/Benday.CommandsFramework.CmdUi/Benday.CommandsFramework.CmdUi.csproj --no-build --configuration ${{ env.BUILD_CONFIGURATION }} --output ./artifacts
