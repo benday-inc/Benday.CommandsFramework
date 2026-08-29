@@ -28,8 +28,8 @@ green.
 (`Group` on `[Command]`), declarative argument rules, single-match discovery, progress
 reporting, shell completion, `check-configuration`, the status/error output channels, and — in
 v5.1 — the terminal interface, which a tool gets by referencing
-`Benday.CommandsFramework.Tui` and calling `.WithTui()`. None of these break anything, and most
-have a section in the README.
+`Benday.CommandsFramework.Tui` and calling `.WithTui()`. None of these break anything; each has
+a section in the README.
 
 The terminal interface has one thing to check before adopting it, and it is
 [entry 4](#4-duplicate-command-names-and-aliases-now-fail-at-startup): `tui` is a reserved name

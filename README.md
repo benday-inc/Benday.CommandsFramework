@@ -67,6 +67,7 @@ Let us know by submitting an [issue](https://github.com/benday-inc/Benday.Comman
 - [Output Channels](#output-channels)
 - [Reporting Progress](#reporting-progress)
 - [Prompting for Input](#prompting-for-input)
+- [Shell Completion](#shell-completion)
 - [Terminal UI](#terminal-ui)
 - [Data Formatting Utilities](#data-formatting-utilities)
   - [TableFormatter](#tableformatter)
@@ -945,6 +946,52 @@ Assert.Equal(2, input.ReadCount);
 |------|-------------|
 | `ConsoleTextInputProvider` | Reads from the console. The default. |
 | `QueuedTextInputProvider` | Hands out queued lines, then `null`. For tests. |
+
+## Shell Completion
+
+Any tool can print a completion stub for `pwsh`, `zsh` or `bash`:
+
+```bash
+mytool completion --shell pwsh >> $PROFILE
+mytool completion --shell zsh  >> ~/.zshrc
+mytool completion --shell bash >> ~/.bashrc
+```
+
+The stub is a fixed few lines that hand the whole command line back to the tool through a
+hidden `--complete` keyword and turn the answer into whatever the shell wants. Nothing about
+the tool's commands is baked into it, so it never goes stale — add a command or an argument and
+completion knows about it with nothing to regenerate.
+
+That is affordable because answering is cheap. Completing a command name reads the registry and
+instantiates nothing; only once a command name resolves does the framework create **that one
+command** to ask it for its arguments.
+
+Command names come with their descriptions:
+
+```
+$ mytool <TAB>
+greet-everybody   Reuses the greeting command to greet several people
+greeting          Builds a greeting for a person
+```
+
+then that command's argument names, the framework's own reserved arguments included, and then a
+`WithAllowedValues()` list when the argument has one:
+
+```
+$ mytool deploy --environment <TAB>
+production  development  staging
+```
+
+For a file or directory argument the tool answers with a **directive** — `:file:PATTERN` or
+`:dir` — instead of a list of paths, and the shell completes the path itself, because it
+already knows how to and it quotes what it finds correctly. An argument that also declares
+`DiscoverSingleMatch("*.json")` narrows its directive to that pattern, so the shell only offers
+the files the command could actually use.
+
+How much of this you see depends on the shell. PowerShell gets the most: descriptions become
+tooltips in the completion menu and the directives map onto real provider paths. zsh shows
+descriptions and hands paths to `_files`. bash cannot show descriptions at all, so its stub
+drops them and offers values only.
 
 ## Terminal UI
 
