@@ -84,9 +84,21 @@ internal sealed class CommandBrowserScreen
         // group headers exist to be read, not chosen
         prompt.Mode = SelectionMode.Leaf;
 
+        // typing jumps the highlight to the first command that matches, which is what a row
+        // called 'Filter...' at the top of a list leads everyone to try first -- and what a
+        // selection list otherwise swallows without a word. It moves rather than narrows: the
+        // rest of the list stays on screen. The filter below is the one that narrows, keeps
+        // what it was given across screens, ranks what it finds, and searches descriptions
+        // and aliases as well as names.
+        prompt.EnableSearch();
+
+        // says what the entry does, because it does not look like what it is: a row that reads
+        // 'Filter...' looks like somewhere to type, and a selection list silently swallows
+        // anything typed at it, so there is no feedback saying the keystrokes went nowhere
         var filterLabel = string.IsNullOrWhiteSpace(Browser.Filter) == true
-            ? "[blue]Filter...[/]"
-            : $"[blue]Filter:[/] {Markup.Escape(Browser.Filter)} [grey](change or clear)[/]";
+            ? "[blue]Filter...[/] [grey](press enter to narrow the list)[/]"
+            : $"[blue]Filter:[/] {Markup.Escape(Browser.Filter)} " +
+                "[grey](enter to change it, blank clears it)[/]";
 
         prompt.AddChoices(new Choice(filterLabel, TuiScreenAction.Stay) { IsFilterEntry = true });
 
@@ -123,9 +135,11 @@ internal sealed class CommandBrowserScreen
         var total = Browser.AllCommands.Count;
         var shown = Browser.GetMatchingCommands().Count;
 
-        return shown == total
-            ? $"[bold]{total}[/] commands. Pick one to fill in its arguments."
-            : $"[bold]{shown}[/] of {total} commands. Pick one to fill in its arguments.";
+        var counted = shown == total
+            ? $"[bold]{total}[/] commands."
+            : $"[bold]{shown}[/] of {total} commands.";
+
+        return $"{counted} Pick one to fill in its arguments, or type to jump to one.";
     }
 
     /// <summary>

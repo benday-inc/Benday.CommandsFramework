@@ -172,7 +172,9 @@ public class SpectreTuiHostFixture
         console.Interactive();
 
         // down past the filter entry onto the first command, open it, escape out of the form,
-        // then escape out of the list
+        // then escape out of the list. Two downs rather than one: with type-to-search on, the
+        // first down arrow lands on the filter entry rather than past it.
+        console.Input.PushKey(ConsoleKey.DownArrow);
         console.Input.PushKey(ConsoleKey.DownArrow);
         console.Input.PushKey(ConsoleKey.Enter);
         console.Input.PushKey(ConsoleKey.Escape);
