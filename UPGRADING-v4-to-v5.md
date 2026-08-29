@@ -17,15 +17,23 @@ keeps working. It is in the numbered list rather than the "do not have to adopt"
 because it does break tests that assert on usage text, and because a tool's own docs and scripts
 now describe a deprecated syntax. Read it; most of it is a search and replace on documentation.
 
-**The compiler does not find everything.** Entries 3, 8, 9 and 14 can all leave a tool that
+**The compiler does not find everything.** Entries 3, 4, 8, 9 and 14 can all leave a tool that
 builds clean with zero warnings and behaves differently than it did in v4. Entry 9 is the one
 most often missed: a tool that uses the fluent builder still compiles, and silently always
-exits 0. Read those four even when the build is green.
+exits 0. Entry 4's second half is the other: a tool with a command named `tui` or `completion`
+builds, runs, and quietly stops running that command. Read those five even when the build is
+green.
 
 **What v5 adds that you do not have to adopt**, but probably want to: multi-level command names
 (`Group` on `[Command]`), declarative argument rules, single-match discovery, progress
-reporting, shell completion, `check-configuration`, and the status/error output channels. None
-of these break anything; each has a section in the README.
+reporting, shell completion, `check-configuration`, the status/error output channels, and — in
+v5.1 — the terminal interface, which a tool gets by referencing
+`Benday.CommandsFramework.Tui` and calling `.WithTui()`. None of these break anything, and most
+have a section in the README.
+
+The terminal interface has one thing to check before adopting it, and it is
+[entry 4](#4-duplicate-command-names-and-aliases-now-fail-at-startup): `tui` is a reserved name
+whether or not the tool adopts it.
 
 ---
 
@@ -268,10 +276,14 @@ resolution genuinely ambiguous:
 - two commands claiming the same alias
 
 Everything else that makes a command unreachable is *reported* rather than thrown, on
-`CommandRegistry.Problems`: an alias that is also a real command name, an alias that collides with
-a reserved keyword (`--help`, `--json`, `gui`, `quiet`), an empty alias, and a `[Command]` attribute
-on a class that is not a runnable `CommandBase`. One unusable alias should not stop the other 63
+`CommandRegistry.Problems`: an alias that is also a real command name, a command **name or**
+alias that collides with a reserved keyword, an empty alias, and a `[Command]` attribute on a
+class that is not a runnable `CommandBase`. One unusable alias should not stop the other 63
 commands from running.
+
+The reserved names are `--help`, `--quiet`, `--json`, `gui`, `tui`, `completion` and
+`--complete` — read them from `ReservedKeywords.AllNames` rather than copying this list, which
+is what the framework itself does.
 
 ### Detect
 
@@ -302,6 +314,50 @@ offenders. If it returns and `Problems` is non-empty, each entry says what is un
 Judgment, one collision at a time: rename a command, drop an alias, or delete the dead one. Do not
 suppress the check.
 
+### The reserved list grew, and three of the names are matched before your commands
+
+This is the half that the build cannot show you. `tui`, `completion` and `--complete` are new
+reservations in v5 — `gui`, `--help` and `--json` were already reserved in v4 — and
+`DefaultProgram.RunAsync` matches `args[0]` against all of them **before** it asks the registry
+to resolve a command name.
+
+So a v4 tool with a command or alias called `tui` or `completion` compiles, passes every check
+in [Verification](#verification), and silently stops running that command. `mytool tui` launches
+the terminal interface, or — on a tool that has not referenced
+`Benday.CommandsFramework.Tui` — prints a message saying the author has to add it.
+`mytool completion` prints a shell completion script. Neither is an error, and nothing warns.
+
+`CommandRegistry.Problems` reports the collision, which is why the test above is the detector
+and why it is worth keeping in the suite rather than running once.
+
+#### Detect
+
+The registry-problems test above is the detector, because it reads the names the framework
+actually registered. Run it first.
+
+A grep is only a first pass here, and a weak one — it finds a name written as a literal and
+misses one written as a constant, which is how most tools of any size declare them:
+
+```bash
+grep -rn --include='*.cs' -E 'Name *= *"(tui|completion)"' .
+grep -rn --include='*.cs' -E 'Aliases *=|\[CommandAlias\(' . | grep -E '"(tui|completion)"'
+```
+
+So a grep that finds nothing is **not** the all-clear this document usually treats it as. The
+one that is, from a built copy of the tool:
+
+```bash
+mytool tui           # if the tool has a 'tui' command, this is no longer it
+mytool completion    # likewise
+```
+
+#### Change
+
+Rename the command. The framework wins and there is no opting out of a reserved name. Keeping
+the old name as an alias is no help either, since aliases are checked against the same list — so
+this is a rename, plus a note in the tool's release notes for anyone with a script that types
+the old name.
+
 ---
 
 ## 5. `ICommandProgramOptions` gained two members
@@ -317,14 +373,22 @@ CommandRegistry? CommandRegistry { get; set; }   // built once, then shared
 `InputProvider` shipped in v4.20 as a get-only default interface member so that adding it broke
 nothing. In v5 it is a normal settable member.
 
-v5.1 added two more — `ArgumentSyntax` and `WarnOnDeprecatedArgumentSyntax` — but both are
-get-only **default interface members**, so an implementation that does not declare them still
-compiles and gets the defaults. Declare them settable only if you want to change them:
+v5.1 added three more — `ArgumentSyntax`, `WarnOnDeprecatedArgumentSyntax` and `TuiHost` — but
+all three are get-only **default interface members**, so an implementation that does not declare
+them still compiles and gets the defaults. Declare them settable only if you want to change
+them:
 
 ```csharp
 public ArgumentSyntax ArgumentSyntax { get; set; } = ArgumentSyntax.Both;
 public bool WarnOnDeprecatedArgumentSyntax { get; set; } = true;
+public ITuiHost? TuiHost { get; set; } = null;
 ```
+
+`TuiHost` is what the `tui` keyword runs, and it is the one of the three a custom options class
+has to declare settable to use at all: `.WithTui()` goes through
+`CommandsApp.ConfigureOptions(Action<DefaultProgramOptions>)`, so it cannot reach an options
+class of your own. Set it yourself — `options.TuiHost = new SpectreTuiHost()` — or use
+`DefaultProgramOptions`, which already declares it.
 
 ### Detect
 
@@ -1030,8 +1094,11 @@ Planned, not built. Do not act on these; they will get entries here when they la
 
 No action needed. Listed so that a diff of behavior does not look like a bug.
 
-- Usage output lists the framework's reserved names (`--help`, `--json`, `gui`, `completion`,
-  `quiet`) in an `** ALSO AVAILABLE **` section. Before, nothing mentioned them anywhere.
+- Usage output lists the framework's reserved names (`--help`, `--json`, `gui`, `tui`,
+  `completion`, `quiet`) in an `** ALSO AVAILABLE **` section. Before, nothing mentioned them
+  anywhere. `tui` is listed on every tool, including one that was not built with a terminal
+  interface — running it there explains what the author has to add. `--complete` is reserved
+  too, and deliberately not listed: it exists for shell completion stubs rather than for people.
 - The command list gains commands the tool did not declare. `check-configuration` is new in v5
   and, like `get-configuration`, `set-configuration` and `remove-configuration`, is registered
   automatically whenever the program sets `UsesConfiguration = true`. A tool that diffs its

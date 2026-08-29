@@ -33,6 +33,7 @@ Let us know by submitting an [issue](https://github.com/benday-inc/Benday.Comman
 - Async command support
 - `--json` schema output for tooling integration
 - `gui` command to launch a web UI via [Benday.CommandsFramework.CmdUi](https://www.nuget.org/packages/Benday.CommandsFramework.CmdUi/)
+- `tui` command for an in-process terminal UI via [Benday.CommandsFramework.Tui](https://www.nuget.org/packages/Benday.CommandsFramework.Tui/)
 
 ## Table of Contents
 
@@ -58,11 +59,19 @@ Let us know by submitting an [issue](https://github.com/benday-inc/Benday.Comman
   - [Config-Backed Arguments](#config-backed-arguments)
 - [Dependency Injection](#dependency-injection)
 - [Async Commands](#async-commands)
+- [CommandsApp Builder Reference](#commandsapp-builder-reference)
+- [Stored Configuration](#stored-configuration)
+- [Finding a Value Instead of Asking for It](#finding-a-value-instead-of-asking-for-it)
+- [Argument Rules](#argument-rules)
+- [Multi-level Commands](#multi-level-commands)
+- [Output Channels](#output-channels)
+- [Reporting Progress](#reporting-progress)
+- [Prompting for Input](#prompting-for-input)
+- [Terminal UI](#terminal-ui)
 - [Data Formatting Utilities](#data-formatting-utilities)
   - [TableFormatter](#tableformatter)
   - [CsvReader](#csvreader)
   - [CsvWriter](#csvwriter)
-- [CommandsApp Builder Reference](#commandsapp-builder-reference)
 - [Built-in Keywords](#built-in-keywords)
 - [About](#about)
 
@@ -673,7 +682,7 @@ public class FetchCommand : AsynchronousCommand
 | `Run()` | Build and run the application, returning the exit code |
 | `RunAsync(cancellationToken)` | Build and run the application asynchronously, returning the exit code |
 
-## Configuration
+## Stored Configuration
 
 An argument can read its value from the tool's stored configuration, so a user supplies it
 once instead of on every command line:
@@ -937,6 +946,67 @@ Assert.Equal(2, input.ReadCount);
 | `ConsoleTextInputProvider` | Reads from the console. The default. |
 | `QueuedTextInputProvider` | Hands out queued lines, then `null`. For tests. |
 
+## Terminal UI
+
+`tui` opens a terminal interface for the tool: browse its commands, fill one in, and run it
+without leaving the terminal. Unlike `gui`, which shells out to the separately installed
+`cmdui`, this runs inside the tool's own process — which is why it is a compile-time
+reference rather than something a user can install afterwards.
+
+Add the package and one line:
+
+```bash
+dotnet add package Benday.CommandsFramework.Tui
+```
+
+```csharp
+using Benday.CommandsFramework;
+using Benday.CommandsFramework.Tui;
+
+return await CommandsApp
+    .Create<MyCommand>(args)
+    .WithAppInfoFromAssembly()
+    .WithTui()
+    .RunAsync();
+```
+
+```bash
+mytool tui
+```
+
+`tui` is reserved whether or not the tool was built with one, so a command cannot quietly
+claim the name. A tool that has not called `.WithTui()` says what its author has to add
+rather than offering to install anything — no runtime install can supply a compile-time
+reference.
+
+What the interface does:
+
+- **Browse** the commands, grouped by `Category` and nested by `Group`, with a fuzzy filter
+  across names, aliases, categories and descriptions. A `[CommandAlias]` that supplies
+  argument values gets its own section and opens a form already filled in with them. Opening
+  the browser instantiates no commands, so it costs about what shell completion costs rather
+  than what `--json` costs.
+- **Fill in** a form whose widget for each field comes from the argument itself: a list of
+  choices for `WithAllowedValues()`, a toggle for a boolean, a path field for a file or
+  directory argument. `WithFriendlyName()` becomes the field label. A value the argument
+  refuses is never stored, and what is wrong with the form as a whole is reported by the
+  command's own validation — so a missing `FromConfig()` value still names the
+  `set-configuration` call that would supply it.
+- **Copy the command line** the form adds up to, rendered in whichever syntax the tool
+  accepts. The interface teaches the command line: you find a command in a form and graduate
+  to typing it.
+- **Run it** in process and watch the output arrive, with the result, status and error
+  channels kept visually apart and progress redrawn in place. A command that prompts is asked
+  through the interface, so `Prompt()` and `PromptForYesNo()` work with no knowledge that
+  they are inside one. Ctrl-C cancels the command rather than the interface.
+
+Running in process is what makes this different from `cmdui`: the form holds the real
+`IArgument` objects rather than a JSON mirror of them, so validating a field is a direct call
+and a file argument's `MustExist` is checked against the machine the tool actually runs on —
+which is not something a file picker in a browser can do.
+
+The package targets `net8.0`, `net9.0` and `net10.0`, the same as the framework itself.
+
 ## Data Formatting Utilities
 
 The framework includes utility classes in `Benday.CommandsFramework.DataFormatting` for working with tabular and CSV data inside your commands.
@@ -1045,6 +1115,7 @@ writer.SaveToFile("/path/to/updated.csv");
 - `--help` — Display usage information for a command
 - `--json` — Output the full command schema as JSON (used by tooling)
 - `gui` — Launch the CmdUi web interface for this tool
+- `tui` — Launch the terminal interface for this tool, when it was built with one (see [Terminal UI](#terminal-ui))
 - `completion` — Print the shell completion script (`--shell pwsh|zsh|bash`)
 - `--quiet` — Suppress a command's `WriteLine()` output. Applied automatically to commands that are run by another command.
 - `--` — End of options. Everything after it is a value, even if it starts with a dash.
