@@ -1,6 +1,6 @@
 # Design: in-process TUI for Benday.CommandsFramework
 
-Status: **in progress**. Phases 0, 1 and 2 are implemented; 3 onwards are not.
+Status: **in progress**. Phases 0, 1, 2 and 3 are implemented; 4 onwards are not.
 
 A terminal UI that any CommandsFramework tool can launch with `mytool tui` — browse the
 commands, fill in a form, watch the output stream, cancel a long one. The same idea as
@@ -311,7 +311,12 @@ Each phase is independently useful and independently shippable.
    commits a value the argument refuses, whole-form validation through the command's own
    `Validate()`, and a live command-line preview rendered through `ArgumentSyntaxFormatter`
    with copy-to-clipboard.
-3. **Execute** — run in-process, stream output, progress, cancellation, `CommandResult`.
+3. **Execute** — done. `TuiCommandRunner` builds the command from the command line the
+   preview shows and runs it in process; `TuiTextOutputProvider` collects the three output
+   channels in write order and announces each line as it is written; `TuiTextInputProvider`
+   turns a command's question into a prompt; progress is redrawn in place on a terminal;
+   Ctrl-C cancels the command rather than the interface; the run ends in a `TuiRunResult`
+   and the interface goes back to the form.
 4. **Completion** — wire `CompletionEngine` into the form, implement the path directives.
 5. **Rules** — radio groups, conditional fields, greying out.
 
@@ -380,3 +385,33 @@ Almost all of it held. What did not:
   was already blind to `completion`, `quiet` and `--complete`, and it checked aliases against
   reserved names but never command names. `CommandRegistry.GetProblems()` had always done
   both. Fixed.
+
+## Corrections found while implementing phase 3
+
+- **A command's output provider comes from the options it is built with**, not from anything
+  settable afterwards, so running inside the interface means building the command with a
+  different set of options. That is `TuiProgramOptions`, which forwards everything to the
+  tool's real options except the two providers. Forwarding rather than copying is the point:
+  the registry and the service provider are caches, and a copy would quietly build a second
+  of each — and a second service provider means singletons that are not.
+- **The design's `TuiTextOutputProvider` sketch is missing the case that makes prompting
+  work.** `CommandBase.Prompt()` writes the question through `Write()`, with no line ending,
+  and then reads. A provider that only handles whole lines strands the question as half a
+  line above an unlabelled prompt. So the provider holds the partial line and the input
+  provider takes it as the prompt's label — which is the whole of what makes an interactive
+  command work in here.
+- **A partial line is only absorbed by a result line.** Anything on another channel ends it
+  first and stays on its own channel, the same way separate streams behave for a console: an
+  error is not part of the sentence the result was half way through.
+- **The runner catches every exception, which the console entry point deliberately does
+  not.** `DefaultProgram` lets an unexpected exception end the process; that is correct when
+  the process runs one command and exits, and wrong when the process is an interface with a
+  screen full of work in it. A command that throws costs the user that command.
+- **A fresh command is built for each run**, from `TuiCommandForm.GetCommandLineTokens()`,
+  rather than running the instance the form edits. It costs one instantiation and buys two
+  things: each run gets its own dependency injection scope, disposed when it ends, and the
+  preview is verifiable rather than decorative — what runs is what the preview says, parsed
+  by the parser that would have parsed it had it been typed.
+- **`Environment.ExitCode` is never assigned.** Asserted by a test, because the failure it
+  guards against is silent: the interface would exit with the code of whichever command
+  happened to fail in it.

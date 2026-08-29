@@ -9,19 +9,23 @@ namespace Benday.CommandsFramework.Tui.Screens;
 /// add up to.
 /// </summary>
 /// <remarks>
-/// Nothing runs from here yet. Even so the form is already useful on its own: it fills in a
-/// command line correctly, in whichever syntax the tool accepts, and hands it over to be
-/// typed or pasted. The interface teaching the command line is the point, not a consolation.
+/// The form is useful for more than running: it fills a command line in correctly, in
+/// whichever syntax the tool accepts, and hands it over to be typed or pasted. The interface
+/// teaching the command line is the point, not a consolation, which is why the preview and
+/// the copy are there even now that the command can be run from here.
 /// </remarks>
 internal sealed class CommandFormScreen
 {
     private readonly IAnsiConsole _Console;
     private readonly TuiCommandForm _Form;
+    private readonly TuiCommandRunner? _Runner;
 
-    public CommandFormScreen(IAnsiConsole console, TuiCommandForm form)
+    public CommandFormScreen(
+        IAnsiConsole console, TuiCommandForm form, TuiCommandRunner? runner = null)
     {
         _Console = console;
         _Form = form;
+        _Runner = runner;
     }
 
     /// <summary>
@@ -30,6 +34,7 @@ internal sealed class CommandFormScreen
     private enum MenuAction
     {
         EditField,
+        Run,
         Copy,
         Back
     }
@@ -75,6 +80,11 @@ internal sealed class CommandFormScreen
                     new MenuItem(MenuAction.EditField, GetFieldLabel(field)) { Field = field });
             }
 
+            if (_Runner is not null)
+            {
+                prompt.AddChoices(new MenuItem(MenuAction.Run, GetRunLabel()));
+            }
+
             prompt.AddChoices(
                 new MenuItem(MenuAction.Copy, "Copy the command line"),
                 back);
@@ -85,6 +95,10 @@ internal sealed class CommandFormScreen
             {
                 case MenuAction.EditField when choice.Field is not null:
                     await EditAsync(choice.Field, cancellationToken);
+                    break;
+
+                case MenuAction.Run when _Runner is not null:
+                    await RunAsync(cancellationToken);
                     break;
 
                 case MenuAction.Copy:
@@ -380,6 +394,34 @@ internal sealed class CommandFormScreen
         var value = await _Console.PromptAsync(prompt, cancellationToken);
 
         return string.IsNullOrEmpty(value) == true ? null : value;
+    }
+
+    /// <summary>
+    /// What the run line says. A form that is not filled in still offers to run: the command
+    /// is the authority on whether its arguments are valid, and saying so in its own words is
+    /// more use than a menu item that refuses to be picked.
+    /// </summary>
+    private string GetRunLabel()
+    {
+        return _Form.IsValid() == true
+            ? "Run it"
+            : "Run it [grey](something is still missing)[/]";
+    }
+
+    /// <summary>
+    /// Runs the command and comes back to the form afterwards, so a run can be adjusted and
+    /// run again.
+    /// </summary>
+    private async Task RunAsync(CancellationToken cancellationToken)
+    {
+        await new CommandRunScreen(_Console, _Runner!).ShowAsync(_Form, cancellationToken);
+
+        if (_Console.Profile.Capabilities.Interactive == true)
+        {
+            _Console.Prompt(
+                new TextPrompt<string>("[grey]Press enter to go back to the form.[/]")
+                    .AllowEmpty());
+        }
     }
 
     /// <summary>

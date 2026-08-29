@@ -94,7 +94,9 @@ public sealed class SpectreTuiHost : ITuiHost
                 return CommandFrameworkConstants.ExitCode_Success;
             }
 
-            await BrowseAsync(console, session, browser, cancellationToken);
+            var runner = CreateRunner(console, session);
+
+            await BrowseAsync(console, session, browser, runner, cancellationToken);
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
@@ -109,12 +111,31 @@ public sealed class SpectreTuiHost : ITuiHost
     }
 
     /// <summary>
-    /// The browse, fill in, go back loop.
+    /// Builds what runs a command, for this session.
+    /// </summary>
+    /// <remarks>
+    /// One runner for the session rather than one per run, because the output provider it
+    /// holds is where the width of the pane is recorded -- and the width is what usage text
+    /// is wrapped against. Reading Console.WindowWidth instead would be wrong by whatever the
+    /// chrome takes and would throw outright in a process with no console.
+    /// </remarks>
+    private static TuiCommandRunner CreateRunner(IAnsiConsole console, TuiSession session)
+    {
+        var runner = new TuiCommandRunner(session.Options, session.CommandsAssembly);
+
+        runner.Output.Width = console.Profile.Width;
+
+        return runner;
+    }
+
+    /// <summary>
+    /// The browse, fill in, run, go back loop.
     /// </summary>
     private async Task BrowseAsync(
         IAnsiConsole console,
         TuiSession session,
         TuiCommandBrowser browser,
+        TuiCommandRunner runner,
         CancellationToken cancellationToken)
     {
         var screen = new CommandBrowserScreen(console, browser);
@@ -138,6 +159,7 @@ public sealed class SpectreTuiHost : ITuiHost
                 session,
                 screen.SelectedCommand,
                 screen.SelectedPresetArguments,
+                runner,
                 cancellationToken);
         }
     }
@@ -155,6 +177,7 @@ public sealed class SpectreTuiHost : ITuiHost
         TuiSession session,
         TuiCommandItem command,
         IReadOnlyDictionary<string, string>? presetArguments,
+        TuiCommandRunner runner,
         CancellationToken cancellationToken)
     {
         try
@@ -162,7 +185,7 @@ public sealed class SpectreTuiHost : ITuiHost
             using var form = TuiCommandForm.Open(
                 session.Options, session.CommandsAssembly, command, presetArguments);
 
-            await new CommandFormScreen(console, form).ShowAsync(cancellationToken);
+            await new CommandFormScreen(console, form, runner).ShowAsync(cancellationToken);
         }
         catch (OperationCanceledException)
         {

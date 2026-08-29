@@ -536,6 +536,37 @@ call on every keystroke — the first call applies config and command-line value
 A command's `Arguments` are **empty until it is validated**, which is why the form validates
 once when it opens.
 
+**Running a command builds a new one.** `TuiCommandRunner` takes
+`TuiCommandForm.GetCommandLineTokens()` back through `GetCommand()` rather than running the
+instance the form edits. One extra instantiation buys a per-run DI scope that is disposed when
+the run ends, and it makes the preview verifiable rather than decorative — what runs is what
+the preview says, parsed by the parser that would have parsed it had it been typed.
+
+**A command is handed its output provider when it is built**, from the options it is built
+with, so `TuiProgramOptions` wraps the tool's options and swaps `OutputProvider` /
+`InputProvider`. Everything else **forwards** rather than being copied: `CommandRegistry` and
+`ServiceProvider` are caches, and a second service provider means singletons that are not.
+
+`TuiTextOutputProvider` collects the three channels in **write order** — one pane, because
+someone watching a command wants chronology — and announces each line as it is written so a
+display draws it as it arrives. `Write()` with no line ending is held as a partial line: that
+is how `CommandBase.Prompt()` writes its question, and `TuiTextInputProvider.ReadLine()` takes
+that text as the prompt's label. A result line absorbs a pending partial line; anything on
+another channel ends it first and stays on its own channel. `Width` is the pane, which is the
+whole reason `ITextOutputProvider.Width` exists.
+
+**The runner catches every exception**, which `DefaultProgram` deliberately does not — the
+process here is an interface with a screen full of work in it, so a command that throws costs
+the user that command. `KnownException` becomes `CommandResult.Failed`, an unexpected
+exception becomes `Failed` plus `TuiRunResult.Exception`, and cancellation is
+`CommandResult.Cancelled` rather than a failure. Nothing assigns `Environment.ExitCode`.
+
+Ctrl-C cancels the **command**, not the interface; a second press within the same run is left
+to the runtime, which ends the process. Progress is redrawn in place only on a terminal —
+redirected, each report is an ordinary line, the same rule `ConsoleTextOutputProvider`
+follows. Prompting requires `Interactive`; with no reader, `ReadLine()` returns null, which is
+what `Console.ReadLine()` returns at end of input.
+
 ## CmdUI Project
 `cmdui` is a schema-driven Blazor Server app that auto-generates a web UI for any CommandsFramework tool:
 - `cmdui slnutil` — runs `slnutil --json`, renders forms for each command
