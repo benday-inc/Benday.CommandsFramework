@@ -41,7 +41,7 @@ public class SampleCommandWithPositionalSourcesFixture
 
 
     [Fact]
-    public void GetHelp()
+    public async Task GetHelp()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -51,8 +51,8 @@ public class SampleCommandWithPositionalSourcesFixture
 
         _SystemUnderTest = new SampleCommandWithPositionalSources(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+        await // act
+        _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert        
         var output = OutputProvider.GetOutput();
@@ -79,7 +79,7 @@ public class SampleCommandWithPositionalSourcesFixture
     }
 
     [Fact]
-    public void CreateAndRun_Valid_RequiredPositionalAppearsInValues_OnlyRequired()
+    public async Task CreateAndRun_Valid_RequiredPositionalAppearsInValues_OnlyRequired()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -93,8 +93,8 @@ public class SampleCommandWithPositionalSourcesFixture
 
         _SystemUnderTest = new SampleCommandWithPositionalSources(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+        await // act
+        _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert        
         var output = OutputProvider.GetOutput();
@@ -105,7 +105,7 @@ public class SampleCommandWithPositionalSourcesFixture
     }
 
     [Fact]
-    public void CreateAndRun_Valid_RequiredPositionalAppearsInValues_RequiredAndOptional()
+    public async Task CreateAndRun_Valid_RequiredPositionalAppearsInValues_RequiredAndOptional()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -120,8 +120,8 @@ public class SampleCommandWithPositionalSourcesFixture
 
         _SystemUnderTest = new SampleCommandWithPositionalSources(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+        await // act
+        _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert        
         var output = OutputProvider.GetOutput();

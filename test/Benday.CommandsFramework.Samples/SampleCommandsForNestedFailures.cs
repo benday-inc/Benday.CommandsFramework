@@ -1,9 +1,9 @@
-namespace Benday.CommandsFramework.Samples;
+﻿namespace Benday.CommandsFramework.Samples;
 
 /// <summary>
 /// Type that looks like a command but has no CommandAttribute, so it cannot be run.
 /// </summary>
-public class NotACommand : SynchronousCommand
+public class NotACommand : Command
 {
     public NotACommand(
         CommandExecutionInfo info, ITextOutputProvider outputProvider) : base(info, outputProvider)
@@ -11,9 +11,9 @@ public class NotACommand : SynchronousCommand
 
     }
 
-    protected override void OnExecute()
+    protected override Task OnExecute(CancellationToken cancellationToken)
     {
-
+        return Task.CompletedTask;
     }
 }
 
@@ -24,7 +24,7 @@ public class NotACommand : SynchronousCommand
 [Command(
     Name = ApplicationConstants.CommandName_CallsOtherCommandsWithBadArgs,
     Description = "Runs the greeting command without giving it the args it needs")]
-public class SampleCommandThatCallsOtherCommandsWithBadArgs : SynchronousCommand
+public class SampleCommandThatCallsOtherCommandsWithBadArgs : Command
 {
     public SampleCommandThatCallsOtherCommandsWithBadArgs(
         CommandExecutionInfo info, ITextOutputProvider outputProvider) : base(info, outputProvider)
@@ -32,10 +32,11 @@ public class SampleCommandThatCallsOtherCommandsWithBadArgs : SynchronousCommand
 
     }
 
-    protected override void OnExecute()
+    protected override async Task OnExecute(CancellationToken cancellationToken)
     {
         // 'name' is required by the greeting command but is not supplied
-        ExecuteCommand<SampleGreetingCommand>();
+        await ExecuteCommandAsync<SampleGreetingCommand>(
+            cancellationToken: cancellationToken);
     }
 }
 
@@ -45,7 +46,7 @@ public class SampleCommandThatCallsOtherCommandsWithBadArgs : SynchronousCommand
 [Command(
     Name = ApplicationConstants.CommandName_CallsATypeWithNoAttribute,
     Description = "Tries to run a type that is not a command")]
-public class SampleCommandThatCallsATypeWithNoAttribute : SynchronousCommand
+public class SampleCommandThatCallsATypeWithNoAttribute : Command
 {
     public SampleCommandThatCallsATypeWithNoAttribute(
         CommandExecutionInfo info, ITextOutputProvider outputProvider) : base(info, outputProvider)
@@ -53,8 +54,8 @@ public class SampleCommandThatCallsATypeWithNoAttribute : SynchronousCommand
 
     }
 
-    protected override void OnExecute()
+    protected override async Task OnExecute(CancellationToken cancellationToken)
     {
-        ExecuteCommand<NotACommand>();
+        await ExecuteCommandAsync<NotACommand>(cancellationToken: cancellationToken);
     }
 }

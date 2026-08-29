@@ -16,8 +16,14 @@ public class CommandAttribute : Attribute
     public string Name { get; set; } = string.Empty;
     
     /// <summary>
-    /// True if this command should be run in async mode
+    /// True if this command should be run in async mode.
     /// </summary>
+    /// <remarks>
+    /// Nothing reads this any more. There is one command base class, so the type system
+    /// already says how a command runs -- and this flag could disagree with it, which built
+    /// cleanly and then threw at run time.
+    /// </remarks>
+    [Obsolete("Nothing reads this. There is one command base class, so it says nothing the type system does not. It will be removed in v6.")]
     public bool IsAsync { get; set; } = false;
 
     /// <summary>
@@ -27,8 +33,20 @@ public class CommandAttribute : Attribute
 
     /// <summary>
     /// Category for the command. This is used to group commands together in the help output.
+    /// This is a display heading only -- it is not part of how the command is typed.
     /// </summary>
     public string Category { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Group this command belongs to, which becomes the first segment of the command name:
+    /// a command named 'list' in group 'workitem' is run as 'mytool workitem list'.
+    /// </summary>
+    /// <remarks>
+    /// This is deliberately separate from Category. Category holds display strings like
+    /// "Work Items" and "Project Administration", so using it as a prefix would produce
+    /// command names nobody would type. Grouping is a rename, not a prefix.
+    /// </remarks>
+    public string Group { get; set; } = string.Empty;
 
     /// <summary>
     /// Alternate names that can be used on the command line in place of Name. This is

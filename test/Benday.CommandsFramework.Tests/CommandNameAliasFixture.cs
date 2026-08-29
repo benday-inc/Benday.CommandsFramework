@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 
 using Benday.CommandsFramework.Samples;
 
@@ -102,16 +102,28 @@ public class CommandNameAliasFixture
     }
 
     [Fact]
-    public void ResolveCommandName_IsCaseSensitive()
+    public void ResolveCommandName_IsNotCaseSensitive()
     {
-        // the rest of the framework matches command names with ordinal comparison, so
-        // alias resolution matches that behavior
+        // v5: the registry is keyed with ArgumentCollection.ArgumentNameComparer, so command
+        // names and aliases follow the same rule argument names have followed since v4.18.
+        // In v4 this returned null and 'MC' simply did not work.
 
         // act
         var actual = SystemUnderTest.ResolveCommandName(SampleAssembly, "MC");
 
         // assert
-        Assert.Null(actual);
+        Assert.Equal(ApplicationConstants.CommandName_CommandWithCommandNameAliases, actual);
+    }
+
+    [Fact]
+    public void ResolveCommandName_MatchesARealNameWithoutRegardToCase()
+    {
+        // act
+        var actual = SystemUnderTest.ResolveCommandName(
+            SampleAssembly, ApplicationConstants.CommandName_Command1.ToUpperInvariant());
+
+        // assert
+        Assert.Equal(ApplicationConstants.CommandName_Command1, actual);
     }
 
     [Fact]
@@ -147,13 +159,13 @@ public class CommandNameAliasFixture
     }
 
     [Fact]
-    public void RunByAlias_ExecutesTheCommand()
+    public async Task RunByAlias_ExecutesTheCommand()
     {
         // arrange
         var program = new DefaultProgram(ProgramOptions, SampleAssembly);
 
-        // act
-        program.Run(Utilities.GetStringArray("mc", "/message:via the alias"));
+        await // act
+        program.RunAsync(Utilities.GetStringArray("mc", "/message:via the alias"), TestContext.Current.CancellationToken);
 
         // assert
         var output = OutputProvider.GetOutput();
@@ -169,15 +181,15 @@ public class CommandNameAliasFixture
     }
 
     [Fact]
-    public void RunByRealName_StillWorks()
+    public async Task RunByRealName_StillWorks()
     {
         // arrange
         var program = new DefaultProgram(ProgramOptions, SampleAssembly);
 
-        // act
-        program.Run(Utilities.GetStringArray(
+        await // act
+        program.RunAsync(Utilities.GetStringArray(
             ApplicationConstants.CommandName_CommandWithCommandNameAliases,
-            "/message:via the real name"));
+            "/message:via the real name"), TestContext.Current.CancellationToken);
 
         // assert
         var output = OutputProvider.GetOutput();
@@ -188,13 +200,13 @@ public class CommandNameAliasFixture
     }
 
     [Fact]
-    public void RunByUnknownName_ReportsInvalidCommandName()
+    public async Task RunByUnknownName_ReportsInvalidCommandName()
     {
         // arrange
         var program = new DefaultProgram(ProgramOptions, SampleAssembly);
 
-        // act
-        program.Run(Utilities.GetStringArray("no-such-command"));
+        await // act
+        program.RunAsync(Utilities.GetStringArray("no-such-command"), TestContext.Current.CancellationToken);
 
         // assert
         var output = OutputProvider.GetOutput();
@@ -204,27 +216,27 @@ public class CommandNameAliasFixture
     }
 
     [Fact]
-    public void RunByAlias_DoesNotMutateTheCallersArgumentArray()
+    public async Task RunByAlias_DoesNotMutateTheCallersArgumentArray()
     {
         // arrange
         var program = new DefaultProgram(ProgramOptions, SampleAssembly);
         var args = Utilities.GetStringArray("mc");
 
-        // act
-        program.Run(args);
+        await // act
+        program.RunAsync(args, TestContext.Current.CancellationToken);
 
         // assert
         Assert.Equal("mc", args[0]);
     }
 
     [Fact]
-    public void DisplayUsage_ShowsAliasesNextToTheCommandName()
+    public async Task DisplayUsage_ShowsAliasesNextToTheCommandName()
     {
         // arrange
         var program = new DefaultProgram(ProgramOptions, SampleAssembly);
 
-        // act
-        program.Run([]);
+        await // act
+        program.RunAsync([], TestContext.Current.CancellationToken);
 
         // assert
         var output = OutputProvider.GetOutput();
@@ -317,6 +329,8 @@ public class CommandNameAliasFixture
     [InlineData("--help")]
     [InlineData("--json")]
     [InlineData("gui")]
+    [InlineData("tui")]
+    [InlineData("completion")]
     public void GetCommandNameProblems_DetectsAliasThatCollidesWithAReservedKeyword(string reserved)
     {
         // arrange

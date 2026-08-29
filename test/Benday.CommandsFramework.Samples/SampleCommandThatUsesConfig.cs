@@ -3,7 +3,7 @@
 namespace Benday.CommandsFramework.Samples;
 
 [Command(Name = ApplicationConstants.CommandName_CommandThatUsesConfig)]
-public class SampleCommandThatUsesConfig : SynchronousCommand
+public class SampleCommandThatUsesConfig : Command
 {
     public SampleCommandThatUsesConfig(CommandExecutionInfo info, ITextOutputProvider outputProvider) : base(info, outputProvider)
     {
@@ -17,7 +17,7 @@ public class SampleCommandThatUsesConfig : SynchronousCommand
         return args;
     }
 
-    protected override void OnExecute()
+    protected override Task OnExecute(CancellationToken cancellationToken)
     {
         var config = base.ExecutionInfo.Configuration;
 
@@ -36,5 +36,7 @@ public class SampleCommandThatUsesConfig : SynchronousCommand
         {
             WriteLine("** SUCCESS **");
         }
+
+        return Task.CompletedTask;
     }
 }

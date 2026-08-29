@@ -1,4 +1,4 @@
-using System.Text;
+﻿using System.Text;
 
 namespace Benday.CommandsFramework.Samples;
 
@@ -15,7 +15,7 @@ namespace Benday.CommandsFramework.Samples;
 [CommandAlias(ApplicationConstants.CommandAlias_DeployDev,
     "environment=development",
     Description = "Deploy to development")]
-public class SampleCommandWithPresetAliases : SynchronousCommand
+public class SampleCommandWithPresetAliases : Command
 {
     public SampleCommandWithPresetAliases(
         CommandExecutionInfo info, ITextOutputProvider outputProvider) : base(info, outputProvider)
@@ -45,7 +45,7 @@ public class SampleCommandWithPresetAliases : SynchronousCommand
         return args;
     }
 
-    protected override void OnExecute()
+    protected override Task OnExecute(CancellationToken cancellationToken)
     {
         Environment = Arguments.GetStringValue("environment");
         Verbose = Arguments.GetBooleanValue("verbose");
@@ -59,5 +59,7 @@ public class SampleCommandWithPresetAliases : SynchronousCommand
         builder.AppendLine($"verbose: {Verbose}");
 
         WriteLine(builder.ToString());
+
+        return Task.CompletedTask;
     }
 }

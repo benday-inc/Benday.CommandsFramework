@@ -251,6 +251,63 @@ public static class ExtensionMethods
     }
 
     /// <summary>
+    /// Finds this argument's value when it is not supplied, by searching for exactly one
+    /// match of a pattern.
+    /// </summary>
+    /// <remarks>
+    /// "Find the one .sln in this folder, and make me say which one if there is not exactly
+    /// one." Zero matches and several matches are different situations and produce different
+    /// messages, which is most of the value -- "I could not find one" and "I found four,
+    /// pick one" call for different things from the user.
+    ///
+    /// The search runs at validation time. Doing it when the arguments are declared would
+    /// mean --json globbed the disk once per command in the tool.
+    /// </remarks>
+    /// <param name="arg">File or directory argument to configure</param>
+    /// <param name="pattern">Search pattern, such as "*.sln"</param>
+    /// <param name="directory">Directory to search. Defaults to the working directory.</param>
+    /// <param name="recursive">Search subdirectories too</param>
+    /// <returns>The argument</returns>
+    /// <exception cref="InvalidOperationException">Thrown for an argument that is not a file
+    /// or directory argument -- there is nothing to search for.</exception>
+    public static Argument<T> DiscoverSingleMatch<T>(
+        this Argument<T> arg,
+        string pattern,
+        string? directory = null,
+        bool recursive = false)
+    {
+        if (arg == null)
+        {
+            throw new ArgumentNullException(nameof(arg));
+        }
+
+        if (string.IsNullOrWhiteSpace(pattern) == true)
+        {
+            throw new ArgumentException("Pattern is required.", nameof(pattern));
+        }
+
+        if (arg is DirectoryArgument directoryArg)
+        {
+            directoryArg.DiscoveryPattern = pattern;
+            directoryArg.DiscoveryDirectory = directory ?? string.Empty;
+            directoryArg.DiscoveryIsRecursive = recursive;
+        }
+        else if (arg is FileArgument fileArg)
+        {
+            fileArg.DiscoveryPattern = pattern;
+            fileArg.DiscoveryDirectory = directory ?? string.Empty;
+            fileArg.DiscoveryIsRecursive = recursive;
+        }
+        else
+        {
+            throw new InvalidOperationException(
+                $"Cannot call DiscoverSingleMatch() on non-directory/non-file arg '{arg.Name}'.");
+        }
+
+        return arg;
+    }
+
+    /// <summary>
     /// Gets the value from an unnamed variable based on position in the arg string.
     /// </summary>
     /// <param name="collection">Argument collection</param>
@@ -601,11 +658,10 @@ public static class ExtensionMethods
             argsClone.TryAdd(CommandFrameworkConstants.CommandArgName_QuietMode, "true");
         }
 
-        var returnValue = new CommandExecutionInfo();
-        returnValue.Arguments = argsClone;
-        returnValue.CommandName = commandName;
-
-        return returnValue;
+        return new CommandExecutionInfo
+        {
+            Request = new CommandCallRequest(commandName, argsClone)
+        };
     }
 
     public static string GetPathToFile(
@@ -650,5 +706,129 @@ public static class ExtensionMethods
         {
             return executionInfo.Configuration.GetValue(configValueName);
         }
+    }
+
+    /// <summary>
+    /// Requires that exactly one of these arguments is supplied. Zero and several are
+    /// different mistakes and produce different messages.
+    /// </summary>
+    /// <param name="arguments">Argument collection</param>
+    /// <param name="argumentNames">Names the rule is about</param>
+    /// <returns>The collection, so calls can be chained</returns>
+    public static ArgumentCollection ExactlyOneOf(
+        this ArgumentCollection arguments, params string[] argumentNames)
+    {
+        return arguments.AddRule(new ExactlyOneOfRule(argumentNames));
+    }
+
+    /// <summary>
+    /// Requires that at least one of these arguments is supplied.
+    /// </summary>
+    public static ArgumentCollection AtLeastOneOf(
+        this ArgumentCollection arguments, params string[] argumentNames)
+    {
+        return arguments.AddRule(new AtLeastOneOfRule(argumentNames));
+    }
+
+    /// <summary>
+    /// Declares that these arguments cannot be used together. None of them is required.
+    /// </summary>
+    public static ArgumentCollection MutuallyExclusive(
+        this ArgumentCollection arguments, params string[] argumentNames)
+    {
+        return arguments.AddRule(new MutuallyExclusiveRule(argumentNames));
+    }
+
+    /// <summary>
+    /// Declares that these arguments are supplied together or not at all.
+    /// </summary>
+    public static ArgumentCollection RequiredTogether(
+        this ArgumentCollection arguments, params string[] argumentNames)
+    {
+        return arguments.AddRule(new RequiredTogetherRule(argumentNames));
+    }
+
+    /// <summary>
+    /// Starts a rule that only applies when another argument has a particular value.
+    /// </summary>
+    /// <param name="arguments">Argument collection</param>
+    /// <param name="argumentName">Argument whose value decides whether the rule applies</param>
+    /// <param name="value">Value that makes the rule apply. Omit for "whenever this argument
+    /// is supplied at all".</param>
+    /// <returns>A builder -- call Require() or Forbid() on it</returns>
+    public static ConditionalRuleBuilder When(
+        this ArgumentCollection arguments, string argumentName, string? value = null)
+    {
+        return new ConditionalRuleBuilder(arguments, argumentName, value);
+    }
+}
+
+/// <summary>
+/// Builds a rule that only applies when another argument has a particular value.
+/// </summary>
+/// <remarks>
+/// The rule is added to the collection as soon as Require() or Forbid() is called and is
+/// updated in place by a second call, so both orders read the same:
+/// When("mode", "advanced").Require("level").Forbid("simple").
+/// </remarks>
+public sealed class ConditionalRuleBuilder
+{
+    private readonly ArgumentCollection _Arguments;
+    private readonly string _ArgumentName;
+    private readonly string? _Value;
+    private readonly List<string> _Required = new();
+    private readonly List<string> _Forbidden = new();
+    private ConditionalRule? _Rule;
+
+    internal ConditionalRuleBuilder(
+        ArgumentCollection arguments, string argumentName, string? value)
+    {
+        _Arguments = arguments;
+        _ArgumentName = argumentName;
+        _Value = value;
+    }
+
+    /// <summary>
+    /// These arguments are required when the condition holds.
+    /// </summary>
+    public ConditionalRuleBuilder Require(params string[] argumentNames)
+    {
+        _Required.AddRange(argumentNames);
+
+        return Rebuild();
+    }
+
+    /// <summary>
+    /// These arguments cannot be used when the condition holds.
+    /// </summary>
+    public ConditionalRuleBuilder Forbid(params string[] argumentNames)
+    {
+        _Forbidden.AddRange(argumentNames);
+
+        return Rebuild();
+    }
+
+    /// <summary>
+    /// The collection, for carrying on with something other than this rule.
+    /// </summary>
+    public ArgumentCollection Arguments => _Arguments;
+
+    private ConditionalRuleBuilder Rebuild()
+    {
+        var replacement = new ConditionalRule(
+            _ArgumentName, _Value, [.. _Required], [.. _Forbidden]);
+
+        if (_Rule is null)
+        {
+            _Arguments.AddRule(replacement);
+        }
+        else
+        {
+            _Arguments.ReplaceRule(_Rule, replacement);
+        }
+
+        _Rule = replacement;
+
+        return this;
     }
 }

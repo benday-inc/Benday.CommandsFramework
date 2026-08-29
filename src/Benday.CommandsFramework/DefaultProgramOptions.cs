@@ -30,6 +30,18 @@ public class DefaultProgramOptions : ICommandProgramOptions
     public ITextOutputProvider OutputProvider { get; set; } = new ConsoleTextOutputProvider();
 
     /// <summary>
+    /// Where commands read text input from. Defaults to the console. Swap in a
+    /// QueuedTextInputProvider to test a command that prompts.
+    /// </summary>
+    public ITextInputProvider InputProvider { get; set; } = new ConsoleTextInputProvider();
+
+    /// <summary>
+    /// The set of commands this program can run. Populated the first time it is needed and
+    /// then shared by everything in the process, so the assemblies are only scanned once.
+    /// </summary>
+    public CommandRegistry? CommandRegistry { get; set; } = null;
+
+    /// <summary>
     /// Provides access to the service provider for dependency injection.
     /// This is entirely optional.
     /// </summary>
@@ -46,4 +58,21 @@ public class DefaultProgramOptions : ICommandProgramOptions
     /// When false (default), unknown arguments are silently ignored.
     /// </summary>
     public bool StrictArgumentValidation { get; set; } = false;
+
+    /// <summary>
+    /// Which command line argument syntax this program accepts. Defaults to accepting both
+    /// the POSIX form and the deprecated slash form.
+    /// </summary>
+    public ArgumentSyntax ArgumentSyntax { get; set; } = ArgumentSyntax.Both;
+
+    /// <summary>
+    /// What runs when the 'tui' keyword is used. Null unless the tool referenced
+    /// Benday.CommandsFramework.Tui and called WithTui().
+    /// </summary>
+    public ITuiHost? TuiHost { get; set; } = null;
+
+    /// <summary>
+    /// Whether an argument typed in the deprecated slash form produces a warning.
+    /// </summary>
+    public bool WarnOnDeprecatedArgumentSyntax { get; set; } = true;
 }

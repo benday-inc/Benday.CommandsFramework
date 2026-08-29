@@ -19,5 +19,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Benday.CommandsFramework\Benday.CommandsFramework.csproj" />
     <ProjectReference Include="..\Benday.CommandsFramework.Samples\Benday.CommandsFramework.Samples.csproj" />
+    <!-- cmdui has to read both the 4.x and the 5.x schema on the same machine, since it is a
+         global tool that probes whatever tools happen to be installed. Referencing it here is
+         what lets that compatibility be tested rather than assumed. -->
+    <ProjectReference Include="..\..\src\Benday.CommandsFramework.CmdUi\Benday.CommandsFramework.CmdUi.csproj" />
   </ItemGroup>
 </Project>

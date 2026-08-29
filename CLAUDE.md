@@ -6,7 +6,9 @@ A .NET CLI framework for building command-line tools. Provides structured comman
 ## Solution Structure
 - `src/Benday.CommandsFramework/` - Core framework library (NuGet package, targets net8.0;net9.0;net10.0)
 - `src/Benday.CommandsFramework.CmdUi/` - Blazor Server web UI shell for any framework-based tool (dotnet global tool `cmdui`, targets net10.0)
+- `src/Benday.CommandsFramework.Tui/` - In-process terminal UI for any framework-based tool (NuGet library, targets net8.0;net9.0;net10.0). See `DESIGN-TUI.md`.
 - `test/Benday.CommandsFramework.Tests/` - Unit tests (xunit.v3, via Microsoft.Testing.Platform)
+- `test/Benday.CommandsFramework.Tui.Tests/` - Unit tests for the TUI package (xunit.v3 + `Spectre.Console.Testing`)
 - `test/Benday.CommandsFramework.Samples/` - Sample commands demonstrating framework features
 
 Solution file is `Benday.CommandsFramework.slnx` (XML-based slnx format, not .sln).
@@ -14,13 +16,22 @@ Solution file is `Benday.CommandsFramework.slnx` (XML-based slnx format, not .sl
 ## Key Patterns
 
 ### Defining Commands
-Commands inherit from `SynchronousCommand`, `AsynchronousCommand`, or `DependencyInjectionCommand` and use the `[Command]` attribute:
+Commands inherit from `Command` (or `DependencyInjectionCommand`) and use the `[Command]` attribute.
+There is **one** base class: `SynchronousCommand` is gone, `AsynchronousCommand` is an `[Obsolete]`
+empty subclass of `Command` kept so existing code compiles, and `CommandAttribute.IsAsync` is
+`[Obsolete]` and read by nothing — the type system already says how a command runs, and that flag
+could disagree with it (it built cleanly and then threw at run time).
+
+`CommandAttributeUtility.IsCommandType()` is the single definition of what counts as a command — a
+concrete `CommandBase` subclass carrying the attribute — and every discovery path goes through it, so
+the list of commands shown to the user can never disagree with the list that can be instantiated.
+A `[Command]` class failing either half is skipped and reported by `GetCommandNameProblems()`:
 ```csharp
 [Command(Name = "mycommand", Description = "Does something", Category = "MyCategory")]
-public class MyCommand : SynchronousCommand
+public class MyCommand : Command
 {
     public override ArgumentCollection GetArguments() { ... }
-    protected override void OnExecute() { ... }
+    protected override async Task OnExecute(CancellationToken cancellationToken) { ... }
 }
 ```
 
@@ -34,6 +45,12 @@ Fluent configuration methods live in `ExtensionMethods.cs`:
 `WithAllowedValues()` (string only — renders as a dropdown in cmdui), `FromPositionalArgument(n)`,
 `FromConfig()`.
 
+`AllowedValues` lives on `StringArgument`, which is the only argument type whose `Validate()`
+enforces it. `Argument<T>.AllowedValues` reads as empty and **throws `InvalidOperationException`
+when set**, so putting a list on an int or boolean argument fails loudly instead of shipping a
+dropdown in the schema that nothing enforces. `FileArgument` / `DirectoryArgument` derive from
+`StringArgument`, so they keep the feature.
+
 Ordering gotcha: methods declared on `Argument<T>` return `Argument<T>`, so type-specific methods like
 `WithAllowedValues()` (needs `StringArgument`) must come **first** in the chain, right after `AddString()`.
 
@@ -44,30 +61,81 @@ the real default even on the validation-failure path. The implicit type default 
 `DateTime.MinValue`) does not count — `HasDefaultValue` is false unless `WithDefaultValue()` was called.
 
 ### CLI Argument Format
-Arguments use `/name:value` syntax. Boolean flags with `AllowEmptyValue` use `/name` (presence = true).
-Parsing lives in `ArgumentCollectionFactory.GetArgsAsDictionary()`; `input[0]` is the command name and
-everything after it is parsed.
+Arguments use the POSIX long option form: `--name value`, `--name=value`, `--name:value`, and
+`--flag` for a boolean with `AllowEmptyValue`. A one-dash token is the same thing with the name
+after it (`-e production`), which is how an argument alias becomes a short option — there is no
+clustering, so `-abc` means the argument named `abc`. A bare `--` ends the options and everything
+after it is a value.
+
+`ArgumentSyntax` on `ICommandProgramOptions` selects what a program accepts — `Both` (default:
+parses both forms, renders POSIX, warns on slash), `Posix`, or `Slash`. It is a **default interface
+member**, so adding it broke no implementor; `DefaultProgramOptions` declares it settable.
+`WarnOnDeprecatedArgumentSyntax` silences the warning.
+
+The deprecated `/name:value` form still parses under `Both`. The warning goes to the **diagnostic
+channel** (`WriteStatus`), because a tool piping `--json` to a file must not get a deprecation notice
+inside its output.
+
+**`--name value` is parsed twice, and only the second parse counts.** Nothing in the two tokens
+`--name` and `value` says whether `value` belongs to `--name` or is a positional argument following a
+boolean flag; only the command's argument definitions say that, and the only way to read them is to
+ask the command — which cannot be built without a `CommandExecutionInfo`. So
+`CommandAttributeUtility.GetCommand()` parses once without definitions to build a provisional
+request (every form except the space-separated one binds correctly without them), constructs the
+command, then re-parses with `command.Arguments` and replaces `execInfo.Request`. **No extra
+instantiation** — the command created there is the one that runs. `ArgumentCollectionFactory.Definitions`
+is null for callers that parse a fragment before any command is resolved; an option then consumes the
+next token whenever that token does not itself look like an option.
+
+`--help` keeps its **literal key**, dashes and all, because that is the key every command checks for.
+Parsing it as an ordinary option would file it under `help` and nothing would find it.
 
 Value precedence: command line > command alias presets > configuration (`FromConfig()`) > default value.
 
 **Argument names are matched case-insensitively** via `ArgumentCollection.ArgumentNameComparer`
 (`OrdinalIgnoreCase`), which backs the argument dictionary, the alias lookup in `SetValues()`, the
 parsed dictionary from `ArgumentCollectionFactory`, and `CommandExecutionInfo.Arguments`. So
-`/verbose`, `/Verbose` and `/VERBOSE` all reach the same argument, for both the `/name:value` and
-flag-style forms. Argument *values* keep their case; only names are case-insensitive.
+`--verbose`, `--Verbose` and `--VERBOSE` all reach the same argument, for every form. Argument
+*values* keep their case; only names are case-insensitive.
 
 Use `ArgumentCollection.ArgumentNameComparer` whenever you build a dictionary that will hold argument
 names, so a name can't get in twice under different casing.
+
+**Everything that renders an argument name goes through `ArgumentSyntaxFormatter`** —
+`FormatName()`, `FormatNameValue()`, `FormatNameValueAsSingleToken()`. Usage output
+(`CommandBase.GetKeyString`), shell completion, `ValidationFailure.ForMissingConfiguration`,
+`CheckConfigurationCommand`, the command-alias summary in `DefaultProgram`, and the `completion`
+usage hint all used to build their own `/name:value` strings. If any one of them disagrees with the
+parser, the tool tells people to type something it will not accept.
 
 ### Positional Arguments
 `FromPositionalArgument(n)` sets `Alias = "POSITION_n"` and `IsPositionalSource = true`; binding then
 happens through the normal alias path in `ArgumentCollection.SetValues()`. Position must be >= 1.
 - Counting covers only bare positional values, so named args interleave freely without shifting positions.
 - A `/`-prefixed token with **more than one slash** and no colon is treated as a Unix path and becomes
-  positional; one slash and no colon is treated as a flag name.
+  positional; one slash and no colon is treated as a flag name — so `/tmp` is read as a flag, which
+  is the guess `ArgumentSyntax.Posix` removes by not treating `/` as a prefix at all.
 - `WithAlias()` and `FromPositionalArgument()` share the `Alias` slot — using both on one argument
   breaks whichever was set first.
 - Usage output renders these as `{name:Type}` (required) / `[{name:Type}]` (optional) via `GetKeyString()`.
+
+### Multi-level Commands
+`[Command(Group = "widget", Name = "list")]` is run as `mytool widget list`. The group is declared
+explicitly and is **not** derived from `Category` — categories hold display strings like
+"Work Items" and "Project Administration", so prefixing with them would produce names nobody would
+type. Grouping is a rename, not a prefix.
+
+- The **registry** decides where the name stops and the arguments begin, not the parser.
+  `CommandRegistry.Resolve(tokens)` matches greedy longest-first, so `thing list` beats a flat
+  command named `thing`, and `RemainingTokens` is what reaches
+  `ArgumentCollectionFactory.GetArgsAsDictionary()`.
+- `ExecutionInfo.CommandName` is the **path** (`"widget list"`), and so is
+  `GetAvailableCommandNames()` — anything else and the name you type wouldn't match the name the
+  framework reports. `CommandRegistration.Name` is still the bare last segment.
+- A group on its own is not a command: `mytool widget` is an invalid command name.
+- Existing tools adopt groups without breaking scripts by keeping the old flat name as an alias:
+  `[Command(Group = "widget", Name = "show", Aliases = ["showwidget"])]`.
+- `CommandInfo.Group` carries it in the schema; cmdui mirrors it and exposes `PathAsString`.
 
 ### Argument Aliases vs Command Aliases
 Different mechanisms, easy to confuse. `WithAlias()` is an *argument* alias (a second name for a
@@ -86,11 +154,101 @@ travels in the `--json` schema and becomes the form field label in cmdui
 `File.Exists`/`Directory.Exists` against `AbsolutePath`. `GetPathToFile()` / `GetPathToDirectory()`
 extension methods do the same resolution off the collection.
 
+Their `DataType` is `String` — parsing and conversion really are a string's. What sets them apart in
+the schema is `IArgument.PathType` (`ArgumentPathType.None` / `File` / `Directory`) and
+`IArgument.MustExist`. Both are **default interface members**, so adding them broke no existing
+implementor, and both are re-declared on `FileArgument` / `DirectoryArgument` — which is why those
+two name `IArgument` again in their base list. Without that, the interface mapping established by
+`Argument<T>` wins and a file argument still reports `None`. Nothing switches on `DataType`
+differently as a result; anything that wants to know a path from a string reads `PathType`.
+
+### Schema Envelope
+`--json` writes a `CommandSchema` object: `SchemaVersion`, `ApplicationName`, `ApplicationVersion`,
+`ArgumentSyntax`, `Commands`. v4 wrote a bare array, so consumers discriminate on the **root JSON token alone** — no
+negotiation. `CommandFrameworkConstants.CurrentSchemaVersion` is the version (**3**, which added
+`ArgumentSyntax` — a consumer that builds a command line cannot guess it, and the property's
+absence means slash);
+`ToolSchemaService.ParseSchema` in cmdui is the reference reader and refuses a version newer than it
+understands rather than guessing.
+
+The schema types **serialize but do not deserialize** — `CommandInfo`'s setters are internal and
+`Arguments` is a collection of an interface, so `JsonSerializer.Deserialize<CommandSchema>` hands
+back blank objects instead of throwing. Read a schema through mirror types, the way cmdui does.
+
+### Single-match Discovery
+`AddFile("input").DiscoverSingleMatch("*.json")` finds a value instead of requiring one — "find the
+one .sln here, and make me say which one if there isn't exactly one".
+
+- Runs at **validation time**, never in `GetArguments()` — globbing there would mean `--json` hit the
+  disk once per command in the tool, every time anything asked for the schema.
+- Last resort: only when command line, alias presets, config and default have all left it empty.
+- **Zero and several get different messages**, which is most of the value: "no files matching X were
+  found in Y" vs "3 files match X in Y: a, b, c — supply it to choose one".
+- Zero matches on an *optional* argument is fine (it's simply not supplied); several is still a
+  failure, because the command can't pick.
+- Throws on a non-file/non-directory argument, like `MustExist()`.
+- Travels in the schema as `IArgument.DiscoveryPattern` / `DiscoveryDirectory` /
+  `DiscoveryIsRecursive` / `IsDiscoverable`.
+
+Related hazard: **optional positional arguments must be trailing**. Positions are ordinal over the
+values actually supplied, so an omitted optional one silently shifts every position after it and the
+command reads the wrong values with no error at all.
+`CommandAttributeUtility.GetArgumentProblems(assembly)` catches that — it's separate from
+`CommandRegistry.Problems` because it has to instantiate every command to ask for its arguments,
+which is the cost the registry exists to avoid. Call it from a unit test.
+
 ### Built-in Keywords
 - `--help` — display usage
 - `--json` — dump full command schema as JSON (used by cmdui for auto-generating UI)
 - `gui` — launch `cmdui` for the current tool
-- `quiet` — reserved argument; suppresses `CommandBase.WriteLine()` output
+- `tui` — launch the in-process terminal UI, when the tool was built with one
+- `completion` — print the shell completion stub (`--shell pwsh|zsh|bash`)
+- `--complete "<line>"` — **hidden**; what the stubs call back into. Reserved but deliberately not
+  listed in usage output: it's for shells, not people.
+- `--quiet` — reserved argument; suppresses `CommandBase.WriteLine()` output
+- `--` — end of options; everything after it is a value
+
+### Shell Completion
+Dynamic, not generated: the stub is a fixed few lines that hand the whole command line back to the
+tool, so it never goes stale when the tool changes. Affordable because `CompletionEngine` is
+deliberately cheap — completing a **command name** reads the registry and instantiates **nothing**;
+only once a command resolves does it create *that one* command to ask for its arguments. (Measured on
+the samples tool: `--complete` ~100ms vs `--json` ~300ms, most of the former being .NET startup.)
+
+Wire format is one candidate per line: `value` + optional TAB + `description`. A line starting with
+`:` is a **directive** rather than a candidate — `:file:PATTERN` and `:dir` tell the shell to
+complete paths itself, because it already knows how and handles quoting correctly. A file argument
+with a `DiscoverSingleMatch` pattern narrows its directive to that pattern.
+
+Payoff ranking is pwsh > zsh > bash: PowerShell shows descriptions as tooltips and maps directives to
+`ProviderItem`/`ProviderContainer`; bash can't show descriptions at all, so the stub drops them.
+`CompletionScripts.GetShellFunctionName()` sanitizes the tool name — a tool named after its assembly
+has dots in it, which a shell function name can't.
+
+### Command Registry
+`CommandRegistry` is the single place commands are discovered. `CommandAttributeUtility.GetRegistry()`
+builds it once and caches it on `ICommandProgramOptions.CommandRegistry`; a cached registry is only
+reused when `WasBuiltFor(assembly, usesConfiguration)` agrees, since flipping `UsesConfiguration`
+changes whether the built-ins are registered.
+
+- Built-in configuration commands are **ordinary registrations**, marked `IsBuiltIn`. The
+  `UsesConfiguration` / `IsDefaultCommandName` routing that used to be decided three separate times
+  (twice in `DefaultProgram.Run()`, once in `GetCommand()`) is gone.
+- Keyed with `ArgumentCollection.ArgumentNameComparer`, so **command names and aliases are
+  case-insensitive** — the rule argument names have followed since v4.18.
+- `Resolve(tokens)` matches greedy longest-first and returns a `CommandResolution` carrying the
+  registration, the leftover tokens for the parser, the `PresetArguments` from a `[CommandAlias]`,
+  and `MatchedAs` (what was actually typed). Resolution no longer overwrites the typed name in place.
+- `CommandRegistration.Path` is a list so a `Group` can become the first segment — see
+  **Multi-level Commands** below.
+- `BuildFromTypes()` builds from an explicit type list; useful for tests that need a registry
+  without whatever else is in the assembly.
+
+**Two commands claiming the same name, or the same alias, throws `KnownException` when the registry
+is built.** Everything else that makes a command unreachable — an alias shadowed by a real name, a
+reserved-keyword collision, an empty alias, `[Command]` on a class that isn't a runnable
+`CommandBase` — lands on `CommandRegistry.Problems`, because one bad alias shouldn't stop the other
+63 commands running. Assert `Problems` is empty from a unit test.
 
 ### Command Aliases
 Two kinds, both resolved to the real command name at a single chokepoint before anything else reads
@@ -103,35 +261,114 @@ the command name (`CommandAttributeUtility.ResolveCommandName`, called from `Get
   explicit command-line args win and no new precedence logic exists. Listed in a separate
   `Command aliases:` section.
 
-`CommandAttributeUtility.GetCommandNameProblems()` reports duplicate names, aliases colliding with
-command names or reserved keywords, aliases claimed by two commands, and empty aliases. Nothing calls
-it automatically — call it from a unit test.
+`CommandAttributeUtility.GetCommandNameProblems()` reports duplicate names, command names and
+aliases colliding with reserved keywords, aliases colliding with command names, aliases claimed by
+two commands, empty aliases, and classes carrying a `[Command]` attribute that the framework cannot
+run. It reads `ReservedKeywords.AllNames`, the same source `CommandRegistry.Problems` reads — it
+used to carry a hand-written list of three names, so the two disagreed about `completion`, `quiet`
+and `--complete`. Nothing calls it automatically — call it from a unit test.
+
+### Execution Contract
+`Command.ExecuteAsync(CancellationToken)` returns a **`CommandResult`** — `Status`
+(`Success` / `ValidationFailed` / `UsageDisplayed` / `Failed` / `Cancelled`), `Message`,
+`ValidationFailures`, `IsSuccess`, `ExitCode`. `UsageDisplayed` counts as success: the user asked for
+usage and got it.
+
+**Nothing in the framework assigns `Environment.ExitCode` except `CommandsApp.Run/RunAsync`**, the
+console entry point. `Validate()` used to set it as a side effect and `DisplayUsage()` set failure,
+which forced `CommandBase` into save/restore dances around nested calls; all of that is gone.
+`DefaultProgram.RunAsync()` *returns* the exit code, so the same commands can run in a host that
+outlives any one of them.
+
+`OnExecute(CancellationToken)` takes a token: pass it to anything that accepts one and check it
+between units of work. `ExecuteAsync` converts an `OperationCanceledException` into
+`CommandResult.Cancelled()` when the token was the cause, so cancelling *this command* does not have
+to mean stopping the process.
+
+### Request vs Context
+`CommandExecutionInfo` is the *context* — ambient `Options`, `Configuration`, and the framework's
+`NestingDepth`. What was asked for lives on `CommandExecutionInfo.Request`, a **`CommandCallRequest`**
+holding `CommandName` (the real name), `RequestedName` (what was typed — the alias, if one was used),
+`WasMatchedByAlias`, and `Arguments`.
+
+The request is built, never mutated: alias resolution used to assign `CommandName` in place, which
+destroyed the only record of what the user wrote. `ExecutionInfo.CommandName` and
+`ExecutionInfo.Arguments` still read, forwarding to the request, so command code doesn't have to
+change all at once — but they are **get-only**, so anything that assigned them fails to compile.
 
 ### Calling Commands From Commands
-`CommandBase.CreateCommand<T>()`, `ExecuteCommand<T>()` (sync) and `ExecuteCommandAsync<T>()` (async)
-instantiate and run another command in process and return the instance so results can be read off it.
+`CommandBase.CreateCommand<T>()` and `ExecuteCommandAsync<T>()` instantiate and run another command
+in process and return the instance so results can be read off it.
 Expose results as public properties set in `OnExecute()`.
 - The child shares the caller's `Options`, `Configuration` and `_OutputProvider`, and runs quiet by default.
 - Validation failure **throws** `KnownException` rather than printing usage — an in-process caller
   needs to know the command didn't run.
-- `Environment.ExitCode` is saved/restored around the call so a child can't set the process exit code.
 - `CommandExecutionInfo.NestingDepth` guards against A→B→A loops (`MaxCommandNestingDepth`).
+- There is no `ExecuteCommand<T>` any more — one base class means one method, `ExecuteCommandAsync<T>`.
+- Arguments are supplied through **`CommandArgumentValues`** (`Set(name, value)` overloads for
+  string/int/bool/DateTime, `SetFlag(name)`), not a raw `Dictionary<string, string>` — every caller
+  used to format its own values and got dates and booleans subtly wrong.
 
 ### Configuration
 `FromConfig()` arguments read from a stored config file, managed by built-in commands
-`set-configuration`, `get-configuration`, `remove-configuration` (enabled via
-`ICommandProgramOptions.UsesConfiguration`). `CommandsApp.ConfigureConfiguration()` adds custom
+`set-configuration`, `get-configuration`, `remove-configuration`, `check-configuration` (enabled via
+`ICommandProgramOptions.UsesConfiguration`).
+
+A required `FromConfig()` argument with no value from either place fails **validation** with
+`ValidationFailureKind.MissingConfiguration` and a message naming the exact `set-configuration`
+call — not a generic "not valid or missing", and emphatically not an exception from a lazy config
+getter part way through `OnExecute()` after validation already passed.
+
+`check-configuration` is the doctor: it reflects over every command's arguments, lists each
+`FromConfig()` value, whether it's set, and which commands read it. Free once arguments declare
+they read from config — the same declaration drives both. `--missingonly` narrows it; `IsComplete`
+and `Requirements` are readable when the command is run in process. `CommandsApp.ConfigureConfiguration()` adds custom
 `IConfiguration` sources. Config-sourced args print in a separate `** CONFIGURATION **` section of usage output.
 
 ### Validation
 `CommandBase.Validate()` calls `SetValuesFromExecutionInfo()` first (config values, then command line
-on top), then validates each argument. `StrictArgumentValidation` (off by default) makes unrecognized
-command-line arguments fail validation via `ArgumentCollection.UnrecognizedKeys`.
+on top), then validates each argument, then checks the rules. It returns
+`List<ValidationFailure>` — **not** `List<IArgument>`, because not every failure is about an
+argument the command defines. (The proof that the old shape was too narrow was `UnknownArgument`, a
+fake `IArgument` invented to stand for one that wasn't; it's deleted.) `ValidationFailure.Kind` is
+`InvalidArgument` / `UnknownArgument` / `RuleViolated`.
+
+`StrictArgumentValidation` (off by default) makes unrecognized command-line arguments fail
+validation via `ArgumentCollection.UnrecognizedKeys`.
+
+### Argument Rules
+Rules are about the *combination* of values, and are **declarative** rather than a callback so the
+schema carries them and a form can apply them as it's being filled in:
+
+```csharp
+args.ExactlyOneOf("token", "windowsauth");
+args.AtLeastOneOf("name", "id");
+args.MutuallyExclusive("quiet", "verbose");
+args.RequiredTogether("username", "password");
+args.When("mode", "advanced").Require("level").Forbid("simpleflag");
+```
+
+- `When(...)` with no value means "whenever this argument is supplied at all". `Require` and
+  `Forbid` build **one** rule, not two, whichever order they're called in.
+- A boolean flag explicitly set to `false` does **not** count as supplied — `/windowsauth:false` is
+  not a choice of Windows auth.
+- Rules are checked **only when every individual argument is already valid** — a rule about a
+  combination has nothing useful to say while a value is still nonsense.
+- Zero vs. several produce different messages for `ExactlyOneOf`; that difference is most of the
+  value.
+- They print in an `** RULES **` section of usage output, and travel in the schema as
+  `CommandInfo.Rules` (`ArgumentRuleInfo`: flat, switch on `RuleType`). cmdui mirrors them as
+  `ToolArgumentRuleInfo`.
 
 ### Usage Output
 `CommandBase.DisplayUsage(StringBuilder)` builds the per-command usage text. Argument names are
-padded to a shared column width and descriptions are line-wrapped against `Console.WindowWidth`
-(60 when output is redirected) via `LineWrapUtilities`. It is called from two places: the `--help`
+padded to a shared column width and descriptions are line-wrapped against
+**`ITextOutputProvider.Width`** via `LineWrapUtilities` — the provider knows where the output is
+going, and the console window is the wrong number inside a TUI pane or a web page (and reading it
+from a process with no console throws). `ConsoleTextOutputProvider.Width` is the window width, or
+`CommandFrameworkConstants.DefaultOutputWidth` (60) when redirected or unavailable;
+`StringBuilderTextOutputProvider.Width` is settable so a test can pin the wrapping. It is a default
+interface member, so an existing provider reports the default. It is called from two places: the `--help`
 path (before values are set) and `OnValidationFailure` (after values are set) — which is exactly why
 defaults must be recorded separately rather than read off `Value`.
 
@@ -139,18 +376,196 @@ Arguments with a configured default get a `(default: value)` line of their own, 
 with the description column. Whitespace-only defaults are suppressed.
 
 ### Output
-Commands use `WriteLine()` which goes through `ITextOutputProvider`. `ConsoleTextOutputProvider` for console, `StringBuilderTextOutputProvider` for testing/capturing.
+Three channels, following the convention every other CLI uses:
+
+| Channel | Method | Console destination | Quiet mode |
+|---|---|---|---|
+| result | `WriteLine()` / `Write()` | stdout | suppressed *(v4 behavior; OUT-1 defers the redefinition to v5)* |
+| status | `WriteStatus()` | stderr | suppressed |
+| error | `WriteError()` | stderr | **never** suppressed |
+
+Keeping them apart is what lets output be piped: a command that grows a `--json` flag emits invalid
+JSON the moment anything else writes to the same stream. `DefaultProgram`'s `catch (KnownException)`
+now writes to the error channel, so a failed command piping `--json` to a file no longer lands its
+error text inside the JSON.
+
+`WriteStatus()` / `WriteError()` are **default interface members** on `ITextOutputProvider` that fall
+back to `WriteLine()`, so a provider written before the split keeps working and keeps everything on
+one channel. `ConsoleTextOutputProvider` overrides them to `Console.Error`.
+`StringBuilderTextOutputProvider` buffers each channel separately: `GetOutput()` still returns
+everything in write order (what every existing test asserts on), and `GetResultOutput()` /
+`GetStatusOutput()` / `GetErrorOutput()` give the separated views.
+
+Writing to stderr does not fail a build by default — GitHub Actions goes by exit code, and Azure
+DevOps `Bash@3` / `PowerShell@2` both default `failOnStderr: false`. The hazard is opt-in.
+
+### Progress
+`CommandBase.ReportProgress(message, current?, total?)` and `CommandBase.Progress` (an
+`IProgress<CommandProgress>`, so it can be handed to any API that takes one). Reports go to the
+**diagnostic channel**, which is why a progress display survives `2>/dev/null` and never lands
+inside a redirected result. Suppressed by quiet mode — progress is commentary.
+
+`ConsoleTextOutputProvider` redraws one line in place with `\r`, but **only when stderr is a
+terminal**; redirected, each report becomes an ordinary status line, or piping to a file fills it
+with carriage-return spam. It tracks an unfinished progress line and ends it before anything else is
+written. `StringBuilderTextOutputProvider.ProgressReports` records the reports so a test asserts on
+*what* was reported rather than how it was drawn.
+
+`ReportProgress` on `CommandBase` writes straight through rather than through the `Progress<T>`
+instance: `Progress<T>` posts to the synchronization context, so a command that reports and then
+immediately finishes would race its own output.
+
+### Reserved Keywords
+`ReservedKeywords` is the single source for the names the framework claims — it backs both the
+usage output that lists them and the argument validation that skips them (`ArgumentCollection`).
+`ForCommands` (`--help`, `--quiet`) prints as an `** ALSO AVAILABLE **` section in per-command usage;
+`ReservedKeyword.IsArgument` says whether a name takes the argument prefix — `gui` and `completion`
+are commands and are typed bare, `quiet` is an argument and renders as `--quiet` or `/quiet`;
+`ForPrograms` (`--help`, `--json`, `gui`) prints as `Also available:` under the command list. Before
+this they appeared nowhere, since usage output only ever listed a command's own arguments.
+
+### Input
+`ITextInputProvider` is the counterpart to `ITextOutputProvider` and hangs off
+`ICommandProgramOptions.InputProvider` — *not* the constructor, which is a hardcoded two-arg
+reflection contract in two places. `ConsoleTextInputProvider` for real use;
+`QueuedTextInputProvider` queues answers for tests (`ReadCount` / `RemainingLineCount` let a test
+assert how many times a command prompted). It returns `null` once the queue is empty, which is what
+`Console.ReadLine()` returns at end of input.
+
+`CommandBase` exposes `ReadLine()`, `Prompt(text)` (writes without a newline, trims the answer) and
+`PromptForYesNo(text, defaultAnswer)`. `DefaultProgram`'s cmdui install prompt goes through the same
+provider. On `ICommandProgramOptions` the member is a get-only default interface member so adding it
+broke no implementor; `DefaultProgramOptions` declares it settable.
 
 ### Data Formatting
 `DataFormatting/` has `CsvReader`, `CsvWriter`, `CsvRow`, and `TableFormatter` /
 `TableColumnDefinition` for tabular console output.
 
+### Bootstrapping
+`CommandsApp.RunAsync(args)` is the whole of Program.cs for a tool with no DI or configuration
+setup: commands come from the entry assembly, and `ApplicationName` / `Version` / `Website` come
+from that assembly's metadata (`AssemblyTitle` → `AssemblyProduct` → simple name; informational
+version with the `+sha` suffix trimmed, then file version; `AssemblyMetadata` named
+`PackageProjectUrl` / `RepositoryUrl` / `Website`, none of which the SDK emits by default).
+`RunAsync<T>(args)` is the same when the commands live in another assembly.
+
+`Create(args)` (entry assembly) and `WithAppInfoFromAssembly()` expose the same defaults to the
+fluent builder; the latter never overwrites a value that was already set. `DisplayUsage()` skips
+a header line whose value is blank, so an unset website does not print as an empty line.
+
+Note that `GetCommand()` builds a `FileBasedConfigurationManager` from `ConfigurationFolderName`
+regardless of `UsesConfiguration`, and that throws on a blank name — so a builder-configured app
+still needs an `ApplicationName` even with configuration turned off.
+
 ### Dependency Injection
-`DependencyInjectionCommand` base class plus `CommandsApp` fluent setup for registering services into
-the command's `IServiceProvider`. The provider is built once on first use and cached on
-`ICommandProgramOptions.ServiceProvider`, so all commands in a process share it (singletons really are
-singletons). Each command creates its own `IServiceScope`; `DependencyInjectionCommand` implements
-`IDisposable` to release it.
+Commands are created through `ActivatorUtilities.CreateInstance`, so **any command can declare the
+services it needs as constructor parameters** after `CommandExecutionInfo` and `ITextOutputProvider`.
+`GetRequiredService<T>()` lives on `CommandBase` as the escape hatch. `DependencyInjectionCommand` is
+`[Obsolete]` and adds nothing — absorbing it cost nothing because the scope is created lazily.
+
+The provider is built once by `CommandFrameworkUtilities.GetServiceProvider()` and cached on
+`ICommandProgramOptions.ServiceProvider`, so singletons really are singletons. A program that
+registered nothing still gets an (empty) provider, so activation is one code path.
+
+**Scope ownership belongs to the runner.** `CommandAttributeUtility.CreateInstance` creates a scope,
+activates the command in it, and hands ownership to the command; `DefaultProgram` disposes the
+command (`using`) when it is done. Nothing used to dispose a command at all, so the scope was never
+released. A command started by `ExecuteCommandAsync<T>` **shares the caller's scope and does not own
+it** — a call chain that is logically one operation should see one set of scoped services.
+
+**The schema path is deliberately laxer than the run path.** `--json` instantiates every command, so
+`CreateInstanceForSchema()` fills an unresolvable constructor dependency with `null` instead of
+throwing — otherwise one command with a missing registration takes down the whole dump and cmdui with
+it. That is safe because `GetArguments()` *cannot* depend on injected state: `CommandBase`'s
+constructor calls it, which runs before any derived field is assigned.
+
+**Per-assembly registration is `IServiceRegistrar`**, not a per-command hook. Implement it (public
+parameterless constructor), and `CommandsApp` finds it during the registry scan and calls it before
+building the provider. It has to be a startup hook: `Microsoft.Extensions.DependencyInjection` seals
+registrations at `BuildServiceProvider()` and the provider is cached, so a registration hook on the
+command would compile, run, and silently do nothing.
+
+### Terminal UI
+`tui` runs an in-process TUI. Unlike `gui`, which shells out to the separately installed
+`cmdui`, TUI support is a **compile-time reference**: a tool adds
+`Benday.CommandsFramework.Tui` and calls `.WithTui()` on the `CommandsApp` builder. So `tui`
+on a tool that did not do that says what the author has to add rather than offering to install
+anything — no runtime install can supply a reference.
+
+The core package must **not** grow a dependency on a rendering library, so what core holds is
+`ITuiHost` (one method, `RunAsync(ICommandProgram, CancellationToken)`) plus
+`ICommandProgramOptions.TuiHost` (a default interface member, null by default, settable on
+`DefaultProgramOptions`) and the dispatch in `DefaultProgram.RunAsync`. Everything else lives
+in the TUI package.
+
+`WithTui()` is an extension on `CommandsApp` in the TUI package that goes through the public
+`ConfigureOptions()` — `CommandsApp`'s options field is private, so there is nothing else it
+could do.
+
+Inside the package, **every decision lives in `Model/` and nothing there renders**
+(`TuiSession`, `TuiCommandBrowser`, `TuiField`, `TuiCommandForm`, `TuiCommandLine`,
+`FuzzyMatch`). `Screens/` and `SpectreTuiHost` are the thin Spectre.Console layer and take an
+`IAnsiConsole`, so tests drive them with `Spectre.Console.Testing.TestConsole`. If a test
+needs a terminal, the logic is in the wrong layer.
+
+`TuiSession.Create()` goes through `CommandAttributeUtility.GetRegistry()`, which caches onto
+`ICommandProgramOptions.CommandRegistry` — the **browser instantiates no commands** and costs
+about what `--complete` costs, not what `--json` costs. `TuiCommandForm.Open()` is the only
+place a command is created; it goes through the ordinary `GetCommand()` run path so the
+instance the form edits is the instance that would run, and it **owns the DI scope**, which is
+why it is `IDisposable` and why the host wraps it in `using`.
+
+The host must not prompt unless `IAnsiConsole.Profile.Capabilities.Interactive` is true.
+Redirected — a test, a pipe, a CI log — there is no input coming and the tool would hang
+forever; there it prints the command tree and stops.
+
+**Widget selection checks `AllowedValues` before `DataType`** (`TuiField.GetWidget`), because
+a file argument derives from `StringArgument` and can carry a list. `PathType` — not
+`DataType` — is what tells a path from a string.
+
+**The command-line preview goes through `ArgumentSyntaxFormatter`**, so it follows whichever
+syntax the tool declared. `GetDisplayText()` uses the spaced form a person types;
+`GetCommandLineTokens()` uses `FormatNameValueAsSingleToken` so a value with spaces survives
+being one element of an argument array. Positional values are written without their names, in
+position order — the position lives only in the `POSITION_n` alias.
+
+**`CommandBase.ValidateArguments()`** is the public wrapper around the protected `Validate()`,
+added for exactly this: a form has to ask what is wrong before anything runs. It is safe to
+call on every keystroke — the first call applies config and command-line values, and
+`SetValuesFromExecutionInfo()` is a no-op afterwards, so a typed value is never overwritten.
+A command's `Arguments` are **empty until it is validated**, which is why the form validates
+once when it opens.
+
+**Running a command builds a new one.** `TuiCommandRunner` takes
+`TuiCommandForm.GetCommandLineTokens()` back through `GetCommand()` rather than running the
+instance the form edits. One extra instantiation buys a per-run DI scope that is disposed when
+the run ends, and it makes the preview verifiable rather than decorative — what runs is what
+the preview says, parsed by the parser that would have parsed it had it been typed.
+
+**A command is handed its output provider when it is built**, from the options it is built
+with, so `TuiProgramOptions` wraps the tool's options and swaps `OutputProvider` /
+`InputProvider`. Everything else **forwards** rather than being copied: `CommandRegistry` and
+`ServiceProvider` are caches, and a second service provider means singletons that are not.
+
+`TuiTextOutputProvider` collects the three channels in **write order** — one pane, because
+someone watching a command wants chronology — and announces each line as it is written so a
+display draws it as it arrives. `Write()` with no line ending is held as a partial line: that
+is how `CommandBase.Prompt()` writes its question, and `TuiTextInputProvider.ReadLine()` takes
+that text as the prompt's label. A result line absorbs a pending partial line; anything on
+another channel ends it first and stays on its own channel. `Width` is the pane, which is the
+whole reason `ITextOutputProvider.Width` exists.
+
+**The runner catches every exception**, which `DefaultProgram` deliberately does not — the
+process here is an interface with a screen full of work in it, so a command that throws costs
+the user that command. `KnownException` becomes `CommandResult.Failed`, an unexpected
+exception becomes `Failed` plus `TuiRunResult.Exception`, and cancellation is
+`CommandResult.Cancelled` rather than a failure. Nothing assigns `Environment.ExitCode`.
+
+Ctrl-C cancels the **command**, not the interface; a second press within the same run is left
+to the runtime, which ends the process. Progress is redrawn in place only on a terminal —
+redirected, each report is an ordinary line, the same rule `ConsoleTextOutputProvider`
+follows. Prompting requires `Interactive`; with no reader, `ReadLine()` returns null, which is
+what `Console.ReadLine()` returns at end of input.
 
 ## CmdUI Project
 `cmdui` is a schema-driven Blazor Server app that auto-generates a web UI for any CommandsFramework tool:
@@ -168,6 +583,13 @@ are hand-maintained mirrors of `CommandInfo` / `IArgument`. Deserialization igno
 properties, so adding a property to the framework schema does **not** break cmdui — it silently goes
 missing in the UI. When adding anything to `IArgument` or `CommandInfo`, add the matching property here
 too.
+
+`ToolSchemaDocument.ArgumentSyntax` defaults to **`"Slash"`**, not to the framework's own default.
+A schema without the property came from a tool that predates the POSIX syntax and only accepts
+slash; guessing `"Both"` would build command lines that older tools cannot parse.
+`ParseSchema` forces it to `"Slash"` for any schema below version 3, and
+`CommandExecutionService` reads it to decide which form to emit — cmdui drives *other* tools, so
+the syntax is the tool's to declare, not cmdui's to choose.
 
 `CommandInfo` exposes the two alias kinds separately: `Aliases` (plain renames from
 `CommandAttribute.Aliases`) and `CommandAliases` (a `List<CommandAliasInfo>` for `[CommandAlias]`

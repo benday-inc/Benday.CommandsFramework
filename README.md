@@ -20,6 +20,7 @@ Let us know by submitting an [issue](https://github.com/benday-inc/Benday.Comman
 ## Features
 
 - Named commands with descriptions and categories
+- POSIX argument syntax — `--name value`, `--name=value`, `--name:value`, `-n value` and `--flag`
 - Typed arguments: `String`, `Boolean`, `Int32`, `DateTime`, `File`, `Directory`
 - Fluent argument definition API with required/optional, default values, and allowed values
 - Automatic argument parsing and validation
@@ -32,6 +33,7 @@ Let us know by submitting an [issue](https://github.com/benday-inc/Benday.Comman
 - Async command support
 - `--json` schema output for tooling integration
 - `gui` command to launch a web UI via [Benday.CommandsFramework.CmdUi](https://www.nuget.org/packages/Benday.CommandsFramework.CmdUi/)
+- `tui` command for an in-process terminal UI via [Benday.CommandsFramework.Tui](https://www.nuget.org/packages/Benday.CommandsFramework.Tui/)
 
 ## Table of Contents
 
@@ -41,6 +43,7 @@ Let us know by submitting an [issue](https://github.com/benday-inc/Benday.Comman
   - [2. Set Up Program.cs](#2-set-up-programcs)
   - [3. Run It](#3-run-it)
 - [Argument Types](#argument-types)
+  - [Argument Syntax](#argument-syntax)
   - [Positional Arguments](#positional-arguments)
   - [Argument Aliases](#argument-aliases)
   - [Friendly Names](#friendly-names)
@@ -56,11 +59,20 @@ Let us know by submitting an [issue](https://github.com/benday-inc/Benday.Comman
   - [Config-Backed Arguments](#config-backed-arguments)
 - [Dependency Injection](#dependency-injection)
 - [Async Commands](#async-commands)
+- [CommandsApp Builder Reference](#commandsapp-builder-reference)
+- [Stored Configuration](#stored-configuration)
+- [Finding a Value Instead of Asking for It](#finding-a-value-instead-of-asking-for-it)
+- [Argument Rules](#argument-rules)
+- [Multi-level Commands](#multi-level-commands)
+- [Output Channels](#output-channels)
+- [Reporting Progress](#reporting-progress)
+- [Prompting for Input](#prompting-for-input)
+- [Shell Completion](#shell-completion)
+- [Terminal UI](#terminal-ui)
 - [Data Formatting Utilities](#data-formatting-utilities)
   - [TableFormatter](#tableformatter)
   - [CsvReader](#csvreader)
   - [CsvWriter](#csvwriter)
-- [CommandsApp Builder Reference](#commandsapp-builder-reference)
 - [Built-in Keywords](#built-in-keywords)
 - [About](#about)
 
@@ -74,7 +86,9 @@ dotnet add package Benday.CommandsFramework
 
 ### 1. Create a Command
 
-Commands inherit from `SynchronousCommand`, `AsynchronousCommand`, or `DependencyInjectionCommand`. Use the `[Command]` attribute to define the command name and description.
+Commands inherit from `Command` (or `DependencyInjectionCommand` when they need dependency injection). Use the `[Command]` attribute to define the command name and description.
+
+There is one base class. A command whose work is sequential returns `Task.CompletedTask`; anything that touches the network needs an async environment anyway.
 
 ```csharp
 using Benday.CommandsFramework;
@@ -82,7 +96,7 @@ using Benday.CommandsFramework;
 [Command(Name = "greet",
     Description = "Says hello to someone",
     Category = "Demo")]
-public class GreetCommand : SynchronousCommand
+public class GreetCommand : Command
 {
     public GreetCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider)
         : base(info, outputProvider) { }
@@ -97,38 +111,66 @@ public class GreetCommand : SynchronousCommand
         return args;
     }
 
-    protected override void OnExecute()
+    protected override Task OnExecute(CancellationToken cancellationToken)
     {
         var name = Arguments.GetStringValue("name");
         var loud = Arguments.GetBooleanValue("loud");
 
         var message = $"Hello, {name}!";
         WriteLine(loud ? message.ToUpper() : message);
+
+        return Task.CompletedTask;
     }
 }
 ```
 
 ### 2. Set Up Program.cs
 
-Use the `CommandsApp` builder to configure and run your CLI app. Pass any command type from your assembly to `Create<T>()` — the framework discovers all `[Command]`-attributed classes in that assembly.
+The whole of Program.cs can be one line. Commands are discovered in the entry assembly, and
+the application name, version and website come from that assembly's own metadata.
 
 ```csharp
 using Benday.CommandsFramework;
 
-CommandsApp
+return await CommandsApp.RunAsync(args);
+```
+
+`RunAsync` returns the exit code and also sets `Environment.ExitCode`, so a
+`static async Task<int> Main` works either way.
+
+When your commands live in a different assembly than the executable, name any type from that
+assembly:
+
+```csharp
+await CommandsApp.RunAsync<GreetCommand>(args);
+```
+
+Use the `CommandsApp` builder when you need to configure anything — dependency injection,
+configuration sources, or how usage is displayed. Pass any command type from your assembly to
+`Create<T>()` — the framework discovers all `[Command]`-attributed classes in that assembly.
+
+```csharp
+using Benday.CommandsFramework;
+
+return await CommandsApp
     .Create<GreetCommand>(args)
     .WithAppInfo("My CLI Tool", "https://www.example.com")
     .WithVersionFromAssembly()
-    .Run();
+    .RunAsync();
 ```
+
+`Create(args)` with no type argument does the same thing using the entry assembly, and
+`WithAppInfoFromAssembly()` fills in whichever of name, version and website you have not set
+yourself. A value that is never set is simply left out of the usage header rather than printing
+as a blank line.
 
 ### 3. Run It
 
 ```bash
-dotnet run -- greet /name:World
+dotnet run -- greet --name World
 # Output: Hello, World!
 
-dotnet run -- greet /name:World /loud
+dotnet run -- greet --name World --loud
 # Output: HELLO, WORLD!
 
 dotnet run -- greet --help
@@ -161,9 +203,71 @@ public override ArgumentCollection GetArguments()
 }
 ```
 
-Arguments are passed on the command line using `/name:value` syntax. Boolean flags with `AllowEmptyValue()` can be passed as just `/name` (presence means `true`).
+### Argument Syntax
 
-Argument names are matched without regard to case, so `/verbose`, `/Verbose`, and `/VERBOSE` all reach the same argument. Argument *values* keep their case — only names are case-insensitive.
+Arguments use the POSIX long option form that git, docker, the dotnet CLI and anything built on
+`System.CommandLine` use. A value can be separated from its name by a space, an `=` or a `:` —
+all three are equivalent:
+
+```bash
+mytool deploy --environment production
+mytool deploy --environment=production
+mytool deploy --environment:production
+```
+
+A boolean argument declared with `AllowEmptyValue()` is a flag, and is typed on its own:
+
+```bash
+mytool deploy --verbose
+```
+
+An argument alias can be typed with a single dash, which is how you get short options:
+
+```csharp
+args.AddString("environment").WithAlias("e");
+```
+
+```bash
+mytool deploy -e production
+mytool deploy -e=production
+```
+
+Everything after a bare `--` is a value rather than an option, which is how you pass a value
+that starts with a dash:
+
+```bash
+mytool commit -- --not-an-option
+```
+
+Argument names are matched without regard to case, so `--verbose`, `--Verbose`, and `--VERBOSE`
+all reach the same argument. Argument *values* keep their case — only names are
+case-insensitive.
+
+#### The deprecated `/name:value` syntax
+
+Before v5.1 the only syntax was `/name:value`, with `/name` for flags. It still parses, and
+using it prints a deprecation warning on the diagnostic channel. Select what your tool accepts
+with `ArgumentSyntax`:
+
+```csharp
+var options = new DefaultProgramOptions
+{
+    ArgumentSyntax = ArgumentSyntax.Both   // the default
+};
+```
+
+| Value | Accepts | Renders | Warns |
+|---|---|---|---|
+| `Both` (default) | POSIX and slash | POSIX | on a slash argument |
+| `Posix` | POSIX only | POSIX | n/a |
+| `Slash` | slash only | slash | no |
+
+Usage output, shell completion and validation messages all render whichever syntax the program
+accepts, so a tool never tells you to type something its parser will reject. Set
+`WarnOnDeprecatedArgumentSyntax = false` to keep existing scripts quiet while you migrate them.
+
+The syntax a tool accepts travels in the `--json` schema as `ArgumentSyntax`, which is how
+`cmdui` knows how to build a command line for it.
 
 ### Positional Arguments
 
@@ -191,13 +295,13 @@ public override ArgumentCollection GetArguments()
 
 ```bash
 mytool copy input.txt output.txt
-mytool copy input.txt output.txt /overwrite
+mytool copy input.txt output.txt --overwrite
 ```
 
 Named arguments do not consume positions, so they can appear anywhere in the command line without shifting the positional values:
 
 ```bash
-mytool copy /overwrite input.txt output.txt   # source=input.txt, destination=output.txt
+mytool copy --overwrite input.txt output.txt   # source=input.txt, destination=output.txt
 ```
 
 Unix style paths are handled correctly. A value like `/home/user/data.txt` contains more than one slash and no colon, so it is treated as a positional value rather than as an argument name.
@@ -220,8 +324,8 @@ args.AddString("environment").AsRequired()
 ```
 
 ```bash
-mytool deploy /environment:production
-mytool deploy /env:production            # same thing
+mytool deploy --environment production
+mytool deploy --env production            # same thing
 ```
 
 The real argument name is matched first, so an alias can never shadow another argument's name.
@@ -276,9 +380,9 @@ deploy --help
 
 ** USAGE **
 deploy
-/environment:String - environment to deploy to
-[/thing:String]     - thing to deploy
-                      (default: the-usual-thing)
+--environment <String> - environment to deploy to
+[--thing <String>]     - thing to deploy
+                        (default: the-usual-thing)
 ```
 
 The default is also reported when a command fails validation, and it always shows the configured default rather than whatever was typed on the command line. Defaults are exposed on `IArgument.DefaultValue` and `IArgument.HasDefaultValue`, and are included in the `--json` schema output.
@@ -293,7 +397,7 @@ Use `Aliases` on the `[Command]` attribute to give a command extra names. This i
 [Command(Name = "generate-project-scaffolding",
     Aliases = new[] { "gps", "scaffold" },
     Description = "Generates project scaffolding")]
-public class GenerateScaffoldingCommand : SynchronousCommand
+public class GenerateScaffoldingCommand : Command
 ```
 
 ```bash
@@ -316,12 +420,12 @@ Use `[CommandAlias]` to create a shortcut for a command that is usually run with
     Description = "Deploy to production with verbose output")]
 [CommandAlias("deploy-dev", "environment=development",
     Description = "Deploy to development")]
-public class DeployCommand : SynchronousCommand
+public class DeployCommand : Command
 ```
 
 ```bash
 mytool deploy-prod                          # environment=production, verbose=true
-mytool deploy-prod /environment:staging     # environment=staging, verbose=true
+mytool deploy-prod --environment staging     # environment=staging, verbose=true
 ```
 
 The values are applied as though they had been typed on the command line, so anything actually supplied on the command line wins over them. The full order of precedence is:
@@ -332,9 +436,9 @@ A command can have as many `[CommandAlias]` attributes as you like. They are lis
 
 ```
 Command aliases:
-deploy-dev  - Deploy to development (deploy /environment:development)
+deploy-dev  - Deploy to development (deploy --environment development)
 deploy-prod - Deploy to production with verbose output (deploy
-              /environment:production /verbose)
+              --environment production --verbose)
 ```
 
 Nothing validates aliases automatically. Call `CommandAttributeUtility.GetCommandNameProblems()` from a unit test to catch duplicate command names, aliases that collide with a command name or with a reserved keyword, aliases claimed by two commands, and empty aliases:
@@ -351,13 +455,13 @@ public void NoCommandNameProblems()
 
 ## Reusing Command Logic
 
-A command can run another command in process rather than shelling out to the command line. Use `ExecuteCommand<T>()` for synchronous commands and `ExecuteCommandAsync<T>()` for async ones. Both return the command instance so you can read results back off it.
+A command can run another command in process rather than shelling out to the command line. Use `ExecuteCommandAsync<T>()`, which returns the command instance so you can read results back off it.
 
 Expose whatever the caller needs as public properties set in `OnExecute()`:
 
 ```csharp
 [Command(Name = "greeting", Description = "Builds a greeting for a person")]
-public class GreetingCommand : SynchronousCommand
+public class GreetingCommand : Command
 {
     public GreetingCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider)
         : base(info, outputProvider) { }
@@ -371,17 +475,19 @@ public class GreetingCommand : SynchronousCommand
         return args;
     }
 
-    protected override void OnExecute()
+    protected override Task OnExecute(CancellationToken cancellationToken)
     {
         Greeting = $"Hello, {Arguments.GetStringValue("name")}!";
         WriteLine(Greeting);
+
+        return Task.CompletedTask;
     }
 }
 ```
 
 ```csharp
 [Command(Name = "greet-everybody", Description = "Greets several people")]
-public class GreetEverybodyCommand : SynchronousCommand
+public class GreetEverybodyCommand : Command
 {
     public GreetEverybodyCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider)
         : base(info, outputProvider) { }
@@ -393,14 +499,15 @@ public class GreetEverybodyCommand : SynchronousCommand
         return args;
     }
 
-    protected override void OnExecute()
+    protected override async Task OnExecute(CancellationToken cancellationToken)
     {
         var names = Arguments.GetStringValue("names")
             .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
         foreach (var name in names)
         {
-            var command = ExecuteCommand<GreetingCommand>(args => args["name"] = name);
+            var command = await ExecuteCommandAsync<GreetingCommand>(
+                args => args["name"] = name, cancellationToken: cancellationToken);
 
             WriteLine(command.Greeting);
         }
@@ -413,7 +520,7 @@ Things worth knowing:
 - The command that gets run shares the calling command's program options, configuration, and output provider.
 - It runs in **quiet mode** by default, which suppresses its `WriteLine()` output so it does not write over the calling command's output. Pass `quiet: false` to let it write.
 - A validation failure **throws** a `KnownException` instead of printing usage information. Running a command from the command line prints usage and returns, which would leave the calling command with no way of knowing that the command never ran.
-- The process exit code is left alone. A command that gets run this way cannot decide the exit code for the process.
+- The process exit code is left alone — nothing below the console entry point touches it. A command reports how it went by returning a `CommandResult`.
 - `CreateCommand<T>()` builds the command without running it, if you need to inspect or configure it first.
 - Commands nested more than `CommandFrameworkConstants.MaxCommandNestingDepth` levels deep throw, so an accidental "A calls B calls A" loop produces a clear error rather than a stack overflow.
 
@@ -554,8 +661,12 @@ public class FetchCommand : AsynchronousCommand
 
 | Method | Description |
 |--------|-------------|
+| `RunAsync(args)` | **Static.** Create, configure from assembly metadata, and run in one call |
+| `RunAsync<TCommand>(args)` | **Static.** Same, with commands discovered in the assembly containing `TCommand` |
 | `Create<TCommand>(args)` | Create builder, discover commands from the assembly containing `TCommand` |
+| `Create(args)` | Create builder, discover commands from the entry assembly |
 | `Create(args, assembly)` | Create builder with explicit assembly |
+| `WithAppInfoFromAssembly()` | Fill in name, version and website from assembly metadata, leaving anything already set alone |
 | `WithAppInfo(name, website)` | Set application name and website |
 | `WithAppInfo(name, version, website)` | Set application name, version, and website |
 | `WithVersion(version)` | Set version string |
@@ -569,8 +680,393 @@ public class FetchCommand : AsynchronousCommand
 | `ConfigureOptions(action)` | Configure `DefaultProgramOptions` directly |
 | `ConfigureUsageDisplay(action)` | Configure how usage/help is displayed |
 | `UsesConfiguration(bool)` | Enable/disable built-in configuration storage |
-| `Run()` | Build and run the application |
-| `RunAsync()` | Build and run the application asynchronously |
+| `Run()` | Build and run the application, returning the exit code |
+| `RunAsync(cancellationToken)` | Build and run the application asynchronously, returning the exit code |
+
+## Stored Configuration
+
+An argument can read its value from the tool's stored configuration, so a user supplies it
+once instead of on every command line:
+
+```csharp
+args.AddString("api-key").AsRequired().FromConfig()
+    .WithDescription("API key");
+```
+
+```bash
+mytool set-configuration --name api-key --value abc123
+```
+
+Command line beats configuration, so a stored value can always be overridden for one run.
+
+If a required value is in neither place, that is a **validation** failure with a message that
+says exactly what to do — rather than an exception thrown part way through the command:
+
+```
+$ mytool api-call
+** INVALID ARGUMENT **
+api-key is required. Supply it with --api-key value, or store it once with:
+set-configuration --name api-key --value value
+```
+
+`check-configuration` reports what the whole tool needs and whether it is set:
+
+```
+$ mytool check-configuration
+api-key - NOT SET (required)
+    used by: api-call, api-upload
+    set it with: set-configuration --name api-key --value value
+base-url - set (required)
+    used by: api-call, api-upload
+```
+
+Add `--missingonly` to see only what is missing.
+
+## Finding a Value Instead of Asking for It
+
+When a value can usually be worked out, let the framework find it and only insist when it
+cannot:
+
+```csharp
+args.AddFile("solution")
+    .DiscoverSingleMatch("*.sln")
+    .AsRequired()
+    .WithDescription("Solution file. Found automatically when there is exactly one here.");
+```
+
+```
+$ mytool build                    # one .sln here, so it is used
+$ mytool build                    # none here
+solution was not supplied and no files matching '*.sln' were found in /work.
+Supply it with --solution value.
+
+$ mytool build                    # three of them
+solution was not supplied and 3 files match '*.sln' in /work: a.sln, b.sln, c.sln.
+Supply it with --solution value to choose one.
+```
+
+Finding nothing and finding several are different situations and say different things, because
+they call for different things from you.
+
+The search runs when the command is validated, never when its arguments are declared — so
+`--json` does not glob the disk once per command every time something asks for the schema. It
+is a last resort: anything supplied on the command line, by an alias, from configuration, or as
+a default wins.
+
+## Argument Rules
+
+Some requirements are about the *combination* of arguments rather than any one of them.
+Declare them and the framework enforces them, prints them in the usage output, and ships them
+in the schema:
+
+```csharp
+public override ArgumentCollection GetArguments()
+{
+    var args = new ArgumentCollection();
+
+    args.AddString("token").AsNotRequired().WithDescription("Personal access token");
+    args.AddBoolean("windowsauth").AsNotRequired().AllowEmptyValue();
+    args.AddString("username").AsNotRequired();
+    args.AddString("password").AsNotRequired();
+
+    args.ExactlyOneOf("token", "windowsauth");
+    args.RequiredTogether("username", "password");
+    args.When("mode", "advanced").Require("level").Forbid("simpleflag");
+
+    return args;
+}
+```
+
+| Rule | Meaning |
+|------|---------|
+| `ExactlyOneOf(...)` | Exactly one has to be supplied |
+| `AtLeastOneOf(...)` | At least one has to be supplied |
+| `MutuallyExclusive(...)` | No two of these together; none is required |
+| `RequiredTogether(...)` | All of them or none of them |
+| `When(arg, value).Require(...)` | Required only when `arg` has that value |
+| `When(arg, value).Forbid(...)` | Not allowed when `arg` has that value |
+
+`When(arg)` with no value means "whenever that argument is supplied at all". Zero and several
+produce different messages, because they are different mistakes:
+
+```
+$ mytool connect
+One of 'token', 'windowsauth' is required.
+
+$ mytool connect --token abc --windowsauth
+Only one of 'token', 'windowsauth' can be supplied, but 'token', 'windowsauth' were.
+```
+
+Rules are declarative rather than a callback in `OnExecute()` so that the `--json` schema
+carries them — which is what lets a form apply them as it is being filled in rather than only
+when it is submitted.
+
+## Multi-level Commands
+
+Give a command a `Group` and it is run as two words:
+
+```csharp
+[Command(Group = "widget", Name = "list", Description = "Lists the widgets")]
+public class WidgetListCommand : Command
+```
+
+```bash
+mytool widget list --filter blue
+```
+
+Resolution is greedy longest-first, so a two-word name wins over a one-word name that happens
+to match the first word. A group on its own is not a command.
+
+`Group` is deliberately separate from `Category`. Category is a display heading for the command
+list — strings like "Work Items" — and using it as a prefix would produce command names nobody
+would type. Grouping is a rename, not a prefix.
+
+Adopting groups in an existing tool does not have to break anyone's scripts. Keep the old flat
+name as an alias:
+
+```csharp
+[Command(Group = "widget", Name = "show",
+    Description = "Shows one widget",
+    Aliases = ["showwidget"])]
+```
+
+Both `mytool widget show --name sprocket` and `mytool showwidget --name sprocket` work, and the
+command list shows `widget show (showwidget)`.
+
+## Output Channels
+
+Commands write on three channels, the same split every other command line tool uses:
+
+| Method | What it is for | Console destination |
+|--------|----------------|---------------------|
+| `WriteLine()` / `Write()` | The result — what the command was asked to produce | stdout |
+| `WriteStatus()` | Commentary about the work — progress, notes | stderr |
+| `WriteError()` | Failures. Never suppressed by quiet mode | stderr |
+
+This is what makes a command's output pipeable. A command that writes its result with
+`WriteLine()` and everything else with `WriteStatus()` can have its output redirected to a
+file without the commentary landing in it:
+
+```bash
+mytool export --format json > data.json     # only the result is captured
+```
+
+`StringBuilderTextOutputProvider` captures the channels separately, so a test can assert on
+the payload without the chatter:
+
+```csharp
+Assert.Equal(expectedJson, output.GetResultOutput());
+Assert.Contains("Exported 42 rows", output.GetStatusOutput());
+```
+
+`GetOutput()` still returns everything in the order it was written.
+
+If you have written your own `ITextOutputProvider`, nothing breaks — `WriteStatus()` and
+`WriteError()` fall back to `WriteLine()` until you override them.
+
+## Reporting Progress
+
+```csharp
+protected override async Task OnExecute(CancellationToken cancellationToken)
+{
+    var items = await LoadItems(cancellationToken);
+
+    for (var i = 0; i < items.Count; i++)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        ReportProgress($"Processing {items[i].Name}", i + 1, items.Count);
+    }
+
+    WriteLine($"Processed {items.Count} items.");
+}
+```
+
+Progress goes to the diagnostic channel, so it never lands inside a redirected result:
+
+```bash
+mytool process > results.txt     # progress still shows on screen; results.txt has only results
+mytool process 2>/dev/null       # progress silenced, results still produced
+```
+
+On a terminal the console provider redraws a single line in place. When stderr is redirected it
+writes plain lines instead — otherwise the carriage returns would fill the destination with
+unreadable spam. `CommandBase.Progress` is an `IProgress<CommandProgress>`, so it can be handed
+straight to any API that already takes one.
+
+In a test, assert on what was reported:
+
+```csharp
+Assert.Equal(3, output.ProgressReports.Count);
+Assert.Equal(1.0, output.ProgressReports[^1].Fraction);
+```
+
+## Prompting for Input
+
+Commands read input through `ITextInputProvider`, the counterpart to `ITextOutputProvider`.
+`CommandBase` gives you `ReadLine()`, `Prompt()` and `PromptForYesNo()`:
+
+```csharp
+protected override void OnExecute()
+{
+    var name = Arguments.GetStringValue("name");
+
+    if (string.IsNullOrWhiteSpace(name))
+    {
+        name = Prompt("What is your name? ");
+    }
+
+    if (PromptForYesNo($"Say hello to {name}?"))
+    {
+        WriteLine($"Hello, {name}!");
+    }
+}
+```
+
+Because the provider comes from the program options rather than from the console, an
+interactive command is testable — queue up the answers and run it:
+
+```csharp
+var output = new StringBuilderTextOutputProvider();
+var input = new QueuedTextInputProvider("Ben", "y");
+
+var options = new DefaultProgramOptions
+{
+    ApplicationName = "My CLI Tool",
+    OutputProvider = output,
+    InputProvider = input
+};
+
+// ...run the command, then assert
+Assert.Contains("Hello, Ben!", output.GetOutput());
+Assert.Equal(2, input.ReadCount);
+```
+
+| Type | Description |
+|------|-------------|
+| `ConsoleTextInputProvider` | Reads from the console. The default. |
+| `QueuedTextInputProvider` | Hands out queued lines, then `null`. For tests. |
+
+## Shell Completion
+
+Any tool can print a completion stub for `pwsh`, `zsh` or `bash`:
+
+```bash
+mytool completion --shell pwsh >> $PROFILE
+mytool completion --shell zsh  >> ~/.zshrc
+mytool completion --shell bash >> ~/.bashrc
+```
+
+The stub is a fixed few lines that hand the whole command line back to the tool through a
+hidden `--complete` keyword and turn the answer into whatever the shell wants. Nothing about
+the tool's commands is baked into it, so it never goes stale — add a command or an argument and
+completion knows about it with nothing to regenerate.
+
+That is affordable because answering is cheap. Completing a command name reads the registry and
+instantiates nothing; only once a command name resolves does the framework create **that one
+command** to ask it for its arguments.
+
+Command names come with their descriptions:
+
+```
+$ mytool <TAB>
+greet-everybody   Reuses the greeting command to greet several people
+greeting          Builds a greeting for a person
+```
+
+then that command's argument names, the framework's own reserved arguments included, and then a
+`WithAllowedValues()` list when the argument has one:
+
+```
+$ mytool deploy --environment <TAB>
+production  development  staging
+```
+
+For a file or directory argument the tool answers with a **directive** — `:file:PATTERN` or
+`:dir` — instead of a list of paths, and the shell completes the path itself, because it
+already knows how to and it quotes what it finds correctly. An argument that also declares
+`DiscoverSingleMatch("*.json")` narrows its directive to that pattern, so the shell only offers
+the files the command could actually use.
+
+How much of this you see depends on the shell. PowerShell gets the most: descriptions become
+tooltips in the completion menu and the directives map onto real provider paths. zsh shows
+descriptions and hands paths to `_files`. bash cannot show descriptions at all, so its stub
+drops them and offers values only.
+
+## Terminal UI
+
+`tui` opens a terminal interface for the tool: browse its commands, fill one in, and run it
+without leaving the terminal. Unlike `gui`, which shells out to the separately installed
+`cmdui`, this runs inside the tool's own process — which is why it is a compile-time
+reference rather than something a user can install afterwards.
+
+Add the package and one line:
+
+```bash
+dotnet add package Benday.CommandsFramework.Tui
+```
+
+```csharp
+using Benday.CommandsFramework;
+using Benday.CommandsFramework.Tui;
+
+return await CommandsApp
+    .Create<MyCommand>(args)
+    .WithAppInfoFromAssembly()
+    .WithTui()
+    .RunAsync();
+```
+
+```bash
+mytool tui
+```
+
+`.WithTui()` is an extension on the `CommandsApp` builder. A program that configures
+`DefaultProgramOptions` and runs `DefaultProgram` directly sets the same thing itself:
+
+```csharp
+var options = new DefaultProgramOptions();
+
+options.ApplicationName = "My CLI Tool";
+options.TuiHost = new SpectreTuiHost();
+
+var program = new DefaultProgram(options, assembly);
+
+return await program.RunAsync(args);
+```
+
+`tui` is reserved whether or not the tool was built with one, so a command cannot quietly
+claim the name. A tool that has not called `.WithTui()` says what its author has to add
+rather than offering to install anything — no runtime install can supply a compile-time
+reference.
+
+What the interface does:
+
+- **Browse** the commands, grouped by `Category` and nested by `Group`, with a fuzzy filter
+  across names, aliases, categories and descriptions. A `[CommandAlias]` that supplies
+  argument values gets its own section and opens a form already filled in with them. Opening
+  the browser instantiates no commands, so it costs about what shell completion costs rather
+  than what `--json` costs.
+- **Fill in** a form whose widget for each field comes from the argument itself: a list of
+  choices for `WithAllowedValues()`, a toggle for a boolean, a path field for a file or
+  directory argument. `WithFriendlyName()` becomes the field label. A value the argument
+  refuses is never stored, and what is wrong with the form as a whole is reported by the
+  command's own validation — so a missing `FromConfig()` value still names the
+  `set-configuration` call that would supply it.
+- **Copy the command line** the form adds up to, rendered in whichever syntax the tool
+  accepts. The interface teaches the command line: you find a command in a form and graduate
+  to typing it.
+- **Run it** in process and watch the output arrive, with the result, status and error
+  channels kept visually apart and progress redrawn in place. A command that prompts is asked
+  through the interface, so `Prompt()` and `PromptForYesNo()` work with no knowledge that
+  they are inside one. Ctrl-C cancels the command rather than the interface.
+
+Running in process is what makes this different from `cmdui`: the form holds the real
+`IArgument` objects rather than a JSON mirror of them, so validating a field is a direct call
+and a file argument's `MustExist` is checked against the machine the tool actually runs on —
+which is not something a file picker in a browser can do.
+
+The package targets `net8.0`, `net9.0` and `net10.0`, the same as the framework itself.
 
 ## Data Formatting Utilities
 
@@ -680,6 +1176,9 @@ writer.SaveToFile("/path/to/updated.csv");
 - `--help` — Display usage information for a command
 - `--json` — Output the full command schema as JSON (used by tooling)
 - `gui` — Launch the CmdUi web interface for this tool
-- `quiet` — Suppress a command's `WriteLine()` output. Applied automatically to commands that are run by another command.
+- `tui` — Launch the terminal interface for this tool, when it was built with one (see [Terminal UI](#terminal-ui))
+- `completion` — Print the shell completion script (`--shell pwsh|zsh|bash`)
+- `--quiet` — Suppress a command's `WriteLine()` output. Applied automatically to commands that are run by another command.
+- `--` — End of options. Everything after it is a value, even if it starts with a dash.
 
 

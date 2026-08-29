@@ -1,9 +1,9 @@
-namespace Benday.CommandsFramework.Samples;
+﻿namespace Benday.CommandsFramework.Samples;
 
 [Command(Name = "api-call",
     Description = "Sample command demonstrating FromConfig() arguments",
     Category = "Samples")]
-public class SampleCommandWithConfigArgs : SynchronousCommand
+public class SampleCommandWithConfigArgs : Command
 {
     public SampleCommandWithConfigArgs(CommandExecutionInfo info, ITextOutputProvider outputProvider)
         : base(info, outputProvider)
@@ -34,7 +34,7 @@ public class SampleCommandWithConfigArgs : SynchronousCommand
         return args;
     }
 
-    protected override void OnExecute()
+    protected override Task OnExecute(CancellationToken cancellationToken)
     {
         var endpointPath = Arguments.GetStringValue("endpoint-path");
         var apiKey = Arguments.GetStringValue("api-key");
@@ -48,5 +48,7 @@ public class SampleCommandWithConfigArgs : SynchronousCommand
         WriteLine($"  Full URL: {baseUrl}{endpointPath}");
         WriteLine();
         WriteLine("(This is a demo - no actual API call made)");
+
+        return Task.CompletedTask;
     }
 }

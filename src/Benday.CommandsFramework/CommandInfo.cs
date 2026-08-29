@@ -9,7 +9,12 @@ public class CommandInfo
     public string Name { get; internal set; } = string.Empty;
     public string Description { get; internal set; } = string.Empty;
     public string Category { get; internal set; } = string.Empty;
-    public bool IsAsync { get; internal set; }
+
+    /// <summary>
+    /// Group this command belongs to, which is part of how the command is typed. Empty for
+    /// a flat command name. Unlike Category, which is only a display heading.
+    /// </summary>
+    public string Group { get; internal set; } = string.Empty;
 
     /// <summary>
     /// Alternate names that can be used on the command line in place of Name.
@@ -23,4 +28,10 @@ public class CommandInfo
     /// </summary>
     public List<CommandAliasInfo> CommandAliases { get; internal set; } = new();
     public ArgumentCollection Arguments { get; internal set; } = new ArgumentCollection();
+
+    /// <summary>
+    /// Rules about the combination of argument values. Declarative rather than a callback so
+    /// that a form can apply them as it is being filled in rather than only on submit.
+    /// </summary>
+    public List<ArgumentRuleInfo> Rules { get; internal set; } = new();
 }

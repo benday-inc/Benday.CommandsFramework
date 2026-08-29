@@ -3,7 +3,7 @@
 namespace Benday.CommandsFramework.Samples;
 
 [Command(Name = ApplicationConstants.CommandName_CommandWithAliases)]
-public class SampleCommandWithAliasArgs : SynchronousCommand
+public class SampleCommandWithAliasArgs : Command
 {
     public SampleCommandWithAliasArgs(CommandExecutionInfo info, ITextOutputProvider outputProvider) : base(info, outputProvider)
     {
@@ -20,7 +20,7 @@ public class SampleCommandWithAliasArgs : SynchronousCommand
         return args;
     }
 
-    protected override void OnExecute()
+    protected override Task OnExecute(CancellationToken cancellationToken)
     {
         var builder = new StringBuilder();
 
@@ -34,5 +34,7 @@ public class SampleCommandWithAliasArgs : SynchronousCommand
         }
 
         _OutputProvider.WriteLine(builder.ToString());
+
+        return Task.CompletedTask;
     }
 }

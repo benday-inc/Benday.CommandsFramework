@@ -52,7 +52,7 @@ public class SampleAsyncCommandFixture
         _SystemUnderTest = new SampleAsyncCommand(executionInfo, OutputProvider);
 
         // act
-        await _SystemUnderTest.ExecuteAsync();
+        await _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert        
         var output = OutputProvider.GetOutput();
@@ -75,7 +75,7 @@ public class SampleAsyncCommandFixture
         _SystemUnderTest = new SampleAsyncCommand(executionInfo, OutputProvider);
 
         // act
-        await _SystemUnderTest.ExecuteAsync();
+        await _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert        
         var output = OutputProvider.GetOutput();
@@ -98,7 +98,7 @@ public class SampleAsyncCommandFixture
         _SystemUnderTest = new SampleAsyncCommand(executionInfo, OutputProvider);
 
         // act
-        await _SystemUnderTest.ExecuteAsync();
+        await _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert        
         var output = OutputProvider.GetOutput();

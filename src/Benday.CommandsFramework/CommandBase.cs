@@ -4,17 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Benday.CommandsFramework;
 
 /// <summary>
 /// Base class for all command implementations
 /// </summary>
-public abstract class CommandBase
+public abstract class CommandBase : IDisposable
 {
     private readonly CommandExecutionInfo _Info;
     protected readonly ITextOutputProvider _OutputProvider;
     private ArgumentCollection _Arguments;
     private bool _HaveValuesBeenSet = false;
+    private IServiceScope? _ServiceScope;
+    private bool _OwnsServiceScope;
+    private bool _IsDisposed;
 
     /// <summary>
     /// Constructor
@@ -32,6 +37,106 @@ public abstract class CommandBase
         _Info = info ?? throw new ArgumentNullException(nameof(info));
         _OutputProvider = outputProvider;
         _Arguments = GetArguments();
+    }
+
+    /// <summary>
+    /// Gives this command a dependency injection scope to resolve services from.
+    /// </summary>
+    /// <remarks>
+    /// The scope belongs to whoever created the command. A command run from the command line
+    /// gets its own and disposes it when it is disposed; a command run by another command
+    /// shares the caller's, because a call chain that is logically one operation should see
+    /// one set of scoped services. Before this, every command created its own scope lazily
+    /// and nothing ever disposed it -- harmless in a one shot CLI and a real leak in a host
+    /// that runs many commands in one process.
+    /// </remarks>
+    /// <param name="scope">Scope to use</param>
+    /// <param name="ownsScope">True when disposing this command should dispose the scope</param>
+    internal void SetServiceScope(IServiceScope scope, bool ownsScope)
+    {
+        _ServiceScope = scope;
+        _OwnsServiceScope = ownsScope;
+    }
+
+    /// <summary>
+    /// The dependency injection scope this command resolves services from. Created on first
+    /// use when nobody handed one in, which is what happens when a command is constructed
+    /// directly rather than through the framework.
+    /// </summary>
+    private IServiceScope Scope
+    {
+        get
+        {
+            if (_ServiceScope is null)
+            {
+                _ServiceScope = CommandFrameworkUtilities
+                    .GetServiceProvider(ExecutionInfo.Options)
+                    .CreateScope();
+
+                _OwnsServiceScope = true;
+            }
+
+            return _ServiceScope;
+        }
+    }
+
+    /// <summary>
+    /// Get a required service instance from the service provider.
+    /// </summary>
+    /// <remarks>
+    /// Prefer declaring the dependency as a constructor parameter -- commands are created
+    /// through ActivatorUtilities, so anything registered can be injected. This is the escape
+    /// hatch for a service that can only be resolved once the command knows its arguments.
+    /// </remarks>
+    /// <typeparam name="T">Service type</typeparam>
+    /// <returns>The service</returns>
+    protected T GetRequiredService<T>() where T : notnull
+    {
+        try
+        {
+            return Scope.ServiceProvider.GetRequiredService<T>();
+        }
+        catch (InvalidOperationException ex)
+        {
+            // "no service for type X" is the right message when the program registered other
+            // things and forgot this one. When it registered nothing at all, the real problem
+            // is one level up and saying so saves a hunt.
+            var services = ExecutionInfo.Options.ServiceCollection;
+
+            if (services is null || services.Count == 0)
+            {
+                throw new InvalidOperationException(
+                    $"Could not resolve '{typeof(T).Name}' because the service collection was " +
+                    "not populated. HINT: check Program.cs", ex);
+            }
+
+            throw;
+        }
+    }
+
+    /// <summary>
+    /// Releases the dependency injection scope, when this command owns one.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (_IsDisposed == true)
+        {
+            return;
+        }
+
+        if (disposing == true && _OwnsServiceScope == true)
+        {
+            _ServiceScope?.Dispose();
+        }
+
+        _ServiceScope = null;
+        _IsDisposed = true;
     }
 
     /// <summary>
@@ -157,6 +262,151 @@ public abstract class CommandBase
     }
 
     /// <summary>
+    /// Write a message to the output provider without a trailing newline. Does nothing in
+    /// quiet mode. Use this for a prompt, so that the answer is typed on the same line.
+    /// </summary>
+    /// <param name="text">Message to write</param>
+    protected virtual void Write(string text)
+    {
+        if (IsQuietMode == true)
+        {
+            return;
+        }
+
+        _OutputProvider.Write(text);
+    }
+
+    /// <summary>
+    /// Write a line of commentary about the work -- progress, notes, anything that is not
+    /// the result this command was asked to produce. Goes to the diagnostic channel, so a
+    /// caller redirecting the result never sees it mixed in. Does nothing in quiet mode.
+    /// </summary>
+    /// <param name="text">Message to write</param>
+    protected virtual void WriteStatus(string text)
+    {
+        if (IsQuietMode == true)
+        {
+            return;
+        }
+
+        _OutputProvider.WriteStatus(text);
+    }
+
+    /// <summary>
+    /// Write an error message. Goes to the diagnostic channel, and is <b>not</b> suppressed
+    /// by quiet mode -- silencing the chatter should never silence a failure.
+    /// </summary>
+    /// <param name="text">Message to write</param>
+    protected virtual void WriteError(string text)
+    {
+        _OutputProvider.WriteError(text);
+    }
+
+    private IProgress<CommandProgress>? _Progress;
+
+    /// <summary>
+    /// Where this command reports progress. Reports go to the diagnostic channel, so they
+    /// survive a caller redirecting the command's result and stay out of it.
+    /// </summary>
+    /// <remarks>
+    /// This is an IProgress&lt;T&gt; so it can be handed to anything that already knows how
+    /// to report progress -- including framework and library APIs that take one.
+    /// </remarks>
+    protected IProgress<CommandProgress> Progress
+    {
+        get
+        {
+            _Progress ??= new Progress<CommandProgress>(OnProgressReported);
+
+            return _Progress;
+        }
+    }
+
+    private void OnProgressReported(CommandProgress progress)
+    {
+        if (IsQuietMode == true || progress is null)
+        {
+            return;
+        }
+
+        _OutputProvider.ReportProgress(progress);
+    }
+
+    /// <summary>
+    /// Report progress. Does nothing in quiet mode -- progress is commentary.
+    /// </summary>
+    /// <param name="message">What the command is doing</param>
+    /// <param name="current">How many units are done, when that is known</param>
+    /// <param name="total">How many units there are, when that is known</param>
+    protected void ReportProgress(string message, int? current = null, int? total = null)
+    {
+        // reported straight through rather than through the IProgress instance, because
+        // Progress<T> posts to the synchronization context and a command that reports and
+        // then immediately finishes would race its own output
+        OnProgressReported(new CommandProgress(message, current, total));
+    }
+
+    /// <summary>
+    /// Where this command reads text input from. Comes from the program options, so a test
+    /// can hand the command a QueuedTextInputProvider and drive an interactive command
+    /// without a console.
+    /// </summary>
+    protected ITextInputProvider InputProvider
+    {
+        get
+        {
+            return ExecutionInfo.Options.InputProvider;
+        }
+    }
+
+    /// <summary>
+    /// Read a line of input.
+    /// </summary>
+    /// <returns>The line that was read, or null when there is no more input.</returns>
+    protected string? ReadLine()
+    {
+        return InputProvider.ReadLine();
+    }
+
+    /// <summary>
+    /// Write a prompt and read the answer.
+    /// </summary>
+    /// <param name="prompt">Prompt to display. Written without a trailing newline, so the
+    /// answer is typed on the same line.</param>
+    /// <returns>The answer with surrounding whitespace trimmed, or null when there is no
+    /// more input.</returns>
+    protected string? Prompt(string prompt)
+    {
+        Write(prompt);
+
+        return ReadLine()?.Trim();
+    }
+
+    /// <summary>
+    /// Write a prompt and read a yes or no answer.
+    /// </summary>
+    /// <param name="prompt">Prompt to display, without the "(Y/n)" part -- that is added
+    /// from defaultAnswer.</param>
+    /// <param name="defaultAnswer">Answer to use when the user presses enter without typing
+    /// anything, and when there is no more input.</param>
+    /// <returns>True for yes, false for no</returns>
+    protected bool PromptForYesNo(string prompt, bool defaultAnswer = true)
+    {
+        var suffix = defaultAnswer == true ? " (Y/n): " : " (y/N): ";
+
+        var answer = Prompt($"{prompt}{suffix}");
+
+        if (string.IsNullOrWhiteSpace(answer) == true)
+        {
+            return defaultAnswer;
+        }
+
+        return
+            string.Equals(answer, "y", StringComparison.OrdinalIgnoreCase) == true ||
+            string.Equals(answer, "yes", StringComparison.OrdinalIgnoreCase) == true;
+    }
+
+    /// <summary>
     /// Creates another command so that its logic can be reused from inside this command.
     /// The new command shares this command's program options, configuration and output
     /// provider, and runs in quiet mode by default so that it does not write over the
@@ -170,7 +420,7 @@ public abstract class CommandBase
     /// <returns>The new command instance</returns>
     /// <exception cref="KnownException">Thrown when the command type cannot be used</exception>
     protected T CreateCommand<T>(
-        Action<Dictionary<string, string>>? configureArguments = null,
+        Action<CommandArgumentValues>? configureArguments = null,
         bool quiet = true) where T : CommandBase
     {
         var commandType = typeof(T);
@@ -192,9 +442,11 @@ public abstract class CommandBase
                 $"Type '{commandType.Name}' does not have a CommandAttribute so it cannot be run as a command.");
         }
 
-        var arguments = new Dictionary<string, string>(ArgumentCollection.ArgumentNameComparer);
+        var values = new CommandArgumentValues();
 
-        configureArguments?.Invoke(arguments);
+        configureArguments?.Invoke(values);
+
+        var arguments = values.Values;
 
         if (quiet == true)
         {
@@ -203,8 +455,10 @@ public abstract class CommandBase
 
         var info = new CommandExecutionInfo
         {
-            CommandName = attribute.Name,
-            Arguments = arguments,
+            // the group is part of the command name, so a grouped command that is run from
+            // another command gets the same name it would get from the command line
+            Request = new CommandCallRequest(
+                CommandRegistration.GetPathAsString(attribute), arguments),
             Options = ExecutionInfo.Options,
             NestingDepth = ExecutionInfo.NestingDepth + 1
         };
@@ -214,25 +468,21 @@ public abstract class CommandBase
             info.Configuration = ExecutionInfo.Configuration;
         }
 
-        var ctor = commandType.GetConstructor(
-            new Type[] { typeof(CommandExecutionInfo), typeof(ITextOutputProvider) });
-
-        if (ctor is null)
-        {
-            throw new KnownException(
-                $"Could not locate a constructor on command type '{commandType.Name}' that takes " +
-                $"{nameof(CommandExecutionInfo)} and {nameof(ITextOutputProvider)}.");
-        }
-
         // the calling command's output provider is passed along rather than the one from
         // the program options so that output from the command that gets run lands
         // wherever the calling command's output is going
-        var instance = ctor.Invoke(new object[] { info, _OutputProvider });
+        var instance = ActivatorUtilities.CreateInstance(
+            Scope.ServiceProvider, commandType, info, _OutputProvider);
 
         if (instance is not T returnValue)
         {
             throw new KnownException($"Could not create an instance of command type '{commandType.Name}'.");
         }
+
+        // the command being called shares this command's scope and does not own it. A call
+        // chain that is logically one operation should see one set of scoped services, and
+        // giving the child its own scope made them inconsistent across the chain.
+        returnValue.SetServiceScope(Scope, false);
 
         return returnValue;
     }
@@ -244,90 +494,44 @@ public abstract class CommandBase
     /// rather than printing the usage information, because the calling command needs to
     /// know that the command did not run.
     /// </summary>
+    /// <remarks>
+    /// This used to save and restore Environment.ExitCode around the call, so that a command
+    /// run by another command could not decide the exit code of the process. Commands return
+    /// a CommandResult now and nothing here touches the process exit code, so there is
+    /// nothing to contain.
+    /// </remarks>
     /// <typeparam name="T">Type of the command to run</typeparam>
     /// <param name="configureArguments">Callback for populating the arguments for the command</param>
     /// <param name="quiet">Run the command in quiet mode. Defaults to true.</param>
-    /// <returns>The command instance after it has run</returns>
-    /// <exception cref="KnownException">Thrown when the arguments for the command are not valid</exception>
-    protected T ExecuteCommand<T>(
-        Action<Dictionary<string, string>>? configureArguments = null,
-        bool quiet = true) where T : SynchronousCommand
-    {
-        var command = CreateCommand<T>(configureArguments, quiet);
-
-        RunWithoutChangingExitCode(command, () => command.Execute());
-
-        return command;
-    }
-
-    /// <summary>
-    /// Creates another command, validates it, and runs it asynchronously. The command
-    /// instance is returned so that results can be read back off it.
-    /// Unlike running a command from the command line, a validation failure here throws
-    /// rather than printing the usage information, because the calling command needs to
-    /// know that the command did not run.
-    /// </summary>
-    /// <typeparam name="T">Type of the command to run</typeparam>
-    /// <param name="configureArguments">Callback for populating the arguments for the command</param>
-    /// <param name="quiet">Run the command in quiet mode. Defaults to true.</param>
+    /// <param name="cancellationToken">Cancels the command being run</param>
     /// <returns>The command instance after it has run</returns>
     /// <exception cref="KnownException">Thrown when the arguments for the command are not valid</exception>
     protected async Task<T> ExecuteCommandAsync<T>(
-        Action<Dictionary<string, string>>? configureArguments = null,
-        bool quiet = true) where T : AsynchronousCommand
+        Action<CommandArgumentValues>? configureArguments = null,
+        bool quiet = true,
+        CancellationToken cancellationToken = default) where T : Command
     {
         var command = CreateCommand<T>(configureArguments, quiet);
 
-        var exitCode = Environment.ExitCode;
+        ThrowOnValidationFailure(command);
 
-        try
-        {
-            ThrowOnValidationFailure(command);
-
-            await command.ExecuteAsync();
-        }
-        finally
-        {
-            // a command that is run by another command must not decide the exit code for
-            // the process. That belongs to the command that was actually asked for.
-            Environment.ExitCode = exitCode;
-        }
+        await command.ExecuteAsync(cancellationToken);
 
         return command;
-    }
-
-    private void RunWithoutChangingExitCode(CommandBase command, Action run)
-    {
-        var exitCode = Environment.ExitCode;
-
-        try
-        {
-            ThrowOnValidationFailure(command);
-
-            run();
-        }
-        finally
-        {
-            // a command that is run by another command must not decide the exit code for
-            // the process. That belongs to the command that was actually asked for.
-            Environment.ExitCode = exitCode;
-        }
     }
 
     private static void ThrowOnValidationFailure(CommandBase command)
     {
-        var invalidArguments = command.Validate();
+        var failures = command.Validate();
 
-        if (invalidArguments.Count == 0)
+        if (failures.Count == 0)
         {
             return;
         }
 
-        var names = invalidArguments.Select(x => x.Name).Order();
-
         throw new KnownException(
             $"Could not run command '{command.ExecutionInfo.CommandName}'. " +
-            $"These arguments are not valid or missing: {string.Join(", ", names)}.");
+            $"{string.Join(" ", failures.Select(x => x.Message))}");
     }
 
     /// <summary>
@@ -357,13 +561,22 @@ public abstract class CommandBase
         }
         else
         {
+            var syntax = ExecutionInfo.Options.ArgumentSyntax;
+
+            // a boolean flag that allows an empty value is typed on its own, so showing it
+            // with a value would be telling the user to type something the parser does not
+            // want
+            var key = arg.DataType == ArgumentDataType.Boolean && arg.AllowEmptyValue == true
+                ? syntax.FormatName(arg.Name)
+                : syntax.FormatNameValue(arg.Name, $"<{arg.DataType}>");
+
             if (arg.IsRequired == true)
             {
-                return $"/{arg.Name}:{arg.DataType}";
+                return key;
             }
             else
             {
-                return $"[/{arg.Name}:{arg.DataType}]";
+                return $"[{key}]";
             }
         }
         
@@ -419,16 +632,9 @@ public abstract class CommandBase
                     });
         }
 
-        int consoleWidth;
-
-        if (Console.IsOutputRedirected == true)
-        {
-            consoleWidth = 60;
-        }
-        else
-        {
-            consoleWidth = Console.WindowWidth;
-        }
+        // the output provider knows where the output is going; the console window is not
+        // always the right answer
+        var consoleWidth = _OutputProvider.Width;
 
         var separator = " - ";
         int argNameColumnWidth = (longestNameLength + separator.Length);
@@ -465,6 +671,65 @@ public abstract class CommandBase
             {
                 DisplayArgumentUsage(builder, arg, longestNameLength, separator, consoleWidth, argNameColumnWidth);
             }
+        }
+
+        DisplayRules(builder, consoleWidth);
+
+        DisplayReservedKeywords(builder, consoleWidth);
+    }
+
+    /// <summary>
+    /// Adds the rules about combinations of arguments to the usage output. They are not
+    /// visible on any single argument, so without this the only way to discover them is to
+    /// get one wrong.
+    /// </summary>
+    private void DisplayRules(StringBuilder builder, int consoleWidth)
+    {
+        if (Arguments.Rules.Count == 0)
+        {
+            return;
+        }
+
+        builder.AppendLine();
+        builder.AppendLine("** RULES **");
+
+        foreach (var rule in Arguments.Rules)
+        {
+            builder.AppendWrappedValue(rule.Describe(), consoleWidth, 0);
+            builder.AppendLine();
+        }
+    }
+
+    /// <summary>
+    /// Adds the framework's own reserved names to the usage output. They are not part of any
+    /// command's argument list, so without this nothing ever tells anyone they exist.
+    /// </summary>
+    private void DisplayReservedKeywords(StringBuilder builder, int consoleWidth)
+    {
+        var keywords = ReservedKeywords.ForCommands;
+
+        if (keywords.Count == 0)
+        {
+            return;
+        }
+
+        var syntax = ExecutionInfo.Options.ArgumentSyntax;
+
+        var separator = " - ";
+        var longestNameLength = keywords.Max(x => x.GetDisplayName(syntax).Length);
+        var nameColumnWidth = longestNameLength + separator.Length;
+
+        builder.AppendLine();
+        builder.AppendLine("** ALSO AVAILABLE **");
+        builder.AppendLine("(these work on any command)");
+
+        foreach (var keyword in keywords)
+        {
+            builder.Append(LineWrapUtilities.GetValueWithPadding(
+                keyword.GetDisplayName(syntax), longestNameLength));
+            builder.Append(separator);
+            builder.AppendWrappedValue(keyword.Description, consoleWidth, nameColumnWidth);
+            builder.AppendLine();
         }
     }
 
@@ -534,28 +799,43 @@ public abstract class CommandBase
     /// Creates and displays the validation summary when there are failed argument validations
     /// </summary>
     /// <param name="invalidArguments">Collection of invalid arguments</param>
-    protected virtual void DisplayValidationSummary(List<IArgument> invalidArguments)
+    protected virtual void DisplayValidationSummary(List<ValidationFailure> failures)
     {
-        if (invalidArguments.Count == 1)
+        if (failures.Count == 1)
         {
             _OutputProvider.WriteLine("** INVALID ARGUMENT **");
         }
-        else if (invalidArguments.Count > 1)
+        else if (failures.Count > 1)
         {
             _OutputProvider.WriteLine("** INVALID ARGUMENTS **");
         }
 
-        foreach (var item in invalidArguments)
+        foreach (var failure in failures)
         {
-            if (item is UnknownArgument)
-            {
-                _OutputProvider.WriteLine($"Unknown argument: {item.Name}");
-            }
-            else
-            {
-                _OutputProvider.WriteLine($"{item.Name} is not valid or missing");
-            }
+            _OutputProvider.WriteLine(failure.Message);
         }
+    }
+
+    /// <summary>
+    /// Checks the command's arguments as they currently stand and reports what is wrong with
+    /// them, without running the command.
+    /// </summary>
+    /// <remarks>
+    /// Validate() is protected because a command validates itself as part of running, and
+    /// nothing outside had a reason to ask. A user interface does: it fills the arguments in
+    /// a field at a time and has to say what is wrong before anything runs. This is that
+    /// question asked from outside, and it is a wrapper rather than a widening of Validate()
+    /// so that a tool overriding Validate() as protected still compiles.
+    ///
+    /// Calling this repeatedly is safe and is the point. The first call applies configuration
+    /// values and command line values on top of the argument definitions; after that
+    /// SetValuesFromExecutionInfo() is a no-op, so values set through the arguments
+    /// themselves are not overwritten by later calls.
+    /// </remarks>
+    /// <returns>What is wrong with the arguments, empty when nothing is</returns>
+    public List<ValidationFailure> ValidateArguments()
+    {
+        return Validate();
     }
 
     /// <summary>
@@ -563,22 +843,30 @@ public abstract class CommandBase
     /// command.
     /// </summary>
     /// <returns>List of invalid arguments</returns>
-    protected virtual List<IArgument> Validate()
+    protected virtual List<ValidationFailure> Validate()
     {
-        var returnValue = new List<IArgument>();
+        var returnValue = new List<ValidationFailure>();
 
         SetValuesFromExecutionInfo();
+
+        // a value that can be found is a last resort, after the command line, the alias
+        // presets, configuration and the default value have all had their say
+        returnValue.AddRange(DiscoverMissingValues());
 
         foreach (var key in Arguments.Keys)
         {
             var temp = Arguments[key];
 
-            if (temp != null)
+            if (temp != null && temp.Validate() == false)
             {
-                var result = temp.Validate();
-
-                if (result == false)
-                    returnValue.Add(temp);
+                // an argument that reads from stored configuration gets a message that says
+                // how to store it, rather than the generic one
+                returnValue.Add(
+                    temp.IsFromConfig == true && temp.HasValue == false
+                        ? ValidationFailure.ForMissingConfiguration(
+                            temp, CommandFrameworkConstants.CommandName_SetConfig,
+                            ExecutionInfo.Options.ArgumentSyntax)
+                        : ValidationFailure.ForArgument(temp));
             }
         }
 
@@ -587,16 +875,113 @@ public abstract class CommandBase
         {
             foreach (var unknownKey in Arguments.UnrecognizedKeys)
             {
-                returnValue.Add(new UnknownArgument(unknownKey));
+                returnValue.Add(ValidationFailure.ForUnknownArgument(unknownKey));
             }
         }
 
-        if (returnValue.Count > 0)
+        // rules are checked last: a rule about the combination of values has nothing useful
+        // to say while individual values are still invalid
+        if (returnValue.Count == 0)
         {
-            Environment.ExitCode = 1;
+            foreach (var rule in Arguments.Rules)
+            {
+                var problem = rule.Check(Arguments);
+
+                if (problem is not null)
+                {
+                    returnValue.Add(ValidationFailure.ForRule(rule, problem));
+                }
+            }
         }
 
         return returnValue;
+    }
+
+    /// <summary>
+    /// Fills in the arguments that can be found by searching rather than supplied, and
+    /// reports the ones where the search did not turn up exactly one match.
+    /// </summary>
+    /// <remarks>
+    /// This runs at validation time rather than when the arguments are declared, so that
+    /// --json does not glob the disk once per command in the tool every time anything asks
+    /// for the schema.
+    /// </remarks>
+    private List<ValidationFailure> DiscoverMissingValues()
+    {
+        var returnValue = new List<ValidationFailure>();
+
+        foreach (var key in Arguments.Keys)
+        {
+            var argument = Arguments[key];
+
+            if (argument.IsDiscoverable == false || argument.HasValue == true)
+            {
+                continue;
+            }
+
+            var directory = string.IsNullOrWhiteSpace(argument.DiscoveryDirectory)
+                ? Environment.CurrentDirectory
+                : argument.DiscoveryDirectory;
+
+            var searchOption = argument.DiscoveryIsRecursive
+                ? SearchOption.AllDirectories
+                : SearchOption.TopDirectoryOnly;
+
+            var matches = FindMatches(argument, directory, searchOption);
+
+            if (matches.Count == 1)
+            {
+                argument.TrySetValue(matches[0]);
+
+                continue;
+            }
+
+            // an optional argument that finds nothing is simply not supplied. Only a required
+            // one turns an unsuccessful search into a failure.
+            if (matches.Count == 0 && argument.IsRequired == false)
+            {
+                continue;
+            }
+
+            var what = argument.PathType == ArgumentPathType.Directory ? "directories" : "files";
+
+            var message = matches.Count == 0
+                ? $"{argument.Name} was not supplied and no {what} matching " +
+                    $"'{argument.DiscoveryPattern}' were found in {directory}. " +
+                    $"Supply it with /{argument.Name}:value."
+                : $"{argument.Name} was not supplied and {matches.Count} {what} match " +
+                    $"'{argument.DiscoveryPattern}' in {directory}: " +
+                    $"{string.Join(", ", matches.Select(Path.GetFileName))}. " +
+                    $"Supply it with /{argument.Name}:value to choose one.";
+
+            returnValue.Add(ValidationFailure.ForDiscovery(argument, message));
+        }
+
+        return returnValue;
+    }
+
+    private static List<string> FindMatches(
+        IArgument argument, string directory, SearchOption searchOption)
+    {
+        if (Directory.Exists(directory) == false)
+        {
+            return [];
+        }
+
+        try
+        {
+            var matches = argument.PathType == ArgumentPathType.Directory
+                ? Directory.GetDirectories(directory, argument.DiscoveryPattern, searchOption)
+                : Directory.GetFiles(directory, argument.DiscoveryPattern, searchOption);
+
+            return [.. matches.Order(StringComparer.OrdinalIgnoreCase)];
+        }
+        catch (UnauthorizedAccessException)
+        {
+            // an unreadable directory is the same as one with nothing in it as far as
+            // finding a value goes
+            return [];
+        }
     }
 
     /// <summary>

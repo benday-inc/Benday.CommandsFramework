@@ -39,7 +39,7 @@ public class SampleCommandWithNoArgOptionsFixture
 
 
     [Fact]
-    public void CreateAndRun_DisplayUsage()
+    public async Task CreateAndRun_DisplayUsage()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -51,8 +51,8 @@ public class SampleCommandWithNoArgOptionsFixture
 
         _SystemUnderTest = new SampleCommandWithNoArgOptions(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+        await // act
+        _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         var output = OutputProvider.GetOutput();

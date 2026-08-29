@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
+using System.Text;
 using System.Text.Json;
 
 namespace Benday.CommandsFramework;
@@ -42,140 +43,238 @@ public class DefaultProgram : ICommandProgram
         OutputProvider.WriteLine();
     }
 
-    public void Run(string[] args)
+    /// <summary>
+    /// Write a line of commentary about the work to the diagnostic channel.
+    /// </summary>
+    private void WriteStatus(string message)
+    {
+        OutputProvider.WriteStatus(message);
+    }
+
+    /// <summary>
+    /// Write an error message to the diagnostic channel. A failure has to stay out of the
+    /// command's result, or a failed command piping --json to a file lands its error text
+    /// inside the JSON.
+    /// </summary>
+    private void WriteError(string message)
+    {
+        OutputProvider.WriteError(message);
+    }
+
+    /// <summary>
+    /// Runs whatever the command line asked for and reports how it went.
+    /// </summary>
+    /// <remarks>
+    /// This returns the exit code rather than assigning Environment.ExitCode. Setting the
+    /// process exit code is a console application's decision, and this class is also what a
+    /// long lived host runs commands through -- there, one command's failure has no business
+    /// deciding the fate of the process. CommandsApp is the console entry point and is where
+    /// the exit code gets applied.
+    /// </remarks>
+    /// <param name="args">Command line arguments</param>
+    /// <param name="cancellationToken">Cancels the command being run</param>
+    /// <returns>The exit code the process should use if it is exiting</returns>
+    public async Task<int> RunAsync(
+        string[] args, CancellationToken cancellationToken = default)
     {
         var util = new CommandAttributeUtility(Options);
 
         if (args.Length == 0)
         {
             DisplayUsage(util);
+
+            // no command was named, so nothing was run
+            return CommandFrameworkConstants.ExitCode_Failure;
         }
-        else
+
+        try
         {
-            try
+            if (args[0] == ArgumentFrameworkConstants.ArgumentJson)
             {
-                if (args[0] == ArgumentFrameworkConstants.ArgumentJson)
-                {
-                    DumpJson(util);
-                }
-                else if (args[0] == ArgumentFrameworkConstants.ArgumentGui)
-                {
-                    LaunchGui();
-                }
-                else if (args[0] == ArgumentFrameworkConstants.ArgumentHelpString)
-                {
-                    DisplayUsage(util);
-                    Environment.ExitCode = CommandFrameworkConstants.ExitCode_Success;
-                }
-                else
-                {
-                    // resolve command aliases so that the assembly routing below works off
-                    // the real command name. args is deliberately left alone so that
-                    // GetCommand() can still see the alias that was typed and apply any
-                    // argument values that come with it.
-                    var resolvedCommandName = util.ResolveCommandName(ImplementationAssembly, args[0]);
+                DumpJson(util);
 
-                    if (resolvedCommandName == null)
-                    {
-                        throw new KnownException(
-                                $"Invalid command name '{args[0]}'.");
-                    }
-
-                    CommandBase? command;
-
-                    if (Options.UsesConfiguration == false)
-                    {
-                        command = util.GetCommand(args, ImplementationAssembly);
-                    }
-                    else
-                    {
-                        if (IsDefaultCommandName(resolvedCommandName) == true)
-                        {
-                            command = util.GetCommand(args, this.GetType().Assembly);
-                        }
-                        else
-                        {
-                            command = util.GetCommand(args, ImplementationAssembly);
-                        }
-                    }
-
-                    if (command == null)
-                    {
-                        DisplayUsage(util);
-                    }
-                    else
-                    {
-                        CommandAttribute? attr;
-
-                        if (Options.UsesConfiguration == false)
-                        {
-                            attr = util.GetCommandAttributeForCommandName(ImplementationAssembly,
-                                                    command.ExecutionInfo.CommandName);
-                        }
-                        else
-                        {
-                            if (IsDefaultCommandName(command.ExecutionInfo.CommandName) == true)
-                            {
-                                attr = util.GetCommandAttributeForCommandName(this.GetType().Assembly,
-                                                    command.ExecutionInfo.CommandName);
-                            }
-                            else
-                            {
-                                attr = util.GetCommandAttributeForCommandName(ImplementationAssembly,
-                                                    command.ExecutionInfo.CommandName);
-                            }
-                        }
-
-                        if (attr == null)
-                        {
-                            throw new KnownException(
-                                $"Invalid command name '{command.ExecutionInfo.CommandName}'.");
-                        }
-                        else
-                        {
-                            if (attr.IsAsync == false)
-                            {
-                                var runThis = command as ISynchronousCommand;
-
-                                if (runThis == null)
-                                {
-                                    throw new InvalidOperationException($"Could not convert type to {typeof(ISynchronousCommand)}.");
-                                }
-                                else
-                                {
-                                    runThis.Execute();
-                                }
-                            }
-                            else
-                            {
-                                var runThis = command as IAsyncCommand;
-
-                                if (runThis == null)
-                                {
-                                    throw new InvalidOperationException($"Could not convert type to {typeof(IAsyncCommand)}.");
-                                }
-                                else
-                                {
-                                    var temp = runThis.ExecuteAsync().GetAwaiter();
-
-                                    temp.GetResult();
-                                }
-                            }
-                        }
-                    }
-                }
+                return CommandFrameworkConstants.ExitCode_Success;
             }
-            catch (KnownException ex)
+
+            if (args[0] == ArgumentFrameworkConstants.ArgumentGui)
             {
-                WriteLine(ex.Message);
-                Environment.ExitCode = 1;
+                LaunchGui();
+
+                return CommandFrameworkConstants.ExitCode_Success;
             }
-            catch
+
+            if (args[0] == ArgumentFrameworkConstants.ArgumentTui)
             {
-                Environment.ExitCode = 1;
-                throw;
+                return await LaunchTuiAsync(cancellationToken);
             }
+
+            if (args[0] == ArgumentFrameworkConstants.ArgumentComplete)
+            {
+                // called by a shell completion stub on every TAB, so this path stays cheap:
+                // completing a command name reads the registry and instantiates nothing
+                WriteCompletions(util, args.Length > 1 ? args[1] : string.Empty);
+
+                return CommandFrameworkConstants.ExitCode_Success;
+            }
+
+            if (args[0] == ArgumentFrameworkConstants.CommandCompletion)
+            {
+                WriteCompletionScript(args);
+
+                return CommandFrameworkConstants.ExitCode_Success;
+            }
+
+            if (args[0] == ArgumentFrameworkConstants.ArgumentHelpString)
+            {
+                DisplayUsage(util);
+
+                return CommandFrameworkConstants.ExitCode_Success;
+            }
+
+            // one lookup. The built-in configuration commands are ordinary registrations in
+            // the registry, so there is no assembly to route to and no UsesConfiguration
+            // branch here -- that used to be decided three separate times, once here, once
+            // again below, and once inside GetCommand().
+            //
+            // Resolve() rather than Find(): a command name can be more than one token when
+            // the command declares a group, and matching is greedy longest first so a two
+            // segment name wins over a one segment name that matches the first token.
+            var resolution = util.GetRegistry(ImplementationAssembly).Resolve(args);
+
+            if (resolution is null)
+            {
+                throw new KnownException($"Invalid command name '{args[0]}'.");
+            }
+
+            var registration = resolution.Registration;
+
+            // the command owns a dependency injection scope, so the runner disposes it when
+            // the command is done. Nothing used to dispose a command at all, which meant the
+            // scope was never released -- harmless in a one shot CLI and a real leak in a
+            // host that runs many commands in one process.
+            using var command = util.GetCommand(args, ImplementationAssembly);
+
+            if (command is null)
+            {
+                DisplayUsage(util);
+
+                return CommandFrameworkConstants.ExitCode_Failure;
+            }
+
+            // one base class, so there is nothing to branch on. This used to be about forty
+            // lines that told a synchronous command from an asynchronous one by reading a
+            // flag off the attribute -- a flag that could disagree with the class it was on.
+            if (command is not Command runThis)
+            {
+                throw new InvalidOperationException(
+                    $"Command '{registration.Name}' does not derive from {nameof(Command)}.");
+            }
+
+            var result = await runThis.ExecuteAsync(cancellationToken);
+
+            if (string.IsNullOrWhiteSpace(result.Message) == false &&
+                result.Status == CommandExecutionStatus.Failed)
+            {
+                WriteError(result.Message);
+            }
+
+            return result.ExitCode;
         }
+        catch (KnownException ex)
+        {
+            WriteError(ex.Message);
+
+            return CommandFrameworkConstants.ExitCode_Failure;
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            WriteError("Cancelled.");
+
+            return CommandFrameworkConstants.ExitCode_Failure;
+        }
+    }
+
+    /// <summary>
+    /// Writes the completion candidates for a partially typed command line, one per line.
+    /// </summary>
+    private void WriteCompletions(CommandAttributeUtility util, string commandLine)
+    {
+        var engine = new CompletionEngine(
+            util, util.GetRegistry(ImplementationAssembly), ImplementationAssembly);
+
+        foreach (var candidate in engine.GetCandidates(commandLine))
+        {
+            WriteLine(candidate.ToString());
+        }
+    }
+
+    /// <summary>
+    /// Writes the shell stub that calls back into --complete.
+    /// </summary>
+    private void WriteCompletionScript(string[] args)
+    {
+        var arguments = new ArgumentCollectionFactory { Syntax = Options.ArgumentSyntax }
+            .GetArgsAsDictionary(args[1..], false);
+
+        arguments.TryGetValue(CompletionShellArgumentName, out var shell);
+
+        if (string.IsNullOrWhiteSpace(shell) == true)
+        {
+            WriteLine("Prints the shell completion script for this tool.");
+            WriteLine();
+            WriteLine("Usage:");
+
+            foreach (var supported in CompletionScripts.SupportedShells)
+            {
+                WriteLine(
+                    $"  {GetToolName()} {ArgumentFrameworkConstants.CommandCompletion} " +
+                    Options.ArgumentSyntax.FormatNameValue(
+                        CompletionShellArgumentName, supported));
+            }
+
+            return;
+        }
+
+        WriteLine(CompletionScripts.GetScript(shell, GetToolName()));
+    }
+
+    /// <summary>
+    /// Name of the argument that picks the shell for the completion script.
+    /// </summary>
+    public const string CompletionShellArgumentName = "shell";
+
+    /// <summary>
+    /// The name the tool is typed as, which is what a completion stub has to register for.
+    /// </summary>
+    private static string GetToolName()
+    {
+        return Process.GetCurrentProcess().ProcessName;
+    }
+
+    /// <summary>
+    /// Runs the terminal interface, when this tool was built with one.
+    /// </summary>
+    /// <remarks>
+    /// Deliberately not the 'gui' behaviour of offering to install something. cmdui is a
+    /// separate executable, so gui can go and get it; TUI support is a compile time reference
+    /// and no runtime install can supply it, so the only useful thing to say is what the tool
+    /// author has to do.
+    /// </remarks>
+    private async Task<int> LaunchTuiAsync(CancellationToken cancellationToken)
+    {
+        var host = Options.TuiHost;
+
+        if (host is null)
+        {
+            WriteError(
+                "This tool was not built with terminal interface support. Add a reference to " +
+                "the Benday.CommandsFramework.Tui package and call .WithTui() when configuring " +
+                "the app.");
+
+            return CommandFrameworkConstants.ExitCode_Failure;
+        }
+
+        return await host.RunAsync(this, cancellationToken);
     }
 
     private void LaunchGui()
@@ -191,7 +290,7 @@ public class DefaultProgram : ICommandProgram
             WriteLine();
             Write("Would you like to install it now? (Y/n): ");
 
-            var response = Console.ReadLine()?.Trim().ToLowerInvariant();
+            var response = Options.InputProvider.ReadLine()?.Trim().ToLowerInvariant();
 
             if (string.IsNullOrEmpty(response) || response == "y" || response == "yes")
             {
@@ -316,26 +415,20 @@ public class DefaultProgram : ICommandProgram
 
     private void DumpJson(CommandAttributeUtility util)
     {
-        var usages = util.GetAllCommandUsages(ImplementationAssembly);
+        var schema = new CommandSchema
+        {
+            ApplicationName = Options.ApplicationName,
+            ApplicationVersion = Options.Version,
+            ArgumentSyntax = Options.ArgumentSyntax,
+            Commands = util.GetAllCommandUsages(ImplementationAssembly)
+        };
 
-        var json = JsonSerializer.Serialize(usages, new JsonSerializerOptions()
+        var json = JsonSerializer.Serialize(schema, new JsonSerializerOptions()
         {
             WriteIndented = true
         });
 
         WriteLine(json);
-    }
-
-    private bool IsDefaultCommandName(string commandName)
-    {
-        var commandNames = new string[]
-        {
-            CommandFrameworkConstants.CommandName_GetConfig,
-            CommandFrameworkConstants.CommandName_SetConfig,
-            CommandFrameworkConstants.CommandName_RemoveConfig
-        };
-
-        return commandNames.Contains(commandName);
     }
 
     /// <summary>
@@ -344,17 +437,23 @@ public class DefaultProgram : ICommandProgram
     /// <param name="util"></param>
     public virtual void DisplayUsage(CommandAttributeUtility util)
     {
-        if (Options.DisplayUsageOptions.ShowApplicationName)
+        // a value that was never configured prints as a blank line, which is most of the
+        // usage header when a tool is bootstrapped with CommandsApp.RunAsync(args) and has
+        // no website in its assembly metadata
+        if (Options.DisplayUsageOptions.ShowApplicationName &&
+            string.IsNullOrWhiteSpace(Options.ApplicationName) == false)
         {
             WriteLine($"{Options.ApplicationName}");
         }
 
-        if (Options.DisplayUsageOptions.ShowWebsite)
+        if (Options.DisplayUsageOptions.ShowWebsite &&
+            string.IsNullOrWhiteSpace(Options.Website) == false)
         {
             WriteLine($"{Options.Website}");
         }
 
-        if (Options.DisplayUsageOptions.ShowVersion)
+        if (Options.DisplayUsageOptions.ShowVersion &&
+            string.IsNullOrWhiteSpace(Options.Version) == false)
         {
             WriteLine($"{Options.Version}");
         }
@@ -379,7 +478,41 @@ public class DefaultProgram : ICommandProgram
 
         DisplayCommandAliases(util.GetCommandAliases(ImplementationAssembly));
 
-        Environment.ExitCode = CommandFrameworkConstants.ExitCode_Failure;
+        DisplayReservedKeywords();
+    }
+
+    /// <summary>
+    /// Displays the names the framework reserves for itself. They are not commands and they
+    /// are not any command's arguments, so nothing else in the usage output mentions them.
+    /// </summary>
+    public virtual void DisplayReservedKeywords()
+    {
+        var keywords = ReservedKeywords.ForPrograms;
+
+        if (keywords.Count == 0)
+        {
+            return;
+        }
+
+        var separator = " - ";
+        var longestName = keywords.Max(x => x.Name.Length);
+        var nameColumnWidth = longestName + separator.Length;
+        var consoleWidth = GetConsoleWidth();
+
+        WriteLine();
+        WriteLine("Also available:");
+
+        var builder = new StringBuilder();
+
+        foreach (var keyword in keywords)
+        {
+            builder.Clear();
+            builder.Append(LineWrapUtilities.GetValueWithPadding(keyword.Name, longestName));
+            builder.Append(separator);
+            builder.AppendWrappedValue(keyword.Description, consoleWidth, nameColumnWidth);
+
+            WriteLine(builder.ToString());
+        }
     }
 
     /// <summary>
@@ -412,7 +545,9 @@ public class DefaultProgram : ICommandProgram
 
             var argumentSummary = string.Join(" ",
                 alias.Arguments.Select(x =>
-                    string.IsNullOrEmpty(x.Value) ? $"/{x.Key}" : $"/{x.Key}:{x.Value}"));
+                    string.IsNullOrEmpty(x.Value)
+                        ? Options.ArgumentSyntax.FormatName(x.Key)
+                        : Options.ArgumentSyntax.FormatNameValue(x.Key, x.Value)));
 
             var description = string.IsNullOrWhiteSpace(alias.Description)
                 ? $"{alias.CommandName} {argumentSummary}"
@@ -435,7 +570,7 @@ public class DefaultProgram : ICommandProgram
         var separator = " - ";
         int commandNameColumnWidth = (longestName + separator.Length);
 
-        foreach (var command in commands.OrderBy(x => x.Name))
+        foreach (var command in commands.OrderBy(CommandRegistration.GetPathAsString))
         {
             Write(LineWrapUtilities.GetValueWithPadding(GetCommandDisplayName(command), longestName));
             Write(separator);
@@ -454,24 +589,20 @@ public class DefaultProgram : ICommandProgram
     /// <returns>Display name for the command</returns>
     protected static string GetCommandDisplayName(CommandAttribute command)
     {
+        // the group is part of how the command is typed, so it belongs in the list
+        var path = CommandRegistration.GetPathAsString(command);
+
         if (command.Aliases.Length == 0)
         {
-            return command.Name;
+            return path;
         }
 
-        return $"{command.Name} ({string.Join(", ", command.Aliases)})";
+        return $"{path} ({string.Join(", ", command.Aliases)})";
     }
 
     private int GetConsoleWidth()
     {
-        if (Console.IsOutputRedirected == true)
-        {
-            return 80;
-        }
-        else
-        {
-            return Console.WindowWidth;
-        }
+        return OutputProvider.Width;
     }
 
     /// <summary>
@@ -493,7 +624,8 @@ public class DefaultProgram : ICommandProgram
             WriteLine($"* {category} *");
             WriteLine();
 
-            foreach (var command in commands.Where(x => x.Category == category).OrderBy(x => x.Name))
+            foreach (var command in commands.Where(x => x.Category == category)
+                .OrderBy(CommandRegistration.GetPathAsString))
             {
                 Write(LineWrapUtilities.GetValueWithPadding(GetCommandDisplayName(command), longestName));
                 Write(separator);

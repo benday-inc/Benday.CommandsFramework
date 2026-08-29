@@ -1,4 +1,4 @@
-using System.Text;
+﻿using System.Text;
 
 namespace Benday.CommandsFramework.Samples;
 
@@ -9,7 +9,7 @@ namespace Benday.CommandsFramework.Samples;
     Name = ApplicationConstants.CommandName_CommandWithCommandNameAliases,
     Aliases = new[] { "mc", "mycmd" },
     Description = "Command that has short aliases for its name")]
-public class SampleCommandWithCommandNameAliases : SynchronousCommand
+public class SampleCommandWithCommandNameAliases : Command
 {
     public SampleCommandWithCommandNameAliases(
         CommandExecutionInfo info, ITextOutputProvider outputProvider) : base(info, outputProvider)
@@ -27,7 +27,7 @@ public class SampleCommandWithCommandNameAliases : SynchronousCommand
         return args;
     }
 
-    protected override void OnExecute()
+    protected override Task OnExecute(CancellationToken cancellationToken)
     {
         var builder = new StringBuilder();
 
@@ -36,5 +36,7 @@ public class SampleCommandWithCommandNameAliases : SynchronousCommand
         builder.AppendLine($"message: {Arguments.GetStringValue("message")}");
 
         _OutputProvider.WriteLine(builder.ToString());
+
+        return Task.CompletedTask;
     }
 }

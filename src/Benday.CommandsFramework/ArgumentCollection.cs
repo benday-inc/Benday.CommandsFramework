@@ -14,14 +14,50 @@ namespace Benday.CommandsFramework;
 /// </summary>
 public class ArgumentCollection : IEnumerable<IArgument>
 {
+    // ReservedKeywords is the single source for these -- the same list is what usage output
+    // shows, so the two can't drift apart
     private static readonly HashSet<string> _FrameworkReservedArgNames =
-        new(StringComparer.OrdinalIgnoreCase)
+        new(ReservedKeywords.AllNames, StringComparer.OrdinalIgnoreCase);
+
+    private readonly List<ArgumentRule> _Rules = new();
+
+    /// <summary>
+    /// Rules about the combination of argument values, as opposed to any one value. Added
+    /// through the fluent methods -- ExactlyOneOf(), AtLeastOneOf(), MutuallyExclusive(),
+    /// RequiredTogether() and When().
+    /// </summary>
+    public IReadOnlyList<ArgumentRule> Rules => _Rules;
+
+    /// <summary>
+    /// Adds a rule about the combination of argument values.
+    /// </summary>
+    /// <param name="rule">Rule to add</param>
+    /// <returns>This collection, so calls can be chained</returns>
+    public ArgumentCollection AddRule(ArgumentRule rule)
+    {
+        ArgumentNullException.ThrowIfNull(rule, nameof(rule));
+
+        _Rules.Add(rule);
+
+        return this;
+    }
+
+    /// <summary>
+    /// Replaces a rule that is being built up in stages.
+    /// </summary>
+    internal void ReplaceRule(ArgumentRule existing, ArgumentRule replacement)
+    {
+        var index = _Rules.IndexOf(existing);
+
+        if (index < 0)
         {
-            ArgumentFrameworkConstants.ArgumentHelpString,
-            ArgumentFrameworkConstants.ArgumentJson,
-            ArgumentFrameworkConstants.ArgumentGui,
-            CommandFrameworkConstants.CommandArgName_QuietMode
-        };
+            _Rules.Add(replacement);
+        }
+        else
+        {
+            _Rules[index] = replacement;
+        }
+    }
 
     /// <summary>
     /// Comparer used to match argument names and aliases supplied on the command line

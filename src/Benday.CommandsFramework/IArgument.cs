@@ -19,6 +19,54 @@ public interface IArgument
     ArgumentDataType DataType { get; }
 
     /// <summary>
+    /// Whether this argument's value is a path and, when it is, what kind of thing the
+    /// path points at. Defaults to None, which means the value is not a path.
+    /// </summary>
+    /// <remarks>
+    /// This is a default interface member so that adding it does not break anything that
+    /// already implements IArgument. Without it a file argument and a string argument
+    /// serialize to byte-identical JSON while validating differently on the same input,
+    /// which leaves cmdui and shell completion with no way to tell them apart.
+    /// </remarks>
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    ArgumentPathType PathType { get => ArgumentPathType.None; }
+
+    /// <summary>
+    /// For a file or directory argument, whether the path has to already exist in order
+    /// for the value to be valid. Always false when PathType is None.
+    /// </summary>
+    /// <remarks>
+    /// Default interface member, for the same reason as PathType.
+    /// </remarks>
+    bool MustExist { get => false; }
+
+    /// <summary>
+    /// A search pattern that can find this argument's value when it is not supplied, such as
+    /// "*.sln". Empty when the value has to be supplied.
+    /// </summary>
+    /// <remarks>
+    /// The search runs at validation time rather than when the arguments are declared. Doing
+    /// it in GetArguments() would mean --json globbed the disk once per command in the tool,
+    /// every time anything asked for the schema.
+    /// </remarks>
+    string DiscoveryPattern { get => string.Empty; }
+
+    /// <summary>
+    /// Directory to search for DiscoveryPattern. Empty means the working directory.
+    /// </summary>
+    string DiscoveryDirectory { get => string.Empty; }
+
+    /// <summary>
+    /// Whether the search for DiscoveryPattern descends into subdirectories.
+    /// </summary>
+    bool DiscoveryIsRecursive { get => false; }
+
+    /// <summary>
+    /// True when this argument's value can be found rather than supplied.
+    /// </summary>
+    bool IsDiscoverable => string.IsNullOrWhiteSpace(DiscoveryPattern) == false;
+
+    /// <summary>
     /// Human readable description for the argument
     /// </summary>
     string Description { get; }

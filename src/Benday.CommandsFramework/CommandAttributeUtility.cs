@@ -1,4 +1,6 @@
 ﻿using System.Reflection;
+
+using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System.Text;
 
@@ -12,16 +14,60 @@ public class CommandAttributeUtility
 {
     private ICommandProgramOptions _ProgramOptions;
 
+    /// <summary>
+    /// The program options this utility was built with. Exposed so that anything working
+    /// alongside it -- shell completion, for one -- renders arguments in the same syntax the
+    /// parser accepts.
+    /// </summary>
+    public ICommandProgramOptions ProgramOptions => _ProgramOptions;
+
     public CommandAttributeUtility(ICommandProgramOptions options)
     {
         _ProgramOptions = options;
-    }    
+    }
+
+    /// <summary>
+    /// Gets the registry of commands for an assembly, building it if it has not been built
+    /// yet and caching it on the program options so the assemblies are only scanned once.
+    /// </summary>
+    /// <remarks>
+    /// Everything in this class goes through here. Before the registry existed, each method
+    /// swept assembly.GetTypes() with its own filter, which is how two of them ended up
+    /// disagreeing about what counted as a command.
+    /// </remarks>
+    /// <param name="containingAssembly">Assembly containing the commands</param>
+    /// <returns>The registry</returns>
+    public CommandRegistry GetRegistry(Assembly containingAssembly)
+    {
+        if (containingAssembly is null)
+        {
+            throw new ArgumentNullException(nameof(containingAssembly));
+        }
+
+        var cached = _ProgramOptions.CommandRegistry;
+
+        // UsesConfiguration decides whether the built-in commands are registered, and tests
+        // flip it on a shared options instance, so a cached registry is only reusable when it
+        // was built for the same question
+        if (cached is not null &&
+            cached.WasBuiltFor(containingAssembly, _ProgramOptions.UsesConfiguration) == true)
+        {
+            return cached;
+        }
+
+        var registry = CommandRegistry.Build(_ProgramOptions, containingAssembly);
+
+        _ProgramOptions.CommandRegistry = registry;
+
+        return registry;
+    }
+    
 
     /// <summary>
     /// Get the list of command names in an assembly
     /// </summary>
     /// <param name="containingAssembly">Assembly to examine</param>
-    /// <returns>List of command names for all classes with a CommandAttribute in the assembly</returns>
+    /// <returns>Command names as they are typed, group included for a grouped command</returns>
     /// <exception cref="ArgumentNullException"></exception>
     public List<string> GetAvailableCommandNames(Assembly containingAssembly)
     {
@@ -30,21 +76,12 @@ public class CommandAttributeUtility
             throw new ArgumentNullException(nameof(containingAssembly));
         }
 
-        var returnValue = new List<string>();
-
-        var matchingTypes = GetCommandTypes(containingAssembly);
-
-        foreach (var type in matchingTypes)
-        {
-            var attr = type.GetCustomAttribute<CommandAttribute>();
-
-            if (attr != null)
-            {
-                returnValue.Add(attr.Name);
-            }
-        }
-
-        return returnValue;
+        // the path rather than the bare name: a grouped command is typed as 'widget list',
+        // and that is also how the registry is keyed, so the two cannot disagree
+        return GetRegistry(containingAssembly)
+            .Registrations
+            .Select(x => x.PathAsString)
+            .ToList();
     }
 
     /// <summary>
@@ -60,50 +97,117 @@ public class CommandAttributeUtility
             throw new ArgumentNullException(nameof(containingAssembly));
         }
 
-        var returnValue = new List<CommandAttribute>();
-
-        var matchingTypes = GetCommandTypes(containingAssembly);
-
-        foreach (var type in matchingTypes)
-        {
-            var attr = type.GetCustomAttribute<CommandAttribute>();
-
-            if (attr != null)
-            {
-                returnValue.Add(attr);
-            }
-        }
-
-        return returnValue;
+        return GetRegistry(containingAssembly)
+            .Registrations
+            .Select(x => x.Attribute)
+            .ToList();
     }
 
     /// <summary>
-    /// Gets the types in an assembly that are marked with a CommandAttribute, including
-    /// the built-in configuration commands when the program uses configuration.
+    /// The single definition of what counts as a command. A type qualifies when it is marked
+    /// with a CommandAttribute and the framework can actually create and run it, which means
+    /// it also has to be a concrete subclass of CommandBase.
     /// </summary>
-    private List<Type> GetCommandTypes(Assembly containingAssembly)
+    /// <remarks>
+    /// Every place that looks for commands goes through this so that the list of commands
+    /// shown to the user cannot disagree with the list of commands that can be instantiated.
+    /// When those two disagreed, a CommandAttribute on a class that was not a CommandBase was
+    /// listed in the help and then took down the whole --json schema dump.
+    /// </remarks>
+    /// <param name="type">Type to check</param>
+    /// <returns>True when the type is a runnable command</returns>
+    public static bool IsCommandType(Type type)
     {
-        var matchingTypes =
-            (from type in containingAssembly.GetTypes()
-             where type.GetCustomAttributes<CommandAttribute>().Any()
-             select type).ToList();
-
-        if (_ProgramOptions.UsesConfiguration == true)
+        if (type is null)
         {
-            var thisAssembly = this.GetType().Assembly;
+            return false;
+        }
 
-            // don't add the built-in commands twice when the caller is already asking
-            // about this assembly
-            if (thisAssembly != containingAssembly)
+        return
+            type.IsAbstract == false &&
+            type.IsSubclassOf(typeof(CommandBase)) == true &&
+            type.GetCustomAttributes<CommandAttribute>().Any() == true;
+    }
+
+    /// <summary>
+    /// Checks every command's arguments for problems that can only be seen once the argument
+    /// definitions exist.
+    /// </summary>
+    /// <remarks>
+    /// Separate from CommandRegistry.Problems on purpose: this has to instantiate every
+    /// command in the tool to ask it for its arguments, which is exactly the cost the
+    /// registry was built to avoid paying on every run. Call it from a unit test.
+    ///
+    /// What it finds today is an optional positional argument declared before a required
+    /// one. Positions are ordinal over the values that were actually supplied, so an omitted
+    /// optional one silently shifts every position after it and the command reads the wrong
+    /// values without any error at all.
+    /// </remarks>
+    /// <param name="containingAssembly">Assembly containing the commands</param>
+    /// <returns>Human readable descriptions of any problems found</returns>
+    public List<string> GetArgumentProblems(Assembly containingAssembly)
+    {
+        if (containingAssembly is null)
+        {
+            throw new ArgumentNullException(nameof(containingAssembly));
+        }
+
+        var problems = new List<string>();
+
+        foreach (var usage in GetAllCommandUsages(containingAssembly))
+        {
+            var positionals = usage.Arguments
+                .Where(x => x.IsPositionalSource == true)
+                .OrderBy(x => x.Alias, StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            var seenOptional = new List<string>();
+
+            foreach (var argument in positionals)
             {
-                matchingTypes.AddRange(
-                    (from type in thisAssembly.GetTypes()
-                     where type.GetCustomAttributes<CommandAttribute>().Any()
-                     select type).ToList());
+                if (argument.IsRequired == false)
+                {
+                    seenOptional.Add(argument.Name);
+                }
+                else if (seenOptional.Count > 0)
+                {
+                    var optionalNames = string.Join(
+                        ", ", seenOptional.Select(x => "'" + x + "'"));
+
+                    problems.Add(
+                        $"Command '{usage.Name}' declares required positional argument " +
+                        $"'{argument.Name}' after optional positional {optionalNames}. " +
+                        "Positions are counted over the values that are actually supplied, so " +
+                        "leaving the optional one out shifts every position after it and the " +
+                        "command reads the wrong values without any error.");
+                }
             }
         }
 
-        return matchingTypes;
+        return problems;
+    }
+
+    /// <summary>
+    /// Gets the types in an assembly that are marked with a CommandAttribute but that the
+    /// framework cannot run, so that a unit test can report them instead of leaving the
+    /// author wondering why their command never shows up.
+    /// </summary>
+    /// <param name="containingAssembly">Assembly to examine</param>
+    /// <returns>Types with a CommandAttribute that are not runnable commands</returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    public List<Type> GetUnrunnableCommandTypes(Assembly containingAssembly)
+    {
+        if (containingAssembly is null)
+        {
+            throw new ArgumentNullException(nameof(containingAssembly));
+        }
+
+        return
+            (from type in containingAssembly.GetTypes()
+             where
+                 type.GetCustomAttributes<CommandAttribute>().Any() == true &&
+                 IsCommandType(type) == false
+             select type).ToList();
     }
 
     /// <summary>
@@ -121,42 +225,10 @@ public class CommandAttributeUtility
             throw new ArgumentNullException(nameof(containingAssembly));
         }
 
-        var returnValue = new List<CommandAliasInfo>();
-
-        foreach (var type in GetCommandTypes(containingAssembly))
-        {
-            var commandAttribute = type.GetCustomAttribute<CommandAttribute>();
-
-            if (commandAttribute is null)
-            {
-                continue;
-            }
-
-            foreach (var alias in commandAttribute.Aliases)
-            {
-                returnValue.Add(new CommandAliasInfo
-                {
-                    Alias = alias,
-                    CommandName = commandAttribute.Name,
-                    Description = commandAttribute.Description
-                });
-            }
-
-            foreach (var aliasAttribute in type.GetCustomAttributes<CommandAliasAttribute>())
-            {
-                returnValue.Add(new CommandAliasInfo
-                {
-                    Alias = aliasAttribute.Name,
-                    CommandName = commandAttribute.Name,
-                    Description = string.IsNullOrWhiteSpace(aliasAttribute.Description)
-                        ? commandAttribute.Description
-                        : aliasAttribute.Description,
-                    Arguments = aliasAttribute.GetArgumentValues()
-                });
-            }
-        }
-
-        return returnValue;
+        return GetRegistry(containingAssembly)
+            .Registrations
+            .SelectMany(x => x.Aliases)
+            .ToList();
     }
 
     /// <summary>
@@ -181,30 +253,9 @@ public class CommandAttributeUtility
             return null;
         }
 
-        var attributes = GetAvailableCommandAttributes(containingAssembly);
-
-        // a real command name always wins over any kind of alias
-        var nameMatch = attributes.FirstOrDefault(x => x.Name == nameOrAlias);
-
-        if (nameMatch != null)
-        {
-            return nameMatch.Name;
-        }
-
-        var aliasMatches = GetCommandAliases(containingAssembly)
-            .Where(x => x.Alias == nameOrAlias)
-            .Select(x => x.CommandName)
-            .Distinct()
-            .ToList();
-
-        if (aliasMatches.Count > 1)
-        {
-            throw new KnownException(
-                $"The alias '{nameOrAlias}' is ambiguous. It is claimed by these commands: " +
-                $"{string.Join(", ", aliasMatches.Order())}.");
-        }
-
-        return aliasMatches.FirstOrDefault();
+        // real command names beat aliases, and an alias claimed by two commands has already
+        // been rejected when the registry was built
+        return GetRegistry(containingAssembly).Find(nameOrAlias)?.Name;
     }
 
     /// <summary>
@@ -228,14 +279,7 @@ public class CommandAttributeUtility
         }
 
         // a real command name always wins, so an alias that shadows one never applies
-        var attributes = GetAvailableCommandAttributes(containingAssembly);
-
-        if (attributes.Any(x => x.Name == alias) == true)
-        {
-            return null;
-        }
-
-        return GetCommandAliases(containingAssembly).FirstOrDefault(x => x.Alias == alias);
+        return GetRegistry(containingAssembly).FindAlias(alias);
     }
 
     /// <summary>
@@ -300,10 +344,9 @@ public class CommandAttributeUtility
             throw new ArgumentNullException(nameof(containingAssembly));
         }
 
-        var attributes = GetAvailableCommandAttributes(containingAssembly);
-        var aliases = GetCommandAliases(containingAssembly);
-
-        return GetCommandNameProblems(attributes, aliases);
+        // the registry works these out while it builds, so nothing has to sweep the assembly
+        // again here
+        return GetRegistry(containingAssembly).Problems.ToList();
     }
 
     /// <summary>
@@ -335,12 +378,12 @@ public class CommandAttributeUtility
 
         var problems = new List<string>();
 
-        var reservedNames = new[]
-        {
-            ArgumentFrameworkConstants.ArgumentHelpString,
-            ArgumentFrameworkConstants.ArgumentJson,
-            ArgumentFrameworkConstants.ArgumentGui
-        };
+        // ReservedKeywords is the single source, the same one CommandRegistry.GetProblems
+        // reads. This used to be a hand written array of three names, so a command or alias
+        // that collided with 'completion', 'quiet', '--complete' or 'tui' was reported as a
+        // problem by the registry and not by this -- two lists of the same thing, disagreeing.
+        var reservedNames = ReservedKeywords.AllNames
+            .ToHashSet(ArgumentCollection.ArgumentNameComparer);
 
         var duplicateNames = attributes
             .GroupBy(x => x.Name)
@@ -353,6 +396,17 @@ public class CommandAttributeUtility
         }
 
         var commandNames = attributes.Select(x => x.Name).ToHashSet();
+
+        foreach (var attribute in attributes)
+        {
+            if (reservedNames.Contains(CommandRegistration.GetPathAsString(attribute)) == true)
+            {
+                problems.Add(
+                    $"Command name '{CommandRegistration.GetPathAsString(attribute)}' is a " +
+                    "reserved framework keyword. The keyword wins, so the command can never " +
+                    "be run.");
+            }
+        }
 
         foreach (var alias in aliases)
         {
@@ -403,14 +457,7 @@ public class CommandAttributeUtility
             throw new ArgumentNullException(nameof(containingAssembly));
         }
 
-        var match =
-            (from type in containingAssembly.GetTypes()
-             where
-                 type.IsSubclassOf(typeof(CommandBase)) == true &&
-                 type.GetCustomAttributes<CommandAttribute>().Any(t => t.Name == commandName)
-             select type).FirstOrDefault();
-
-        return match;
+        return GetRegistry(containingAssembly).Find(commandName)?.CommandType;
     }
 
     /// <summary>
@@ -427,14 +474,7 @@ public class CommandAttributeUtility
             throw new ArgumentNullException(nameof(containingAssembly));
         }
 
-        var match =
-            (from type in containingAssembly.GetTypes()
-             where
-                 type.IsSubclassOf(typeof(CommandBase)) == true &&
-                 type.GetCustomAttributes<CommandAttribute>().Any(t => t.Name == commandName)
-             select type.GetCustomAttribute<CommandAttribute>()).FirstOrDefault();
-
-        return match;
+        return GetRegistry(containingAssembly).Find(commandName)?.Attribute;
     }
 
     /// <summary>
@@ -465,102 +505,178 @@ public class CommandAttributeUtility
             throw new ArgumentNullException(nameof(containingAssembly));
         }
 
-        var execInfo = new ArgumentCollectionFactory().Parse(args);
+        var registry = GetRegistry(containingAssembly);
 
-        if (execInfo is null || string.IsNullOrEmpty(execInfo.CommandName) == true)
+        // the command name can be more than one token when the command declares a group, so
+        // the registry decides where the name stops and the arguments begin rather than the
+        // parser assuming args[0]
+        var resolution = registry.Resolve(args);
+
+        if (resolution is null)
         {
-            throw new MissingArgumentException("Could not locate a command name.");
+            throw new MissingArgumentException(
+                $"Could not locate a command named '{args[0]}'.");
         }
-        else
+
+        var syntax = _ProgramOptions.ArgumentSyntax;
+
+        var tokens = resolution.RemainingTokens.ToArray();
+
+        // Parsed twice, and the second parse is the one that counts.
+        //
+        // '--name value' is two tokens, and nothing in them says whether 'value' belongs to
+        // '--name' or is a positional argument that follows a boolean flag. Only the
+        // command's own argument definitions say that, and the only way to read them is to
+        // ask the command -- which cannot be built without a CommandExecutionInfo. So the
+        // first parse produces a provisional request good enough to construct the command
+        // (every form except the space separated one binds correctly without definitions),
+        // and the second parse redoes the work knowing what each argument actually is.
+        //
+        // No extra instantiation: the command being created here is the one that runs.
+        var provisional = ParseArguments(tokens, syntax, definitions: null, out _);
+
+        var execInfo = new CommandExecutionInfo
         {
-            // resolve aliases to the real command name up front so that everything
-            // downstream only ever deals with real command names
-            var alias = GetCommandAlias(containingAssembly, execInfo.CommandName);
+            Request = new CommandCallRequest(
+                resolution.Registration.PathAsString, provisional, resolution.MatchedAs)
+        };
 
-            var resolvedCommandName = ResolveCommandName(containingAssembly, execInfo.CommandName);
+        execInfo.Options = _ProgramOptions;
+        execInfo.Configuration = new FileBasedConfigurationManager(
+            _ProgramOptions.ConfigurationFolderName);
 
-            if (resolvedCommandName != null)
-            {
-                execInfo.CommandName = resolvedCommandName;
-            }
+        // the built-in commands are ordinary registrations, so there is nothing to route --
+        // this used to branch on UsesConfiguration and try one assembly and then the other
+        var command = CreateInstance(resolution.Registration, execInfo);
 
-            if (alias != null)
-            {
-                // argument values from an alias are added as though they had been typed
-                // on the command line, so anything actually typed wins and the existing
-                // command line over config over default order is unchanged
-                foreach (var argument in alias.Arguments)
-                {
-                    execInfo.Arguments.TryAdd(argument.Key, argument.Value);
-                }
-            }
+        var arguments = ParseArguments(
+            tokens, syntax, command.Arguments, out var deprecatedTokens);
 
-            execInfo.Options = _ProgramOptions;
-            execInfo.Configuration = new FileBasedConfigurationManager(
-                _ProgramOptions.ConfigurationFolderName);
-
-            if (_ProgramOptions.UsesConfiguration == true)
-            {
-                var thisAssembly = this.GetType().Assembly;
-
-                var defaultCommand = GetCommandInstance(thisAssembly, execInfo, false);
-
-                if (defaultCommand != null)
-                {
-                    return defaultCommand;
-                }
-                else
-                {
-                    return GetCommandInstance(containingAssembly, execInfo);
-                }
-            }
-            else
-            {
-                return GetCommandInstance(containingAssembly, execInfo);
-            }
-
+        // argument values from an alias are added as though they had been typed on the
+        // command line, so anything actually typed wins and the existing command line over
+        // config over default order is unchanged
+        foreach (var argument in resolution.PresetArguments)
+        {
+            arguments.TryAdd(argument.Key, argument.Value);
         }
+
+        // everything downstream deals only in real command names, and what was actually
+        // typed survives on the request rather than being overwritten
+        execInfo.Request = new CommandCallRequest(
+            resolution.Registration.PathAsString, arguments, resolution.MatchedAs);
+
+        WarnAboutDeprecatedSyntax(deprecatedTokens);
+
+        return command;
     }
 
-    private CommandBase? GetCommandInstance(
-        Assembly containingAssembly,
-        CommandExecutionInfo? execInfo,
-        bool throwException = true)
+    /// <summary>
+    /// Parses argument tokens in the program's configured syntax.
+    /// </summary>
+    private static Dictionary<string, string> ParseArguments(
+        string[] tokens, ArgumentSyntax syntax, ArgumentCollection? definitions,
+        out List<string> deprecatedTokens)
     {
+        // positional argument counting is stateful, so this is a fresh factory per parse
+        var factory = new ArgumentCollectionFactory
+        {
+            Syntax = syntax,
+            Definitions = definitions
+        };
+
+        var returnValue = factory.GetArgsAsDictionary(tokens, true);
+
+        deprecatedTokens = factory.DeprecatedSlashTokens;
+
+        return returnValue;
+    }
+
+    /// <summary>
+    /// Tells the user that the slash syntax they typed is on its way out.
+    /// </summary>
+    /// <remarks>
+    /// Written to the diagnostic channel rather than to the result channel. A tool whose
+    /// result is being redirected to a file or piped into a JSON reader must not get a
+    /// deprecation notice in the middle of its output.
+    /// </remarks>
+    private void WarnAboutDeprecatedSyntax(List<string> deprecatedTokens)
+    {
+        if (deprecatedTokens.Count == 0 ||
+            _ProgramOptions.ArgumentSyntax.WarnsAboutSlash() == false ||
+            _ProgramOptions.WarnOnDeprecatedArgumentSyntax == false)
+        {
+            return;
+        }
+
+        var suggestions = string.Join(", ", deprecatedTokens
+            .Select(SuggestPosixForm)
+            .Distinct());
+
+        _ProgramOptions.OutputProvider.WriteStatus(
+            $"warning: {string.Join(", ", deprecatedTokens.Distinct())} " +
+            $"{(deprecatedTokens.Distinct().Count() == 1 ? "uses" : "use")} the deprecated " +
+            $"slash argument syntax, which will be removed in a future version. " +
+            $"Use {suggestions} instead.");
+    }
+
+    /// <summary>
+    /// Rewrites a slash argument as the POSIX form it should have been typed as.
+    /// </summary>
+    private static string SuggestPosixForm(string token)
+    {
+        var withoutSlash = token[1..];
+
+        var locationOfColon = withoutSlash.IndexOf(':');
+
+        return locationOfColon < 0
+            ? ArgumentSyntax.Posix.FormatName(withoutSlash)
+            : ArgumentSyntax.Posix.FormatNameValue(
+                withoutSlash[..locationOfColon], withoutSlash[(locationOfColon + 1)..]);
+    }
+
+    /// <summary>
+    /// Creates an instance of a registered command.
+    /// </summary>
+    /// <param name="registration">The command to create</param>
+    /// <param name="execInfo">Execution information to hand it</param>
+    /// <returns>The command instance</returns>
+    /// <exception cref="MissingArgumentException">Thrown when the command type does not have
+    /// the constructor the framework activates commands through.</exception>
+    public CommandBase CreateInstance(
+        CommandRegistration registration, CommandExecutionInfo execInfo)
+    {
+        ArgumentNullException.ThrowIfNull(registration, nameof(registration));
         ArgumentNullException.ThrowIfNull(execInfo, nameof(execInfo));
 
-        var commandNames = GetAvailableCommandNames(containingAssembly);
+        // ActivatorUtilities rather than a hardcoded constructor lookup, so a command can
+        // declare the services it needs as constructor parameters. The old two-argument
+        // GetConstructor() meant any new framework parameter broke every downstream command
+        // -- at run time, not compile time, because the lookup simply returned null.
+        var scope = CommandFrameworkUtilities
+            .GetServiceProvider(_ProgramOptions)
+            .CreateScope();
 
-        if (commandNames.Contains(execInfo.CommandName) == false)
+        try
         {
-            if (throwException == true)
-            {
-                throw new MissingArgumentException($"Could not locate a command named '{execInfo.CommandName}'.");
-            }
-            else
-            {
-                return null;
-            }
+            var instance = ActivatorUtilities.CreateInstance(
+                scope.ServiceProvider,
+                registration.CommandType,
+                execInfo,
+                _ProgramOptions.OutputProvider);
+
+            var command = (CommandBase)instance;
+
+            // the command owns the scope and releases it when it is disposed. Nothing used
+            // to dispose a command, so the scope was never released.
+            command.SetServiceScope(scope, true);
+
+            return command;
         }
-        else
+        catch
         {
-            var commandType = GetAvailableCommandType(containingAssembly, execInfo.CommandName);
+            scope.Dispose();
 
-            if (commandType is null)
-            {
-                throw new MissingArgumentException($"Could not locate a command data type named '{execInfo.CommandName}'.");
-            }
-
-            var ctor = commandType.GetConstructor(new Type[] { typeof(CommandExecutionInfo), typeof(ITextOutputProvider) });
-
-            if (ctor is null)
-            {
-                throw new MissingArgumentException($"Could not locate a constructor on command type named '{execInfo.CommandName}'.");
-            }
-
-            var instance = ctor.Invoke(new object[] { execInfo, _ProgramOptions.OutputProvider });
-
-            return instance as CommandBase;
+            throw;
         }
     }
 
@@ -571,56 +687,102 @@ public class CommandAttributeUtility
     /// <returns>List of command usages</returns>
     public List<CommandInfo> GetAllCommandUsages(Assembly asm)
     {
-        var attributes = GetAvailableCommandAttributes(asm);
-
-        var returnValues = new List<CommandInfo>();
-
-        PopulateUsages(asm, attributes, returnValues);
-
-        if (_ProgramOptions.UsesConfiguration == true)
-        {
-            var thisAssembly = this.GetType().Assembly;
-
-            var defaultAttributes = GetAvailableCommandAttributes(thisAssembly);
-
-            PopulateUsages(thisAssembly, defaultAttributes, returnValues);
-        }
-
-        return returnValues;
+        // one pass over the registry -- the built-in commands are registered like any other,
+        // so there is no second pass over the framework assembly
+        return GetRegistry(asm)
+            .Registrations
+            .Select(x => GetCommandUsage(x, asm))
+            .ToList();
     }
 
-    private void PopulateUsages(Assembly asm, List<CommandAttribute> attributes, List<CommandInfo> returnValues)
+    /// <summary>
+    /// Creates a command for the purpose of reading its argument definitions, filling in any
+    /// constructor dependency that cannot be resolved with null rather than failing.
+    /// </summary>
+    /// <remarks>
+    /// The schema path instantiates every command in the tool, so it cannot be as strict as
+    /// the run path: one command with an unregistered dependency would otherwise take down
+    /// the whole --json dump, and cmdui with it. This is safe because GetArguments() cannot
+    /// depend on injected state anyway -- CommandBase's constructor calls it, which runs
+    /// before any derived field is assigned.
+    /// </remarks>
+    private CommandBase CreateInstanceForSchema(
+        CommandRegistration registration, CommandExecutionInfo execInfo)
     {
-        var aliases = GetCommandAliases(asm);
+        var provider = CommandFrameworkUtilities.GetServiceProvider(_ProgramOptions);
 
-        foreach (var item in attributes)
+        var constructor = registration.CommandType
+            .GetConstructors()
+            .OrderByDescending(x => x.GetParameters().Length)
+            .FirstOrDefault();
+
+        if (constructor is null)
         {
-            var info = new CommandInfo();
-
-            info.Name = item.Name;
-            info.Description = item.Description;
-            info.IsAsync = item.IsAsync;
-            info.Category = item.Category;
-            info.Aliases = item.Aliases;
-
-            // aliases that also supply argument values are reported separately so that
-            // tooling can tell a plain rename apart from a preset
-            info.CommandAliases = aliases
-                .Where(x => x.CommandName == item.Name && x.HasArguments)
-                .ToList();
-
-            var command = GetCommand(
-                new[] { item.Name, ArgumentFrameworkConstants.ArgumentHelpString },
-                asm);
-
-            if (command != null)
-            {
-                var args = command.GetArguments();
-
-                info.Arguments = args;
-            }
-
-            returnValues.Add(info);
+            throw new MissingArgumentException(
+                $"Could not locate a constructor on command type named '{registration.Name}'.");
         }
+
+        var arguments = new List<object?>();
+
+        foreach (var parameter in constructor.GetParameters())
+        {
+            if (parameter.ParameterType.IsAssignableFrom(typeof(CommandExecutionInfo)) == true)
+            {
+                arguments.Add(execInfo);
+            }
+            else if (parameter.ParameterType.IsInstanceOfType(_ProgramOptions.OutputProvider) == true)
+            {
+                arguments.Add(_ProgramOptions.OutputProvider);
+            }
+            else
+            {
+                // GetService rather than GetRequiredService: an unresolved dependency becomes
+                // null instead of an exception
+                arguments.Add(
+                    provider.GetService(parameter.ParameterType) ??
+                    GetDefaultValue(parameter.ParameterType));
+            }
+        }
+
+        return (CommandBase)constructor.Invoke([.. arguments]);
+    }
+
+    private static object? GetDefaultValue(Type type)
+    {
+        return type.IsValueType == true ? Activator.CreateInstance(type) : null;
+    }
+
+    private CommandInfo GetCommandUsage(CommandRegistration registration, Assembly asm)
+    {
+        var info = new CommandInfo();
+
+        info.Name = registration.Name;
+        info.Description = registration.Description;
+        info.Category = registration.Category;
+        info.Group = registration.Group;
+        info.Aliases = registration.Attribute.Aliases;
+
+        // aliases that also supply argument values are reported separately so that tooling
+        // can tell a plain rename apart from a preset
+        info.CommandAliases = registration.Aliases
+            .Where(x => x.HasArguments)
+            .ToList();
+
+        var execInfo = new CommandExecutionInfo
+        {
+            Request = new CommandCallRequest(registration.Name),
+            Options = _ProgramOptions,
+            Configuration = new FileBasedConfigurationManager(
+                _ProgramOptions.ConfigurationFolderName)
+        };
+
+        using var command = CreateInstanceForSchema(registration, execInfo);
+
+        var arguments = command.GetArguments();
+
+        info.Arguments = arguments;
+        info.Rules = [.. arguments.Rules.Select(ArgumentRuleInfo.FromRule)];
+
+        return info;
     }
 }

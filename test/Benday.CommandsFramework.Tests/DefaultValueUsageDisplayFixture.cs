@@ -1,4 +1,4 @@
-using Benday.CommandsFramework.Samples;
+﻿using Benday.CommandsFramework.Samples;
 
 namespace Benday.CommandsFramework.Tests;
 
@@ -22,13 +22,13 @@ public class DefaultValueUsageDisplayFixture
         }
     }
 
-    private string RunAndGetOutput(params string[] commandLineArgs)
+    private async Task<string> RunAndGetOutput(params string[] commandLineArgs)
     {
         var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
 
         var command = new SampleCommandWithDefaultsAndRequiredArg(executionInfo, OutputProvider);
 
-        command.Execute();
+        await command.ExecuteAsync(TestContext.Current.CancellationToken);
 
         var output = OutputProvider.GetOutput();
 
@@ -38,7 +38,7 @@ public class DefaultValueUsageDisplayFixture
     }
 
     [Fact]
-    public void ValidationFailure_ShowsConfiguredDefaultRatherThanSuppliedValue()
+    public async Task ValidationFailure_ShowsConfiguredDefaultRatherThanSuppliedValue()
     {
         // arrange
         // 'required-thing' is missing so validation fails and usage gets displayed.
@@ -49,7 +49,7 @@ public class DefaultValueUsageDisplayFixture
             );
 
         // act
-        var output = RunAndGetOutput(commandLineArgs);
+        var output = await RunAndGetOutput(commandLineArgs);
 
         // assert
         Assert.Contains("** INVALID ARGUMENT **", output);
@@ -58,7 +58,7 @@ public class DefaultValueUsageDisplayFixture
     }
 
     [Fact]
-    public void ValidationFailure_ShowsDefaultForArgumentWithNoDescription()
+    public async Task ValidationFailure_ShowsDefaultForArgumentWithNoDescription()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -66,7 +66,7 @@ public class DefaultValueUsageDisplayFixture
             );
 
         // act
-        var output = RunAndGetOutput(commandLineArgs);
+        var output = await RunAndGetOutput(commandLineArgs);
 
         // assert
         // 'countish' has no description, so it takes the other branch of the usage
@@ -75,7 +75,7 @@ public class DefaultValueUsageDisplayFixture
     }
 
     [Fact]
-    public void RequiredArgumentWithNoDefault_ShowsNoDefaultLine()
+    public async Task RequiredArgumentWithNoDefault_ShowsNoDefaultLine()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -84,7 +84,7 @@ public class DefaultValueUsageDisplayFixture
             );
 
         // act
-        var output = RunAndGetOutput(commandLineArgs);
+        var output = await RunAndGetOutput(commandLineArgs);
 
         // assert
         var lines = output.Split(Environment.NewLine);

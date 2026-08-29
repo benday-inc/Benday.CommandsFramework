@@ -1,4 +1,4 @@
-using Benday.CommandsFramework.Samples;
+﻿using Benday.CommandsFramework.Samples;
 using Benday.CommandsFramework.Samples.Services;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -25,8 +25,10 @@ public class SharedServiceProviderFixture
         }
     }
 
-    [Command(Name = "counting-command", IsAsync = true)]
+    [Command(Name = "counting-command")]
+#pragma warning disable CS0618 // the obsolete base class is deliberate here
     private class CountingCommand : DependencyInjectionCommand
+#pragma warning restore CS0618
     {
         public CountingCommand(CommandExecutionInfo info, ITextOutputProvider outputProvider)
             : base(info, outputProvider)
@@ -35,7 +37,7 @@ public class SharedServiceProviderFixture
 
         public InstanceCountingService? Service { get; private set; }
 
-        protected override Task OnExecute()
+        protected override Task OnExecute(CancellationToken cancellationToken)
         {
             Service = GetRequiredService<InstanceCountingService>();
 
@@ -70,16 +72,16 @@ public class SharedServiceProviderFixture
         var options = GetOptions(outputProvider);
 
         var first = new CountingCommand(
-            new CommandExecutionInfo { CommandName = "counting-command", Options = options },
+            new CommandExecutionInfo { Request = new CommandCallRequest("counting-command"), Options = options },
             outputProvider);
 
         var second = new CountingCommand(
-            new CommandExecutionInfo { CommandName = "counting-command", Options = options },
+            new CommandExecutionInfo { Request = new CommandCallRequest("counting-command"), Options = options },
             outputProvider);
 
         // act
-        await first.ExecuteAsync();
-        await second.ExecuteAsync();
+        await first.ExecuteAsync(TestContext.Current.CancellationToken);
+        await second.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         Assert.NotNull(first.Service);
@@ -97,11 +99,11 @@ public class SharedServiceProviderFixture
         Assert.Null(options.ServiceProvider);
 
         var command = new CountingCommand(
-            new CommandExecutionInfo { CommandName = "counting-command", Options = options },
+            new CommandExecutionInfo { Request = new CommandCallRequest("counting-command"), Options = options },
             outputProvider);
 
         // act
-        await command.ExecuteAsync();
+        await command.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         Assert.NotNull(options.ServiceProvider);
@@ -115,18 +117,18 @@ public class SharedServiceProviderFixture
         var options = GetOptions(outputProvider);
 
         var first = new CountingCommand(
-            new CommandExecutionInfo { CommandName = "counting-command", Options = options },
+            new CommandExecutionInfo { Request = new CommandCallRequest("counting-command"), Options = options },
             outputProvider);
 
-        await first.ExecuteAsync();
+        await first.ExecuteAsync(TestContext.Current.CancellationToken);
         first.Dispose();
 
         var second = new CountingCommand(
-            new CommandExecutionInfo { CommandName = "counting-command", Options = options },
+            new CommandExecutionInfo { Request = new CommandCallRequest("counting-command"), Options = options },
             outputProvider);
 
         // act
-        await second.ExecuteAsync();
+        await second.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         // disposing one command disposes its own scope but leaves the shared provider alone
@@ -148,14 +150,15 @@ public class SharedServiceProviderFixture
         };
 
         var command = new CountingCommand(
-            new CommandExecutionInfo { CommandName = "counting-command", Options = options },
+            new CommandExecutionInfo { Request = new CommandCallRequest("counting-command"), Options = options },
             outputProvider);
 
         // act
         var exception = await Assert.ThrowsAsync<InvalidOperationException>(
-            () => command.ExecuteAsync());
+            () => command.ExecuteAsync(TestContext.Current.CancellationToken));
 
         // assert
-        Assert.Contains("Service collection was not populated", exception.Message);
+        Assert.Contains("service collection was not populated", exception.Message);
+        Assert.Contains("check Program.cs", exception.Message);
     }
 }

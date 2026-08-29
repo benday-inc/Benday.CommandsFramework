@@ -1,4 +1,4 @@
-using Benday.CommandsFramework.Samples;
+﻿using Benday.CommandsFramework.Samples;
 
 namespace Benday.CommandsFramework.Tests;
 
@@ -125,7 +125,7 @@ public class UnknownArgumentDetectionFixture
     // ---- Command-level integration tests ----
 
     [Fact]
-    public void Command_UnknownArg_ShowsUnknownArgumentError()
+    public async Task Command_UnknownArg_ShowsUnknownArgumentError()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -142,8 +142,8 @@ public class UnknownArgumentDetectionFixture
         executionInfo.Options.StrictArgumentValidation = true;
         var command = new SampleCommand1(executionInfo, OutputProvider);
 
-        // act
-        command.Execute();
+        await // act
+        command.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         var output = OutputProvider.GetOutput();
@@ -153,7 +153,7 @@ public class UnknownArgumentDetectionFixture
     }
 
     [Fact]
-    public void Command_NoUnknownArgs_Succeeds()
+    public async Task Command_NoUnknownArgs_Succeeds()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -168,8 +168,8 @@ public class UnknownArgumentDetectionFixture
         var executionInfo = new ArgumentCollectionFactory().Parse(commandLineArgs);
         var command = new SampleCommand1(executionInfo, OutputProvider);
 
-        // act
-        command.Execute();
+        await // act
+        command.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         var output = OutputProvider.GetOutput();
@@ -178,7 +178,7 @@ public class UnknownArgumentDetectionFixture
     }
 
     [Fact]
-    public void Command_MultipleUnknownArgs_ShowsAllInOutput()
+    public async Task Command_MultipleUnknownArgs_ShowsAllInOutput()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -195,8 +195,8 @@ public class UnknownArgumentDetectionFixture
         executionInfo.Options.StrictArgumentValidation = true;
         var command = new SampleCommand1(executionInfo, OutputProvider);
 
-        // act
-        command.Execute();
+        await // act
+        command.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert
         var output = OutputProvider.GetOutput();

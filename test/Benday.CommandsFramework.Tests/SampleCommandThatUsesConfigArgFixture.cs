@@ -41,7 +41,7 @@ public class SampleCommandWithConfigArgsFixture : TestClassBase
     }
 
     [Fact]
-    public void CreateAndRun_Valid()
+    public async Task CreateAndRun_Valid()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -60,8 +60,8 @@ public class SampleCommandWithConfigArgsFixture : TestClassBase
 
         _SystemUnderTest = new SampleCommandWithConfigArgs(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+        await // act
+        _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert        
         var output = OutputProvider.GetOutput();
@@ -78,7 +78,7 @@ public class SampleCommandWithConfigArgsFixture : TestClassBase
     }
 
     [Fact]
-    public void CreateAndRun_Invalid_WithoutRequiredConfig()
+    public async Task CreateAndRun_Invalid_WithoutRequiredConfig()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -94,8 +94,8 @@ public class SampleCommandWithConfigArgsFixture : TestClassBase
 
         _SystemUnderTest = new SampleCommandWithConfigArgs(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+        await // act
+        _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert        
         var output = OutputProvider.GetOutput();
@@ -110,13 +110,15 @@ public class SampleCommandWithConfigArgsFixture : TestClassBase
             output, "** SUCCESS **", "should not succeed");
 
         AssertThatString.Contains(
-            output, "api-key is not valid or missing", "api-key should fail");
+            output, "api-key is required.", "api-key should fail");
         AssertThatString.Contains(
-            output, "base-url is not valid or missing", "base-url should fail");
+            output, "set-configuration --name api-key", "should say how to store it");
+        AssertThatString.Contains(
+            output, "base-url is required.", "base-url should fail");
     }
 
     [Fact]
-    public void CreateAndRun_Invalid_PartialRequiredConfig_MissingApiKey()
+    public async Task CreateAndRun_Invalid_PartialRequiredConfig_MissingApiKey()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -134,8 +136,8 @@ public class SampleCommandWithConfigArgsFixture : TestClassBase
 
         _SystemUnderTest = new SampleCommandWithConfigArgs(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+        await // act
+        _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert        
         var output = OutputProvider.GetOutput();
@@ -152,11 +154,13 @@ public class SampleCommandWithConfigArgsFixture : TestClassBase
             output, "base-url is not valid or missing", "base-url should not fail");
 
         AssertThatString.Contains(
-            output, "api-key is not valid or missing", "api-key should fail");
+            output, "api-key is required.", "api-key should fail");
+        AssertThatString.Contains(
+            output, "set-configuration --name api-key", "should say how to store it");
     }
 
     [Fact]
-    public void CreateAndRun_Invalid_PartialRequiredConfig_MissingBaseUrl()
+    public async Task CreateAndRun_Invalid_PartialRequiredConfig_MissingBaseUrl()
     {
         // arrange
         var commandLineArgs = Utilities.GetStringArray(
@@ -174,8 +178,8 @@ public class SampleCommandWithConfigArgsFixture : TestClassBase
 
         _SystemUnderTest = new SampleCommandWithConfigArgs(executionInfo, OutputProvider);
 
-        // act
-        _SystemUnderTest.Execute();
+        await // act
+        _SystemUnderTest.ExecuteAsync(TestContext.Current.CancellationToken);
 
         // assert        
         var output = OutputProvider.GetOutput();
@@ -189,7 +193,7 @@ public class SampleCommandWithConfigArgsFixture : TestClassBase
             output, "** SUCCESS **", "should not succeed");
 
         AssertThatString.Contains(
-            output, "base-url is not valid or missing", "base-url should fail");
+            output, "base-url is required.", "base-url should fail");
 
         AssertThatString.DoesNotContain(
             output, "api-key is not valid or missing", "api-key should not fail");

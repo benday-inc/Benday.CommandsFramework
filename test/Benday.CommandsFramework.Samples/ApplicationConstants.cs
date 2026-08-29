@@ -12,6 +12,16 @@ public static class ApplicationConstants
     public const string CommandName_CommandThatUsesConfig = "useconfig";
     public const string CommandName_CommandWithNoArgs = "noargs";
     public const string CommandName_CommandWithAllowedValues = "allowedvaluescommand";
+    public const string CommandName_CommandWithFileAndDirectoryArgs = "filesanddirs";
+    public const string CommandName_Interactive = "interactive";
+    public const string CommandName_ConstructorInjection = "injected-greeting";
+    public const string CommandGroup_Widget = "widget";
+    public const string CommandName_WidgetList = "list";
+    public const string CommandName_WidgetShow = "show";
+    public const string CommandAlias_ShowWidget = "showwidget";
+    public const string CommandName_Progress = "progress";
+    public const string CommandName_CommandWithRules = "rulescommand";
+    public const string CommandName_CommandWithDiscovery = "discoverycommand";
     public const string CommandName_CommandWithDefaultsAndRequiredArg = "defaultsandrequired";
     public const string CommandName_CommandWithCommandNameAliases = "command-with-a-long-name";
     public const string CommandName_Greeting = "greeting";
@@ -21,6 +31,7 @@ public static class ApplicationConstants
     public const string CommandName_AsyncCallsOtherCommands = "async-greet-everybody";
     public const string CommandName_CallsOtherCommandsWithBadArgs = "greet-badly";
     public const string CommandName_CallsATypeWithNoAttribute = "not-a-command-caller";
+    public const string CommandName_Throws = "throws";
     public const string CommandName_Deploy = "deploy";
     public const string CommandAlias_DeployProd = "deploy-prod";
     public const string CommandAlias_DeployDev = "deploy-dev";

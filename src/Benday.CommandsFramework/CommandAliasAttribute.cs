@@ -1,4 +1,4 @@
-namespace Benday.CommandsFramework;
+﻿namespace Benday.CommandsFramework;
 
 /// <summary>
 /// Add this attribute to a command class to create an alternate name for the command
@@ -8,7 +8,7 @@ namespace Benday.CommandsFramework;
 /// [Command(Name = "deploy")]
 /// [CommandAlias("deploy-prod", "environment=production", "verbose=true",
 ///     Description = "Deploy to production")]
-/// public class DeployCommand : SynchronousCommand
+/// public class DeployCommand : Command
 /// </code>
 /// The argument values are applied as though they had been typed on the command line,
 /// so anything actually supplied on the command line wins over them. The resulting
