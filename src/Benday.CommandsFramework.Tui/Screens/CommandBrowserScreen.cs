@@ -76,7 +76,7 @@ internal sealed class CommandBrowserScreen
 
         var prompt = new SelectionPrompt<Choice>()
             .Title(GetTitle())
-            .PageSize(20)
+            .PageSize(TuiLayout.GetPageSize(_Console.Profile.Height))
             // this line is drawn at the bottom of the visible list, which is the one place a
             // hint survives a list longer than the terminal -- the title above it is the first
             // thing to scroll away
@@ -202,7 +202,7 @@ internal sealed class CommandBrowserScreen
         prompt.AddChoiceGroup(
             new Choice("[bold]Command aliases[/]", TuiScreenAction.Stay) { IsHeading = true },
             aliases.Select(alias => new Choice(
-                Describe(Markup.Escape(alias.Name), alias.Description),
+                Describe(alias.Name, alias.Description),
                 TuiScreenAction.OpenForm)
             {
                 Command = alias.Command,
@@ -212,9 +212,9 @@ internal sealed class CommandBrowserScreen
         return true;
     }
 
-    private static Choice ToChoice(TuiCommandItem command, bool insideGroup)
+    private Choice ToChoice(TuiCommandItem command, bool insideGroup)
     {
-        var label = Markup.Escape(command.GetLabel(insideGroup));
+        var label = command.GetLabel(insideGroup);
 
         if (insideGroup == true)
         {
@@ -227,11 +227,16 @@ internal sealed class CommandBrowserScreen
         };
     }
 
-    private static string Describe(string label, string description)
+    /// <summary>
+    /// One row: the command's name, and as much of what it does as fits on the line.
+    /// </summary>
+    private string Describe(string label, string description)
     {
-        return string.IsNullOrWhiteSpace(description) == true
-            ? label
-            : $"{label} [grey]- {Markup.Escape(description)}[/]";
+        var fitted = TuiLayout.FitDescription(label, description, _Console.Profile.Width);
+
+        return string.IsNullOrEmpty(fitted) == true
+            ? Markup.Escape(label)
+            : $"{Markup.Escape(label)} [grey]- {Markup.Escape(fitted)}[/]";
     }
 
     /// <summary>

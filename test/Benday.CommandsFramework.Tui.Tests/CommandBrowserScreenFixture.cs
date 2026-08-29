@@ -116,11 +116,54 @@ public class CommandBrowserScreenFixture
         // act
         await screen.ShowAsync(TestContext.Current.CancellationToken);
 
-        // assert -- said twice, because each goes missing in a different situation: the title
-        // is the first thing to scroll off a list longer than the terminal, and the
-        // more-choices line is only drawn when the list is longer than a page
+        // assert
         Assert.Contains("Press esc to quit", console.Output);
+    }
+
+    [Fact]
+    public async Task AListTallerThanTheWindowSaysItAtTheBottomToo()
+    {
+        // arrange -- the title is the first thing to scroll away when the list is taller than
+        // the terminal, which is exactly when someone is looking for the way out. The
+        // more-choices line is drawn at the bottom of the visible rows, and only in this case.
+        var console = GetConsole();
+
+        console.Profile.Height = 12;
+
+        console.Input.PushKey(ConsoleKey.Escape);
+
+        var screen = new CommandBrowserScreen(console, GetBrowser());
+
+        // act
+        await screen.ShowAsync(TestContext.Current.CancellationToken);
+
+        // assert
         Assert.Contains("esc quits", console.Output);
+    }
+
+    [Fact]
+    public async Task AListShorterThanTheWindowIsShownWhole()
+    {
+        // arrange -- the page used to be twenty rows whatever the window was, which left most
+        // of a tall terminal empty and made a long list feel longer than it is
+        var console = GetConsole();
+
+        console.Profile.Height = 60;
+
+        console.Input.PushKey(ConsoleKey.Escape);
+
+        var browser = GetBrowser();
+        var screen = new CommandBrowserScreen(console, browser);
+
+        // act
+        await screen.ShowAsync(TestContext.Current.CancellationToken);
+
+        // assert -- the last command in the list reached the screen without scrolling
+        var lastGroup = browser.GetTree()[^1].Groups[^1];
+        var last = lastGroup.Commands[^1];
+
+        Assert.Contains(last.GetLabel(lastGroup.HasGroup), console.Output);
+        Assert.DoesNotContain("move up and down for more", console.Output);
     }
 
     [Fact]

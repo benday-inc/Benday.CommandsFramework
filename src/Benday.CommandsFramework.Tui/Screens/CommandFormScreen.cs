@@ -72,7 +72,7 @@ internal sealed class CommandFormScreen
                 .Title(
                     "Pick a field to fill in." + Environment.NewLine +
                     "[grey]Press esc to go back to the commands.[/]")
-                .PageSize(20)
+                .PageSize(TuiLayout.GetPageSize(_Console.Profile.Height))
                 .MoreChoicesText("[grey](move up and down for more, esc goes back)[/]")
                 .UseConverter(x => x.Label)
                 .AddCancelResult(back);
