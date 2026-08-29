@@ -1021,6 +1021,20 @@ return await CommandsApp
 mytool tui
 ```
 
+`.WithTui()` is an extension on the `CommandsApp` builder. A program that configures
+`DefaultProgramOptions` and runs `DefaultProgram` directly sets the same thing itself:
+
+```csharp
+var options = new DefaultProgramOptions();
+
+options.ApplicationName = "My CLI Tool";
+options.TuiHost = new SpectreTuiHost();
+
+var program = new DefaultProgram(options, assembly);
+
+return await program.RunAsync(args);
+```
+
 `tui` is reserved whether or not the tool was built with one, so a command cannot quietly
 claim the name. A tool that has not called `.WithTui()` says what its author has to add
 rather than offering to install anything — no runtime install can supply a compile-time
