@@ -441,6 +441,23 @@ broke no implementor; `DefaultProgramOptions` declares it settable.
 `DataFormatting/` has `CsvReader`, `CsvWriter`, `CsvRow`, and `TableFormatter` /
 `TableColumnDefinition` for tabular console output.
 
+**Excel holds 32,767 characters in a cell** (`CsvWriter.ExcelMaxCellLength`), and past that it does
+not truncate — it fills the cell, loses track of the quoted field, and spills the remainder into
+following rows split on every comma, which misaligns everything below it. `CsvWriter.MaxFieldLength`
+(null by default, so nothing existing changed) makes `ToCsvString()` / `SaveToFile()` throw instead;
+`GetOversizedFields(max)` finds the values without an exception, so a caller can shorten them.
+Deciding *how* to shorten belongs to the caller — a list wants cutting on a whole-item boundary with
+a count of what was left out, which is not something the writer can know.
+
+In `CsvReader`, **a quote only opens a quoted field at the start of a field**. It used to be a state
+toggle wherever it appeared, so one stray quote in unquoted data — a Windows path, an inch
+measurement, a name like `O"Brien` — put the parser into quoted mode and swallowed every following
+comma and line ending into a single field for the rest of the file. Anywhere but a field start, a
+quote is now a literal character.
+
+**Only a line with no delimiters at all counts as blank.** `,,` is three empty values and is real
+data; it used to be discarded, which silently dropped rows on the round trip through `CsvWriter`.
+
 ### Bootstrapping
 `CommandsApp.RunAsync(args)` is the whole of Program.cs for a tool with no DI or configuration
 setup: commands come from the entry assembly, and `ApplicationName` / `Version` / `Website` come

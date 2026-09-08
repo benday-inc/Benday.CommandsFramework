@@ -11,6 +11,15 @@ namespace Benday.CommandsFramework.DataFormatting;
 /// </summary>
 public class CsvWriter
 {
+    /// <summary>
+    /// The maximum number of characters Excel will hold in a single cell.
+    /// A longer value does not merely get truncated on import: Excel fills the
+    /// cell to this length, loses track of the quoted field, and spills the
+    /// remainder into following rows split on every comma, which misaligns the
+    /// rest of the sheet.
+    /// </summary>
+    public const int ExcelMaxCellLength = 32767;
+
     private readonly List<CsvRow> _rows;
     private string[]? _headers;
     private bool _hasDataRows;
@@ -75,6 +84,19 @@ public class CsvWriter
     /// Default is true.
     /// </summary>
     public bool HasHeaderRow { get; set; }
+
+    /// <summary>
+    /// Gets or sets the maximum length allowed for a single field. When set,
+    /// <see cref="ToCsvString"/> and <see cref="SaveToFile"/> throw rather than
+    /// writing a file that a spreadsheet will mangle. Null (the default) does
+    /// not enforce a limit, so existing callers are unaffected.
+    /// Set it to <see cref="ExcelMaxCellLength"/> for a file destined for Excel.
+    /// </summary>
+    /// <remarks>
+    /// Use <see cref="GetOversizedFields(int)"/> to find the offending values
+    /// without an exception.
+    /// </remarks>
+    public int? MaxFieldLength { get; set; }
 
     /// <summary>
     /// Gets the number of data rows in the CSV (excluding header row).
@@ -477,11 +499,116 @@ public class CsvWriter
     }
 
     /// <summary>
+    /// Finds every field longer than <paramref name="maxLength"/> characters.
+    /// Pass <see cref="ExcelMaxCellLength"/> to find the values that would make
+    /// Excel spill a cell across following rows.
+    /// </summary>
+    /// <param name="maxLength">The maximum allowed field length.</param>
+    /// <returns>
+    /// The oversized fields, in row then column order. Empty when everything
+    /// fits.
+    /// </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown when maxLength is less than 1.
+    /// </exception>
+    public IReadOnlyList<CsvOversizedField> GetOversizedFields(int maxLength)
+    {
+        if (maxLength < 1)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(maxLength), $"Value {maxLength} must be at least 1.");
+        }
+
+        var results = new List<CsvOversizedField>();
+
+        if (HasHeaderRow && _headers != null)
+        {
+            AddOversizedFields(results, _headers, -1);
+        }
+
+        for (int i = 0; i < _rows.Count; i++)
+        {
+            AddOversizedFields(results, _rows[i].GetValues(), i);
+        }
+
+        return results;
+
+        void AddOversizedFields(
+            List<CsvOversizedField> target, string[] values, int rowIndex)
+        {
+            for (int column = 0; column < values.Length; column++)
+            {
+                var value = values[column];
+
+                if (value != null && value.Length > maxLength)
+                {
+                    target.Add(new CsvOversizedField(
+                        rowIndex, column, GetColumnName(column), value.Length));
+                }
+            }
+        }
+    }
+
+    private string? GetColumnName(int columnIndex)
+    {
+        if (HasHeaderRow == false || _headers == null ||
+            columnIndex < 0 || columnIndex >= _headers.Length)
+        {
+            return null;
+        }
+
+        return _headers[columnIndex];
+    }
+
+    /// <summary>
+    /// Throws when any field exceeds <see cref="MaxFieldLength"/>. Does nothing
+    /// when no limit is set.
+    /// </summary>
+    private void AssertFieldLengths()
+    {
+        if (MaxFieldLength.HasValue == false)
+        {
+            return;
+        }
+
+        var maxLength = MaxFieldLength.Value;
+        var oversized = GetOversizedFields(maxLength);
+
+        if (oversized.Count == 0)
+        {
+            return;
+        }
+
+        var first = oversized[0];
+
+        var message =
+            $"CSV field length limit of {maxLength} exceeded by " +
+            $"{oversized.Count} value(s). The first is at " +
+            $"{first.GetLocationDescription()} and is {first.Length} characters.";
+
+        if (maxLength == ExcelMaxCellLength)
+        {
+            message +=
+                " Excel cannot hold more than " +
+                $"{ExcelMaxCellLength} characters in a cell and will spill the " +
+                "overflow into following rows. Shorten the value or move it to " +
+                "a row of its own.";
+        }
+
+        throw new InvalidOperationException(message);
+    }
+
+    /// <summary>
     /// Converts the CSV data to a string representation.
     /// </summary>
     /// <returns>A string containing the CSV data.</returns>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when <see cref="MaxFieldLength"/> is set and a field exceeds it.
+    /// </exception>
     public string ToCsvString()
     {
+        AssertFieldLengths();
+
         var result = new StringBuilder();
 
         // Add header row if applicable
@@ -516,6 +643,9 @@ public class CsvWriter
     /// <param name="writeByteOrderMark">Whether to write a UTF-8 byte order mark (BOM). Defaults to true so that Excel and other tools correctly detect the file as UTF-8.</param>
     /// <exception cref="ArgumentNullException">Thrown when filePath is null.</exception>
     /// <exception cref="IOException">Thrown when there's an error writing the file.</exception>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when <see cref="MaxFieldLength"/> is set and a field exceeds it.
+    /// </exception>
     public void SaveToFile(string filePath, bool writeByteOrderMark = true)
     {
         if (filePath == null)

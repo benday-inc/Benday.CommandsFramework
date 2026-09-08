@@ -944,4 +944,176 @@ public class CsvWriterFixture
         Assert.Equal("31", writer.GetValue(0, "Age"));
         Assert.Equal("31", writer.GetRow(0)["Age"]);
     }
+
+    [Fact]
+    public void GetOversizedFields_NothingTooLong_ReturnsEmpty()
+    {
+        // arrange
+        var writer = new CsvWriter();
+        writer.SetHeaders(new[] { "Category", "Detail" });
+        writer.AddRow("branch", "short value");
+
+        // act
+        var actual = writer.GetOversizedFields(CsvWriter.ExcelMaxCellLength);
+
+        // assert
+        Assert.Empty(actual);
+    }
+
+    [Fact]
+    public void GetOversizedFields_ValueTooLong_ReportsRowColumnAndLength()
+    {
+        // arrange
+        var writer = new CsvWriter();
+        writer.SetHeaders(new[] { "Category", "Detail" });
+        writer.AddRow("ok", "short");
+        writer.AddRow("branch", new string('x', 40000));
+
+        // act
+        var actual = writer.GetOversizedFields(CsvWriter.ExcelMaxCellLength);
+
+        // assert
+        var match = Assert.Single(actual);
+        Assert.Equal(1, match.RowIndex);
+        Assert.Equal(1, match.ColumnIndex);
+        Assert.Equal("Detail", match.ColumnName);
+        Assert.Equal(40000, match.Length);
+        Assert.Contains("row 1", match.GetLocationDescription());
+        Assert.Contains("'Detail'", match.GetLocationDescription());
+    }
+
+    [Fact]
+    public void GetOversizedFields_HeaderTooLong_ReportsHeaderRow()
+    {
+        // arrange
+        var writer = new CsvWriter();
+        writer.SetHeaders(new[] { "Category", new string('h', 50) });
+
+        // act
+        var actual = writer.GetOversizedFields(40);
+
+        // assert
+        var match = Assert.Single(actual);
+        Assert.Equal(-1, match.RowIndex);
+        Assert.Contains("the header row", match.GetLocationDescription());
+    }
+
+    [Fact]
+    public void GetOversizedFields_MaxLengthBelowOne_Throws()
+    {
+        // arrange
+        var writer = new CsvWriter();
+        writer.SetHeaders(new[] { "a" });
+
+        // act & assert
+        Assert.Throws<ArgumentOutOfRangeException>(
+            () => writer.GetOversizedFields(0));
+    }
+
+    [Fact]
+    public void ToCsvString_NoMaxFieldLengthSet_LongValueIsWritten()
+    {
+        // arrange
+        // The limit is opt-in so that existing callers keep working.
+        var writer = new CsvWriter();
+        writer.SetHeaders(new[] { "Detail" });
+        writer.AddRow(new string('x', 40000));
+
+        // act
+        var actual = writer.ToCsvString();
+
+        // assert
+        Assert.Contains(new string('x', 40000), actual);
+    }
+
+    [Fact]
+    public void ToCsvString_MaxFieldLengthExceeded_Throws()
+    {
+        // arrange
+        var writer = new CsvWriter
+        {
+            MaxFieldLength = CsvWriter.ExcelMaxCellLength
+        };
+
+        writer.SetHeaders(new[] { "Category", "Detail" });
+        writer.AddRow("branch", new string('x', 40000));
+
+        // act
+        var actual = Assert.Throws<InvalidOperationException>(
+            () => writer.ToCsvString());
+
+        // assert
+        Assert.Contains("32767", actual.Message);
+        Assert.Contains("40000", actual.Message);
+        Assert.Contains("'Detail'", actual.Message);
+        Assert.Contains("Excel", actual.Message);
+    }
+
+    [Fact]
+    public void ToCsvString_MaxFieldLengthNotExceeded_DoesNotThrow()
+    {
+        // arrange
+        var writer = new CsvWriter
+        {
+            MaxFieldLength = CsvWriter.ExcelMaxCellLength
+        };
+
+        writer.SetHeaders(new[] { "Category", "Detail" });
+        writer.AddRow("branch", new string('x', CsvWriter.ExcelMaxCellLength));
+
+        // act
+        var actual = writer.ToCsvString();
+
+        // assert
+        Assert.NotNull(actual);
+    }
+
+    [Fact]
+    public void SaveToFile_MaxFieldLengthExceeded_ThrowsAndWritesNothing()
+    {
+        // arrange
+        var path = Path.Combine(Path.GetTempPath(), $"csv-{Guid.NewGuid():N}.csv");
+
+        var writer = new CsvWriter
+        {
+            MaxFieldLength = CsvWriter.ExcelMaxCellLength
+        };
+
+        writer.SetHeaders(new[] { "Detail" });
+        writer.AddRow(new string('x', 40000));
+
+        try
+        {
+            // act
+            Assert.Throws<InvalidOperationException>(() => writer.SaveToFile(path));
+
+            // assert
+            Assert.False(File.Exists(path));
+        }
+        finally
+        {
+            if (File.Exists(path) == true)
+            {
+                File.Delete(path);
+            }
+        }
+    }
+
+    [Fact]
+    public void ToCsvString_RowOfEmptyValues_SurvivesRoundTrip()
+    {
+        // arrange
+        var writer = new CsvWriter();
+        writer.SetHeaders(new[] { "a", "b", "c" });
+        writer.AddRow("1", "2", "3");
+        writer.AddRow(string.Empty, string.Empty, string.Empty);
+        writer.AddRow("4", "5", "6");
+
+        // act
+        var actual = new CsvReader(writer.ToCsvString()).ToList();
+
+        // assert
+        Assert.Equal(3, actual.Count);
+        Assert.Equal(new[] { "", "", "" }, actual[1].GetValues());
+    }
 }

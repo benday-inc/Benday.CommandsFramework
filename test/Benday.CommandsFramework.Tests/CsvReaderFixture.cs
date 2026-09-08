@@ -465,4 +465,124 @@ public class CsvReaderFixture
         Assert.Equal("Description\nwith newline", rows[1]["Description"]);
         Assert.Equal("", rows[1]["Notes"]);
     }
+
+    [Fact]
+    public void Parse_RowOfEmptyValues_IsNotDiscarded()
+    {
+        // arrange
+        // A row of empty values is data. It used to be thrown away, which
+        // silently dropped rows on the way through CsvWriter.
+        var csvContent = "a,b,c\n1,2,3\n,,\n4,5,6";
+        var reader = new CsvReader(csvContent);
+
+        // act
+        var rows = reader.ToList();
+
+        // assert
+        Assert.Equal(3, rows.Count);
+        Assert.Equal(new[] { "", "", "" }, rows[1].GetValues());
+        Assert.Equal(new[] { "4", "5", "6" }, rows[2].GetValues());
+    }
+
+    [Fact]
+    public void Parse_RowOfWhitespaceValues_IsNotDiscarded()
+    {
+        // arrange
+        var csvContent = "a,b\n  ,  \nx,y";
+        var reader = new CsvReader(csvContent);
+
+        // act
+        var rows = reader.ToList();
+
+        // assert
+        Assert.Equal(2, rows.Count);
+        Assert.Equal(new[] { "  ", "  " }, rows[0].GetValues());
+    }
+
+    [Fact]
+    public void Parse_BlankLines_AreStillSkipped()
+    {
+        // arrange
+        // A line with no delimiters at all is a blank line, not a row of one
+        // empty value, so it stays skipped.
+        var csvContent = "a,b\n1,2\n\n\n3,4\n";
+        var reader = new CsvReader(csvContent);
+
+        // act
+        var rows = reader.ToList();
+
+        // assert
+        Assert.Equal(2, rows.Count);
+        Assert.Equal(new[] { "1", "2" }, rows[0].GetValues());
+        Assert.Equal(new[] { "3", "4" }, rows[1].GetValues());
+    }
+
+    [Fact]
+    public void Parse_StrayQuoteInUnquotedField_DoesNotSwallowTheRestOfTheFile()
+    {
+        // arrange
+        // A quote that is not at the start of a field is a literal character.
+        // Treating it as a toggle used to consume every following comma and
+        // line ending into one giant field.
+        var csvContent = "a,b\nabc\"def,second\nnext,row";
+        var reader = new CsvReader(csvContent);
+
+        // act
+        var rows = reader.ToList();
+
+        // assert
+        Assert.Equal(2, rows.Count);
+        Assert.Equal(new[] { "abc\"def", "second" }, rows[0].GetValues());
+        Assert.Equal(new[] { "next", "row" }, rows[1].GetValues());
+    }
+
+    [Fact]
+    public void Parse_WindowsPathContainingQuotes_IsReadLiterally()
+    {
+        // arrange
+        var csvContent = "a,b\nC:\\dir\\\"odd\",2\nx,y";
+        var reader = new CsvReader(csvContent);
+
+        // act
+        var rows = reader.ToList();
+
+        // assert
+        Assert.Equal(2, rows.Count);
+        Assert.Equal("C:\\dir\\\"odd\"", rows[0][0]);
+        Assert.Equal("2", rows[0][1]);
+        Assert.Equal(new[] { "x", "y" }, rows[1].GetValues());
+    }
+
+    [Fact]
+    public void Parse_QuotedFieldFollowedByJunk_AppendsTheJunk()
+    {
+        // arrange
+        // Malformed input. Excel appends the trailing characters rather than
+        // failing, and so does this.
+        var csvContent = "a,b\n\"abc\"def,2";
+        var reader = new CsvReader(csvContent);
+
+        // act
+        var rows = reader.ToList();
+
+        // assert
+        Assert.Single(rows);
+        Assert.Equal(new[] { "abcdef", "2" }, rows[0].GetValues());
+    }
+
+    [Fact]
+    public void Parse_QuotedFieldWithCommaAndNewline_IsOneField()
+    {
+        // arrange
+        var csvContent = "a,b\n\"x,y\nz\",2";
+        var reader = new CsvReader(csvContent);
+
+        // act
+        var rows = reader.ToList();
+
+        // assert
+        Assert.Single(rows);
+        Assert.Equal("x,y\nz", rows[0][0]);
+        Assert.Equal("2", rows[0][1]);
+    }
 }

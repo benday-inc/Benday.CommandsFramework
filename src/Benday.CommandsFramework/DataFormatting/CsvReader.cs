@@ -147,46 +147,74 @@ public class CsvReader : IEnumerable<CsvRow>
 
         var fields = new List<string>();
         var currentField = new StringBuilder();
+
+        // A quote only opens a quoted field at the *start* of a field.  Treating
+        // it as a toggle anywhere meant a single stray quote in unquoted data --
+        // an inch measurement, a Windows path, a name like O"Brien -- flipped the
+        // parser into quoted mode and swallowed every comma and line ending for
+        // the rest of the file into one giant field.
         bool inQuotes = false;
-        
+
+        // Whether anything has been consumed for the field being built. This is
+        // what distinguishes an opening quote from a literal one.
+        bool fieldHasContent = false;
+
         for (int i = 0; i < _csvContent.Length; i++)
         {
             char c = _csvContent[i];
-            
-            if (c == '"')
+
+            if (inQuotes)
             {
-                if (inQuotes && i + 1 < _csvContent.Length && _csvContent[i + 1] == '"')
+                if (c == '"')
                 {
-                    // Escaped quote (double quote)
-                    currentField.Append('"');
-                    i++; // Skip next quote
+                    if (i + 1 < _csvContent.Length && _csvContent[i + 1] == '"')
+                    {
+                        // Escaped quote (double quote)
+                        currentField.Append('"');
+                        i++; // Skip next quote
+                    }
+                    else
+                    {
+                        // Closing quote. Anything between here and the next
+                        // delimiter is appended literally, which is what Excel
+                        // does with malformed input like "abc"def.
+                        inQuotes = false;
+                    }
                 }
                 else
                 {
-                    // Toggle quote state
-                    inQuotes = !inQuotes;
+                    // Regular character, including commas and newlines, which
+                    // are data while inside quotes.
+                    currentField.Append(c);
                 }
             }
-            else if (c == ',' && !inQuotes)
+            else if (c == '"' && fieldHasContent == false)
+            {
+                // Opening quote.
+                inQuotes = true;
+                fieldHasContent = true;
+            }
+            else if (c == ',')
             {
                 // Field separator
                 fields.Add(currentField.ToString());
                 currentField.Clear();
+                fieldHasContent = false;
             }
-            else if (IsLineEnding(c, i) && !inQuotes)
+            else if (IsLineEnding(c))
             {
-                // Row separator - only when not inside quotes
+                // Row separator - only reached when not inside quotes
                 fields.Add(currentField.ToString());
-                
-                // Skip empty rows (rows with only empty fields)
-                if (!IsEmptyRow(fields))
+
+                if (IsBlankLine(fields) == false)
                 {
                     rows.Add(fields.ToArray());
                 }
-                
+
                 fields.Clear();
                 currentField.Clear();
-                
+                fieldHasContent = false;
+
                 // Handle multi-character line endings like \r\n
                 if (c == '\r' && i + 1 < _csvContent.Length && _csvContent[i + 1] == '\n')
                 {
@@ -195,16 +223,16 @@ public class CsvReader : IEnumerable<CsvRow>
             }
             else
             {
-                // Regular character (including newlines inside quotes)
                 currentField.Append(c);
+                fieldHasContent = true;
             }
         }
-        
+
         // Add the last field and row if there's content
         if (currentField.Length > 0 || fields.Count > 0)
         {
             fields.Add(currentField.ToString());
-            if (!IsEmptyRow(fields))
+            if (IsBlankLine(fields) == false)
             {
                 rows.Add(fields.ToArray());
             }
@@ -213,13 +241,20 @@ public class CsvReader : IEnumerable<CsvRow>
         return rows;
     }
 
-    private bool IsLineEnding(char c, int position)
+    private bool IsLineEnding(char c)
     {
         return c == '\n' || c == '\r';
     }
 
-    private bool IsEmptyRow(List<string> fields)
+    /// <summary>
+    /// Says whether the fields came from a blank line rather than from a row of
+    /// empty values.  Only a line with no delimiters at all counts: a row like
+    /// ",," is three empty values and is real data, and discarding it used to
+    /// silently drop rows on the way through <see cref="CsvWriter"/>.
+    /// </summary>
+    private bool IsBlankLine(List<string> fields)
     {
-        return fields.Count == 0 || fields.All(field => string.IsNullOrWhiteSpace(field));
+        return fields.Count == 0 ||
+            (fields.Count == 1 && string.IsNullOrWhiteSpace(fields[0]));
     }
 }
